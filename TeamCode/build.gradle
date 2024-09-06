@@ -36,8 +36,29 @@ dependencies {
     implementation project(':FtcRobotController')
     annotationProcessor files('lib/OpModeAnnotationProcessor.jar')
 
+    // roadrunner
     implementation "com.acmerobotics.roadrunner:core:1.0.0"
     implementation "com.acmerobotics.roadrunner:actions:1.0.0"
     implementation "com.acmerobotics.dashboard:dashboard:0.4.15"
+
+    // OTOS
     implementation "com.github.jdhs-ftc:road-runner-ftc-otos:a02ba3fe51"
+
+    // math
+    implementation 'org.apache.commons:commons-math3:3.6.1'
+
+    // FTC lib (certain motors, servos, sensors)
+    implementation 'org.ftclib.ftclib:core:2.1.1'
+
+    // OpenCV
+    implementation 'org.openftc:easyopencv:1.7.2'
+
+    // Swerve
+    implementation 'com.github.Eeshwar-Krishnan:PhotonFTC:main-SNAPSHOT'
+
+    // nobody knows
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.7'
+
+    // matrix linear algebra?
+    implementation group: 'org.ejml', name: 'ejml-all', version: '0.43'
 }
