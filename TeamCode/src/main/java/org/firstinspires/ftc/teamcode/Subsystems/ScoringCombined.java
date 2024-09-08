@@ -84,5 +84,17 @@ public class ScoringCombined {
         claw.stowArm();                     // flip arm back over
         verticalSlides.retract();           // retract slides
     }
+
+    public void autoTransfer() {
+        // check both slides fully retracted and ready to transfer
+        /** this is probably what will break, but idk what will break*/
+        if (intake.correctPiece()) {
+            if (!claw.isTransferring) {claw.stowArm();}
+            if (!claw.isOpen) {claw.openClaw();}
+            if (!verticalSlides.verticalSlidesRetracted) {verticalSlides.retract();}
+            if (!horizontalSlides.horizontalSlidesRetracted) {horizontalSlides.retract();}
+        }
+        claw.closeClaw(); // transfer (just grabbing the sample)
+    }
 }
 
