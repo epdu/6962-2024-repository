@@ -26,6 +26,36 @@
 *
 */
 
+/* VINCENT'S PREFERENCE
+* Gamepad 1:
+*
+* Left Joystick X and Y - strafe (drive)
+* Right Joystick X - turn (drive)
+*
+* Left Joystick Button - slow turn
+* Right Joystick Button - slow strafe
+*
+* Left Bumper - claw toggle
+* Right Bumper - start intake and flip down, otherwise flip up and stop
+*
+* Left Trigger - slowmode (when >0.5, 30% speed)
+* Right Trigger - extend horizontal slides to mapped distance
+*                 (ex: 1 -> 100%, 0.5 -> 80%, 0.1 -> 60%, 0 -> 0%)
+*
+* A - high basket slide toggle
+* B - toggle arm
+* Y - hang (NOT DONE, WORK ON)
+* X - medium basket slide toggle
+*
+* D-Pad Up - full intake process (start, check for color and/or eject, stop)
+* D-Pad Down - navx reset (drive)
+* D-Pad Left - secondary hang release
+* D-Pad Right -
+*
+* D-Pad Right & Right Bumper - reverse intake/eject
+*
+*/
+
 
 
 
