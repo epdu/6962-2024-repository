@@ -71,7 +71,7 @@ public class Intake
         wristServo.setPosition(stowedPosition);
         flippedUp = true;
     }
-    public void eject() {}
+    public void eject() {/**this is incomplete because idk exactly what the intake will look like*/}
 
     public void fullIntakeSequence() {
         intakePieces();              // start intake and flip down
