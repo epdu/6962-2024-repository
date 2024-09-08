@@ -58,6 +58,8 @@ public class Mecanum {
         // Y button toggles slow mode
         if (opmode.gamepad1.y) { toggleSlowMode(); }
 
+        if (opmode.gamepad1.dpad_down) { gyroManager.reset(); }
+
         // driving field centric
         if (slowModeBool) {
             drive.driveFieldCentric(opmode.gamepad1.left_stick_x/slowModeFactor, -opmode.gamepad1.left_stick_y/slowModeFactor, (opmode.gamepad1.right_stick_x * 0.75)/slowModeFactor, gyroManager.getHeading());

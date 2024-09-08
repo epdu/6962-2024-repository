@@ -1,32 +1,41 @@
-/* BEFORE AUTOMATION
+
+/* BEFORE AUTOMATION (MVP)
 * Gamepad 1:
 *
-* Left joystick X and Y - strafe (drive)
-* Right joystick X - turn (drive)
+* Left Joystick X and Y - strafe (drive)
+* Right Joystick X - turn (drive)
 *
-* Left Bumper -
-* Right Bumper -
+* Left Joystick Button -
+* Right Joystick Button -
 *
-* Left trigger - retract horizontal slide
-* Right trigger - extend horizontal slides
+* Left Bumper - stop intake and flip up
+* Right Bumper - start intake and flip down
 *
-* A -
-* B -
-* Y -
-* X -
+* Left Trigger - retract horizontal slide (acts like joystick, not automatically to a set distance)
+* Right Trigger - extend horizontal slides
 *
-* D-Pad Up-
-* D-Pad Down -
-* D-Pad Left-
+* A - toggle extend to high basket and retract (slides)
+* B - toggle claw
+* Y - slow mode (drive)
+* X - toggle arm
+*
+* D-Pad Up - full intake process (start, check for color and/or eject, stop)
+* D-Pad Down - navx reset (drive)
+* D-Pad Left -
 * D-Pad Right -
 *
 */
+
+
+
+
+
 /* AFTER AUTOMATION
 *
 * Gamepad 1:
 *
-* Left joystick X and Y - strafe (drive)
-* Right joystick X - turn (drive)
+* Left Joystick X and Y - strafe (drive)
+* Right Joystick X - turn (drive)
 *
 * Left Bumper -
 * Right Bumper -
@@ -39,9 +48,9 @@
 * Y - slow mode toggle (drive)
 * X - reset gyro (drive)
 *
-* D-Pad Up-
+* D-Pad Up -
 * D-Pad Down -
-* D-Pad Left-
+* D-Pad Left -
 * D-Pad Right -
 *
 

@@ -25,12 +25,26 @@ public class ScoringCombined {
         claw.operate();
         intake.operate();
 
-        if (opmode.gamepad1.x) {
-            autoPickUp();
+        // DO NOT USE UNTIL ALL SUBSYSTEMS TESTED INDEPENDENTLY
+//        if (opmode.gamepad1.x) {
+//            autoPickUp();
+//        }
+//        if (opmode.gamepad1.y) {
+//            autoScore();
+//        }
+        if (opmode.gamepad1.dpad_up) {
+            // without slide extension, just starting intake until it detects a valid piece
+            intake.fullIntakeSequence();
         }
-        if (opmode.gamepad1.y) {
-            autoScore();
-        }
+
+        opmode.telemetry.addData("Vertical Slides Retracted: ", verticalSlides.verticalSlidesRetracted);
+        opmode.telemetry.addData("Horizontal Slides Retracted: ", horizontalSlides.horizontalSlidesRetracted);
+        opmode.telemetry.addData("Claw Transferring: ", claw.isTransferring);
+        opmode.telemetry.addData("Claw Open: ", claw.isOpen);
+        opmode.telemetry.addData("Piece Taken In: ", intake.pieceTakenInBool());
+        opmode.telemetry.addData("Detected Piece Color: ", intake.identifyColor());
+        opmode.telemetry.addData("Correct Color: ", intake.correctColorBool());
+        opmode.telemetry.addData("Has Sample & Correct Color: ", intake.correctPiece());
     }
 
     public void shutdown() {
@@ -42,6 +56,7 @@ public class ScoringCombined {
 
     public void autoPickUp() {
         horizontalSlides.extend();          // extend slides
+        /** might need delay here */
         intake.intakePieces();              // start intake and flip down
         while (!intake.correctPiece()) {    // wait until a piece is picked up
             if (intake.pieceTakenInBool() && !intake.correctColorBool())
@@ -54,11 +69,13 @@ public class ScoringCombined {
     /** This is guaranteed not to work first try, but idk which section is wrong until I can test it*/
     public void autoScore() {
         // check both slides fully retracted and ready to transfer
-        /** this is probably what will break, but idk how else to check and fix these things*/
-        if (!verticalSlides.verticalSlidesRetracted) {verticalSlides.retract();}
-        if (!horizontalSlides.horizontalSlidesRetracted) {}
-        if (!claw.isTransferring) {claw.stowArm();}
-        if (!claw.isOpen) {claw.openClaw();}
+        /** this is probably what will break, but idk what will break*/
+        if (intake.correctPiece()) {
+            if (!claw.isTransferring) {claw.stowArm();}
+            if (!claw.isOpen) {claw.openClaw();}
+            if (!verticalSlides.verticalSlidesRetracted) {verticalSlides.retract();}
+            if (!horizontalSlides.horizontalSlidesRetracted) {horizontalSlides.retract();}
+        }
         claw.closeClaw();                   // transfer (just grabbing the sample)
         verticalSlides.raiseToHighBucket(); // extending slides
         /** might need delay here */

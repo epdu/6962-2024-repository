@@ -20,6 +20,7 @@ public class Intake
     private boolean ON_RED_ALLIANCE;
 
     // variables created for later modification, not constants
+    public boolean flippedUp = true;
 
     // constants
     /** all of the constants need to be tuned*/
@@ -41,7 +42,7 @@ public class Intake
     public void operate()
     {
         if (opmode.gamepad2.right_bumper) {
-            // right trigger extend hori slides
+            // start intaking
             intakeMotor.setPower(intakePower);
             // flip out
             wristServo.setPosition(intakePosition);
@@ -61,21 +62,30 @@ public class Intake
         intakeMotor.setPower(intakePower);
         // flip out
         wristServo.setPosition(intakePosition);
+        flippedUp = false;
     }
     public void stopIntaking() {
         // stop
         intakeMotor.setPower(0);
         // flip in
         wristServo.setPosition(stowedPosition);
+        flippedUp = true;
     }
     public void eject() {}
+
+    public void fullIntakeSequence() {
+        intakePieces();              // start intake and flip down
+        while (!correctPiece()) {    // wait until a piece is picked up
+            if (pieceTakenInBool() && !correctColorBool())
+                eject();
+        }
+        stopIntaking();              // stop and flip up
+    }
 
     public boolean correctPiece() {
         return pieceTakenInBool() && correctColorBool();
     }
-    public boolean pieceTakenInBool() {
-        return colorSensor.getDistance(DistanceUnit.INCH) < detectionThreshold;
-    }
+    public boolean pieceTakenInBool() { return colorSensor.getDistance(DistanceUnit.INCH) < detectionThreshold; }
     public boolean correctColorBool() {
         String color = identifyColor();
 
