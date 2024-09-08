@@ -1,0 +1,47 @@
+/* BEFORE AUTOMATION
+* Gamepad 1:
+*
+* Left joystick X and Y - strafe (drive)
+* Right joystick X - turn (drive)
+*
+* Left Bumper -
+* Right Bumper -
+*
+* Left trigger - retract horizontal slide
+* Right trigger - extend horizontal slides
+*
+* A -
+* B -
+* Y -
+* X -
+*
+* D-Pad Up-
+* D-Pad Down -
+* D-Pad Left-
+* D-Pad Right -
+*
+*/
+/* AFTER AUTOMATION
+*
+* Gamepad 1:
+*
+* Left joystick X and Y - strafe (drive)
+* Right joystick X - turn (drive)
+*
+* Left Bumper -
+* Right Bumper -
+*
+* Left trigger -
+* Right trigger -
+*
+* A - auto-extend intake, then retract once picked up piece (scoring)
+* B - vertical slide extend, then deposit, then retract (scoring)
+* Y - slow mode toggle (drive)
+* X - reset gyro (drive)
+*
+* D-Pad Up-
+* D-Pad Down -
+* D-Pad Left-
+* D-Pad Right -
+*
+
