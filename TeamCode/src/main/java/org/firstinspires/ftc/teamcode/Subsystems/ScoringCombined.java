@@ -39,8 +39,8 @@ public class ScoringCombined {
 
         opmode.telemetry.addData("Vertical Slides Retracted: ", verticalSlides.verticalSlidesRetracted);
         opmode.telemetry.addData("Horizontal Slides Retracted: ", horizontalSlides.horizontalSlidesRetracted);
-        opmode.telemetry.addData("Claw Transferring: ", claw.isTransferring);
-        opmode.telemetry.addData("Claw Open: ", claw.isOpen);
+        opmode.telemetry.addData("Claw Transferring: ", claw.isArmTransferring);
+        opmode.telemetry.addData("Claw Open: ", claw.isClawOpen);
         opmode.telemetry.addData("Piece Taken In: ", intake.pieceTakenInBool());
         opmode.telemetry.addData("Detected Piece Color: ", intake.identifyColor());
         opmode.telemetry.addData("Correct Color: ", intake.correctColorBool());
@@ -56,11 +56,12 @@ public class ScoringCombined {
 
     public void autoPickUp() {
         horizontalSlides.extend();          // extend slides
-        /** might need delay here */
+//        timer.safeDelay(0);      // wait for __ milliseconds
         intake.intakePieces();              // start intake and flip down
         while (!intake.correctPiece()) {    // wait until a piece is picked up
             if (intake.pieceTakenInBool() && !intake.correctColorBool())
                 intake.eject();
+                intake.intakePieces();
         }
         intake.stopIntaking();              // stop and flip up
         horizontalSlides.retract();         // retract slides
@@ -71,15 +72,17 @@ public class ScoringCombined {
         // check both slides fully retracted and ready to transfer
         /** this is probably what will break, but idk what will break*/
         if (intake.correctPiece()) {
-            if (!claw.isTransferring) {claw.stowArm();}
-            if (!claw.isOpen) {claw.openClaw();}
+            if (!claw.isArmTransferring) {claw.stowArm();}
+            if (!claw.isWristVertical) {claw.setWristHorizontal();}
+            if (!claw.isClawOpen) {claw.openClaw();}
             if (!verticalSlides.verticalSlidesRetracted) {verticalSlides.retract();}
             if (!horizontalSlides.horizontalSlidesRetracted) {horizontalSlides.retract();}
         }
         claw.closeClaw();                   // transfer (just grabbing the sample)
         verticalSlides.raiseToHighBucket(); // extending slides
-        /** might need delay here */
+//        timer.safeDelay(0);      // wait for __ milliseconds
         claw.scoreArm();                    // flipping arm over to score (this could possibly go before extending depending on the design of the robot)
+        claw.setWristHorizontal();          // prepping wrist to drop pixel (currently useless because the intake is now starting horizontal)
         claw.openClaw();                    // drop sample
         claw.stowArm();                     // flip arm back over
         verticalSlides.retract();           // retract slides
@@ -89,8 +92,9 @@ public class ScoringCombined {
         // check both slides fully retracted and ready to transfer
         /** this is probably what will break, but idk what will break*/
         if (intake.correctPiece()) {
-            if (!claw.isTransferring) {claw.stowArm();}
-            if (!claw.isOpen) {claw.openClaw();}
+            if (!claw.isArmTransferring) {claw.stowArm();}
+            if (!claw.isClawOpen) {claw.openClaw();}
+            if (!claw.isWristVertical) {claw.setWristHorizontal();}
             if (!verticalSlides.verticalSlidesRetracted) {verticalSlides.retract();}
             if (!horizontalSlides.horizontalSlidesRetracted) {horizontalSlides.retract();}
         }

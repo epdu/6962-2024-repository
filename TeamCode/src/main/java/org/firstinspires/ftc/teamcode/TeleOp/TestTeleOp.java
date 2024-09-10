@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.Subsystems.Claw;
+import org.firstinspires.ftc.teamcode.Subsystems.CustomTimer;
 import org.firstinspires.ftc.teamcode.Subsystems.HorizontalSlides;
 import org.firstinspires.ftc.teamcode.Subsystems.Intake;
 import org.firstinspires.ftc.teamcode.Subsystems.Mecanum;
@@ -19,6 +20,7 @@ public class TestTeleOp extends OpMode {
     private VerticalSlides verticalSlides     = new VerticalSlides();
     private Claw claw                         = new Claw();
     private ScoringCombined scoring           = new ScoringCombined();
+    private CustomTimer timer                 = new CustomTimer();
 
     private boolean onRedAlliance = true;
 
@@ -30,7 +32,7 @@ public class TestTeleOp extends OpMode {
         mecanum.initialize(this);
         // TODO: Go to each subsystem file and input all names into driver hub before testing
         horizontalSlides.initialize(this);
-        intake.initialize(this, onRedAlliance);
+        intake.initialize(this, timer, onRedAlliance);
         verticalSlides.initialize(this);
         claw.initialize(this);
         scoring.initialize(this, horizontalSlides, intake, verticalSlides, claw);

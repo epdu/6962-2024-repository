@@ -14,28 +14,30 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 public class Intake
 {
     OpMode opmode;
+    CustomTimer timer;
     private DcMotorEx intakeMotor;
     private Servo wristServo;
     private ColorRangeSensor colorSensor;
     private boolean ON_RED_ALLIANCE;
 
     // variables created for later modification, not constants
-    public boolean flippedUp = true;
+    public volatile boolean flippedUp = true;
 
     // constants
     /** all of the constants need to be tuned*/
     private double intakePower = 0.5;
     private double stowedPosition = 0.4;
     private double intakePosition = 0;
-    private double detectionThreshold = 0.8; //inches
+    private double detectionThreshold = 0.5; //inches
     private int colorThreshold = 200;
 
     public Intake() {}
 
-    public void initialize(OpMode opmode, boolean redAlliance) {
+    public void initialize(OpMode opmode, CustomTimer timer, boolean redAlliance) {
         this.ON_RED_ALLIANCE = redAlliance;
         this.intakeMotor = opmode.hardwareMap.get(DcMotorEx.class, "");
         this.wristServo = opmode.hardwareMap.get(Servo.class, "");
+        this.timer = timer;
 //        intakeServo.setDirection(DcMotorSimple.Direction.REVERSE);
     }
 
@@ -71,7 +73,11 @@ public class Intake
         wristServo.setPosition(stowedPosition);
         flippedUp = true;
     }
-    public void eject() {/**this is incomplete because idk exactly what the intake will look like*/}
+    public void eject() {
+        // reverse direction for 2 seconds, then return
+        intakeMotor.setPower(-intakePower);
+        timer.safeDelay(2000);
+    }
 
     public void fullIntakeSequence() {
         intakePieces();              // start intake and flip down
