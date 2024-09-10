@@ -32,18 +32,19 @@ public class VerticalSlides
     private int retractedPos = 0;
 
     //declaring variables for later modification
+    private volatile double slidePower;
+    private volatile double target = 0;
+    private volatile boolean movingDown = false;
+    public volatile boolean verticalSlidesRetracted = true;
+
+    // PID stuff
     private double PIDPowerL, PIDPowerR;
-    private double slidePower;
-    private boolean movingDown = false;
-    public boolean verticalSlidesRetracted = true;
     ElapsedTime timer = new ElapsedTime();
-    private static double target = 0;
     double integralSum = 0;
     private double lastError = 0;
 
-    public VerticalSlides() {
+    public VerticalSlides() {}
 
-    }
     public void initialize(OpMode opmode) {
         // TODO: assign motor names, then reverse the correct motor
         leftSlideMotor = opmode.hardwareMap.get(DcMotorEx.class, "");
