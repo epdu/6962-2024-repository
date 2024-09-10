@@ -12,7 +12,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 public class Claw {
     // hardware
     OpMode opmode;
-    private Servo claw, arm;
+    private Servo claw, arm, wrist;
 
     // constants
     /** all of the constants need to be tuned*/
@@ -22,11 +22,15 @@ public class Claw {
     private double armScoringPosition = 0.3;
     private double armTransferPosition = 0.8;
 
+    private double wristVerticalPosition = 0; // vertical mean the prongs open forward and back
+    private double wristHorizontalPosition = 0.25; // horizontal means the prongs open left and right
+
     private double TOLERANCE = 0.001;
 
     public boolean autoClosing = true;
-    public boolean isOpen = true;
-    public boolean isTransferring = true;
+    public volatile boolean isClawOpen = true;
+    public volatile boolean isArmTransferring = true;
+    public volatile boolean isWristVertical = true;
     private double detectionInches = 0.8;
 
     public Claw() {}
@@ -36,6 +40,7 @@ public class Claw {
         this.opmode = opmode;
         this.claw = opmode.hardwareMap.get(Servo.class, "");
         this.arm = opmode.hardwareMap.get(Servo.class, "");
+        this.wrist = opmode.hardwareMap.get(Servo.class, "");
     }
 
     public void operate() {
@@ -47,33 +52,46 @@ public class Claw {
     public void shutdown() {};
 
     public void toggleClaw() {
-        if (isOpen) {
+        if (isClawOpen) {
             claw.setPosition(clawClosedPosition);
-            isOpen = false;
+            isClawOpen = false;
         }
         else {
             claw.setPosition(clawOpenPosition);
-            isOpen = true;
+            isClawOpen = true;
         }
     }
 
-    public void openClaw() { claw.setPosition(clawClosedPosition); isOpen = false;}
-    public void closeClaw() { claw.setPosition(clawOpenPosition); isOpen = true;}
+    public void openClaw() { claw.setPosition(clawClosedPosition); isClawOpen = false;}
+    public void closeClaw() { claw.setPosition(clawOpenPosition); isClawOpen = true;}
 
     public void toggleArm() {
-        if (isTransferring) {
+        if (isArmTransferring) {
             arm.setPosition(armScoringPosition);
-            isTransferring = false;
+            isArmTransferring = false;
         }
         else {
             arm.setPosition(armTransferPosition);
-            isTransferring = true;
+            isArmTransferring = true;
         }
     }
 
-    public void scoreArm() { arm.setPosition(armScoringPosition); isTransferring = false;}
-    public void stowArm() { arm.setPosition(armTransferPosition); isTransferring = true;}
+    public void scoreArm() { arm.setPosition(armScoringPosition); isArmTransferring = false;}
+    public void stowArm() { arm.setPosition(armTransferPosition); isArmTransferring = true;}
 
+    public void toggleWrist() {
+        if (isWristVertical) {
+            wrist.setPosition(wristVerticalPosition);
+            isWristVertical = false;
+        }
+        else {
+            wrist.setPosition(wristHorizontalPosition);
+            isWristVertical = true;
+        }
+    }
+
+    public void setWristHorizontal() { wrist.setPosition(wristHorizontalPosition); isWristVertical = true; }
+    public void setWristVertical() { wrist.setPosition(wristVerticalPosition); isWristVertical = false; }
 
     public boolean isClose(double a, double b) {
         return Math.abs(a - b) < TOLERANCE;
