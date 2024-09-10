@@ -30,14 +30,15 @@ public class HorizontalSlides
 
 
     // declaring variables for later modification
+    private volatile double slidePower;
+    private volatile double target = 0;
+    public volatile boolean horizontalSlidesRetracted = true;
+
+    // PID stuff
     private double PIDPower;
-    private double slidePower;
-    public boolean horizontalSlidesRetracted = true;
     ElapsedTime timer = new ElapsedTime();
-    private double target = 0;
     double integralSum = 0;
     private double lastError = 0;
-
 
     public HorizontalSlides() {}
 
