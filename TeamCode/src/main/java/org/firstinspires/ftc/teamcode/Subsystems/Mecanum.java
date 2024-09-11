@@ -18,7 +18,7 @@ public class Mecanum {
 //    private DistanceSensor distSensor;
 
     // constants
-    private int slowModeFactor = 2;
+    private double slowModeFactor = 10.0/3;
 //    private static double kP = 0;
 //    private static double kI = 0;
 //    private static double kD = 0;
@@ -56,7 +56,7 @@ public class Mecanum {
 
     public void operateFieldCentric() {
         // Y button toggles slow mode
-        if (opmode.gamepad1.y) { toggleSlowMode(); }
+        if (opmode.gamepad1.left_trigger > 0.5) { toggleSlowMode(); }
 
         if (opmode.gamepad1.dpad_down) { gyroManager.reset(); }
 

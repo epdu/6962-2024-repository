@@ -21,13 +21,15 @@ public class HorizontalSlides
     private double Ki = 0;
     private double Kd = 0;
     private double Kg = 0; // gravity constant, tune till the slide holds itself in place
-    private double upperLimit = 400;
+    private double upperLimit = 300;
     private double lowerLimit = -2;
     private double retractedThreshold = 10;
 
-    private int extendedPos = 100;
+    private int extendedPos = 280;
     private int retractedPos = 0;
 
+    private double mappingExponent = 0.4; // paste this into desmos to see graph: x^{0.4}\ \left\{0\le x\le1\right\}
+                                          // making the mapping exponent smaller makes graph steeper
 
     // declaring variables for later modification
     private volatile double slidePower;
@@ -53,35 +55,39 @@ public class HorizontalSlides
     }
 
     public void operate() {
-        // adds inputs, which accounts for both triggers as well as mistakes
-        slidePower = opmode.gamepad2.right_trigger + (-1 * opmode.gamepad2.left_trigger);
+        // maps to percent of upper limit (ex: 1 -> 100%, 0.5 -> 80%, 0.1 -> 60%, 0 -> 0%)
+        /** this is very very likely to go very fast and break the slides before it's tuned, so be careful*/
+        target = mapTriggerToTarget(opmode.gamepad1.right_trigger);
+        PIDPower = PIDControl(target, slideMotor);
+        slideMotor.setPower(PIDPower);
 
-        // manual control
-        if (Math.abs(slidePower) > 0.05) {
-            // if position positive, then can move freely
-            if (slideMotor.getCurrentPosition() > lowerLimit) {
-                slideMotor.setPower(slidePower * slideScalar);
-                target = slideMotor.getCurrentPosition();
-            }
-            // if position negative, but want to move positive, then can move
-            else if (slideMotor.getCurrentPosition() <= lowerLimit && slidePower > 0) {
-                slideMotor.setPower(slidePower * slideScalar);
-                target = slideMotor.getCurrentPosition();
-            }
-            // if out of range, sets target to back in range
-            if (slideMotor.getCurrentPosition() > upperLimit) {
-                target = upperLimit-2;
-            }
-            // if out of range, sets target to back in range
-            else if (slideMotor.getCurrentPosition() < lowerLimit) {
-                target = lowerLimit+2;
-            }
-        }
-        // PID control
-        else {
-            PIDPower = PIDControl(target, slideMotor);
-            slideMotor.setPower(PIDPower);
-        }
+//        // manual control
+//        slidePower = opmode.gamepad1.right_trigger + (-1 * opmode.gamepad2.left_trigger);
+//        if (Math.abs(slidePower) > 0.05) {
+//            // if position positive, then can move freely
+//            if (slideMotor.getCurrentPosition() > lowerLimit) {
+//                slideMotor.setPower(slidePower * slideScalar);
+//                target = slideMotor.getCurrentPosition();
+//            }
+//            // if position negative, but want to move positive, then can move
+//            else if (slideMotor.getCurrentPosition() <= lowerLimit && slidePower > 0) {
+//                slideMotor.setPower(slidePower * slideScalar);
+//                target = slideMotor.getCurrentPosition();
+//            }
+//            // if out of range, sets target to back in range
+//            if (slideMotor.getCurrentPosition() > upperLimit) {
+//                target = upperLimit-2;
+//            }
+//            // if out of range, sets target to back in range
+//            else if (slideMotor.getCurrentPosition() < lowerLimit) {
+//                target = lowerLimit+2;
+//            }
+//        }
+//        // PID control
+//        else {
+//            PIDPower = PIDControl(target, slideMotor);
+//            slideMotor.setPower(PIDPower);
+//        }
 
         // updates boolean
         if (slideMotor.getCurrentPosition() < retractedThreshold) {
@@ -92,7 +98,7 @@ public class HorizontalSlides
         }
 
         opmode.telemetry.addData("PID Power", PIDPower);
-        opmode.telemetry.addData("Slide Target ", target);
+        opmode.telemetry.addData("Slide Target", target);
     }
 
     public void shutdown() {
@@ -146,4 +152,8 @@ public class HorizontalSlides
 
     public void extend() { moveToPosition(extendedPos); }
     public void retract() { moveToPosition(retractedPos); }
+
+    public int mapTriggerToTarget(double input) {
+        return (int) Math.round(Math.pow(input, mappingExponent) * upperLimit);
+    }
 }

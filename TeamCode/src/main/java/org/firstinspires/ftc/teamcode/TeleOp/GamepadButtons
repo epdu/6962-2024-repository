@@ -38,7 +38,7 @@
 * Left Bumper - claw toggle
 * Right Bumper - start intake and flip down, otherwise flip up and stop
 *
-* Left Trigger - slowmode (when >0.5, 30% speed)
+* Left Trigger - slowmode (when > 0.5, 30% speed)
 * Right Trigger - extend horizontal slides to mapped distance
 *                 (ex: 1 -> 100%, 0.5 -> 80%, 0.1 -> 60%, 0 -> 0%)
 *
