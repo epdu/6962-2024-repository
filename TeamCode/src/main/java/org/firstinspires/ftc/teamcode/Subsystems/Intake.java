@@ -41,7 +41,7 @@ public class Intake
 //        intakeServo.setDirection(DcMotorSimple.Direction.REVERSE);
     }
 
-    public void operate()
+    public void operateVincent()
     {
         if (opmode.gamepad2.right_bumper) {
             // start intaking
@@ -49,11 +49,23 @@ public class Intake
             // flip out
             wristServo.setPosition(intakePosition);
         }
-        else if (opmode.gamepad2.left_bumper) {
+        else {
             // stop
             intakeMotor.setPower(0);
             // flip in
             wristServo.setPosition(stowedPosition);
+        }
+    }
+
+    public void operateTest() {
+        if (opmode.gamepad2.a) {
+            intakePieces();
+        }
+        else if (opmode.gamepad2.b) {
+            stopIntaking();
+        }
+        else if (opmode.gamepad2.x) {
+            eject();
         }
     }
 

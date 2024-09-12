@@ -64,8 +64,8 @@ public class TestTeleOp extends OpMode {
      */
     @Override
     public void loop() {
-        mecanum.operateFieldCentric(); // press A button for slow mode
-        scoring.operate();
+        mecanum.operateFieldCentricTest(); // press A button for slow mode
+        scoring.operateTest();
     }
 
     /*

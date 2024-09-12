@@ -54,40 +54,12 @@ public class HorizontalSlides
         slideMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
-    public void operate() {
+    public void operateVincent() {
         // maps to percent of upper limit (ex: 1 -> 100%, 0.5 -> 80%, 0.1 -> 60%, 0 -> 0%)
         /** this is very very likely to go very fast and break the slides before it's tuned, so be careful*/
         target = mapTriggerToTarget(opmode.gamepad1.right_trigger);
         PIDPower = PIDControl(target, slideMotor);
         slideMotor.setPower(PIDPower);
-
-//        // manual control
-//        slidePower = opmode.gamepad1.right_trigger + (-1 * opmode.gamepad2.left_trigger);
-//        if (Math.abs(slidePower) > 0.05) {
-//            // if position positive, then can move freely
-//            if (slideMotor.getCurrentPosition() > lowerLimit) {
-//                slideMotor.setPower(slidePower * slideScalar);
-//                target = slideMotor.getCurrentPosition();
-//            }
-//            // if position negative, but want to move positive, then can move
-//            else if (slideMotor.getCurrentPosition() <= lowerLimit && slidePower > 0) {
-//                slideMotor.setPower(slidePower * slideScalar);
-//                target = slideMotor.getCurrentPosition();
-//            }
-//            // if out of range, sets target to back in range
-//            if (slideMotor.getCurrentPosition() > upperLimit) {
-//                target = upperLimit-2;
-//            }
-//            // if out of range, sets target to back in range
-//            else if (slideMotor.getCurrentPosition() < lowerLimit) {
-//                target = lowerLimit+2;
-//            }
-//        }
-//        // PID control
-//        else {
-//            PIDPower = PIDControl(target, slideMotor);
-//            slideMotor.setPower(PIDPower);
-//        }
 
         // updates boolean
         if (slideMotor.getCurrentPosition() < retractedThreshold) {
@@ -96,6 +68,44 @@ public class HorizontalSlides
         else {
             horizontalSlidesRetracted = false;
         }
+
+        opmode.telemetry.addData("PID Power", PIDPower);
+        opmode.telemetry.addData("Slide Target", target);
+    }
+
+    public void operateTest() {
+
+        // manual control with triggers
+        slidePower = opmode.gamepad2.right_stick_y;
+
+        if (Math.abs(slidePower) > 0.05) {
+            // if position positive, then can move freely
+            if (slideMotor.getCurrentPosition() > lowerLimit) {
+                slideMotor.setPower(slidePower * slideScalar);
+                target = slideMotor.getCurrentPosition();
+            }
+            // if position negative, but want to move positive, then can move
+            else if (slideMotor.getCurrentPosition() <= lowerLimit && slidePower > 0) {
+                slideMotor.setPower(slidePower * slideScalar);
+                target = slideMotor.getCurrentPosition();
+            }
+            // if out of range, sets target to back in range
+            if (slideMotor.getCurrentPosition() > upperLimit) {
+                target = upperLimit-2;
+            }
+            // if out of range, sets target to back in range
+            else if (slideMotor.getCurrentPosition() < lowerLimit) {
+                target = lowerLimit+2;
+            }
+        }
+        // PID control
+        else {
+            PIDPower = PIDControl(target, slideMotor);
+            slideMotor.setPower(PIDPower);
+        }
+
+        // updates boolean
+        horizontalSlidesRetracted = slideMotor.getCurrentPosition() < retractedThreshold;
 
         opmode.telemetry.addData("PID Power", PIDPower);
         opmode.telemetry.addData("Slide Target", target);

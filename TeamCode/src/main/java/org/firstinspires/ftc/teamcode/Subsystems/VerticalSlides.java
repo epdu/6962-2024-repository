@@ -63,7 +63,7 @@ public class VerticalSlides
         rightSlideMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
-    public void operate() {
+    public void operateTest() {
         // manual control
         slidePower = -1 * opmode.gamepad2.left_stick_y;
         if (Math.abs(slidePower) > 0.05)
@@ -95,12 +95,26 @@ public class VerticalSlides
         // PID control
         else
         {
-
             PIDPowerL = PIDControl(target, leftSlideMotor);
             PIDPowerR = PIDControl(target, rightSlideMotor);
-
             leftSlideMotor.setPower(PIDPowerL);
             rightSlideMotor.setPower(PIDPowerR);
+        }
+
+        // updates boolean
+        verticalSlidesRetracted = leftSlideMotor.getCurrentPosition() < retractedThreshold && leftSlideMotor.getCurrentPosition() < retractedThreshold;
+
+        opmode.telemetry.addData("PID Power L ", PIDPowerL);
+        opmode.telemetry.addData("PID Power R ", PIDPowerL);
+        opmode.telemetry.addData("Slide Target ", target);
+    }
+
+    public void operateVincent() {
+        if (opmode.gamepad1.a) {
+            raiseToHighBucket();
+        }
+        else if (opmode.gamepad1.x) {
+            raiseToLowBucket();
         }
 
         // updates boolean
@@ -110,10 +124,6 @@ public class VerticalSlides
         else {
             verticalSlidesRetracted = false;
         }
-
-        opmode.telemetry.addData("PID Power L ", PIDPowerL);
-        opmode.telemetry.addData("PID Power R ", PIDPowerL);
-        opmode.telemetry.addData("Slide Target ", target);
     }
 
     public void shutdown() {

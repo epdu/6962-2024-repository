@@ -53,7 +53,7 @@ public class DriveTeleOp extends OpMode {
      */
     @Override
     public void loop() {
-        mecanum.operateFieldCentric(); // toggle Y button for slow mode
+        mecanum.operateFieldCentricTest(); // toggle Y button for slow mode
         otosManager.operate();
     }
 

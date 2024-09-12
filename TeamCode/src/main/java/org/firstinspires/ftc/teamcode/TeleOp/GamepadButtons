@@ -1,6 +1,39 @@
+/* TESTING
+* /////////////  GAMEPAD 1: ///////////////
+*
+* Left Joystick X and Y - strafe (drive)
+* Right Joystick X - turn (drive)
+*
+* A - toggle slowmode
+*
+* D-Pad Down - navx reset (drive)
+*
+*
+* /////////////  GAMEPAD 2: ///////////////
+*
+* Left Joystick Y - vertical slide manual control
+* Right Joystick Y - horizontal slide manual control
+*
+* Left Bumper - claw toggle
+* Right Bumper -
+*
+* Left Trigger -
+* Right Trigger -
+*
+* A - start intake and flip down
+* B - stop intake and flip up
+* X - reverse intake for 2 seconds
+* Y -
+*
+* D-Pad Up - incremental arm up (might be reversed on first try)
+* D-Pad Down - incremental arm down
+* D-Pad Left - incremental wrist left (might be reversed on first attempt)
+* D-Pad Right - incremental wrist right
+*
+*/
 
 /* BEFORE AUTOMATION (MVP)
-* Gamepad 1:
+* /////////////  GAMEPAD 1: ///////////////
 *
 * Left Joystick X and Y - strafe (drive)
 * Right Joystick X - turn (drive)
@@ -26,8 +59,9 @@
 *
 */
 
+
 /* VINCENT'S PREFERENCE
-* Gamepad 1:
+* /////////////  GAMEPAD 1: ///////////////
 *
 * Left Joystick X and Y - strafe (drive)
 * Right Joystick X - turn (drive)
@@ -57,12 +91,8 @@
 */
 
 
-
-
-
 /* AFTER AUTOMATION
-*
-* Gamepad 1:
+* /////////////  GAMEPAD 1: ///////////////
 *
 * Left Joystick X and Y - strafe (drive)
 * Right Joystick X - turn (drive)

@@ -19,11 +19,11 @@ public class ScoringCombined {
         this.intake = intake;
     }
 
-    public void operate() {
-        verticalSlides.operate();
-        horizontalSlides.operate();
-        claw.operate();
-        intake.operate();
+    public void operateVincent() {
+        verticalSlides.operateVincent();
+        horizontalSlides.operateVincent();
+        claw.operateVincent();
+        intake.operateVincent();
 
         // DO NOT USE UNTIL ALL SUBSYSTEMS TESTED INDEPENDENTLY
 //        if (opmode.gamepad1.x) {
@@ -36,6 +36,22 @@ public class ScoringCombined {
             // without slide extension, just starting intake until it detects a valid piece
             intake.fullIntakeSequence();
         }
+
+        opmode.telemetry.addData("Vertical Slides Retracted: ", verticalSlides.verticalSlidesRetracted);
+        opmode.telemetry.addData("Horizontal Slides Retracted: ", horizontalSlides.horizontalSlidesRetracted);
+        opmode.telemetry.addData("Claw Transferring: ", claw.isArmTransferring);
+        opmode.telemetry.addData("Claw Open: ", claw.isClawOpen);
+        opmode.telemetry.addData("Piece Taken In: ", intake.pieceTakenInBool());
+        opmode.telemetry.addData("Detected Piece Color: ", intake.identifyColor());
+        opmode.telemetry.addData("Correct Color: ", intake.correctColorBool());
+        opmode.telemetry.addData("Has Sample & Correct Color: ", intake.correctPiece());
+    }
+
+    public void operateTest() {
+        verticalSlides.operateTest();
+        horizontalSlides.operateTest();
+        claw.operateTest();
+        intake.operateTest();
 
         opmode.telemetry.addData("Vertical Slides Retracted: ", verticalSlides.verticalSlidesRetracted);
         opmode.telemetry.addData("Horizontal Slides Retracted: ", horizontalSlides.horizontalSlidesRetracted);

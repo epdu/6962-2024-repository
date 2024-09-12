@@ -27,6 +27,9 @@ public class Claw {
 
     private double TOLERANCE = 0.001;
 
+    private double wristIncrement = 0.02;
+    private double armIncrement = 0.02;
+
     public boolean autoClosing = true;
     public volatile boolean isClawOpen = true;
     public volatile boolean isArmTransferring = true;
@@ -43,10 +46,33 @@ public class Claw {
         this.wrist = opmode.hardwareMap.get(Servo.class, "");
     }
 
-    public void operate() {
-        if (opmode.gamepad1.a) {
+    public void operateVincent() {
+        if (opmode.gamepad2.left_bumper) {
             toggleClaw();
         }
+    }
+
+    public void operateTest() {
+        if (opmode.gamepad2.left_bumper) {
+            toggleClaw();
+        }
+
+        if (opmode.gamepad2.dpad_left) {
+            incrementalWrist(1);
+        }
+        else if (opmode.gamepad2.dpad_right) {
+            incrementalWrist(-1);
+        }
+
+        if (opmode.gamepad2.dpad_up) {
+            incrementalArm(1);
+        }
+        else if (opmode.gamepad2.dpad_down) {
+            incrementalArm(-1);
+        }
+
+        opmode.telemetry.addData("Arm Pos: ", arm.getPosition());
+        opmode.telemetry.addData("Wrist Pos: ", wrist.getPosition());
     }
 
     public void shutdown() {};
@@ -79,6 +105,11 @@ public class Claw {
     public void scoreArm() { arm.setPosition(armScoringPosition); isArmTransferring = false;}
     public void stowArm() { arm.setPosition(armTransferPosition); isArmTransferring = true;}
 
+    public void incrementalArm(int sign)
+    {
+        arm.setPosition(arm.getPosition() + sign * armIncrement);
+    }
+
     public void toggleWrist() {
         if (isWristVertical) {
             wrist.setPosition(wristVerticalPosition);
@@ -92,6 +123,11 @@ public class Claw {
 
     public void setWristHorizontal() { wrist.setPosition(wristHorizontalPosition); isWristVertical = true; }
     public void setWristVertical() { wrist.setPosition(wristVerticalPosition); isWristVertical = false; }
+
+    public void incrementalWrist(int sign)
+    {
+        wrist.setPosition(wrist.getPosition() + sign * wristIncrement);
+    }
 
     public boolean isClose(double a, double b) {
         return Math.abs(a - b) < TOLERANCE;
