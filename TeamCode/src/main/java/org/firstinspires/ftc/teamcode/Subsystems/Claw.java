@@ -20,6 +20,7 @@ public class Claw {
     private double clawOpenPosition = 0.5;
 
     private double armScoringPosition = 0.3;
+    private double armStowPosition = 0.7;
     private double armTransferPosition = 0.8;
 
     private double wristVerticalPosition = 0; // vertical mean the prongs open forward and back
@@ -91,19 +92,20 @@ public class Claw {
     public void openClaw() { claw.setPosition(clawClosedPosition); isClawOpen = false;}
     public void closeClaw() { claw.setPosition(clawOpenPosition); isClawOpen = true;}
 
-    public void toggleArm() {
-        if (isArmTransferring) {
-            arm.setPosition(armScoringPosition);
-            isArmTransferring = false;
-        }
-        else {
-            arm.setPosition(armTransferPosition);
-            isArmTransferring = true;
-        }
-    }
+//    public void toggleArm() {
+//        if (isArmTransferring) {
+//            arm.setPosition(armScoringPosition);
+//            isArmTransferring = false;
+//        }
+//        else {
+//            arm.setPosition(armTransferPosition);
+//            isArmTransferring = true;
+//        }
+//    }
 
     public void scoreArm() { arm.setPosition(armScoringPosition); isArmTransferring = false;}
-    public void stowArm() { arm.setPosition(armTransferPosition); isArmTransferring = true;}
+    public void transferArm() { arm.setPosition(armTransferPosition); isArmTransferring = true;}
+    public void stowArm() {arm.setPosition(armStowPosition); isArmTransferring = false;}
 
     public void incrementalArm(int sign)
     {
