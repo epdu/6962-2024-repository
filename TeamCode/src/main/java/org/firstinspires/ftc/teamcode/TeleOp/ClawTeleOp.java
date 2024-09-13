@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.TeleOp;
 
+import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -8,34 +9,21 @@ import org.firstinspires.ftc.teamcode.Subsystems.CustomTimer;
 import org.firstinspires.ftc.teamcode.Subsystems.HorizontalSlides;
 import org.firstinspires.ftc.teamcode.Subsystems.Intake;
 import org.firstinspires.ftc.teamcode.Subsystems.Mecanum;
+import org.firstinspires.ftc.teamcode.Subsystems.OTOSManager;
 import org.firstinspires.ftc.teamcode.Subsystems.ScoringCombined;
 import org.firstinspires.ftc.teamcode.Subsystems.VerticalSlides;
 
-@TeleOp(name="RED Whole Robot Test", group="Active TeleOps")
-public class TestTeleOp extends OpMode {
+@TeleOp(name="Only Claw Test", group="Active TeleOps")
+public class ClawTeleOp extends OpMode {
     // creating subsystems
-    private Mecanum mecanum                   = new Mecanum();
-    private HorizontalSlides horizontalSlides = new HorizontalSlides();
-    private Intake intake                     = new Intake();
-    private VerticalSlides verticalSlides     = new VerticalSlides();
-    private Claw claw                         = new Claw();
-    private ScoringCombined scoring           = new ScoringCombined();
-    private CustomTimer timer                 = new CustomTimer();
-
-    private boolean onRedAlliance = true;
+    private Claw claw = new Claw();
 
     /*
      * Code to run ONCE when the driver hits INIT
      */
     @Override
     public void init() {
-        mecanum.initialize(this);
-        // TODO: Go to each subsystem file and input all names into driver hub before testing
-        horizontalSlides.initialize(this);
-        intake.initialize(this, timer, onRedAlliance);
-        verticalSlides.initialize(this);
         claw.initialize(this);
-        scoring.initialize(this, horizontalSlides, intake, verticalSlides, claw);
     }
 
     /*
@@ -56,7 +44,7 @@ public class TestTeleOp extends OpMode {
      */
     @Override
     public void start() {
-
+        telemetry.clear();
     }
 
     /*
@@ -64,8 +52,17 @@ public class TestTeleOp extends OpMode {
      */
     @Override
     public void loop() {
-        mecanum.operateFieldCentricTest(); // press A button for slow mode
-        scoring.operateTest();
+        claw.operateTest();
+        // Gamepad 2:
+        // Left Bumper - toggle claw open and close
+        // D-Pad Up - incremental arm up (might be reversed on first try)
+        // D-Pad Down - incremental arm down
+        // D-Pad Left - incremental wrist left (might be reversed on first attempt)
+        // D-Pad Right - incremental wrist right
+        telemetry.addData("Arm Transferring: ", claw.isArmTransferring);
+        telemetry.addData("Claw Open: ", claw.isClawOpen);
+        telemetry.addData("Wrist Vertical", claw.isWristVertical);
+        telemetry.update();
     }
 
     /*
@@ -73,8 +70,9 @@ public class TestTeleOp extends OpMode {
      */
     @Override
     public void stop() {
-        mecanum.shutdown();
-        scoring.shutdown();
+        claw.shutdown();
     }
 }
+
+
 

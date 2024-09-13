@@ -2,21 +2,25 @@ package org.firstinspires.ftc.teamcode.Subsystems;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
+import java.util.Timer;
+
 public class ScoringCombined {
     OpMode opmode;
     HorizontalSlides horizontalSlides;
     Intake intake;
     VerticalSlides verticalSlides;
     Claw claw;
+    CustomTimer timer;
 
     public ScoringCombined() {}
 
-    public void initialize(OpMode opmode, HorizontalSlides horizontalSlides, Intake intake, VerticalSlides verticalSlides, Claw claw) {
+    public void initialize(OpMode opmode, HorizontalSlides horizontalSlides, Intake intake, VerticalSlides verticalSlides, Claw claw, CustomTimer timer) {
         this.opmode = opmode;
         this.verticalSlides = verticalSlides;
         this.horizontalSlides = horizontalSlides;
         this.claw = claw;
         this.intake = intake;
+        this.timer = timer;
     }
 
     public void operateVincent() {
@@ -68,16 +72,18 @@ public class ScoringCombined {
         horizontalSlides.shutdown();
         claw.shutdown();
         intake.shutdown();
+        timer.shutdown();
     }
 
     public void autoPickUp() {
         horizontalSlides.extend();          // extend slides
-//        timer.safeDelay(0);      // wait for __ milliseconds
+//        timer.safeDelay(0);                 // wait for __ milliseconds
         intake.intakePieces();              // start intake and flip down
         while (!intake.correctPiece()) {    // wait until a piece is picked up
-            if (intake.pieceTakenInBool() && !intake.correctColorBool())
+            if (intake.pieceTakenInBool() && !intake.correctColorBool()) {
                 intake.eject();
                 intake.intakePieces();
+            }
         }
         intake.stopIntaking();              // stop and flip up
         horizontalSlides.retract();         // retract slides
@@ -88,33 +94,37 @@ public class ScoringCombined {
         // check both slides fully retracted and ready to transfer
         /** this is probably what will break, but idk what will break*/
         if (intake.correctPiece()) {
-            if (!claw.isArmTransferring) {claw.stowArm();}
-            if (!claw.isWristVertical) {claw.setWristHorizontal();}
+            if (claw.isWristVertical) {claw.setWristHorizontal();}
             if (!claw.isClawOpen) {claw.openClaw();}
             if (!verticalSlides.verticalSlidesRetracted) {verticalSlides.retract();}
             if (!horizontalSlides.horizontalSlidesRetracted) {horizontalSlides.retract();}
+
+            claw.transferArm();                 // flip arm over
+            claw.closeClaw();                   // grab sample
+            claw.scoreArm();                    // flip arm back over
+            verticalSlides.raiseToHighBucket(); // extending slides
+//            timer.safeDelay(0);                 // wait for __ milliseconds
+            claw.scoreArm();                    // flipping arm over to score (this could possibly go before extending depending on the design of the robot)
+            claw.setWristHorizontal();          // prepping wrist to drop pixel (currently useless because the intake is now starting horizontal)
+            claw.openClaw();                    // drop sample
+            verticalSlides.retract();           // retract slides
         }
-        claw.closeClaw();                   // transfer (just grabbing the sample)
-        verticalSlides.raiseToHighBucket(); // extending slides
-//        timer.safeDelay(0);      // wait for __ milliseconds
-        claw.scoreArm();                    // flipping arm over to score (this could possibly go before extending depending on the design of the robot)
-        claw.setWristHorizontal();          // prepping wrist to drop pixel (currently useless because the intake is now starting horizontal)
-        claw.openClaw();                    // drop sample
-        claw.stowArm();                     // flip arm back over
-        verticalSlides.retract();           // retract slides
     }
 
     public void autoTransfer() {
         // check both slides fully retracted and ready to transfer
         /** this is probably what will break, but idk what will break*/
         if (intake.correctPiece()) {
-            if (!claw.isArmTransferring) {claw.stowArm();}
             if (!claw.isClawOpen) {claw.openClaw();}
             if (!claw.isWristVertical) {claw.setWristHorizontal();}
             if (!verticalSlides.verticalSlidesRetracted) {verticalSlides.retract();}
             if (!horizontalSlides.horizontalSlidesRetracted) {horizontalSlides.retract();}
+
+            claw.transferArm(); // flip arm over to intake side
+//            timer.safeDelay(0);  // might need delay
+            claw.closeClaw(); // grab piece
+            claw.scoreArm(); // flip back over
         }
-        claw.closeClaw(); // transfer (just grabbing the sample)
     }
 }
 
