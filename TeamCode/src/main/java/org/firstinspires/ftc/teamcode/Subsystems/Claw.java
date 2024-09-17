@@ -39,7 +39,9 @@ public class Claw {
     public volatile boolean isWristVertical = true;
 //    private double detectionInches = 0.8;
 
-    public Claw() {}
+    public Claw() {
+
+    }
 
     public void initialize(OpMode opmode)
     {
