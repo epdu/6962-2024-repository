@@ -37,6 +37,7 @@ public class Intake
         this.ON_RED_ALLIANCE = redAlliance;
         this.intakeMotor = opmode.hardwareMap.get(DcMotorEx.class, "");
         this.wristServo = opmode.hardwareMap.get(Servo.class, "");
+//        this.colorSensor = opmode.hardwareMap.get(ColorRangeSensor.class, "");
         this.timer = timer;
 //        intakeServo.setDirection(DcMotorSimple.Direction.REVERSE);
     }

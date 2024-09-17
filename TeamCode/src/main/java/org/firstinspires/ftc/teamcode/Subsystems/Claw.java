@@ -16,26 +16,26 @@ public class Claw {
 
     // constants
     /** all of the constants need to be tuned*/
-    private double clawClosedPosition = 0.245;
-    private double clawOpenPosition = 0.5;
+    public static double clawClosedPosition = 0.245;
+    public static double clawOpenPosition = 0.5;
 
-    private double armScoringPosition = 0.3;
-    private double armStowPosition = 0.7;
-    private double armTransferPosition = 0.8;
+    public static double armScoringPosition = 0.3;
+    public static double armStowPosition = 0.7;
+    public static double armTransferPosition = 0.8;
 
-    private double wristVerticalPosition = 0; // vertical mean the prongs open forward and back
-    private double wristHorizontalPosition = 0.25; // horizontal means the prongs open left and right
+    public static double wristVerticalPosition = 0; // vertical mean the prongs open forward and back
+    public static double wristHorizontalPosition = 0.25; // horizontal means the prongs open left and right
 
     private double TOLERANCE = 0.001;
 
-    private double wristIncrement = 0.02;
-    private double armIncrement = 0.02;
+    public static double wristIncrement = 0.02;
+    public static double armIncrement = 0.02;
 
-    public boolean autoClosing = true;
+//    public boolean autoClosing = true;
     public volatile boolean isClawOpen = true;
     public volatile boolean isArmTransferring = true;
     public volatile boolean isWristVertical = true;
-    private double detectionInches = 0.8;
+//    private double detectionInches = 0.8;
 
     public Claw() {}
 
@@ -64,6 +64,12 @@ public class Claw {
         else if (opmode.gamepad2.dpad_right) {
             incrementalWrist(-1);
         }
+        else if (opmode.gamepad2.left_stick_button) {
+            setWristHorizontal();
+        }
+        else if (opmode.gamepad2.right_stick_button) {
+            setWristVertical();
+        }
 
         if (opmode.gamepad2.dpad_up) {
             incrementalArm(1);
@@ -71,6 +77,17 @@ public class Claw {
         else if (opmode.gamepad2.dpad_down) {
             incrementalArm(-1);
         }
+        else if (opmode.gamepad2.a) {
+            scoreArm();
+        }
+        else if (opmode.gamepad2.b) {
+            stowArm();
+        }
+        else if (opmode.gamepad2.x) {
+            transferArm();
+        }
+
+
 
         opmode.telemetry.addData("Arm Pos: ", arm.getPosition());
         opmode.telemetry.addData("Wrist Pos: ", wrist.getPosition());
