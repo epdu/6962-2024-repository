@@ -26,10 +26,8 @@ public class ClawTeleOp extends OpMode {
         claw.initialize(this);
         telemetry.addLine("Gamepad 2:");
         telemetry.addLine("Left Bumper - toggle claw open and close");
-        telemetry.addLine("D-Pad Up - incremental arm up (might be reversed on first try)");
-        telemetry.addLine("D-Pad Down - incremental arm down");
-        telemetry.addLine("D-Pad Left - incremental wrist left (might be reversed on first attempt)");
-        telemetry.addLine("D-Pad Right - incremental wrist right");
+        telemetry.addLine("D-Pad Up and Down - incremental arm");
+        telemetry.addLine("D-Pad Left and Right- incremental wrist");
         telemetry.addLine("A - arm score position");
         telemetry.addLine("B - arm stow position");
         telemetry.addLine("X - arm transfer position");
@@ -78,6 +76,8 @@ public class ClawTeleOp extends OpMode {
         telemetry.addData("Arm Transferring: ", claw.isArmTransferring);
         telemetry.addData("Claw Open: ", claw.isClawOpen);
         telemetry.addData("Wrist Vertical", claw.isWristVertical);
+        telemetry.addData("Arm Pos: ",claw.telemetryArmPos());
+        telemetry.addData("Wrist Pos: ",claw.telemetryWristPos());
         telemetry.update();
     }
 

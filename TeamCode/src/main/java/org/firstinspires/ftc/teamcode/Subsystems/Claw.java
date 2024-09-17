@@ -151,4 +151,11 @@ public class Claw {
     public boolean isClose(double a, double b) {
         return Math.abs(a - b) < TOLERANCE;
     }
+
+    public double telemetryArmPos() {
+        return arm.getPosition();
+    }
+    public double telemetryWristPos() {
+        return wrist.getPosition();
+    }
 }

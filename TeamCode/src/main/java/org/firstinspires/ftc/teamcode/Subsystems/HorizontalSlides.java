@@ -166,4 +166,8 @@ public class HorizontalSlides
     public int mapTriggerToTarget(double input) {
         return (int) Math.round(Math.pow(input, mappingExponent) * upperLimit);
     }
+
+    public int telemetryMotorPos() {
+        return slideMotor.getCurrentPosition();
+    }
 }

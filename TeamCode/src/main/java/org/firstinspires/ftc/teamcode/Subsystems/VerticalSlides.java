@@ -191,5 +191,12 @@ public class VerticalSlides
     public void raiseToLowBucket() { moveToPosition(lowBucketPos); }
     public void raiseToLowChamber() { moveToPosition(lowChamberPos); }
     public void retract() { moveToPosition(retractedPos); }
+
+    public int telemetryLeftMotorPos() {
+        return leftSlideMotor.getCurrentPosition();
+    }
+    public int telemetryRightMotorPos() {
+        return rightSlideMotor.getCurrentPosition();
+    }
 }
 

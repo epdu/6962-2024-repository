@@ -24,6 +24,7 @@ public class HorizontalSlidesTeleOp extends OpMode {
     @Override
     public void init() {
         horizontalSlides.initialize(this);
+        telemetry.addLine("Right Joystick Y - horizontal slide manual control");
     }
 
     /*
@@ -44,7 +45,6 @@ public class HorizontalSlidesTeleOp extends OpMode {
      */
     @Override
     public void start() {
-        telemetry.clear();
     }
 
     /*
@@ -56,6 +56,7 @@ public class HorizontalSlidesTeleOp extends OpMode {
         // Gamepad 2:
         // Right Joystick Y - horizontal slide manual control
         telemetry.addData("Horizontal Slides Retracted: ", horizontalSlides.horizontalSlidesRetracted);
+        telemetry.addData("Encoder Pos: ", horizontalSlides.telemetryMotorPos());
         telemetry.update();
     }
 
