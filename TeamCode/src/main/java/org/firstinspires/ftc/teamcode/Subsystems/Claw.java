@@ -12,12 +12,14 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 public class Claw {
     // hardware
     OpMode opmode;
-    private Servo claw, arm, wrist;
+    private Servo clawLeft, clawRight, arm, wrist;
 
     // constants
     /** all of the constants need to be tuned*/
-    public static double clawClosedPosition = 0.245;
-    public static double clawOpenPosition = 0.5;
+    public static double clawLeftClosedPosition = 0.245;
+    public static double clawLeftOpenPosition = 0.5;
+    public static double clawRightClosedPosition = 0.5;
+    public static double clawRightOpenPosition = 0.245;
 
     public static double armScoringPosition = 0.3;
     public static double armStowPosition = 0.7;
@@ -42,7 +44,8 @@ public class Claw {
     public void initialize(OpMode opmode)
     {
         this.opmode = opmode;
-        this.claw = opmode.hardwareMap.get(Servo.class, "");
+        this.clawLeft = opmode.hardwareMap.get(Servo.class, "");
+        this.clawRight = opmode.hardwareMap.get(Servo.class, "");
         this.arm = opmode.hardwareMap.get(Servo.class, "");
         this.wrist = opmode.hardwareMap.get(Servo.class, "");
     }
@@ -97,17 +100,27 @@ public class Claw {
 
     public void toggleClaw() {
         if (isClawOpen) {
-            claw.setPosition(clawClosedPosition);
+            clawLeft.setPosition(clawLeftClosedPosition);
+            clawRight.setPosition(clawRightClosedPosition);
             isClawOpen = false;
         }
         else {
-            claw.setPosition(clawOpenPosition);
+            clawLeft.setPosition(clawLeftOpenPosition);
+            clawRight.setPosition(clawRightOpenPosition);
             isClawOpen = true;
         }
     }
+    public void closeClaw() {
+        clawLeft.setPosition(clawLeftClosedPosition);
+        clawRight.setPosition(clawRightClosedPosition);
+        isClawOpen = false;
+    }
+    public void openClaw() {
+        clawLeft.setPosition(clawLeftOpenPosition);
+        clawRight.setPosition(clawRightOpenPosition);
+        isClawOpen = true;
+    }
 
-    public void openClaw() { claw.setPosition(clawClosedPosition); isClawOpen = false;}
-    public void closeClaw() { claw.setPosition(clawOpenPosition); isClawOpen = true;}
 
 //    public void toggleArm() {
 //        if (isArmTransferring) {
