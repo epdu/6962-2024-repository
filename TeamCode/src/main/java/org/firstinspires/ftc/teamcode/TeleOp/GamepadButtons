@@ -1,5 +1,5 @@
-/* TESTING
-* /////////////  GAMEPAD 1: ///////////////
+/* FULL ROBOT TEST TELEOP
+* ///////////// GAMEPAD 1: ///////////////
 *
 * Left Joystick X and Y - strafe (drive)
 * Right Joystick X - turn (drive)
@@ -9,7 +9,7 @@
 * D-Pad Down - navx reset (drive)
 *
 *
-* /////////////  GAMEPAD 2: ///////////////
+* ///////////// GAMEPAD 2: ///////////////
 *
 * Left Joystick Y - vertical slide manual control
 * Right Joystick Y - horizontal slide manual control

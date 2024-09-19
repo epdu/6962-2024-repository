@@ -54,17 +54,7 @@ public class ExampleAuto extends LinearOpMode {
                 new SequentialAction(
                         TrajectoryAction1, // Example of a drive action
 
-                        // This action and the following action do the same thing
-                        new Action() {
-                            @Override
-                            public boolean run(@NonNull TelemetryPacket telemetryPacket) {
-                                telemetry.addLine("Action!");
-                                telemetry.update();
-                                return false;
-                            }
-                        },
-                        // Only that this action uses a Lambda expression to reduce complexity
-                        (telemetryPacket) -> {
+                        (telemetryPacket) -> { // lambda function
                             telemetry.addLine("Action!");
                             telemetry.update();
                             return false; // Returning true causes the action to run again, returning false causes it to cease

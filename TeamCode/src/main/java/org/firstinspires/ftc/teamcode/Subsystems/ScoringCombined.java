@@ -79,6 +79,7 @@ public class ScoringCombined {
     }
 
     public void autoPickUp() {
+        if (claw.isArmTransferring) {claw.stowArm();}
         horizontalSlides.extend();          // extend slides
 //        timer.safeDelay(0);                 // wait for __ milliseconds
         intake.intakePieces();              // start intake and flip down
@@ -104,13 +105,14 @@ public class ScoringCombined {
 
             claw.transferArm();                 // flip arm over
             claw.closeClaw();                   // grab sample
-            claw.scoreArm();                    // flip arm back over
+            claw.stowArm();                     // remove piece from intake
             verticalSlides.raiseToHighBucket(); // extending slides
+            claw.scoreArm();                    // flip arm over to score
 //            timer.safeDelay(0);                 // wait for __ milliseconds
-            claw.scoreArm();                    // flipping arm over to score (this could possibly go before extending depending on the design of the robot)
             claw.setWristHorizontal();          // prepping wrist to drop pixel (currently useless because the intake is now starting horizontal)
             claw.openClaw();                    // drop sample
             verticalSlides.retract();           // retract slides
+            claw.stowArm();                     // stow arm while retracting (might switch order)
         }
     }
 
@@ -119,6 +121,7 @@ public class ScoringCombined {
         /** this is probably what will break, but idk what will break*/
         if (intake.correctPiece()) {
             if (!claw.isClawOpen) {claw.openClaw();}
+            if (claw.isArmTransferring) {claw.stowArm();}
             if (!claw.isWristVertical) {claw.setWristHorizontal();}
             if (!verticalSlides.verticalSlidesRetracted) {verticalSlides.retract();}
             if (!horizontalSlides.horizontalSlidesRetracted) {horizontalSlides.retract();}
@@ -126,7 +129,7 @@ public class ScoringCombined {
             claw.transferArm(); // flip arm over to intake side
 //            timer.safeDelay(0);  // might need delay
             claw.closeClaw(); // grab piece
-            claw.scoreArm(); // flip back over
+            claw.stowArm(); // flip back over
         }
     }
 }
