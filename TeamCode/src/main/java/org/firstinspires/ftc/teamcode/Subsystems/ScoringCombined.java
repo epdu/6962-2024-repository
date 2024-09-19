@@ -2,10 +2,13 @@ package org.firstinspires.ftc.teamcode.Subsystems;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
+import org.firstinspires.ftc.teamcode.Util.RobotHardware;
+
 import java.util.Timer;
 
 public class ScoringCombined {
     OpMode opmode;
+
     HorizontalSlides horizontalSlides;
     Intake intake;
     VerticalSlides verticalSlides;
@@ -89,7 +92,7 @@ public class ScoringCombined {
         horizontalSlides.retract();         // retract slides
     }
 
-    /** This is guaranteed not to work first try, but idk which section is wrong until I can test it*/
+    /** This is guaranteed not to work first try, but idk which section is wrong until I can CameraPortal it*/
     public void autoScore() {
         // check both slides fully retracted and ready to transfer
         /** this is probably what will break, but idk what will break*/

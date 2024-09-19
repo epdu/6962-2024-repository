@@ -6,11 +6,15 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.teamcode.Util.RobotHardware;
+
 // code for one motor spooled slides
 @Config
 public class HorizontalSlides
 {
     OpMode opmode;
+
+    private RobotHardware rHardware = new RobotHardware();
     private DcMotorEx slideMotor;
 
     // constants
@@ -46,7 +50,10 @@ public class HorizontalSlides
 
     public void initialize(OpMode opmode) {
         // TODO: assign motor names, then reverse the correct motor
-        slideMotor = opmode.hardwareMap.get(DcMotorEx.class, "");
+        rHardware.init(opmode.hardwareMap);
+
+        slideMotor = rHardware.hSlideMotor;
+//        slideMotor = opmode.hardwareMap.get(DcMotorEx.class, "");
 
         slideMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
 //        slideMotor.setDirection(DcMotorSimple.Direction.REVERSE);

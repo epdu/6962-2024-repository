@@ -7,13 +7,17 @@ import com.qualcomm.robotcore.hardware.ColorRangeSensor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.robot.Robot;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.teamcode.Util.RobotHardware;
 
 @Config
 public class Intake
 {
     OpMode opmode;
+
+    private RobotHardware rHardware = new RobotHardware();
     CustomTimer timer;
     private DcMotorEx intakeMotor;
     private Servo wristServo;
@@ -34,10 +38,14 @@ public class Intake
     public Intake() {}
 
     public void initialize(OpMode opmode, CustomTimer timer, boolean redAlliance) {
-        this.ON_RED_ALLIANCE = redAlliance;
-        this.intakeMotor = opmode.hardwareMap.get(DcMotorEx.class, "");
-        this.wristServo = opmode.hardwareMap.get(Servo.class, "");
-        this.timer = timer;
+        rHardware.init(opmode.hardwareMap);
+        ON_RED_ALLIANCE = redAlliance;
+
+        intakeMotor = rHardware.intakeMotor;
+        wristServo = rHardware.wristServo;
+//        intakeMotor = opmode.hardwareMap.get(DcMotorEx.class, "");
+//        wristServo = opmode.hardwareMap.get(Servo.class, "");
+        timer = timer;
 //        intakeServo.setDirection(DcMotorSimple.Direction.REVERSE);
     }
 

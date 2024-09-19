@@ -6,11 +6,17 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.robot.Robot;
 import com.qualcomm.robotcore.util.ElapsedTime;
+
+import org.firstinspires.ftc.teamcode.Util.RobotHardware;
+
 @Config
 public class VerticalSlides
 {
     OpMode opmode;
+
+    private RobotHardware rHardware = new RobotHardware();
     private DcMotorEx leftSlideMotor, rightSlideMotor;
 
     // constants
@@ -47,8 +53,13 @@ public class VerticalSlides
 
     public void initialize(OpMode opmode) {
         // TODO: assign motor names, then reverse the correct motor
-        leftSlideMotor = opmode.hardwareMap.get(DcMotorEx.class, "");
-        rightSlideMotor = opmode.hardwareMap.get(DcMotorEx.class, "");
+        rHardware.init(opmode.hardwareMap);
+
+        leftSlideMotor = rHardware.vLslideMotor;
+        rightSlideMotor = rHardware.vRslideMotor;
+
+//        leftSlideMotor = opmode.hardwareMap.get(DcMotorEx.class, "");
+//        rightSlideMotor = opmode.hardwareMap.get(DcMotorEx.class, "");
 
         leftSlideMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         rightSlideMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);

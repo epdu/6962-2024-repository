@@ -7,10 +7,13 @@ import com.qualcomm.hardware.kauailabs.NavxMicroNavigationSensor;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.teamcode.Subsystems.NavxManager;
+import org.firstinspires.ftc.teamcode.Util.RobotHardware;
 
 @Config
 public class Mecanum {
     private OpMode opmode;
+
+    private RobotHardware rHardware = new RobotHardware();
     private MotorEx frontLeft, backLeft, backRight, frontRight;
     private NavxMicroNavigationSensor navx;
     protected NavxManager gyroManager;
@@ -35,18 +38,26 @@ public class Mecanum {
 
     public void initialize(OpMode opmode)
     {
+        rHardware.init(opmode.hardwareMap);
         /**
          * TODO: Input motor names from driver hub before testing
          */
-        frontLeft = new MotorEx(opmode.hardwareMap, "Fl/Re");
-        backLeft = new MotorEx(opmode.hardwareMap, "Bl/Le");
-        backRight = new MotorEx(opmode.hardwareMap, "Br/Fe");
-        frontRight = new MotorEx(opmode.hardwareMap, "Fr");
+        frontLeft = rHardware.leftFrontMotor;
+        backLeft = rHardware.leftBackMotor;
+        backRight = rHardware.rightBackMotor;
+        backLeft = rHardware.leftBackMotor;
+
+//        frontLeft = new MotorEx(opmode.hardwareMap, "Fl/Re");
+//        backLeft = new MotorEx(opmode.hardwareMap, "Bl/Le");
+//        backRight = new MotorEx(opmode.hardwareMap, "Br/Fe");
+//        frontRight = new MotorEx(opmode.hardwareMap, "Fr");
         frontLeft.setZeroPowerBehavior(MotorEx.ZeroPowerBehavior.BRAKE);
         frontRight.setZeroPowerBehavior(MotorEx.ZeroPowerBehavior.BRAKE);
         backLeft.setZeroPowerBehavior(MotorEx.ZeroPowerBehavior.BRAKE);
         backRight.setZeroPowerBehavior(MotorEx.ZeroPowerBehavior.BRAKE);
-        navx = opmode.hardwareMap.get(NavxMicroNavigationSensor.class, "navx");
+
+        navx = rHardware.navx;
+//        navx = opmode.hardwareMap.get(NavxMicroNavigationSensor.class, "navx");
         gyroManager = new NavxManager(navx);
         frontLeft.setInverted(true);
         backLeft.setInverted(true);

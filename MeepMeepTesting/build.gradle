@@ -8,8 +8,13 @@ java {
 }
 
 repositories {
+  mavenCentral()
+  google()
   maven { url = 'https://jitpack.io' }
   maven { url = 'https://maven.brott.dev/' }
+  flatDir {
+    dirs rootProject.file('libs')
+  }
 }
 
 dependencies {
