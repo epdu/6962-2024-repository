@@ -14,6 +14,8 @@ import org.firstinspires.ftc.teamcode.Util.RobotHardware;
 public class Claw {
     // hardware
     OpMode opmode;
+
+    public RobotHardware rHardware = new RobotHardware();
     private Servo clawLeft, clawRight, arm, wrist;
 
     // constants
@@ -50,7 +52,9 @@ public class Claw {
         this.rHardware.init(opmode.hardwareMap);
         this.opmode = opmode;
 
-        this.claw = rHardware.clawServo;
+        this.clawLeft = rHardware.clawLeft;
+        this.clawRight = rHardware.clawRight;
+
         this.arm = rHardware.armServo;
         this.wrist = rHardware.wristServo;
 //        this.claw = opmode.hardwareMap.get(Servo.class, "");
