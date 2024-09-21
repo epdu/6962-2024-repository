@@ -23,12 +23,14 @@ public class RobotHardware {
     public MotorEx rightBackMotor = null;
 
     public DcMotorEx vRslideMotor = null;
-
     public DcMotorEx vLslideMotor = null;
+
     public DcMotorEx hSlideMotor = null;
 
     public DcMotorEx intakeMotor = null;
-    public Servo wristServo = null, armServo = null, clawLeft = null, clawRight = null;
+    public Servo iWristServo = null;
+
+    public Servo cWristServo = null, armServo = null, claw = null;
 
     //TODO: replace with OTOS
     public NavxMicroNavigationSensor navx;
@@ -45,14 +47,14 @@ public class RobotHardware {
         this.rightBackMotor = hMap.get(MotorEx.class, "");
 
         this.armServo = hMap.get(Servo.class, "");
-        this.wristServo = hMap.get(Servo.class, "");
-
-        this.clawLeft = hMap.get(Servo.class, "");
-        this.clawRight = hMap.get(Servo.class, "");
+        this.cWristServo = hMap.get(Servo.class, "");
+        this.claw = hMap.get(Servo.class, "");
 
         this.intakeMotor = hMap.get(DcMotorEx.class,"");
+        this.iWristServo = hMap.get(Servo.class, "");
 
         this.hSlideMotor = hMap.get(DcMotorEx.class , "");
+
         this.vRslideMotor = hMap.get(DcMotorEx.class, "");
         this.vLslideMotor = hMap.get(DcMotorEx.class, "");
     }

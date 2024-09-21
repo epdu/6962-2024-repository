@@ -9,21 +9,15 @@ import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.teamcode.Util.RobotHardware;
-
 public class Claw {
     // hardware
     OpMode opmode;
-
-    public RobotHardware rHardware = new RobotHardware();
-    private Servo clawLeft, clawRight, arm, wrist;
+    private Servo claw, arm, wrist;
 
     // constants
     /** all of the constants need to be tuned*/
-    public static double clawLeftClosedPosition = 0.245;
-    public static double clawLeftOpenPosition = 0.5;
-    public static double clawRightClosedPosition = 0.5;
-    public static double clawRightOpenPosition = 0.245;
+    public static double clawClosedPosition = 0.245;
+    public static double clawOpenPosition = 0.5;
 
     public static double armScoringPosition = 0.3;
     public static double armStowPosition = 0.7;
@@ -37,29 +31,20 @@ public class Claw {
     public static double wristIncrement = 0.02;
     public static double armIncrement = 0.02;
 
-//    public boolean autoClosing = true;
+    //    public boolean autoClosing = true;
     public volatile boolean isClawOpen = true;
     public volatile boolean isArmTransferring = true;
     public volatile boolean isWristVertical = true;
 //    private double detectionInches = 0.8;
 
-    public Claw() {
-
-    }
+    public Claw() {}
 
     public void initialize(OpMode opmode)
     {
-        this.rHardware.init(opmode.hardwareMap);
         this.opmode = opmode;
-
-        this.clawLeft = rHardware.clawLeft;
-        this.clawRight = rHardware.clawRight;
-
-        this.arm = rHardware.armServo;
-        this.wrist = rHardware.wristServo;
-//        this.claw = opmode.hardwareMap.get(Servo.class, "");
-//        this.arm = opmode.hardwareMap.get(Servo.class, "");
-//        this.wrist = opmode.hardwareMap.get(Servo.class, "");
+        this.claw = opmode.hardwareMap.get(Servo.class, "");
+        this.arm = opmode.hardwareMap.get(Servo.class, "");
+        this.wrist = opmode.hardwareMap.get(Servo.class, "");
     }
 
     public void operateVincent() {
@@ -112,27 +97,17 @@ public class Claw {
 
     public void toggleClaw() {
         if (isClawOpen) {
-            clawLeft.setPosition(clawLeftClosedPosition);
-            clawRight.setPosition(clawRightClosedPosition);
+            claw.setPosition(clawClosedPosition);
             isClawOpen = false;
         }
         else {
-            clawLeft.setPosition(clawLeftOpenPosition);
-            clawRight.setPosition(clawRightOpenPosition);
+            claw.setPosition(clawOpenPosition);
             isClawOpen = true;
         }
     }
-    public void closeClaw() {
-        clawLeft.setPosition(clawLeftClosedPosition);
-        clawRight.setPosition(clawRightClosedPosition);
-        isClawOpen = false;
-    }
-    public void openClaw() {
-        clawLeft.setPosition(clawLeftOpenPosition);
-        clawRight.setPosition(clawRightOpenPosition);
-        isClawOpen = true;
-    }
 
+    public void openClaw() { claw.setPosition(clawClosedPosition); isClawOpen = false;}
+    public void closeClaw() { claw.setPosition(clawOpenPosition); isClawOpen = true;}
 
 //    public void toggleArm() {
 //        if (isArmTransferring) {
