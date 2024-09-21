@@ -110,7 +110,8 @@ public class ScoringCombined {
             claw.scoreArm();                    // flip arm over to score
 //            timer.safeDelay(0);                 // wait for __ milliseconds
             claw.setWristHorizontal();          // prepping wrist to drop pixel (currently useless because the intake is now starting horizontal)
-            claw.openClaw();                    // drop sample
+            while (claw.isClawOpen) {};         // wait until driver drops piece
+//            claw.openClaw();                    // drop sample
             verticalSlides.retract();           // retract slides
             claw.stowArm();                     // stow arm while retracting (might switch order)
         }

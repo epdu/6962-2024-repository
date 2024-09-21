@@ -47,6 +47,15 @@ public class Claw {
         this.wrist = opmode.hardwareMap.get(Servo.class, "");
     }
 
+    // for when we implement RobotHardware.java
+//    public void initialize(OpMode opmode, RobotHardware robotHardware)
+//    {
+//        this.opmode = opmode;
+//        this.arm = robotHardware.armServo;
+//        this.wrist = robotHardware.cWristServo;
+//        this.claw = robotHardware.claw;
+//    }
+
     public void operateVincent() {
         if (opmode.gamepad2.left_bumper) {
             toggleClaw();

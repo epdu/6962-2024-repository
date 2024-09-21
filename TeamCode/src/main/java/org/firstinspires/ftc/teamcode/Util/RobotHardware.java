@@ -37,25 +37,25 @@ public class RobotHardware {
 
     //TODO: Replace with names in config
     public void init(@NonNull HardwareMap hardwareMap) {
-        this.hMap = hMap;
+        this.hMap = hardwareMap;
 
-        this.navx = hMap.get(NavxMicroNavigationSensor.class, "navx");
+        navx = hMap.get(NavxMicroNavigationSensor.class, "navx");
 
-        this.leftFrontMotor = hMap.get(MotorEx.class, "");
-        this.rightFrontMotor = hMap.get(MotorEx.class, "");
-        this.leftBackMotor = hMap.get(MotorEx.class, "");
-        this.rightBackMotor = hMap.get(MotorEx.class, "");
+        leftFrontMotor = hMap.get(MotorEx.class, "");
+        rightFrontMotor = hMap.get(MotorEx.class, "");
+        leftBackMotor = hMap.get(MotorEx.class, "");
+        rightBackMotor = hMap.get(MotorEx.class, "");
 
-        this.armServo = hMap.get(Servo.class, "");
-        this.cWristServo = hMap.get(Servo.class, "");
-        this.claw = hMap.get(Servo.class, "");
+        armServo = hMap.get(Servo.class, "");
+        cWristServo = hMap.get(Servo.class, "");
+        claw = hMap.get(Servo.class, "");
 
-        this.intakeMotor = hMap.get(DcMotorEx.class,"");
-        this.iWristServo = hMap.get(Servo.class, "");
+        intakeMotor = hMap.get(DcMotorEx.class,"");
+        iWristServo = hMap.get(Servo.class, "");
 
-        this.hSlideMotor = hMap.get(DcMotorEx.class , "");
+        hSlideMotor = hMap.get(DcMotorEx.class , "");
 
-        this.vRslideMotor = hMap.get(DcMotorEx.class, "");
-        this.vLslideMotor = hMap.get(DcMotorEx.class, "");
+        vRslideMotor = hMap.get(DcMotorEx.class, "");
+        vLslideMotor = hMap.get(DcMotorEx.class, "");
     }
 }
