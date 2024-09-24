@@ -86,13 +86,6 @@ public class VerticalSlides
             raiseToLowBucket();
         }
 
-        // updates boolean
-        if (leftSlideMotor.getCurrentPosition() < retractedThreshold && leftSlideMotor.getCurrentPosition() < retractedThreshold) {
-            verticalSlidesRetracted = true;
-        }
-        else {
-            verticalSlidesRetracted = false;
-        }
 
         if (Math.abs(slidePower) > 0.05)
         {
@@ -146,12 +139,7 @@ public class VerticalSlides
         }
 
         // updates boolean
-        if (leftSlideMotor.getCurrentPosition() < retractedThreshold && leftSlideMotor.getCurrentPosition() < retractedThreshold) {
-            verticalSlidesRetracted = true;
-        }
-        else {
-            verticalSlidesRetracted = false;
-        }
+        verticalSlidesRetracted = leftSlideMotor.getCurrentPosition() < retractedThreshold && leftSlideMotor.getCurrentPosition() < retractedThreshold;
     }
 
     public void shutdown() {
