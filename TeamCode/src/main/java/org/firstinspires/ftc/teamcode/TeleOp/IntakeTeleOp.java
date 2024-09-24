@@ -10,7 +10,6 @@ import org.firstinspires.ftc.teamcode.Subsystems.HorizontalSlides;
 import org.firstinspires.ftc.teamcode.Subsystems.Intake;
 import org.firstinspires.ftc.teamcode.Subsystems.Mecanum;
 import org.firstinspires.ftc.teamcode.Subsystems.OTOSManager;
-import org.firstinspires.ftc.teamcode.Subsystems.ScoringCombined;
 import org.firstinspires.ftc.teamcode.Subsystems.VerticalSlides;
 
 @TeleOp(name="Only Intake Test", group="Active TeleOps")
