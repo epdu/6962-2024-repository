@@ -38,11 +38,12 @@ public class Intake
     public Intake() {}
 
     public void initialize(OpMode opmode, CustomTimer timer, boolean redAlliance) {
+        this.opmode = opmode;
         rHardware.init(opmode.hardwareMap);
         ON_RED_ALLIANCE = redAlliance;
 
         intakeMotor = rHardware.intakeMotor;
-        wristServo = rHardware.wristServo;
+//        wristServo = rHardware.iWristServo;
 //        intakeMotor = opmode.hardwareMap.get(DcMotorEx.class, "");
 //        wristServo = opmode.hardwareMap.get(Servo.class, "");
         timer = timer;
@@ -66,15 +67,21 @@ public class Intake
     }
 
     public void operateTest() {
-        if (opmode.gamepad2.a) {
-            intakePieces();
+
+        intakeMotor.setPower(opmode.gamepad2.left_stick_y);
+        if(opmode.gamepad2.x) {
+            intakeMotor.setPower(0);
         }
-        else if (opmode.gamepad2.b) {
-            stopIntaking();
-        }
-        else if (opmode.gamepad2.x) {
-            eject();
-        }
+
+//        if (opmode.gamepad2.a) {
+//            intakePieces();
+//        }
+//        else if (opmode.gamepad2.b) {
+//            stopIntaking();
+//        }
+//        else if (opmode.gamepad2.x) {
+//            eject();
+//        }
     }
 
     public void shutdown() {}
@@ -99,49 +106,49 @@ public class Intake
         timer.safeDelay(2000);
     }
 
-    public void fullIntakeSequence() {
-        intakePieces();              // start intake and flip down
-        while (!correctPiece()) {    // wait until a piece is picked up
-            if (pieceTakenInBool() && !correctColorBool())
-                eject();
-        }
-        stopIntaking();              // stop and flip up
-    }
+//    public void fullIntakeSequence() {
+//        intakePieces();              // start intake and flip down
+//        while (!correctPiece()) {    // wait until a piece is picked up
+//            if (pieceTakenInBool() && !correctColorBool())
+//                eject();
+//        }
+//        stopIntaking();              // stop and flip up
+//    }
 
-    public boolean correctPiece() {
-        return pieceTakenInBool() && correctColorBool();
-    }
-    public boolean pieceTakenInBool() { return colorSensor.getDistance(DistanceUnit.INCH) < detectionThreshold; }
-    public boolean correctColorBool() {
-        String color = identifyColor();
-
-        if (color == "YELLOW") {
-            return true;
-        }
-        else if (ON_RED_ALLIANCE){
-            return color == "RED";
-        }
-        else {
-            return color == "BLUE";
-        }
-    }
-
-    public String identifyColor() {
-        // Read the color sensor values
-        int red = colorSensor.red();
-        int green = colorSensor.green();
-        int blue = colorSensor.blue();
-
-        // Define thresholds for color detection
-        if (red > 2 * blue && green > 2 * blue) {
-            // Yellow: high red and green values, low blue value
-            return "YELLOW";
-        } else if (red > blue && red > green) {
-            // Red: dominant red value
-            return "RED";
-        } else {
-            // Default to Blue
-            return "BLUE";
-        }
-    }
+//    public boolean correctPiece() {
+//        return pieceTakenInBool() && correctColorBool();
+//    }
+//    public boolean pieceTakenInBool() { return colorSensor.getDistance(DistanceUnit.INCH) < detectionThreshold; }
+//    public boolean correctColorBool() {
+//        String color = identifyColor();
+//
+//        if (color == "YELLOW") {
+//            return true;
+//        }
+//        else if (ON_RED_ALLIANCE){
+//            return color == "RED";
+//        }
+//        else {
+//            return color == "BLUE";
+//        }
+//    }
+//
+//    public String identifyColor() {
+//        // Read the color sensor values
+//        int red = colorSensor.red();
+//        int green = colorSensor.green();
+//        int blue = colorSensor.blue();
+//
+//        // Define thresholds for color detection
+//        if (red > 2 * blue && green > 2 * blue) {
+//            // Yellow: high red and green values, low blue value
+//            return "YELLOW";
+//        } else if (red > blue && red > green) {
+//            // Red: dominant red value
+//            return "RED";
+//        } else {
+//            // Default to Blue
+//            return "BLUE";
+//        }
+//    }
 }

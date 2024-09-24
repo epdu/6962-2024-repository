@@ -55,15 +55,16 @@ public class IntakeTeleOp extends OpMode {
      */
     @Override
     public void loop() {
-        intake.operateTest();
+//        intake.operateTest();
+        intake.operateVincent();
         // Gamepad 2:
         // A - start intake and flip down
         // B - stop intake and flip up
         // X - reverse intake for 2 seconds
-        telemetry.addData("Piece Taken In: ", intake.pieceTakenInBool());
-        telemetry.addData("Detected Piece Color: ", intake.identifyColor());
-        telemetry.addData("Correct Color: ", intake.correctColorBool());
-        telemetry.addData("Has Sample & Correct Color: ", intake.correctPiece());
+//        telemetry.addData("Piece Taken In: ", intake.pieceTakenInBool());
+//        telemetry.addData("Detected Piece Color: ", intake.identifyColor());
+//        telemetry.addData("Correct Color: ", intake.correctColorBool());
+//        telemetry.addData("Has Sample & Correct Color: ", intake.correctPiece());
         telemetry.addData("Is Flipped Up: ", intake.flippedUp);
     }
 

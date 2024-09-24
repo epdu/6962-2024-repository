@@ -23,6 +23,7 @@ public class HorizontalSlidesTeleOp extends OpMode {
      */
     @Override
     public void init() {
+
         horizontalSlides.initialize(this);
         telemetry.addLine("Right Joystick Y - horizontal slide manual control");
     }

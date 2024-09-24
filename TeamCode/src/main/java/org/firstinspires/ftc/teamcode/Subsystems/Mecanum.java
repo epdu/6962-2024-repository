@@ -45,7 +45,7 @@ public class Mecanum {
         frontLeft = rHardware.leftFrontMotor;
         backLeft = rHardware.leftBackMotor;
         backRight = rHardware.rightBackMotor;
-        backLeft = rHardware.leftBackMotor;
+        frontRight = rHardware.rightFrontMotor;
 
 //        frontLeft = new MotorEx(opmode.hardwareMap, "Fl/Re");
 //        backLeft = new MotorEx(opmode.hardwareMap, "Bl/Le");

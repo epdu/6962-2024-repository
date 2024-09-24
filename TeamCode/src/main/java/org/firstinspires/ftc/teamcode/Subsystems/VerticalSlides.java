@@ -22,11 +22,11 @@ public class VerticalSlides
     // constants
     /** all of the constants need to be tuned*/
     private double joystickScalar = 1;
-    private double slideScalar = 0.45;
-    private double KpUp = 0.005;
+    private double slideScalar = 1;
+    private double KpUp = 0.6;
     private double KpDown = 0.001;
-    private double Ki = 0;
-    private double Kd = 0;
+    private double Ki = 1;
+    private double Kd = 0.4;
     private double Kg = 0; // gravity constant, tune till the slide holds itself in place
     private double upperLimit = 800;
     private double lowerLimit = -2;
@@ -53,6 +53,7 @@ public class VerticalSlides
 
     public void initialize(OpMode opmode) {
         // TODO: assign motor names, then reverse the correct motor
+        this.opmode = opmode;
         rHardware.init(opmode.hardwareMap);
 
         leftSlideMotor = rHardware.vLslideMotor;
@@ -64,19 +65,35 @@ public class VerticalSlides
         leftSlideMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         rightSlideMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
 
-//        leftSlideMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-        rightSlideMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        leftSlideMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+//        rightSlideMotor.setDirection(DcMotorEx.Direction.REVERSE);
 
-        leftSlideMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        rightSlideMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        leftSlideMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+        rightSlideMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
 
-        leftSlideMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        rightSlideMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        leftSlideMotor.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
+        rightSlideMotor.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
     }
 
     public void operateTest() {
         // manual control
         slidePower = -1 * opmode.gamepad2.left_stick_y;
+
+        if (opmode.gamepad1.a) {
+            raiseToHighBucket();
+        }
+        else if (opmode.gamepad1.x) {
+            raiseToLowBucket();
+        }
+
+        // updates boolean
+        if (leftSlideMotor.getCurrentPosition() < retractedThreshold && leftSlideMotor.getCurrentPosition() < retractedThreshold) {
+            verticalSlidesRetracted = true;
+        }
+        else {
+            verticalSlidesRetracted = false;
+        }
+
         if (Math.abs(slidePower) > 0.05)
         {
             // if position positive, then can move freely

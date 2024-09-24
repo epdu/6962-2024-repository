@@ -16,7 +16,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.VerticalSlides;
 public class DriveTeleOp extends OpMode {
     // creating subsystems
     private Mecanum mecanum = new Mecanum();
-    private OTOSManager otosManager = new OTOSManager();
+//    private OTOSManager otosManager = new OTOSManager();
 
     /*
      * Code to run ONCE when the driver hits INIT
@@ -24,7 +24,7 @@ public class DriveTeleOp extends OpMode {
     @Override
     public void init() {
         mecanum.initialize(this);
-        otosManager.initialize(this, true);
+//        otosManager.initialize(this, true);
     }
 
     /*
@@ -53,8 +53,9 @@ public class DriveTeleOp extends OpMode {
      */
     @Override
     public void loop() {
-        mecanum.operateFieldCentricTest(); // toggle Y button for slow mode
-        otosManager.operate();
+//        mecanum.operateFieldCentricTest(); // toggle Y button for slow mode
+        mecanum.operateRoboCentric();
+//        otosManager.operate();
     }
 
     /*

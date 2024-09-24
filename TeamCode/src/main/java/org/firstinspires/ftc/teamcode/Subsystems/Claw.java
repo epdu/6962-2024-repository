@@ -9,9 +9,13 @@ import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.teamcode.Util.RobotHardware;
+
 public class Claw {
     // hardware
     OpMode opmode;
+
+    public RobotHardware rHardware = new RobotHardware();
     private Servo claw, arm, wrist;
 
     // constants
@@ -42,9 +46,10 @@ public class Claw {
     public void initialize(OpMode opmode)
     {
         this.opmode = opmode;
-        this.claw = opmode.hardwareMap.get(Servo.class, "");
-        this.arm = opmode.hardwareMap.get(Servo.class, "");
-        this.wrist = opmode.hardwareMap.get(Servo.class, "");
+        rHardware.init(opmode.hardwareMap);
+        this.claw = rHardware.claw;
+        this.arm = rHardware.armServo;
+        this.wrist = rHardware.cWristServo;
     }
 
     // for when we implement RobotHardware.java

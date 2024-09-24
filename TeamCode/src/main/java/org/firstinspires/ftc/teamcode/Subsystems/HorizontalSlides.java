@@ -50,6 +50,7 @@ public class HorizontalSlides
 
     public void initialize(OpMode opmode) {
         // TODO: assign motor names, then reverse the correct motor
+        this.opmode = opmode;
         rHardware.init(opmode.hardwareMap);
 
         slideMotor = rHardware.hSlideMotor;
@@ -57,8 +58,8 @@ public class HorizontalSlides
 
         slideMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
 //        slideMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-        slideMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        slideMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        slideMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+        slideMotor.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
     }
 
     public void operateVincent() {
