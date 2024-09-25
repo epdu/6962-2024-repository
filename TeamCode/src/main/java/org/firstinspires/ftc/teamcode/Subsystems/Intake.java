@@ -29,7 +29,7 @@ public class Intake
 
     // constants
     /** all of the constants need to be tuned*/
-    private double intakePower = 0.5;
+    private double intakePower = 0.6;
     private double stowedPosition = 0.4;
     private double intakePosition = 0;
     private double detectionThreshold = 0.5; //inches
@@ -41,12 +41,13 @@ public class Intake
         this.opmode = opmode;
         rHardware.init(opmode.hardwareMap);
         ON_RED_ALLIANCE = redAlliance;
+        this.timer = timer;
 
         intakeMotor = rHardware.intakeMotor;
 //        wristServo = rHardware.iWristServo;
 //        intakeMotor = opmode.hardwareMap.get(DcMotorEx.class, "");
 //        wristServo = opmode.hardwareMap.get(Servo.class, "");
-        timer = timer;
+//        timer = timer;
 //        intakeServo.setDirection(DcMotorSimple.Direction.REVERSE);
     }
 
@@ -56,21 +57,24 @@ public class Intake
             // start intaking
             intakeMotor.setPower(intakePower);
             // flip out
-            wristServo.setPosition(intakePosition);
+//            wristServo.setPosition(intakePosition);
         }
         else {
             // stop
             intakeMotor.setPower(0);
             // flip in
-            wristServo.setPosition(stowedPosition);
+//            wristServo.setPosition(stowedPosition);
         }
     }
 
     public void operateTest() {
 
         intakeMotor.setPower(opmode.gamepad2.left_stick_y);
-        if(opmode.gamepad2.x) {
-            intakeMotor.setPower(0);
+        if (opmode.gamepad2.x) {
+            intakeMotor.setPower(intakePower);
+        }
+        if (opmode.gamepad2.a) {
+            eject();
         }
 
 //        if (opmode.gamepad2.a) {
@@ -86,20 +90,20 @@ public class Intake
 
     public void shutdown() {}
 
-    public void intakePieces() {
-        // right trigger extend hori slides
-        intakeMotor.setPower(intakePower);
-        // flip out
-        wristServo.setPosition(intakePosition);
-        flippedUp = false;
-    }
-    public void stopIntaking() {
-        // stop
-        intakeMotor.setPower(0);
-        // flip in
-        wristServo.setPosition(stowedPosition);
-        flippedUp = true;
-    }
+//    public void intakePieces() {
+//        // right trigger extend hori slides
+//        intakeMotor.setPower(intakePower);
+//        // flip out
+//        wristServo.setPosition(intakePosition);
+//        flippedUp = false;
+//    }
+//    public void stopIntaking() {
+//        // stop
+//        intakeMotor.setPower(0);
+//        // flip in
+//        wristServo.setPosition(stowedPosition);
+//        flippedUp = true;
+//    }
     public void eject() {
         // reverse direction for 2 seconds, then return
         intakeMotor.setPower(-intakePower);

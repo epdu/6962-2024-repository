@@ -23,18 +23,18 @@ public class VerticalSlides
     /** all of the constants need to be tuned*/
     private double joystickScalar = 1;
     private double slideScalar = 1;
-    private double KpUp = 0.6;
-    private double KpDown = 0.001;
+    private double KpUp = 0.5;
+    private double KpDown = 0.3;
     private double Ki = 1;
     private double Kd = 0.4;
     private double Kg = 0; // gravity constant, tune till the slide holds itself in place
-    private double upperLimit = 800;
+    private double upperLimit = 100;
     private double lowerLimit = -2;
-    private double retractedThreshold = 0;
+    private double retractedThreshold = 5;
 
-    private int highBucketPos = 500;
-    private int lowBucketPos = 250;
-    private int lowChamberPos = 200;
+    private int highBucketPos = 100;
+    private int lowBucketPos = 50;
+    private int lowChamberPos = 40;
     private int retractedPos = 0;
 
     //declaring variables for later modification
@@ -65,8 +65,8 @@ public class VerticalSlides
         leftSlideMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         rightSlideMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
 
-        leftSlideMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-//        rightSlideMotor.setDirection(DcMotorEx.Direction.REVERSE);
+//        leftSlideMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        rightSlideMotor.setDirection(DcMotorEx.Direction.REVERSE);
 
         leftSlideMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         rightSlideMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
@@ -137,6 +137,14 @@ public class VerticalSlides
         else if (opmode.gamepad1.x) {
             raiseToLowBucket();
         }
+        else if (opmode.gamepad1.b) {
+            retract();
+        }
+
+        PIDPowerL = PIDControl(target, leftSlideMotor);
+        PIDPowerR = PIDControl(target, rightSlideMotor);
+        leftSlideMotor.setPower(PIDPowerL);
+        rightSlideMotor.setPower(PIDPowerR);
 
         // updates boolean
         verticalSlidesRetracted = leftSlideMotor.getCurrentPosition() < retractedThreshold && leftSlideMotor.getCurrentPosition() < retractedThreshold;

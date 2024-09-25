@@ -55,7 +55,7 @@ public class IntakeTeleOp extends OpMode {
     @Override
     public void loop() {
 //        intake.operateTest();
-        intake.operateVincent();
+        intake.operateTest();
         // Gamepad 2:
         // A - start intake and flip down
         // B - stop intake and flip up
