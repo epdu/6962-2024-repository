@@ -55,6 +55,7 @@ public class DriveTeleOp extends OpMode {
         mecanum.operateFieldCentricTest(); // toggle Y button for slow mode
 //        mecanum.operateRoboCentric();
 //        otosManager.operate();
+        telemetry.addData("Heading: ", mecanum.navxHeading());
     }
 
     /*
