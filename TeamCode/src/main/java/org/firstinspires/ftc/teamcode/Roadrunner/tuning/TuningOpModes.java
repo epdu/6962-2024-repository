@@ -24,7 +24,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpModeRegistrar;
 
 import org.firstinspires.ftc.robotcore.internal.opmode.OpModeMeta;
 import org.firstinspires.ftc.teamcode.Roadrunner.MecanumDrive;
-import org.firstinspires.ftc.teamcode.Roadrunner.SparkFunOTOSDrive;
+//import org.firstinspires.ftc.teamcode.Roadrunner.SparkFunOTOSDrive;
 import org.firstinspires.ftc.teamcode.Roadrunner.TankDrive;
 import org.firstinspires.ftc.teamcode.Roadrunner.ThreeDeadWheelLocalizer;
 import org.firstinspires.ftc.teamcode.Roadrunner.TwoDeadWheelLocalizer;
@@ -34,7 +34,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public final class TuningOpModes {
-    public static final Class<?> DRIVE_CLASS = SparkFunOTOSDrive.class;
+    public static final Class<?> DRIVE_CLASS = MecanumDrive.class;
 
     public static final String GROUP = "quickstart";
     public static final boolean DISABLED = false;
@@ -54,42 +54,42 @@ public final class TuningOpModes {
         if (DISABLED) return;
 
         DriveViewFactory dvf;
-        if (DRIVE_CLASS.equals(SparkFunOTOSDrive.class)) {
-            dvf = hardwareMap -> {
-                SparkFunOTOSDrive od = new SparkFunOTOSDrive(hardwareMap, new Pose2d(0, 0, 0));
-
-                List<Encoder> leftEncs = new ArrayList<>(), rightEncs = new ArrayList<>();
-                List<Encoder> parEncs = new ArrayList<>(), perpEncs = new ArrayList<>();
-                parEncs.add(new OtosEncoder(od.otos,false,false, od.leftBack));
-                perpEncs.add(new OtosEncoder(od.otos,true,false, od.leftBack));
-
-                return new DriveView(
-                        DriveType.MECANUM,
-                        MecanumDrive.PARAMS.inPerTick,
-                        MecanumDrive.PARAMS.maxWheelVel,
-                        MecanumDrive.PARAMS.minProfileAccel,
-                        MecanumDrive.PARAMS.maxProfileAccel,
-                        hardwareMap.getAll(LynxModule.class),
-                        Arrays.asList(
-                                od.leftFront,
-                                od.leftBack
-                        ),
-                        Arrays.asList(
-                                od.rightFront,
-                                od.rightBack
-                        ),
-                        leftEncs,
-                        rightEncs,
-                        parEncs,
-                        perpEncs,
-                        od.lazyImu,
-                        od.voltageSensor,
-                        () -> new MotorFeedforward(MecanumDrive.PARAMS.kS,
-                                MecanumDrive.PARAMS.kV / MecanumDrive.PARAMS.inPerTick,
-                                MecanumDrive.PARAMS.kA / MecanumDrive.PARAMS.inPerTick)
-                );
-            };
-        } else if (DRIVE_CLASS.equals(MecanumDrive.class)) {
+//        if (DRIVE_CLASS.equals(SparkFunOTOSDrive.class)) {
+//            dvf = hardwareMap -> {
+//                SparkFunOTOSDrive od = new SparkFunOTOSDrive(hardwareMap, new Pose2d(0, 0, 0));
+//
+//                List<Encoder> leftEncs = new ArrayList<>(), rightEncs = new ArrayList<>();
+//                List<Encoder> parEncs = new ArrayList<>(), perpEncs = new ArrayList<>();
+//                parEncs.add(new OtosEncoder(od.otos,false,false, od.leftBack));
+//                perpEncs.add(new OtosEncoder(od.otos,true,false, od.leftBack));
+//
+//                return new DriveView(
+//                        DriveType.MECANUM,
+//                        MecanumDrive.PARAMS.inPerTick,
+//                        MecanumDrive.PARAMS.maxWheelVel,
+//                        MecanumDrive.PARAMS.minProfileAccel,
+//                        MecanumDrive.PARAMS.maxProfileAccel,
+//                        hardwareMap.getAll(LynxModule.class),
+//                        Arrays.asList(
+//                                od.leftFront,
+//                                od.leftBack
+//                        ),
+//                        Arrays.asList(
+//                                od.rightFront,
+//                                od.rightBack
+//                        ),
+//                        leftEncs,
+//                        rightEncs,
+//                        parEncs,
+//                        perpEncs,
+//                        od.lazyImu,
+//                        od.voltageSensor,
+//                        () -> new MotorFeedforward(MecanumDrive.PARAMS.kS,
+//                                MecanumDrive.PARAMS.kV / MecanumDrive.PARAMS.inPerTick,
+//                                MecanumDrive.PARAMS.kA / MecanumDrive.PARAMS.inPerTick)
+//                );
+//            };
+        if (DRIVE_CLASS.equals(MecanumDrive.class)) {
             dvf = hardwareMap -> {
                 MecanumDrive md = new MecanumDrive(hardwareMap, new Pose2d(0, 0, 0));
 
