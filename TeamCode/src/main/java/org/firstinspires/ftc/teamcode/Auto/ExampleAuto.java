@@ -9,6 +9,7 @@ import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.ParallelAction;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.SequentialAction;
+import com.acmerobotics.roadrunner.TrajectoryActionBuilder;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -18,28 +19,24 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import org.firstinspires.ftc.teamcode.Roadrunner.MecanumDrive;
 
 @Config
-@Autonomous(name = "Template Autoop", group = "16481-Example")
+@Autonomous(name = "Template Autoop", group = "Autonomous")
 public class ExampleAuto extends LinearOpMode {
-
     // create subsystems
-    private MecanumDrive drive; // roadrunner's mecanum drive subsystem
-
     @Override
-    public void runOpMode() throws InterruptedException {
+    public void runOpMode() {
         // init()
         Pose2d startPose = new Pose2d(0, 0, Math.toRadians(0));
-
-        drive = new MecanumDrive(hardwareMap, startPose);
-
-//        DcMotor motor1 = hardwareMap.get(DcMotor.class,  "motor");
+        MecanumDrive drive = new MecanumDrive(hardwareMap, startPose);
 
         // defining trajectories
-        Action TrajectoryAction1 = drive.actionBuilder(drive.pose)
+        TrajectoryActionBuilder traj1 = drive.actionBuilder(startPose)
                 .lineToX(10)
-                .build();
+                .turnTo(Math.toRadians(90));
 
-        Action TrajectoryAction2 = drive.actionBuilder(new Pose2d(15,20,0))
-                .splineTo(new Vector2d(5,5), Math.toRadians(90))
+        Action traj2 = traj1.fresh()
+                .strafeTo(new Vector2d(15, 17))
+                .waitSeconds(3)
+                .lineToY(-2)
                 .build();
 
         // init_loop()
@@ -50,25 +47,24 @@ public class ExampleAuto extends LinearOpMode {
 
         if (isStopRequested()) return;
 
+        Action scoreTrajectory;
+        scoreTrajectory = traj1.build();
+
         Actions.runBlocking(
                 new SequentialAction(
-                        TrajectoryAction1, // Example of a drive action
-
+                        scoreTrajectory, // Example of a drive action
                         (telemetryPacket) -> { // lambda function
                             telemetry.addLine("Action!");
                             telemetry.update();
                             return false; // Returning true causes the action to run again, returning false causes it to cease
                         },
                         new ParallelAction( // several actions being run in parallel
-                                TrajectoryAction2, // Run second trajectory
+                                traj2, // Run second trajectory
                                 (telemetryPacket) -> { // Run some action
                                     //motor1.setPower(1);
                                     return false;
                                 }
-                        ),
-                        drive.actionBuilder(new Pose2d(15,10,Math.toRadians(125))) // Another way of running a trajectory (not recommended because trajectories take time to build and will slow down your code, always try to build them beforehand)
-                                .splineTo(new Vector2d(25, 15), 0)
-                                .build()
+                        )
                 )
         );
     }
