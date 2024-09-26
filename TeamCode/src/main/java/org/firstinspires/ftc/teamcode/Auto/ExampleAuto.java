@@ -19,7 +19,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import org.firstinspires.ftc.teamcode.Roadrunner.MecanumDrive;
 
 @Config
-@Autonomous(name = "Template Autoop", group = "Autonomous")
+@Autonomous(name = "Template Autoop", group = "Test Autonomous")
 public class ExampleAuto extends LinearOpMode {
     // create subsystems
     @Override
