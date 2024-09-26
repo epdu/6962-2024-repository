@@ -41,6 +41,7 @@ dependencies {
     implementation "com.acmerobotics.roadrunner:core:1.0.0"
     implementation "com.acmerobotics.roadrunner:actions:1.0.0"
     implementation "com.acmerobotics.dashboard:dashboard:0.4.15"
+//    implementation "com.github.NoahBres:MeepMeep:2.0.3."
 
     // OTOS
     implementation "com.github.jdhs-ftc:road-runner-ftc-otos:a02ba3fe51"
@@ -52,10 +53,10 @@ dependencies {
     implementation 'org.ftclib.ftclib:core:2.1.1'
 
     // OpenCV
-    implementation 'org.openftc:easyopencv:1.7.2'
+    implementation 'org.openftc:easyopencv:1.7.3'
 
     // Swerve
-    implementation 'com.github.Eeshwar-Krishnan:PhotonFTC:main-SNAPSHOT'
+//    implementation 'com.github.Eeshwar-Krishnan:PhotonFTC:main-SNAPSHOT'
 
     // nobody knows
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.7'

@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
+import com.arcrobotics.ftclib.hardware.GyroEx;
 import com.arcrobotics.ftclib.hardware.motors.MotorEx;
 import com.arcrobotics.ftclib.hardware.motors.MotorGroup;
 import com.qualcomm.hardware.kauailabs.NavxMicroNavigationSensor;
@@ -42,7 +43,7 @@ public class RobotHardware {
     public void init(@NonNull HardwareMap hardwareMap) {
         this.hMap = hardwareMap;
 
-//        navx = hMap.get(NavxMicroNavigationSensor.class, "navx");
+        navx = hMap.get(NavxMicroNavigationSensor.class, "navx");
         leftFrontMotor = new MotorEx(hMap, "Fl/Re");
         rightFrontMotor = new MotorEx(hMap, "Fr");
         leftBackMotor = new MotorEx(hMap, "Bl/Le");
@@ -56,12 +57,12 @@ public class RobotHardware {
 //        cWristServo = hMap.get(Servo.class, "");
 //        claw = hMap.get(Servo.class, "");
 //
-        intakeMotor = hMap.get(DcMotorEx.class,"intake");
+//        intakeMotor = hMap.get(DcMotorEx.class,"intake");
 //        iWristServo = hMap.get(Servo.class, "");
 //
-        hSlideMotor = hMap.get(DcMotorEx.class , "hSlide");
+//        hSlideMotor = hMap.get(DcMotorEx.class , "hSlide");
 //
-        vRslideMotor = hMap.get(DcMotorEx.class, "vRslide");
-        vLslideMotor = hMap.get(DcMotorEx.class, "vLslide");
+//        vRslideMotor = hMap.get(DcMotorEx.class, "vRslide");
+//        vLslideMotor = hMap.get(DcMotorEx.class, "vLslide");
     }
 }

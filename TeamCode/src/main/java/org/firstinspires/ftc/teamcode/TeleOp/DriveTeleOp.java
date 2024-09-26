@@ -11,7 +11,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.Mecanum;
 import org.firstinspires.ftc.teamcode.Subsystems.OTOSManager;
 import org.firstinspires.ftc.teamcode.Subsystems.VerticalSlides;
 
-@TeleOp(name="Only Mecanum Drive with OTOS", group="Active TeleOps")
+@TeleOp(name="Only Mecanum Drive", group="Active TeleOps")
 public class DriveTeleOp extends OpMode {
     // creating subsystems
     private Mecanum mecanum = new Mecanum();
@@ -52,8 +52,8 @@ public class DriveTeleOp extends OpMode {
      */
     @Override
     public void loop() {
-//        mecanum.operateFieldCentricTest(); // toggle Y button for slow mode
-        mecanum.operateRoboCentric();
+        mecanum.operateFieldCentricTest(); // toggle Y button for slow mode
+//        mecanum.operateRoboCentric();
 //        otosManager.operate();
     }
 
