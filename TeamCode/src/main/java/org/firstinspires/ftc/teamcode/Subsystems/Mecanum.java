@@ -139,4 +139,7 @@ public class Mecanum {
 //        drive.driveRobotCentric(strafe, drive, turn)
 //        telemetry.addData("Auto", "Drive %5.2f, Strafe %5.2f, Turn %5.2f ", drive, strafe, turn);
 //    }
+    public double navxHeading() {
+        return gyroManager.getHeading();
+    }
 }
