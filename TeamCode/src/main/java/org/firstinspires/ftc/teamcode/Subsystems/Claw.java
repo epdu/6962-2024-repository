@@ -8,6 +8,10 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.acmerobotics.roadrunner.Action;
+import com.acmerobotics.roadrunner.ftc.Actions;
+import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
+import androidx.annotation.NonNull;
 
 import org.firstinspires.ftc.teamcode.Util.RobotHardware;
 
@@ -171,5 +175,26 @@ public class Claw {
     }
     public double telemetryWristPos() {
         return wrist.getPosition();
+    }
+
+    public class clawOpen implements Action {
+        @Override
+        public boolean run(@NonNull TelemetryPacket packet) {
+            openClaw();
+            return false;
+        }
+    }
+    public Action clawOpen() {
+        return new clawOpen();
+    }
+    public class clawClose implements Action {
+        @Override
+        public boolean run(@NonNull TelemetryPacket packet) {
+            closeClaw();
+            return false;
+        }
+    }
+    public Action clawClose() {
+        return new clawClose();
     }
 }

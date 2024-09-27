@@ -54,6 +54,7 @@ public class TestAuto extends LinearOpMode{
         Pose2d startPose = new Pose2d(startX, startY, startHeading);
         MecanumDrive drive = new MecanumDrive(hardwareMap, startPose);
         VerticalSlides lift = new VerticalSlides();
+        Claw claw = new Claw();
 
         TrajectoryActionBuilder move1 = drive.actionBuilder(startPose)
                 .strafeTo(new Vector2d(scorePreloadX, scorePreloadY))
@@ -91,6 +92,8 @@ public class TestAuto extends LinearOpMode{
 
         Actions.runBlocking(
                 new SequentialAction(
+                        claw.clawOpen(),
+                        claw.clawClose(),
                         lift.scoreBucket(),
                         lift.retractSlides(),
                         autoTrajectoryTest

@@ -32,7 +32,7 @@ public class MeepMeepAuto1 {
                                 .lineToLinearHeading(new Pose2d(8, -33, Math.toRadians(-90)))
                                 .waitSeconds(1)
                                 //.lineToConstantHeading(new Vector2d(38, -62))
-                                .lineToSplineHeading(new Pose2d(-48, -43, Math.toRadians(90)))
+                                .lineToLinearHeading(new Pose2d(-48, -43, Math.toRadians(90)))
                                 .waitSeconds(1)
                                 //run intake 1
                                 .lineToLinearHeading(new Pose2d(-57, -57, Math.toRadians(45)))
