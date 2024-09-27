@@ -60,37 +60,88 @@ public class TestAuto extends LinearOpMode{
                 .strafeTo(new Vector2d(scorePreloadX, scorePreloadY))
                 .afterTime(1, () -> {
                     //lift.prepClip(); not defined yet
+                    claw.clip();
                 })
                 .waitSeconds(1)
                 .afterTime(2, () -> {
                     lift.scoreClip();
+                })
+                .afterTime(2.1, () -> {
                     claw.clawOpen();
                 })
                 .strafeTo(new Vector2d(prepClipX, prepClipY))
+                .afterTime(3, () -> {
+                    claw.stow();
+                    lift.retract();
+                })
                 .afterTime(6.2, () -> {
                     //lift.pickupClip(); not defined yet
+                    claw.clip();
                 })
                 .lineToY(pickupCLipY)
                 .afterTime(7.4, () -> {
                     claw.clawClose();
-                    lift.scoreClip();
+                    //lift.prepClip();
                 })
                 .waitSeconds(0.5)
                 .strafeTo(new Vector2d(scoreClipX, scoreClipY))
+                .afterTime(11.5, () -> {
+                    lift.scoreClip();
+                })
+                .afterTime(11.6, () -> {
+                    claw.clawOpen();
+                })
                 .waitSeconds(1)
                 .strafeTo(new Vector2d(intake1X, intake1Y))
+                .afterTime(12.6, () -> {
+                    lift.retract();
+                    claw.stow();
+                })
                 .waitSeconds(1)
                 .strafeTo(new Vector2d(scoreBucketX, scoreBucketY))
+                .afterTime(17.2, () -> {
+                    lift.scoreBucket();
+                    claw.bucket();
+                })
                 .waitSeconds(0.5)
+                .afterTime(18, () -> {
+                    claw.clawOpen();
+                })
                 .strafeTo(new Vector2d(intake2X, intake2Y))
+                .afterTime(18.7, () -> {
+                    lift.retract();
+                    claw.stow();
+                })
                 .waitSeconds(1)
                 .strafeTo(new Vector2d(scoreBucketX, scoreBucketY))
+                .afterTime(21, () -> {
+                    lift.scoreBucket();
+                    claw.bucket();
+                })
                 .waitSeconds(0.5)
+                .afterTime(21.8, () -> {
+                    claw.clawOpen();
+                })
                 .strafeTo(new Vector2d(intake2X, intake2Y))
+                .afterTime(22.7, () -> {
+                    lift.retract();
+                    claw.stow();
+                })
                 .waitSeconds(1)
                 .strafeTo(new Vector2d(scoreBucketX, scoreBucketY))
+                .afterTime(24.9, () -> {
+                    lift.scoreBucket();
+                    claw.bucket();
+                })
                 .waitSeconds(0.5)
+                .afterTime(25.8, () -> {
+                    claw.clawOpen();
+                })
                 .strafeTo(new Vector2d(prepParkX, prepParkY))
+                .afterTime(26.7, () -> {
+                    lift.retract();
+                    claw.stow();
+                })
                 .strafeTo(new Vector2d(parkX, parkY));
 
         while (!isStarted() && !opModeIsActive()) {

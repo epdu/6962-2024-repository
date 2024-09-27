@@ -197,4 +197,37 @@ public class Claw {
     public Action clawClose() {
         return new clawClose();
     }
+    public class clip implements Action {
+        @Override
+        public boolean run(@NonNull TelemetryPacket packet) {
+            scoreArm();
+            setWristVertical();
+            return false;
+        }
+    }
+    public Action clip() {
+        return new clip();
+    }
+    public class bucket implements Action {
+        @Override
+        public boolean run(@NonNull TelemetryPacket packet) {
+            scoreArm();
+            setWristHorizontal();
+            return false;
+        }
+    }
+    public Action bucket() {
+        return new bucket();
+    }
+    public class stow implements Action {
+        @Override
+        public boolean run(@NonNull TelemetryPacket packet) {
+            stowArm();
+            setWristHorizontal();
+            return false;
+        }
+    }
+    public Action stow() {
+        return new stow();
+    }
 }
