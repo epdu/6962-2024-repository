@@ -19,26 +19,30 @@ public class MeepMeepTesting {
     public static void main(String[] args) {
         MeepMeep meepMeep = new MeepMeep(750);
 
-        Pose2d startPose = new Pose2d(11.25, -62.5, Math.toRadians(0));
+        Pose2d startPose = new Pose2d(7, -63.75, Math.toRadians(-90));
 
         RoadRunnerBotEntity myBot = new DefaultBotBuilder(meepMeep)
                 // Set bot constraints: maxVel, maxAccel, maxAngVel, maxAngAccel, track width
                 .setConstraints(25, 15, Math.toRadians(120), Math.toRadians(120), 17)
                 .followTrajectorySequence(drive ->
                         drive.trajectorySequenceBuilder(startPose)
-                                .lineToLinearHeading(new Pose2d(11.25, -32, Math.toRadians(90)))
+                                .lineToConstantHeading(new Vector2d(-9, -33))
                                 //score preloaded specimen
-                                .lineToLinearHeading(new Pose2d(38, -30, Math.toRadians(0)))
-                                //run intake
-                                .lineToSplineHeading(new Pose2d(-50, -66, Math.toRadians(180)))
-                                //score top basket
-                                .lineToLinearHeading(new Pose2d(-50,-35, Math.toRadians(90)))
-                                //intake
-                                .lineToSplineHeading(new Pose2d(-50, -66, Math.toRadians(180)))
-                                .lineToLinearHeading(new Pose2d(-53,-35, Math.toRadians(90)))
-                                .lineToSplineHeading(new Pose2d(-50, -66, Math.toRadians(180)))
-                                .lineToLinearHeading(new Pose2d(-55,-35, Math.toRadians(90)))
-
+                                .lineToSplineHeading(new Pose2d(-48, -43, Math.toRadians(90)))
+                                //run intake 1
+                                .lineToLinearHeading(new Pose2d(-57, -57, Math.toRadians(45)))
+                                //score top
+                                .lineToLinearHeading(new Pose2d(-57, -43, Math.toRadians(90)))
+                                //intake 2
+                                .lineToLinearHeading(new Pose2d(-57, -57, Math.toRadians(45)))
+                                //score top
+                                .lineToLinearHeading(new Pose2d(-57, -43, Math.toRadians(125)))
+                                //intake 3
+                                .lineToLinearHeading(new Pose2d(-57, -57, Math.toRadians(45)))
+                                //score top
+                                .lineToLinearHeading(new Pose2d(-48, -36, 0))
+                                .lineToConstantHeading(new Vector2d(20, -36))
+                                .lineToLinearHeading(new Pose2d(38, -68, Math.toRadians(-90)))
                                 .build());
 
 //                .setDarkMode(true)
@@ -47,7 +51,7 @@ public class MeepMeepTesting {
 //                .start();
         BufferedImage img = null;
         try {
-            img = ImageIO.read(new File("/Users/dlin26/Downloads/field-2024-juice-dark.png")); }
+            img = ImageIO.read(new File("/Users/nwilliams25/Downloads/field-2024-juice-dark.png")); }
         catch (IOException e) {}
 
         meepMeep.setBackground(img)
