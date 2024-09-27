@@ -1,21 +1,18 @@
 package com.example.meepmeeptesting;
 
-import java.awt.image.BufferedImage;
-
-
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.noahbres.meepmeep.MeepMeep;
 import com.noahbres.meepmeep.roadrunner.DefaultBotBuilder;
 import com.noahbres.meepmeep.roadrunner.entity.RoadRunnerBotEntity;
 
-import java.io.BufferedReader;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-public class MeepMeepTesting {
+public class MeepMeepAuto1 {
     public static void main(String[] args) {
         MeepMeep meepMeep = new MeepMeep(750);
 
@@ -26,24 +23,37 @@ public class MeepMeepTesting {
                 .setConstraints(45, 45, Math.toRadians(180), Math.toRadians(180), 17)
                 .followTrajectorySequence(drive ->
                         drive.trajectorySequenceBuilder(startPose)
-                                .lineToConstantHeading(new Vector2d(-9, -33))
-                                .lineToLinearHeading(new Pose2d(36, -36, Math.toRadians(90)))
-                                .lineToConstantHeading(new Vector2d(36, -12))
-                                .lineToConstantHeading(new Vector2d(44, -12))
-                                .lineToConstantHeading(new Vector2d(44, -56))
-                                .lineToConstantHeading(new Vector2d(62, -47))
-                                .lineToConstantHeading(new Vector2d(62, -62))
-                                //.lineToConstantHeading(new Vector2d(62, -47))
-                                .lineToLinearHeading(new Pose2d(8, -33, Math.toRadians(-90)))
-                                .lineToLinearHeading(new Pose2d(36, -36, Math.toRadians(90)))
-                                .lineToConstantHeading(new Vector2d(36, -12))
-                                .lineToConstantHeading(new Vector2d(57, -12))
-                                .lineToConstantHeading(new Vector2d(57, -56))
+                                .lineToConstantHeading(new Vector2d(0, -33))
+                                .waitSeconds(1)
+                                //score preloaded specimen
                                 .lineToLinearHeading(new Pose2d(62, -47, Math.toRadians(90)))
                                 .lineToConstantHeading(new Vector2d(62, -62))
-                                //.lineToConstantHeading(new Vector2d(62, -47))
                                 .lineToLinearHeading(new Pose2d(8, -33, Math.toRadians(-90)))
-                                .lineToConstantHeading(new Vector2d(38, -62))
+                                .waitSeconds(1)
+                                .lineToLinearHeading(new Pose2d(62, -47, Math.toRadians(90)))
+                                .lineToConstantHeading(new Vector2d(62, -62))
+                                .lineToLinearHeading(new Pose2d(8, -33, Math.toRadians(-90)))
+                                .waitSeconds(1)
+                                //.lineToConstantHeading(new Vector2d(38, -62))
+                                .lineToSplineHeading(new Pose2d(-48, -43, Math.toRadians(90)))
+                                .waitSeconds(1)
+                                //run intake 1
+                                .lineToLinearHeading(new Pose2d(-57, -57, Math.toRadians(45)))
+                                //score top
+                                .lineToLinearHeading(new Pose2d(-57, -43, Math.toRadians(90)))
+                                .waitSeconds(1)
+                                //intake 2
+                                .lineToLinearHeading(new Pose2d(-57, -57, Math.toRadians(45)))
+                                //score top
+                                .lineToLinearHeading(new Pose2d(-57, -43, Math.toRadians(125)))
+                                .waitSeconds(1)
+                                //intake 3
+                                .lineToLinearHeading(new Pose2d(-57, -57, Math.toRadians(45)))
+                                //score top
+                                //.lineToLinearHeading(new Pose2d(-36, -12, Math.toRadians(90)))
+                                //.lineToConstantHeading(new Vector2d(-23, -12))
+                                //.lineToLinearHeading(new Pose2d(-48, -36, 0))
+                                //.lineToConstantHeading(new Vector2d(62, -36))
                                 .build());
 
 //                .setDarkMode(true)
