@@ -8,7 +8,10 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.robot.Robot;
 import com.qualcomm.robotcore.util.ElapsedTime;
-
+import com.acmerobotics.roadrunner.Action;
+import com.acmerobotics.roadrunner.ftc.Actions;
+import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
+import androidx.annotation.NonNull;
 import org.firstinspires.ftc.teamcode.Util.RobotHardware;
 
 @Config
@@ -210,7 +213,6 @@ public class VerticalSlides
     public void moveToPosition(int targetPos) {
         target = targetPos;
     }
-
     public void raiseToHighBucket() { moveToPosition(highBucketPos); }
     public void raiseToLowBucket() { moveToPosition(lowBucketPos); }
     public void raiseToLowChamber() { moveToPosition(lowChamberPos); }
@@ -221,6 +223,27 @@ public class VerticalSlides
     }
     public int telemetryRightMotorPos() {
         return rightSlideMotor.getCurrentPosition();
+    }
+
+    public class scoreBucket implements Action {
+        @Override
+        public boolean run(@NonNull TelemetryPacket packet) {
+            raiseToHighBucket();
+            return false;
+        }
+    }
+    public Action scoreBucket() {
+        return new scoreBucket();
+    }
+    public class retractSlides implements Action {
+        @Override
+        public boolean run(@NonNull TelemetryPacket packet) {
+            retract();
+            return false;
+        }
+    }
+    public Action retractSlides() {
+        return new retractSlides();
     }
 }
 

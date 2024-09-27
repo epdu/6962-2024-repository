@@ -15,10 +15,13 @@ import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import org.firstinspires.ftc.teamcode.Util.RobotHardware;
 
 import org.firstinspires.ftc.teamcode.Roadrunner.MecanumDrive;
-
-import java.util.Vector;
+import org.firstinspires.ftc.teamcode.Subsystems.VerticalSlides;
+import org.firstinspires.ftc.teamcode.Subsystems.Claw;
+import org.firstinspires.ftc.teamcode.Subsystems.HorizontalSlides;
+import org.firstinspires.ftc.teamcode.Subsystems.Intake;
 
 @Config
 @Autonomous(name = "Test Auto", group = "Test Autonomous")
@@ -50,6 +53,7 @@ public class TestAuto extends LinearOpMode{
     public void runOpMode() {
         Pose2d startPose = new Pose2d(startX, startY, startHeading);
         MecanumDrive drive = new MecanumDrive(hardwareMap, startPose);
+        VerticalSlides lift = new VerticalSlides();
 
         TrajectoryActionBuilder move1 = drive.actionBuilder(startPose)
                 .strafeTo(new Vector2d(scorePreloadX, scorePreloadY))
@@ -87,6 +91,8 @@ public class TestAuto extends LinearOpMode{
 
         Actions.runBlocking(
                 new SequentialAction(
+                        lift.scoreBucket(),
+                        lift.retractSlides(),
                         autoTrajectoryTest
                 )
         );
