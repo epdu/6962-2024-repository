@@ -23,7 +23,7 @@ public class MeepMeepTesting {
 
         RoadRunnerBotEntity myBot = new DefaultBotBuilder(meepMeep)
                 // Set bot constraints: maxVel, maxAccel, maxAngVel, maxAngAccel, track width
-                .setConstraints(25, 15, Math.toRadians(120), Math.toRadians(120), 17)
+                .setConstraints(45, 45, Math.toRadians(180), Math.toRadians(180), 17)
                 .followTrajectorySequence(drive ->
                         drive.trajectorySequenceBuilder(startPose)
                                 .lineToConstantHeading(new Vector2d(-9, -33))
@@ -42,7 +42,15 @@ public class MeepMeepTesting {
                                 //score top
                                 .lineToLinearHeading(new Pose2d(-48, -36, 0))
                                 .lineToConstantHeading(new Vector2d(20, -36))
-                                .lineToLinearHeading(new Pose2d(38, -68, Math.toRadians(-90)))
+                                .lineToLinearHeading(new Pose2d(62, -47, Math.toRadians(90)))
+                                .lineToConstantHeading(new Vector2d(62, -62))
+                                //.lineToConstantHeading(new Vector2d(62, -47))
+                                .lineToLinearHeading(new Pose2d(8, -33, Math.toRadians(-90)))
+                                .lineToLinearHeading(new Pose2d(62, -47, Math.toRadians(90)))
+                                .lineToConstantHeading(new Vector2d(62, -62))
+                                //.lineToConstantHeading(new Vector2d(62, -47))
+                                .lineToLinearHeading(new Pose2d(8, -33, Math.toRadians(-90)))
+                                .lineToConstantHeading(new Vector2d(38, -62))
                                 .build());
 
 //                .setDarkMode(true)
