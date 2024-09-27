@@ -24,7 +24,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.HorizontalSlides;
 import org.firstinspires.ftc.teamcode.Subsystems.Intake;
 
 @Config
-@Autonomous(name = "Test Auto", group = "Test Autonomous")
+@Autonomous(name = "Test Auto", group = "Autonomous")
 public class TestAuto extends LinearOpMode{
 
     double startX = 7;
@@ -58,9 +58,23 @@ public class TestAuto extends LinearOpMode{
 
         TrajectoryActionBuilder move1 = drive.actionBuilder(startPose)
                 .strafeTo(new Vector2d(scorePreloadX, scorePreloadY))
+                .afterTime(1, () -> {
+                    //lift.prepClip(); not defined yet
+                })
                 .waitSeconds(1)
+                .afterTime(2, () -> {
+                    lift.scoreClip();
+                    claw.clawOpen();
+                })
                 .strafeTo(new Vector2d(prepClipX, prepClipY))
+                .afterTime(6.2, () -> {
+                    //lift.pickupClip(); not defined yet
+                })
                 .lineToY(pickupCLipY)
+                .afterTime(7.4, () -> {
+                    claw.clawClose();
+                    lift.scoreClip();
+                })
                 .waitSeconds(0.5)
                 .strafeTo(new Vector2d(scoreClipX, scoreClipY))
                 .waitSeconds(1)
@@ -80,6 +94,7 @@ public class TestAuto extends LinearOpMode{
                 .strafeTo(new Vector2d(parkX, parkY));
 
         while (!isStarted() && !opModeIsActive()) {
+            claw.clawClose();
             telemetry.addLine("Initialized Red Side Auto");
             telemetry.update();
         }
@@ -92,10 +107,6 @@ public class TestAuto extends LinearOpMode{
 
         Actions.runBlocking(
                 new SequentialAction(
-                        claw.clawOpen(),
-                        claw.clawClose(),
-                        lift.scoreBucket(),
-                        lift.retractSlides(),
                         autoTrajectoryTest
                 )
         );

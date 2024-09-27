@@ -38,6 +38,7 @@ public class VerticalSlides
     private int highBucketPos = 100;
     private int lowBucketPos = 50;
     private int lowChamberPos = 40;
+    private int highChamberPos = 70;
     private int retractedPos = 0;
 
     //declaring variables for later modification
@@ -216,6 +217,7 @@ public class VerticalSlides
     public void raiseToHighBucket() { moveToPosition(highBucketPos); }
     public void raiseToLowBucket() { moveToPosition(lowBucketPos); }
     public void raiseToLowChamber() { moveToPosition(lowChamberPos); }
+    public void raiseToHighChamber() { moveToPosition(highChamberPos);}
     public void retract() { moveToPosition(retractedPos); }
 
     public int telemetryLeftMotorPos() {
@@ -244,6 +246,16 @@ public class VerticalSlides
     }
     public Action retractSlides() {
         return new retractSlides();
+    }
+    public class scoreClip implements Action {
+        @Override
+        public boolean run(@NonNull TelemetryPacket packet) {
+            raiseToHighChamber();
+            return false;
+        }
+    }
+    public Action scoreClip() {
+        return new scoreClip();
     }
 }
 
