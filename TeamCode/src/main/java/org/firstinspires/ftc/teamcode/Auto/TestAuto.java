@@ -18,17 +18,21 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.Roadrunner.MecanumDrive;
 
+import java.util.Vector;
+
 @Config
 @Autonomous(name = "Test Auto", group = "Test Autonomous")
 public class TestAuto extends LinearOpMode{
 
     double startX = 0;
     double startY = 0;
-    double startHeading = Math.toRadians(0);
+    double startHeading = Math.toRadians(180);
     double scorePreloadX = 0;
     double scorePreloadY = 0;
     double pickupX = 0;
     double pickupY = 0;
+    double parkX = 0;
+    double parkY = 0;
 
     @Override
     public void runOpMode() {
@@ -37,11 +41,23 @@ public class TestAuto extends LinearOpMode{
 
         TrajectoryActionBuilder move1 = drive.actionBuilder(startPose)
                 .strafeTo(new Vector2d(scorePreloadX, scorePreloadY))
-                .waitSeconds(3);
+                .waitSeconds(3)
+                .lineToYLinearHeading(pickupY, 0)
+                .waitSeconds(3)
+                .strafeTo(new Vector2d(parkX, parkY));
 
-//        TrajectoryActionBuilder move2 = drive.actionBuilder(startPose) End of previous trajectory how?
-//                .lineToYSplineHeading(pickupY, 0)
-//                .waitSeconds(3);
+        while (!isStarted() && !opModeIsActive()) {}
+
+        waitForStart();
+
+        if (isStopRequested()) return;
+
+        Action autoTrajectoryTest = move1.build();
+
+        Actions.runBlocking(
+                new SequentialAction(
+                        autoTrajectoryTest
+                )
+        );
     }
-    
 }
