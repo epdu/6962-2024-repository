@@ -57,12 +57,12 @@ public class RobotHardware {
 //        cWristServo = hMap.get(Servo.class, "");
 //        claw = hMap.get(Servo.class, "");
 //
-//        intakeMotor = hMap.get(DcMotorEx.class,"intake");
+        intakeMotor = hMap.get(DcMotorEx.class,"intake");
 //        iWristServo = hMap.get(Servo.class, "");
 //
-//        hSlideMotor = hMap.get(DcMotorEx.class , "hSlide");
+        hSlideMotor = hMap.get(DcMotorEx.class , "hSlide");
 //
-//        vRslideMotor = hMap.get(DcMotorEx.class, "vRslide");
-//        vLslideMotor = hMap.get(DcMotorEx.class, "vLslide");
+        vRslideMotor = hMap.get(DcMotorEx.class, "vRslide");
+        vLslideMotor = hMap.get(DcMotorEx.class, "vLslide");
     }
 }
