@@ -32,7 +32,7 @@ public class RobotHardware {
     public DcMotorEx intakeMotor = null;
     public Servo iWristServo = null;
 
-    public Servo cWristServo = null, armServo = null, claw = null;
+    public Servo cWristServoR = null, cWristServoL = null, armServo = null, claw = null;
 
     //TODO: replace with OTOS
     public NavxMicroNavigationSensor navx;
@@ -54,7 +54,8 @@ public class RobotHardware {
 //        rightBackMotor = hMap.get(MotorEx.class, "Br/Fe");
 
 //        armServo = hMap.get(Servo.class, "");
-//        cWristServo = hMap.get(Servo.class, "");
+//        cWristServoR = hMap.get(Servo.class, "");
+//        cWristServoL = hMap.get(Servo.class, "");
 //        claw = hMap.get(Servo.class, "");
 //
         intakeMotor = hMap.get(DcMotorEx.class,"intake");
