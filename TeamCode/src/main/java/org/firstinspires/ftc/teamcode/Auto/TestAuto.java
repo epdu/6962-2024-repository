@@ -59,7 +59,7 @@ public class TestAuto extends LinearOpMode{
         TrajectoryActionBuilder move1 = drive.actionBuilder(startPose)
                 .strafeTo(new Vector2d(scorePreloadX, scorePreloadY))
                 .afterTime(1, () -> {
-                    //lift.prepClip(); not defined yet
+                    lift.prepClip();
                     claw.clip();
                 })
                 .waitSeconds(1)
@@ -75,13 +75,13 @@ public class TestAuto extends LinearOpMode{
                     lift.retract();
                 })
                 .afterTime(6.2, () -> {
-                    //lift.pickupClip(); not defined yet
+                    lift.pickupClip();
                     claw.clip();
                 })
                 .lineToY(pickupCLipY)
                 .afterTime(7.4, () -> {
                     claw.clawClose();
-                    //lift.prepClip();
+                    lift.prepClip();
                 })
                 .waitSeconds(0.5)
                 .strafeTo(new Vector2d(scoreClipX, scoreClipY))
