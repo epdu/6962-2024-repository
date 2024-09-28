@@ -54,33 +54,33 @@ public class TestAuto extends LinearOpMode{
         Pose2d startPose = new Pose2d(startX, startY, startHeading);
         MecanumDrive drive = new MecanumDrive(hardwareMap, startPose);
         VerticalSlides lift = new VerticalSlides();
-        Claw claw = new Claw();
+        //Claw claw = new Claw();
 
         TrajectoryActionBuilder move1 = drive.actionBuilder(startPose)
                 .strafeTo(new Vector2d(scorePreloadX, scorePreloadY))
                 .afterTime(1, () -> {
                     lift.prepClip();
-                    claw.clip();
+                    //claw.clip();
                 })
                 .waitSeconds(1)
                 .afterTime(2, () -> {
                     lift.scoreClip();
                 })
                 .afterTime(2.1, () -> {
-                    claw.clawOpen();
+                    //claw.clawOpen();
                 })
                 .strafeTo(new Vector2d(prepClipX, prepClipY))
                 .afterTime(3, () -> {
-                    claw.stow();
+                    //claw.stow();
                     lift.retract();
                 })
                 .afterTime(6.2, () -> {
                     lift.pickupClip();
-                    claw.clip();
+                    //claw.clip();
                 })
                 .lineToY(pickupCLipY)
                 .afterTime(7.4, () -> {
-                    claw.clawClose();
+                    //claw.clawClose();
                     lift.prepClip();
                 })
                 .waitSeconds(0.5)
@@ -89,63 +89,63 @@ public class TestAuto extends LinearOpMode{
                     lift.scoreClip();
                 })
                 .afterTime(11.6, () -> {
-                    claw.clawOpen();
+                    //claw.clawOpen();
                 })
                 .waitSeconds(1)
                 .strafeTo(new Vector2d(intake1X, intake1Y))
                 .afterTime(12.6, () -> {
                     lift.retract();
-                    claw.stow();
+                    //claw.stow();
                 })
                 .waitSeconds(1)
                 .strafeTo(new Vector2d(scoreBucketX, scoreBucketY))
                 .afterTime(17.2, () -> {
                     lift.scoreBucket();
-                    claw.bucket();
+                    //claw.bucket();
                 })
                 .waitSeconds(0.5)
                 .afterTime(18, () -> {
-                    claw.clawOpen();
+                    //claw.clawOpen();
                 })
                 .strafeTo(new Vector2d(intake2X, intake2Y))
                 .afterTime(18.7, () -> {
                     lift.retract();
-                    claw.stow();
+                    //claw.stow();
                 })
                 .waitSeconds(1)
                 .strafeTo(new Vector2d(scoreBucketX, scoreBucketY))
                 .afterTime(21, () -> {
                     lift.scoreBucket();
-                    claw.bucket();
+                    //claw.bucket();
                 })
                 .waitSeconds(0.5)
                 .afterTime(21.8, () -> {
-                    claw.clawOpen();
+                    //claw.clawOpen();
                 })
                 .strafeTo(new Vector2d(intake2X, intake2Y))
                 .afterTime(22.7, () -> {
                     lift.retract();
-                    claw.stow();
+                    //claw.stow();
                 })
                 .waitSeconds(1)
                 .strafeTo(new Vector2d(scoreBucketX, scoreBucketY))
                 .afterTime(24.9, () -> {
                     lift.scoreBucket();
-                    claw.bucket();
+                    //claw.bucket();
                 })
                 .waitSeconds(0.5)
                 .afterTime(25.8, () -> {
-                    claw.clawOpen();
+                    //claw.clawOpen();
                 })
                 .strafeTo(new Vector2d(prepParkX, prepParkY))
                 .afterTime(26.7, () -> {
                     lift.retract();
-                    claw.stow();
+                    //claw.stow();
                 })
                 .strafeTo(new Vector2d(parkX, parkY));
 
         while (!isStarted() && !opModeIsActive()) {
-            claw.clawClose();
+            //claw.clawClose();
             telemetry.addLine("Initialized Red Side Auto");
             telemetry.update();
         }
