@@ -69,7 +69,7 @@ public class TestAuto extends LinearOpMode{
                 .afterTime(2.1, () -> {
                     //claw.clawOpen();
                 })
-                .strafeTo(new Vector2d(prepClipX, prepClipY))
+                .strafeToLinearHeading((new Vector2d(prepClipX, prepClipY)), Math.toRadians(90))
                 .afterTime(3, () -> {
                     //claw.stow();
                     lift.retract();
@@ -84,7 +84,7 @@ public class TestAuto extends LinearOpMode{
                     lift.prepClip();
                 })
                 .waitSeconds(0.5)
-                .strafeTo(new Vector2d(scoreClipX, scoreClipY))
+                .strafeToLinearHeading((new Vector2d(scoreClipX, scoreClipY)), Math.toRadians(-90))
                 .afterTime(11.5, () -> {
                     lift.scoreClip();
                 })
@@ -92,13 +92,13 @@ public class TestAuto extends LinearOpMode{
                     //claw.clawOpen();
                 })
                 .waitSeconds(1)
-                .strafeTo(new Vector2d(intake1X, intake1Y))
+                .strafeToLinearHeading((new Vector2d(intake1X, intake1Y)), Math.toRadians(90))
                 .afterTime(12.6, () -> {
                     lift.retract();
                     //claw.stow();
                 })
                 .waitSeconds(1)
-                .strafeTo(new Vector2d(scoreBucketX, scoreBucketY))
+                .strafeToLinearHeading((new Vector2d(scoreBucketX, scoreBucketY)), Math.toRadians(45))
                 .afterTime(17.2, () -> {
                     lift.scoreBucket();
                     //claw.bucket();
@@ -107,13 +107,13 @@ public class TestAuto extends LinearOpMode{
                 .afterTime(18, () -> {
                     //claw.clawOpen();
                 })
-                .strafeTo(new Vector2d(intake2X, intake2Y))
+                .strafeToLinearHeading((new Vector2d(intake2X, intake2Y)), Math.toRadians(95))
                 .afterTime(18.7, () -> {
                     lift.retract();
                     //claw.stow();
                 })
                 .waitSeconds(1)
-                .strafeTo(new Vector2d(scoreBucketX, scoreBucketY))
+                .strafeToLinearHeading((new Vector2d(scoreBucketX, scoreBucketY)), Math.toRadians(45))
                 .afterTime(21, () -> {
                     lift.scoreBucket();
                     //claw.bucket();
@@ -122,13 +122,13 @@ public class TestAuto extends LinearOpMode{
                 .afterTime(21.8, () -> {
                     //claw.clawOpen();
                 })
-                .strafeTo(new Vector2d(intake2X, intake2Y))
+                .strafeToLinearHeading((new Vector2d(intake2X, intake2Y)), Math.toRadians(125))
                 .afterTime(22.7, () -> {
                     lift.retract();
                     //claw.stow();
                 })
                 .waitSeconds(1)
-                .strafeTo(new Vector2d(scoreBucketX, scoreBucketY))
+                .strafeToLinearHeading((new Vector2d(scoreBucketX, scoreBucketY)), Math.toRadians(45))
                 .afterTime(24.9, () -> {
                     lift.scoreBucket();
                     //claw.bucket();
@@ -137,7 +137,7 @@ public class TestAuto extends LinearOpMode{
                 .afterTime(25.8, () -> {
                     //claw.clawOpen();
                 })
-                .strafeTo(new Vector2d(prepParkX, prepParkY))
+                .strafeToLinearHeading((new Vector2d(prepParkX, prepParkY)), Math.toRadians(90))
                 .afterTime(26.7, () -> {
                     lift.retract();
                     //claw.stow();
