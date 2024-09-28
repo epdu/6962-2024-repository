@@ -19,7 +19,6 @@ import org.firstinspires.ftc.teamcode.Util.RobotHardware;
 
 import org.firstinspires.ftc.teamcode.Roadrunner.MecanumDrive;
 import org.firstinspires.ftc.teamcode.Subsystems.VerticalSlides;
-import org.firstinspires.ftc.teamcode.Subsystems.Claw;
 import org.firstinspires.ftc.teamcode.Subsystems.HorizontalSlides;
 import org.firstinspires.ftc.teamcode.Subsystems.Intake;
 
@@ -54,33 +53,33 @@ public class TestAuto extends LinearOpMode{
         Pose2d startPose = new Pose2d(startX, startY, startHeading);
         MecanumDrive drive = new MecanumDrive(hardwareMap, startPose);
         VerticalSlides lift = new VerticalSlides();
-        //Claw claw = new Claw();
+//        ScoringArm scoringArm = new ScoringArm();
 
         TrajectoryActionBuilder move1 = drive.actionBuilder(startPose)
                 .strafeTo(new Vector2d(scorePreloadX, scorePreloadY))
                 .afterTime(1, () -> {
                     lift.prepClip();
-                    //claw.clip();
+                    //scoringArm.clip();
                 })
                 .waitSeconds(1)
                 .afterTime(2, () -> {
                     lift.scoreClip();
                 })
                 .afterTime(2.1, () -> {
-                    //claw.clawOpen();
+                    //scoringArm.clawOpen();
                 })
                 .strafeToLinearHeading((new Vector2d(prepClipX, prepClipY)), Math.toRadians(90))
                 .afterTime(3, () -> {
-                    //claw.stow();
+                    //scoringArm.stow();
                     lift.retract();
                 })
                 .afterTime(6.2, () -> {
                     lift.pickupClip();
-                    //claw.clip();
+                    //scoringArm.clip();
                 })
                 .lineToY(pickupCLipY)
                 .afterTime(7.4, () -> {
-                    //claw.clawClose();
+                    //scoringArm.clawClose();
                     lift.prepClip();
                 })
                 .waitSeconds(0.5)
@@ -89,63 +88,63 @@ public class TestAuto extends LinearOpMode{
                     lift.scoreClip();
                 })
                 .afterTime(11.6, () -> {
-                    //claw.clawOpen();
+                    //scoringArm.clawOpen();
                 })
                 .waitSeconds(1)
                 .strafeToLinearHeading((new Vector2d(intake1X, intake1Y)), Math.toRadians(90))
                 .afterTime(12.6, () -> {
                     lift.retract();
-                    //claw.stow();
+                    //scoringArm.stow();
                 })
                 .waitSeconds(1)
                 .strafeToLinearHeading((new Vector2d(scoreBucketX, scoreBucketY)), Math.toRadians(45))
                 .afterTime(17.2, () -> {
                     lift.scoreBucket();
-                    //claw.bucket();
+                    //scoringArm.bucket();
                 })
                 .waitSeconds(0.5)
                 .afterTime(18, () -> {
-                    //claw.clawOpen();
+                    //scoringArm.clawOpen();
                 })
                 .strafeToLinearHeading((new Vector2d(intake2X, intake2Y)), Math.toRadians(95))
                 .afterTime(18.7, () -> {
                     lift.retract();
-                    //claw.stow();
+                    //scoringArm.stow();
                 })
                 .waitSeconds(1)
                 .strafeToLinearHeading((new Vector2d(scoreBucketX, scoreBucketY)), Math.toRadians(45))
                 .afterTime(21, () -> {
                     lift.scoreBucket();
-                    //claw.bucket();
+                    //scoringArm.bucket();
                 })
                 .waitSeconds(0.5)
                 .afterTime(21.8, () -> {
-                    //claw.clawOpen();
+                    //scoringArm.clawOpen();
                 })
                 .strafeToLinearHeading((new Vector2d(intake2X, intake2Y)), Math.toRadians(125))
                 .afterTime(22.7, () -> {
                     lift.retract();
-                    //claw.stow();
+                    //scoringArm.stow();
                 })
                 .waitSeconds(1)
                 .strafeToLinearHeading((new Vector2d(scoreBucketX, scoreBucketY)), Math.toRadians(45))
                 .afterTime(24.9, () -> {
                     lift.scoreBucket();
-                    //claw.bucket();
+                    //scoringArm.bucket();
                 })
                 .waitSeconds(0.5)
                 .afterTime(25.8, () -> {
-                    //claw.clawOpen();
+                    //scoringArm.clawOpen();
                 })
                 .strafeToLinearHeading((new Vector2d(prepParkX, prepParkY)), Math.toRadians(90))
                 .afterTime(26.7, () -> {
                     lift.retract();
-                    //claw.stow();
+                    //scoringArm.stow();
                 })
                 .strafeTo(new Vector2d(parkX, parkY));
 
         while (!isStarted() && !opModeIsActive()) {
-            //claw.clawClose();
+            //scoringArm.clawClose();
             telemetry.addLine("Initialized Red Side Full Auto");
             telemetry.update();
         }

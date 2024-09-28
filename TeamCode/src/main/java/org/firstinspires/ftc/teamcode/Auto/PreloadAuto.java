@@ -19,9 +19,9 @@ import org.firstinspires.ftc.teamcode.Util.RobotHardware;
 
 import org.firstinspires.ftc.teamcode.Roadrunner.MecanumDrive;
 import org.firstinspires.ftc.teamcode.Subsystems.VerticalSlides;
-import org.firstinspires.ftc.teamcode.Subsystems.Claw;
 import org.firstinspires.ftc.teamcode.Subsystems.HorizontalSlides;
 import org.firstinspires.ftc.teamcode.Subsystems.Intake;
+import org.firstinspires.ftc.teamcode.Subsystems.ScoringArm;
 
 @Config
 @Autonomous(name = "Preload Auto", group = "Autonomous")

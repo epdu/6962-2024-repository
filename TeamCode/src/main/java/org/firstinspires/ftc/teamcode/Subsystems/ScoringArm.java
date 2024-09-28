@@ -10,6 +10,7 @@ import org.firstinspires.ftc.teamcode.Util.RobotHardware;
 public class ScoringArm {
 
     // Main ScoringArm Class that creates instances of the subsystems
+    OpMode opmode;
     public Claw claw = new Claw();
     public Arm arm = new Arm();
     public Wrist wrist = new Wrist();
@@ -20,6 +21,7 @@ public class ScoringArm {
 
     // Initializes the sub-subsystems
     public void initialize(OpMode opmode) {
+        this.opmode = opmode;
         rHardware.init(opmode.hardwareMap);
 
         claw.initialize(rHardware);
@@ -28,14 +30,14 @@ public class ScoringArm {
     }
 
     // Operates the claw for Vincent configuration
-    public void operateVincent(OpMode opmode) {
+    public void operateVincent() {
         if (opmode.gamepad2.left_bumper) {
             claw.toggleClaw();
         }
     }
 
     // Operates the test mode for controlling the claw, arm, and wrist
-    public void operateTest(OpMode opmode) {
+    public void operateTest() {
         if (opmode.gamepad2.left_bumper) {
             claw.toggleClaw();
         }

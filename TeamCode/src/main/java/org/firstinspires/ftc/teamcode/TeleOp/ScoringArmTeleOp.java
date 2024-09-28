@@ -55,7 +55,7 @@ public class ScoringArmTeleOp extends OpMode {
      */
     @Override
     public void loop() {
-        scoringArm.operateTest(this);
+        scoringArm.operateTest();
         // Gamepad 2:
         // Left Bumper - toggle claw open and close
         // Left Joystick Y - incremental left servo (might be reversed)
