@@ -38,8 +38,10 @@ public class VerticalSlides
     private int highBucketPos = 100;
     private int lowBucketPos = 50;
     private int lowChamberPos = 40;
-    private int highChamberPos = 70;
+    private int highChamberPos = 70; //value not tested
     private int retractedPos = 0;
+    private int pickupClipPos = 30; //value not tested
+    private int prepClipPos = 80; //value not tested
 
     //declaring variables for later modification
     private volatile double slidePower;
@@ -218,6 +220,8 @@ public class VerticalSlides
     public void raiseToLowBucket() { moveToPosition(lowBucketPos); }
     public void raiseToLowChamber() { moveToPosition(lowChamberPos); }
     public void raiseToHighChamber() { moveToPosition(highChamberPos);}
+    public void raiseToPickupClip() { moveToPosition(pickupClipPos);}
+    public void raiseToPrepClip() { moveToPosition(prepClipPos);}
     public void retract() { moveToPosition(retractedPos); }
 
     public int telemetryLeftMotorPos() {
@@ -227,6 +231,16 @@ public class VerticalSlides
         return rightSlideMotor.getCurrentPosition();
     }
 
+    public class retractSlides implements Action {
+        @Override
+        public boolean run(@NonNull TelemetryPacket packet) {
+            retract();
+            return false;
+        }
+    }
+    public Action retractSlides() {
+        return new retractSlides();
+    }
     public class scoreBucket implements Action {
         @Override
         public boolean run(@NonNull TelemetryPacket packet) {
@@ -237,15 +251,25 @@ public class VerticalSlides
     public Action scoreBucket() {
         return new scoreBucket();
     }
-    public class retractSlides implements Action {
+    public class pickupClip implements Action {
         @Override
         public boolean run(@NonNull TelemetryPacket packet) {
-            retract();
+            raiseToPickupClip();
             return false;
         }
     }
-    public Action retractSlides() {
-        return new retractSlides();
+    public Action pickupClip() {
+        return new pickupClip();
+    }
+    public class prepClip implements Action {
+        @Override
+        public boolean run(@NonNull TelemetryPacket packet) {
+            raiseToPrepClip();
+            return false;
+        }
+    }
+    public Action prepClip() {
+        return new prepClip();
     }
     public class scoreClip implements Action {
         @Override
