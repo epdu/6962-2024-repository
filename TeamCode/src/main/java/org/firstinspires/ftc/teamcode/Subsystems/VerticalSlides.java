@@ -23,25 +23,25 @@ public class VerticalSlides
     private DcMotorEx leftSlideMotor, rightSlideMotor;
 
     // constants
-    /** all of the constants need to be tuned*/
+    /** all constants need to be tuned*/
     private double joystickScalar = 1;
     private double slideScalar = 1;
-    private double KpUp = 0.5;
-    private double KpDown = 0.3;
+    private double KpUp = 0.05;
+    private double KpDown = 0.01;
     private double Ki = 1;
     private double Kd = 0.4;
     private double Kg = 0; // gravity constant, tune till the slide holds itself in place
-    private double upperLimit = 100;
+    private double upperLimit = 800;
     private double lowerLimit = -2;
     private double retractedThreshold = 5;
 
-    private int highBucketPos = 100;
-    private int lowBucketPos = 50;
-    private int lowChamberPos = 40;
-    private int highChamberPos = 70; //value not tested
+    private int highBucketPos = 500;
+    private int lowBucketPos = 250;
+    private int lowChamberPos = 400;
+    private int highChamberPos = 560;
     private int retractedPos = 0;
-    private int pickupClipPos = 30; //value not tested
-    private int prepClipPos = 80; //value not tested
+    private int pickupClipPos = 200;
+    private int prepClipPos = 400;
 
     //declaring variables for later modification
     private volatile double slidePower;

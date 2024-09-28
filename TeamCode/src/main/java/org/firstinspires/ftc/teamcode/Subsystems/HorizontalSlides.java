@@ -21,7 +21,7 @@ public class HorizontalSlides
     /** all of the constants need to be tuned*/
     private double joystickScalar = 1;
     private double slideScalar = 0.45;
-    private double Kp = 0.005;
+    private double Kp = 0.05;
     private double Ki = 0;
     private double Kd = 0;
     private double Kg = 0; // gravity constant, tune till the slide holds itself in place
@@ -83,7 +83,7 @@ public class HorizontalSlides
 
     public void operateTest() {
 
-        // manual control with triggers
+        // manual control with right stick y
         slidePower = opmode.gamepad2.right_stick_y;
 
         if (Math.abs(slidePower) > 0.05) {
