@@ -27,27 +27,27 @@ import org.firstinspires.ftc.teamcode.Subsystems.Intake;
 @Autonomous(name = "Test Auto", group = "Autonomous")
 public class TestAuto extends LinearOpMode{
 
-    double startX = 7;
-    double startY = -63.75;
-    double startHeading = Math.toRadians(-90);
-    double scorePreloadX = 0;
-    double scorePreloadY = -33;
-    double prepClipX = 62;
-    double prepClipY = -47;
-    double pickupClipX = 62;
-    double pickupCLipY = -62;
-    double scoreClipX = 8;
-    double scoreClipY = -33;
-    double intake1X = -48;
-    double intake1Y = -43;
-    double scoreBucketX = -57;
-    double scoreBucketY = -57;
-    double intake2X = -57;
-    double intake2Y = -43;
-    double prepParkX = -36;
-    double prepParkY = -12;
-    double parkX = -23;
-    double parkY = -12;
+    private double startX = 7;
+    private double startY = -63.75;
+    private double startHeading = Math.toRadians(-90);
+    private double scorePreloadX = 0;
+    private double scorePreloadY = -33;
+    private double prepClipX = 62;
+    private double prepClipY = -47;
+    private double pickupClipX = 62;
+    private double pickupCLipY = -62;
+    private double scoreClipX = 8;
+    private double scoreClipY = -33;
+    private double intake1X = -48;
+    private double intake1Y = -43;
+    private double scoreBucketX = -57;
+    private double scoreBucketY = -57;
+    private double intake2X = -57;
+    private double intake2Y = -43;
+    private double prepParkX = -36;
+    private double prepParkY = -12;
+    private double parkX = -23;
+    private double parkY = -12;
 
     @Override
     public void runOpMode() {
@@ -146,7 +146,7 @@ public class TestAuto extends LinearOpMode{
 
         while (!isStarted() && !opModeIsActive()) {
             //claw.clawClose();
-            telemetry.addLine("Initialized Red Side Auto");
+            telemetry.addLine("Initialized Red Side Full Auto");
             telemetry.update();
         }
 
