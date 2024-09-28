@@ -38,7 +38,7 @@ public class VerticalSlides
     private int highBucketPos = 500;
     private int lowBucketPos = 250;
     private int lowChamberPos = 400;
-    private int highChamberPos = 560;
+    private int highChamberPos = 400;
     private int retractedPos = 0;
     private int pickupClipPos = 200;
     private int prepClipPos = 400;

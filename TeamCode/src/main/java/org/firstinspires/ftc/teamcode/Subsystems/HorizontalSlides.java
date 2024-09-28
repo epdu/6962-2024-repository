@@ -20,7 +20,7 @@ public class HorizontalSlides
     // constants
     /** all of the constants need to be tuned*/
     private double joystickScalar = 1;
-    private double slideScalar = 0.45;
+    private double slideScalar = 1;
     private double Kp = 0.05;
     private double Ki = 0;
     private double Kd = 0;
