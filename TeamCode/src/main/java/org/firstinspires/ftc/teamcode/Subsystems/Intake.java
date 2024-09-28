@@ -29,11 +29,11 @@ public class Intake
 
     // constants
     /** all of the constants need to be tuned*/
-    private double intakePower = 0.6;
-    private double stowedPosition = 0.4;
-    private double intakePosition = 0;
-    private double detectionThreshold = 0.5; //inches
-    private int colorThreshold = 200;
+    private static double intakePower = 0.6;
+    private static double stowedPosition = 0.4;
+    private static double intakePosition = 0;
+    private static double detectionThreshold = 0.5; //inches
+    private static int colorThreshold = 200;
 
     public Intake() {}
 

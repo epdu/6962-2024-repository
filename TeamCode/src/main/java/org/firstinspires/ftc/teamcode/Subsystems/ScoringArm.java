@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.Subsystems;
 
+import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.acmerobotics.roadrunner.Action;
@@ -7,6 +8,7 @@ import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import androidx.annotation.NonNull;
 import org.firstinspires.ftc.teamcode.Util.RobotHardware;
 
+@Config
 public class ScoringArm {
 
     // Main ScoringArm Class that creates instances of the subsystems
@@ -269,6 +271,17 @@ public class ScoringArm {
     }
     public Action stow() {
         return new stow();
+    }
+
+    public class wristSetHorizontal implements Action {
+        @Override
+        public boolean run(@NonNull TelemetryPacket packet) {
+            wrist.setWristScoring();
+            return false;
+        }
+    }
+    public Action wristSetHorizontal() {
+        return new wristSetHorizontal();
     }
 
     // math util functions
