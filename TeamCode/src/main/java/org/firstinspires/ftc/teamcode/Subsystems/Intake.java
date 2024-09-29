@@ -90,20 +90,20 @@ public class Intake
 
     public void shutdown() {}
 
-//    public void intakePieces() {
-//        // right trigger extend hori slides
-//        intakeMotor.setPower(intakePower);
-//        // flip out
+    public void intakePieces() {
+        // right trigger extend hori slides
+        intakeMotor.setPower(intakePower);
+        // flip out
 //        wristServo.setPosition(intakePosition);
 //        flippedUp = false;
-//    }
-//    public void stopIntaking() {
-//        // stop
-//        intakeMotor.setPower(0);
-//        // flip in
+    }
+    public void stopIntaking() {
+        // stop
+        intakeMotor.setPower(0);
+        // flip in
 //        wristServo.setPosition(stowedPosition);
 //        flippedUp = true;
-//    }
+    }
     public void eject() {
         // reverse direction for 2 seconds, then return
         intakeMotor.setPower(-intakePower);
