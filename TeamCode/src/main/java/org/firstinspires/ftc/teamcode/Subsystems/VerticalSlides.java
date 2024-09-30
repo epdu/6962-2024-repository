@@ -122,17 +122,18 @@ public class VerticalSlides
         // PID control
         else
         {
-            PIDPowerL = PIDControl(target, leftSlideMotor);
+//            PIDPowerL = PIDControl(target, leftSlideMotor);
             PIDPowerR = PIDControl(target, rightSlideMotor);
-            leftSlideMotor.setPower(PIDPowerL);
+//            leftSlideMotor.setPower(PIDPowerL);
+            leftSlideMotor.setPower(PIDPowerR);
             rightSlideMotor.setPower(PIDPowerR);
         }
 
         // updates boolean
-        verticalSlidesRetracted = leftSlideMotor.getCurrentPosition() < retractedThreshold && leftSlideMotor.getCurrentPosition() < retractedThreshold;
+        verticalSlidesRetracted = leftSlideMotor.getCurrentPosition() < retractedThreshold /*&& rightSlideMotor.getCurrentPosition() < retractedThreshold*/;
 
-        opmode.telemetry.addData("PID Power L ", PIDPowerL);
-        opmode.telemetry.addData("PID Power R ", PIDPowerL);
+//        opmode.telemetry.addData("PID Power L ", PIDPowerL);
+        opmode.telemetry.addData("PID Power R ", PIDPowerR);
         opmode.telemetry.addData("Slide Target ", target);
     }
 
@@ -147,13 +148,14 @@ public class VerticalSlides
             retract();
         }
 
-        PIDPowerL = PIDControl(target, leftSlideMotor);
+//        PIDPowerL = PIDControl(target, leftSlideMotor);
         PIDPowerR = PIDControl(target, rightSlideMotor);
-        leftSlideMotor.setPower(PIDPowerL);
+//        leftSlideMotor.setPower(PIDPowerL);
+        leftSlideMotor.setPower(PIDPowerR);
         rightSlideMotor.setPower(PIDPowerR);
 
         // updates boolean
-        verticalSlidesRetracted = leftSlideMotor.getCurrentPosition() < retractedThreshold && leftSlideMotor.getCurrentPosition() < retractedThreshold;
+        verticalSlidesRetracted = leftSlideMotor.getCurrentPosition() < retractedThreshold /*&& leftSlideMotor.getCurrentPosition() < retractedThreshold*/;
     }
 
     public void shutdown() {

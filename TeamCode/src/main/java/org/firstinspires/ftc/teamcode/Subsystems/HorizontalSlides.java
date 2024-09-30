@@ -82,9 +82,8 @@ public class HorizontalSlides
     }
 
     public void operateTest() {
-
         // manual control with right stick y
-        slidePower = opmode.gamepad2.right_stick_y;
+        slidePower = -opmode.gamepad2.right_stick_y;
 
         if (Math.abs(slidePower) > 0.05) {
             // if position positive, then can move freely
@@ -117,6 +116,7 @@ public class HorizontalSlides
 
         opmode.telemetry.addData("PID Power", PIDPower);
         opmode.telemetry.addData("Slide Target", target);
+        opmode.telemetry.addData("Encoder Position", slideMotor.getCurrentPosition());
     }
 
     public void shutdown() {

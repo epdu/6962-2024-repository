@@ -44,10 +44,10 @@ public class ScoringArm {
             claw.toggleClaw();
         }
 
-        wrist.incrementalWristL(getSign(opmode.gamepad2.left_stick_y));
-        wrist.incrementalWristR(getSign(opmode.gamepad2.right_stick_y));
+        wrist.incrementalWristL(getSign(-opmode.gamepad2.left_stick_y));
+        wrist.incrementalWristR(getSign(-opmode.gamepad2.right_stick_y));
 
-        wrist.incrementalWristTurn(getSign(opmode.gamepad1.left_stick_y));
+        wrist.incrementalWristTurn(getSign(-opmode.gamepad1.left_stick_y));
         wrist.incrementalWristRotate(getSign(opmode.gamepad1.left_stick_x));
 
         if (opmode.gamepad2.dpad_up) {
