@@ -71,7 +71,7 @@ public class TestAuto extends LinearOpMode{
                 .strafeToLinearHeading((new Vector2d(prepClipX, prepClipY)), Math.toRadians(90))
                 .afterTime(3, () -> {
                     //scoringArm.stow();
-//                    lift.retract();
+//                    lift.retractSlides();
                 })
                 .afterTime(6.2, () -> {
 //                    lift.pickupClip();
@@ -93,7 +93,7 @@ public class TestAuto extends LinearOpMode{
                 .waitSeconds(1)
                 .strafeToLinearHeading((new Vector2d(intake1X, intake1Y)), Math.toRadians(90))
                 .afterTime(12.6, () -> {
-//                    lift.retract();
+//                    lift.retractSlides();
                     //scoringArm.stow();
                 })
                 .waitSeconds(1)
@@ -108,7 +108,7 @@ public class TestAuto extends LinearOpMode{
                 })
                 .strafeToLinearHeading((new Vector2d(intake2X, intake2Y)), Math.toRadians(95))
                 .afterTime(18.7, () -> {
-//                    lift.retract();
+//                    lift.retractSlides();
                     //scoringArm.stow();
                 })
                 .waitSeconds(1)
@@ -123,7 +123,7 @@ public class TestAuto extends LinearOpMode{
                 })
                 .strafeToLinearHeading((new Vector2d(intake2X, intake2Y)), Math.toRadians(125))
                 .afterTime(22.7, () -> {
-//                    lift.retract();
+//                    lift.retractSlides();
                     //scoringArm.stow();
                 })
                 .waitSeconds(1)
@@ -138,7 +138,7 @@ public class TestAuto extends LinearOpMode{
                 })
                 .strafeToLinearHeading((new Vector2d(prepParkX, prepParkY)), Math.toRadians(90))
                 .afterTime(26.7, () -> {
-//                    lift.retract();
+//                    lift.retractSlides();
                     //scoringArm.stow();
                 })
                 .strafeTo(new Vector2d(parkX, parkY));
