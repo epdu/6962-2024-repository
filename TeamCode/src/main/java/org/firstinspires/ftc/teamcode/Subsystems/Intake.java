@@ -56,7 +56,6 @@ public class Intake
         if (opmode.gamepad2.right_bumper) {
             // start intaking
             intakePieces();// flip out
-            wristServo.setPosition(intakePosition);
             if (opmode.gamepad2.a) {
                 eject();
             }
@@ -67,29 +66,30 @@ public class Intake
             // flip in
             wristServo.setPosition(stowedPosition);
         }
+
     }
 
     public void operateTest() {
 
         intakeMotor.setPower(opmode.gamepad2.left_stick_y);
-        if (opmode.gamepad2.x) {
-            intakeMotor.setPower(intakePower);
-
-            wristServo.setPosition(intakePosition);
-        }
-        if (opmode.gamepad2.a) {
-            eject();
-        }
-
+//        if (opmode.gamepad2.x) {
+//            intakeMotor.setPower(intakePower);
+//
+//            wristServo.setPosition(intakePosition);
+//        }
 //        if (opmode.gamepad2.a) {
-//            intakePieces();
-//        }
-//        else if (opmode.gamepad2.b) {
-//            stopIntaking();
-//        }
-//        else if (opmode.gamepad2.x) {
 //            eject();
 //        }
+
+        if (opmode.gamepad2.a) {
+            intakePieces();
+        }
+        else if (opmode.gamepad2.b) {
+            stopIntaking();
+        }
+        else if (opmode.gamepad2.x) {
+            eject();
+        }
     }
 
     public void shutdown() {}
@@ -98,15 +98,15 @@ public class Intake
         // right trigger extend hori slides
         intakeMotor.setPower(intakePower);
         // flip out
-//        wristServo.setPosition(intakePosition);
-//        flippedUp = false;
+        wristServo.setPosition(intakePosition);
+        flippedUp = false;
     }
     public void stopIntaking() {
         // stop
         intakeMotor.setPower(0);
         // flip in
-//        wristServo.setPosition(stowedPosition);
-//        flippedUp = true;
+        wristServo.setPosition(stowedPosition);
+        flippedUp = true;
     }
     public void eject() {
         // reverse direction for 2 seconds, then return
