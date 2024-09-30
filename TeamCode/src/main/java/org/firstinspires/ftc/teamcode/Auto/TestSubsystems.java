@@ -29,7 +29,7 @@ public class TestSubsystems extends LinearOpMode{
 
         Actions.runBlocking(
                 new SequentialAction(
-                        lift.scoreClip()
+//                        lift.scoreClip()
                 )
         );
     }

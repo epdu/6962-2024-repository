@@ -96,25 +96,25 @@ public class VerticalSlides
         if (Math.abs(slidePower) > 0.05)
         {
             // if position positive, then can move freely
-            if (leftSlideMotor.getCurrentPosition() > lowerLimit || rightSlideMotor.getCurrentPosition() > lowerLimit) {
+            if (rightSlideMotor.getCurrentPosition() > lowerLimit) {
                 leftSlideMotor.setPower(slidePower * slideScalar);
                 rightSlideMotor.setPower(slidePower * slideScalar);
-                target = (leftSlideMotor.getCurrentPosition() + rightSlideMotor.getCurrentPosition()) * 0.5;
+                target = rightSlideMotor.getCurrentPosition();
             }
             // if position negative, but want to move positive, then can move
             else if (leftSlideMotor.getCurrentPosition() <= lowerLimit && slidePower > 0)
             {
                 leftSlideMotor.setPower(slidePower * slideScalar);
                 rightSlideMotor.setPower(slidePower * slideScalar);
-                target = (leftSlideMotor.getCurrentPosition() + rightSlideMotor.getCurrentPosition()) * 0.5;
+                target = rightSlideMotor.getCurrentPosition();
             }
 
             // if out of range, sets target to back in range
-            if (leftSlideMotor.getCurrentPosition() > upperLimit || rightSlideMotor.getCurrentPosition() > upperLimit)
+            if (rightSlideMotor.getCurrentPosition() > upperLimit)
             {
                 target = upperLimit-2;
             }
-            else if (leftSlideMotor.getCurrentPosition() < lowerLimit || rightSlideMotor.getCurrentPosition() < lowerLimit)
+            else if (rightSlideMotor.getCurrentPosition() < lowerLimit)
             {
                 target = lowerLimit+2;
             }
@@ -130,7 +130,7 @@ public class VerticalSlides
         }
 
         // updates boolean
-        verticalSlidesRetracted = leftSlideMotor.getCurrentPosition() < retractedThreshold /*&& rightSlideMotor.getCurrentPosition() < retractedThreshold*/;
+        verticalSlidesRetracted = rightSlideMotor.getCurrentPosition() < retractedThreshold;
 
 //        opmode.telemetry.addData("PID Power L ", PIDPowerL);
         opmode.telemetry.addData("PID Power R ", PIDPowerR);

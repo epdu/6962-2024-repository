@@ -58,12 +58,12 @@ public class TestAuto extends LinearOpMode{
         TrajectoryActionBuilder move1 = drive.actionBuilder(startPose)
                 .strafeTo(new Vector2d(scorePreloadX, scorePreloadY))
                 .afterTime(1, () -> {
-                    lift.prepClip();
+//                    lift.prepClip();
                     //scoringArm.clip();
                 })
                 .waitSeconds(1)
                 .afterTime(2, () -> {
-                    lift.scoreClip();
+//                    lift.scoreClip();
                 })
                 .afterTime(2.1, () -> {
                     //scoringArm.clawOpen();
@@ -71,21 +71,21 @@ public class TestAuto extends LinearOpMode{
                 .strafeToLinearHeading((new Vector2d(prepClipX, prepClipY)), Math.toRadians(90))
                 .afterTime(3, () -> {
                     //scoringArm.stow();
-                    lift.retract();
+//                    lift.retract();
                 })
                 .afterTime(6.2, () -> {
-                    lift.pickupClip();
+//                    lift.pickupClip();
                     //scoringArm.clip();
                 })
                 .lineToY(pickupCLipY)
                 .afterTime(7.4, () -> {
                     //scoringArm.clawClose();
-                    lift.prepClip();
+//                    lift.prepClip();
                 })
                 .waitSeconds(0.5)
                 .strafeToLinearHeading((new Vector2d(scoreClipX, scoreClipY)), Math.toRadians(-90))
                 .afterTime(11.5, () -> {
-                    lift.scoreClip();
+//                    lift.scoreClip();
                 })
                 .afterTime(11.6, () -> {
                     //scoringArm.clawOpen();
@@ -93,13 +93,13 @@ public class TestAuto extends LinearOpMode{
                 .waitSeconds(1)
                 .strafeToLinearHeading((new Vector2d(intake1X, intake1Y)), Math.toRadians(90))
                 .afterTime(12.6, () -> {
-                    lift.retract();
+//                    lift.retract();
                     //scoringArm.stow();
                 })
                 .waitSeconds(1)
                 .strafeToLinearHeading((new Vector2d(scoreBucketX, scoreBucketY)), Math.toRadians(45))
                 .afterTime(17.2, () -> {
-                    lift.scoreBucket();
+//                    lift.scoreBucket();
                     //scoringArm.bucket();
                 })
                 .waitSeconds(0.5)
@@ -108,13 +108,13 @@ public class TestAuto extends LinearOpMode{
                 })
                 .strafeToLinearHeading((new Vector2d(intake2X, intake2Y)), Math.toRadians(95))
                 .afterTime(18.7, () -> {
-                    lift.retract();
+//                    lift.retract();
                     //scoringArm.stow();
                 })
                 .waitSeconds(1)
                 .strafeToLinearHeading((new Vector2d(scoreBucketX, scoreBucketY)), Math.toRadians(45))
                 .afterTime(21, () -> {
-                    lift.scoreBucket();
+//                    lift.scoreBucket();
                     //scoringArm.bucket();
                 })
                 .waitSeconds(0.5)
@@ -123,13 +123,13 @@ public class TestAuto extends LinearOpMode{
                 })
                 .strafeToLinearHeading((new Vector2d(intake2X, intake2Y)), Math.toRadians(125))
                 .afterTime(22.7, () -> {
-                    lift.retract();
+//                    lift.retract();
                     //scoringArm.stow();
                 })
                 .waitSeconds(1)
                 .strafeToLinearHeading((new Vector2d(scoreBucketX, scoreBucketY)), Math.toRadians(45))
                 .afterTime(24.9, () -> {
-                    lift.scoreBucket();
+//                    lift.scoreBucket();
                     //scoringArm.bucket();
                 })
                 .waitSeconds(0.5)
@@ -138,7 +138,7 @@ public class TestAuto extends LinearOpMode{
                 })
                 .strafeToLinearHeading((new Vector2d(prepParkX, prepParkY)), Math.toRadians(90))
                 .afterTime(26.7, () -> {
-                    lift.retract();
+//                    lift.retract();
                     //scoringArm.stow();
                 })
                 .strafeTo(new Vector2d(parkX, parkY));
