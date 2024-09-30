@@ -41,13 +41,10 @@ public class Intake
         this.opmode = opmode;
         rHardware.init(opmode.hardwareMap);
         ON_RED_ALLIANCE = redAlliance;
-        this.timer = timer;
 
-        intakeMotor = rHardware.intakeMotor;
-        wristServo = rHardware.iWristServo;
-//        intakeMotor = opmode.hardwareMap.get(DcMotorEx.class, "");
-//        wristServo = opmode.hardwareMap.get(Servo.class, "");
-//        timer = timer;
+        this.timer = timer;
+        this.intakeMotor = rHardware.intakeMotor;
+        this.wristServo = rHardware.iWristServo;
 //        intakeServo.setDirection(DcMotorSimple.Direction.REVERSE);
     }
 
