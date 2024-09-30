@@ -143,8 +143,9 @@ public class TestAuto extends LinearOpMode{
                 })
                 .strafeTo(new Vector2d(parkX, parkY));
 
+        //Actions.runBlocking(claw.clawClose()); //runs on init
+
         while (!isStarted() && !opModeIsActive()) {
-            //scoringArm.clawClose();
             telemetry.addLine("Initialized Red Side Full Auto");
             telemetry.update();
         }

@@ -27,7 +27,7 @@ public class MeepMeepSplineTest {
                                 .waitSeconds(1)
                                 //score preloaded specimen
                                 //.splineTo((new Vector2d(62, -47)), Math.toRadians(90))
-                                .splineToLinearHeading((new Pose2d(62, -47, Math.toRadians(90))), Math.toRadians(40))
+                                .splineToLinearHeading((new Pose2d(62, -47, Math.toRadians(90))), Math.toRadians(20))
                                 .lineToConstantHeading(new Vector2d(62, -62))
                                 .waitSeconds(0.5)
                                 .lineToLinearHeading(new Pose2d(8, -33, Math.toRadians(-90)))
@@ -36,9 +36,11 @@ public class MeepMeepSplineTest {
                                 .lineToLinearHeading(new Pose2d(-48, -43, Math.toRadians(90)))
                                 .waitSeconds(1)
                                 //run intake 1
-                                .lineToLinearHeading(new Pose2d(-57, -57, Math.toRadians(45)))
-                                //.splineToLinearHeading((new Pose2d(-57, -57, Math.toRadians(45))), Math.toRadians(80))
+                                //.lineToLinearHeading(new Pose2d(-57, -57, Math.toRadians(45)))
+                                .setReversed(true)
+                                .splineToLinearHeading((new Pose2d(-57, -57, Math.toRadians(45))), Math.toRadians(0))
                                 .waitSeconds(0.5)
+                                .setReversed(false)
                                 //score top
                                 //.lineToLinearHeading(new Pose2d(-57, -43, Math.toRadians(95)))
                                 //.splineToLinearHeading((new Pose2d(-57, -43, Math.toRadians(95))), Math.toRadians(0))
