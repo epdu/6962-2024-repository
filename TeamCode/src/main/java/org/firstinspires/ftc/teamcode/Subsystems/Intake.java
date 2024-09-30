@@ -44,7 +44,7 @@ public class Intake
         this.timer = timer;
 
         intakeMotor = rHardware.intakeMotor;
-//        wristServo = rHardware.iWristServo;
+        wristServo = rHardware.iWristServo;
 //        intakeMotor = opmode.hardwareMap.get(DcMotorEx.class, "");
 //        wristServo = opmode.hardwareMap.get(Servo.class, "");
 //        timer = timer;
@@ -55,15 +55,17 @@ public class Intake
     {
         if (opmode.gamepad2.right_bumper) {
             // start intaking
-            intakeMotor.setPower(intakePower);
-            // flip out
-//            wristServo.setPosition(intakePosition);
+            intakePieces();// flip out
+            wristServo.setPosition(intakePosition);
+            if (opmode.gamepad2.a) {
+                eject();
+            }
         }
         else {
             // stop
-            intakeMotor.setPower(0);
+            stopIntaking();
             // flip in
-//            wristServo.setPosition(stowedPosition);
+            wristServo.setPosition(stowedPosition);
         }
     }
 
@@ -72,6 +74,8 @@ public class Intake
         intakeMotor.setPower(opmode.gamepad2.left_stick_y);
         if (opmode.gamepad2.x) {
             intakeMotor.setPower(intakePower);
+
+            wristServo.setPosition(intakePosition);
         }
         if (opmode.gamepad2.a) {
             eject();

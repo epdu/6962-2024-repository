@@ -218,6 +218,78 @@ public class ScoringArm {
             return wristR.getPosition();
         }
     }
+    public class clawOpen implements Action {
+        @Override
+        public boolean run(@NonNull TelemetryPacket packet) {
+            claw.openClaw();
+            return false;
+        }
+    }
+    public Action clawOpen() {
+        return new clawOpen();
+    }
+    public class clawClose implements Action {
+        @Override
+        public boolean run(@NonNull TelemetryPacket packet) {
+            claw.closeClaw();
+            return false;
+        }
+    }
+    public Action clawClose() {
+        return new clawClose();
+    }
+    public class clip implements Action {
+        @Override
+        public boolean run(@NonNull TelemetryPacket packet) {
+            arm.scoreArm();
+            wrist.setWristScoring();
+            return false;
+        }
+    }
+    public Action clip() {
+        return new clip();
+    }
+    public class bucket implements Action {
+        @Override
+        public boolean run(@NonNull TelemetryPacket packet) {
+            arm.scoreArm();
+            wrist.setWristScoring();
+            return false;
+        }
+    }
+    public Action bucket() {
+        return new bucket();
+    }
+    public class stow implements Action {
+        @Override
+        public boolean run(@NonNull TelemetryPacket packet) {
+            arm.stowArm();
+            wrist.setWristStow();
+            return false;
+        }
+    }
+    public Action stow() {
+        return new stow();
+    }
+
+    public class wristSetHorizontal implements Action {
+        @Override
+        public boolean run(@NonNull TelemetryPacket packet) {
+            wrist.setWristScoring();
+            return false;
+        }
+    }
+    public Action wristSetHorizontal() {
+        return new wristSetHorizontal();
+    }
+
+    // math util functions
+    public boolean isClose(double a, double b) {
+        return Math.abs(a - b) < 0.001;
+    }
+    public int getSign(double input) {
+        return input > 0 ? 1 : input == 0 ? 0 : -1;
+    }
 
     public void shutdown() {}
 }
