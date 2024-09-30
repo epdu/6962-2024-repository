@@ -52,7 +52,7 @@ public class VerticalSlidesTeleOp extends OpMode {
         // Left Joystick Y - vertical slide manual control
         telemetry.addData("Vertical Slides Retracted: ", verticalSlides.verticalSlidesRetracted);
         telemetry.addData("Left Motor Encoder Pos: ", verticalSlides.telemetryLeftMotorPos());
-        telemetry.addData("Right Motor Encoder Pos: ", verticalSlides.telemetryLeftMotorPos());
+        telemetry.addData("Right Motor Encoder Pos: ", verticalSlides.telemetryRightMotorPos());
         telemetry.update();
     }
 

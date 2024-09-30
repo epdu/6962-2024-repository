@@ -231,55 +231,55 @@ public class VerticalSlides
         return rightSlideMotor.getCurrentPosition();
     }
 
-    public class retractSlides implements Action {
-        @Override
-        public boolean run(@NonNull TelemetryPacket packet) {
-            retract();
-            return false;
-        }
-    }
-    public Action retractSlides() {
-        return new retractSlides();
-    }
-    public class scoreBucket implements Action {
-        @Override
-        public boolean run(@NonNull TelemetryPacket packet) {
-            raiseToHighBucket();
-            return false;
-        }
-    }
-    public Action scoreBucket() {
-        return new scoreBucket();
-    }
-    public class pickupClip implements Action {
-        @Override
-        public boolean run(@NonNull TelemetryPacket packet) {
-            raiseToPickupClip();
-            return false;
-        }
-    }
-    public Action pickupClip() {
-        return new pickupClip();
-    }
-    public class prepClip implements Action {
-        @Override
-        public boolean run(@NonNull TelemetryPacket packet) {
-            raiseToPrepClip();
-            return false;
-        }
-    }
-    public Action prepClip() {
-        return new prepClip();
-    }
-    public class scoreClip implements Action {
-        @Override
-        public boolean run(@NonNull TelemetryPacket packet) {
-            raiseToHighChamber();
-            return false;
-        }
-    }
-    public Action scoreClip() {
-        return new scoreClip();
-    }
+//    public class retractSlides implements Action {
+//        @Override
+//        public boolean run(@NonNull TelemetryPacket packet) {
+//            retract();
+//            return false;
+//        }
+//    }
+//    public Action retractSlides() {
+//        return new retractSlides();
+//    }
+//    public class scoreBucket implements Action {
+//        @Override
+//        public boolean run(@NonNull TelemetryPacket packet) {
+//            raiseToHighBucket();
+//            return false;
+//        }
+//    }
+//    public Action scoreBucket() {
+//        return new scoreBucket();
+//    }
+//    public class pickupClip implements Action {
+//        @Override
+//        public boolean run(@NonNull TelemetryPacket packet) {
+//            raiseToPickupClip();
+//            return false;
+//        }
+//    }
+//    public Action pickupClip() {
+//        return new pickupClip();
+//    }
+//    public class prepClip implements Action {
+//        @Override
+//        public boolean run(@NonNull TelemetryPacket packet) {
+//            raiseToPrepClip();
+//            return false;
+//        }
+//    }
+//    public Action prepClip() {
+//        return new prepClip();
+//    }
+//    public class scoreClip implements Action {
+//        @Override
+//        public boolean run(@NonNull TelemetryPacket packet) {
+//            raiseToHighChamber();
+//            return false;
+//        }
+//    }
+//    public Action scoreClip() {
+//        return new scoreClip();
+//    }
 }
 
