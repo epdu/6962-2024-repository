@@ -31,6 +31,8 @@ public class TestAuto extends LinearOpMode{
     private double startHeading = Math.toRadians(-90);
     private double scorePreloadX = 0;
     private double scorePreloadY = -33;
+    private double afterPreloadX = 0;
+    private double afterPreloadY = -37;
     private double prepClipX = 62;
     private double prepClipY = -47;
     private double pickupClipX = 62;
@@ -68,6 +70,7 @@ public class TestAuto extends LinearOpMode{
                 .afterTime(2.1, () -> {
                     //scoringArm.clawOpen();
                 })
+                .strafeTo(new Vector2d(afterPreloadX, afterPreloadY))
                 .strafeToLinearHeading((new Vector2d(prepClipX, prepClipY)), Math.toRadians(90))
                 .afterTime(3, () -> {
                     //scoringArm.stow();
