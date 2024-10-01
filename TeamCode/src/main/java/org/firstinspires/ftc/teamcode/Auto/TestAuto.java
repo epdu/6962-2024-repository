@@ -71,7 +71,8 @@ public class TestAuto extends LinearOpMode{
                     //scoringArm.clawOpen();
                 })
                 .strafeTo(new Vector2d(afterPreloadX, afterPreloadY))
-                .strafeToLinearHeading((new Vector2d(prepClipX, prepClipY)), Math.toRadians(90))
+                .turnTo(Math.toRadians(90))
+                .strafeToConstantHeading(new Vector2d(prepClipX, prepClipY))
                 .afterTime(3, () -> {
                     //scoringArm.stow();
 //                    lift.retractSlides();
@@ -86,7 +87,8 @@ public class TestAuto extends LinearOpMode{
 //                    lift.prepClip();
                 })
                 .waitSeconds(0.5)
-                .strafeToLinearHeading((new Vector2d(scoreClipX, scoreClipY)), Math.toRadians(-90))
+                .turnTo(Math.toRadians(-90))
+                .strafeToConstantHeading(new Vector2d(scoreClipX, scoreClipY))
                 .afterTime(11.5, () -> {
 //                    lift.scoreClip();
                 })
@@ -94,13 +96,15 @@ public class TestAuto extends LinearOpMode{
                     //scoringArm.clawOpen();
                 })
                 .waitSeconds(1)
-                .strafeToLinearHeading((new Vector2d(intake1X, intake1Y)), Math.toRadians(90))
+                .strafeToConstantHeading(new Vector2d(intake1X, intake1Y))
+                .turnTo(Math.toRadians(90))
                 .afterTime(12.6, () -> {
 //                    lift.retractSlides();
                     //scoringArm.stow();
                 })
                 .waitSeconds(1)
-                .strafeToLinearHeading((new Vector2d(scoreBucketX, scoreBucketY)), Math.toRadians(45))
+                .strafeToConstantHeading(new Vector2d(scoreBucketX, scoreBucketY))
+                .turnTo(Math.toRadians(45))
                 .afterTime(17.2, () -> {
 //                    lift.scoreBucket();
                     //scoringArm.bucket();
@@ -109,13 +113,15 @@ public class TestAuto extends LinearOpMode{
                 .afterTime(18, () -> {
                     //scoringArm.clawOpen();
                 })
-                .strafeToLinearHeading((new Vector2d(intake2X, intake2Y)), Math.toRadians(95))
+                .strafeToConstantHeading(new Vector2d(intake2X, intake2Y))
+                .turnTo(Math.toRadians(95))
                 .afterTime(18.7, () -> {
 //                    lift.retractSlides();
                     //scoringArm.stow();
                 })
                 .waitSeconds(1)
-                .strafeToLinearHeading((new Vector2d(scoreBucketX, scoreBucketY)), Math.toRadians(45))
+                .strafeToConstantHeading(new Vector2d(scoreBucketX, scoreBucketY))
+                .turnTo(Math.toRadians(45))
                 .afterTime(21, () -> {
 //                    lift.scoreBucket();
                     //scoringArm.bucket();
@@ -124,13 +130,15 @@ public class TestAuto extends LinearOpMode{
                 .afterTime(21.8, () -> {
                     //scoringArm.clawOpen();
                 })
-                .strafeToLinearHeading((new Vector2d(intake2X, intake2Y)), Math.toRadians(125))
+                .strafeToConstantHeading(new Vector2d(intake2X, intake2Y))
+                .turnTo(Math.toRadians(125))
                 .afterTime(22.7, () -> {
 //                    lift.retractSlides();
                     //scoringArm.stow();
                 })
                 .waitSeconds(1)
-                .strafeToLinearHeading((new Vector2d(scoreBucketX, scoreBucketY)), Math.toRadians(45))
+                .strafeToConstantHeading(new Vector2d(scoreBucketX, scoreBucketY))
+                .turnTo(Math.toRadians(45))
                 .afterTime(24.9, () -> {
 //                    lift.scoreBucket();
                     //scoringArm.bucket();
@@ -139,7 +147,8 @@ public class TestAuto extends LinearOpMode{
                 .afterTime(25.8, () -> {
                     //scoringArm.clawOpen();
                 })
-                .strafeToLinearHeading((new Vector2d(prepParkX, prepParkY)), Math.toRadians(90))
+                .turnTo(Math.toRadians(90))
+                .strafeToConstantHeading(new Vector2d(prepParkX, prepParkY))
                 .afterTime(26.7, () -> {
 //                    lift.retractSlides();
                     //scoringArm.stow();
