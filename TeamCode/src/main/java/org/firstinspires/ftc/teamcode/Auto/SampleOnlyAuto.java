@@ -62,7 +62,7 @@ public class SampleOnlyAuto extends LinearOpMode{
                     //scoringArm.clawOpen();
                 })
                 .strafeTo(new Vector2d(afterPreloadX, afterPreloadY))
-                .turnTo(Math.toRadians(90))
+                //.turnTo(Math.toRadians(90))
                 //.strafeToConstantHeading(new Vector2d(prepClipX, prepClipY))
                 .afterTime(3, () -> {
                     //scoringArm.stow();
