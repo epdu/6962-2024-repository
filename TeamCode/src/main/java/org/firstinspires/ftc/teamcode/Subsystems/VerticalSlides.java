@@ -19,7 +19,7 @@ public class VerticalSlides
 {
     OpMode opmode;
 
-    private RobotHardware rHardware = new RobotHardware();
+    private final RobotHardware rHardware = new RobotHardware();
     private DcMotorEx leftSlideMotor, rightSlideMotor;
 
     // constants

@@ -17,7 +17,7 @@ public class Intake
 {
     OpMode opmode;
 
-    private RobotHardware rHardware = new RobotHardware();
+    private final RobotHardware rHardware = new RobotHardware();
     CustomTimer timer;
     private DcMotorEx intakeMotor;
     private Servo wristServo;

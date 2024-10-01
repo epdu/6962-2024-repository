@@ -14,7 +14,7 @@ import org.firstinspires.ftc.teamcode.Roadrunner.MecanumDrive;
 import org.firstinspires.ftc.teamcode.Subsystems.VerticalSlides;
 
 @Config
-@Autonomous(name = "Test Auto", group = "Autonomous")
+@Autonomous(name = "Sample Auto", group = "Autonomous")
 public class SampleOnlyAuto extends LinearOpMode{
 
     public static double startX = 7;

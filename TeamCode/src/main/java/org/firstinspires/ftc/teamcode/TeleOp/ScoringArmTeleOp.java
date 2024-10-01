@@ -8,7 +8,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.ScoringArm;
 @TeleOp(name="Only Scoring Arm Test", group="Active TeleOps")
 public class ScoringArmTeleOp extends OpMode {
     // creating subsystems
-    private ScoringArm scoringArm = new ScoringArm();
+    private final ScoringArm scoringArm = new ScoringArm();
 
     /*
      * Code to run ONCE when the driver hits INIT

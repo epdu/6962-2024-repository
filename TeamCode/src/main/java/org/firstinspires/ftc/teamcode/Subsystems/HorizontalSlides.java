@@ -15,7 +15,7 @@ public class HorizontalSlides
 {
     OpMode opmode;
 
-    private RobotHardware rHardware = new RobotHardware();
+    private final RobotHardware rHardware = new RobotHardware();
     private DcMotorEx slideMotor;
 
     // constants
@@ -71,12 +71,7 @@ public class HorizontalSlides
         slideMotor.setPower(PIDPower);
 
         // updates boolean
-        if (slideMotor.getCurrentPosition() < retractedThreshold) {
-            horizontalSlidesRetracted = true;
-        }
-        else {
-            horizontalSlidesRetracted = false;
-        }
+        horizontalSlidesRetracted = slideMotor.getCurrentPosition() < retractedThreshold;
 
         opmode.telemetry.addData("PID Power", PIDPower);
         opmode.telemetry.addData("Slide Target", target);

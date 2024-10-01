@@ -14,7 +14,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.VerticalSlides;
 @TeleOp(name="Only Horizontal Slides Test", group="Active TeleOps")
 public class HorizontalSlidesTeleOp extends OpMode {
     // creating subsystems
-    private HorizontalSlides horizontalSlides = new HorizontalSlides();
+    private final HorizontalSlides horizontalSlides = new HorizontalSlides();
 
     /*
      * Code to run ONCE when the driver hits INIT

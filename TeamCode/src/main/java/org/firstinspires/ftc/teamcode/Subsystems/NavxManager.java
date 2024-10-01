@@ -20,7 +20,7 @@ public class NavxManager extends GyroEx
     //X (Pitch)	Left/Right	+ Tilt Backwards
     //Y (Roll)	Forward/Backward	+ Roll Left
     //Z (Yaw)	Up/Down	+ Clockwise/ – Counter-wise
-    private NavxMicroNavigationSensor gyro;
+    private final NavxMicroNavigationSensor gyro;
     double globalHeading;
     double relativeHeading;
 

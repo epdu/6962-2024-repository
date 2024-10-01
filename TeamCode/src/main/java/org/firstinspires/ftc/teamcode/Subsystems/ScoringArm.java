@@ -16,7 +16,7 @@ public class ScoringArm {
     public Claw claw = new Claw();
     public Arm arm = new Arm();
     public Wrist wrist = new Wrist();
-    private RobotHardware rHardware = new RobotHardware();
+    private final RobotHardware rHardware = new RobotHardware();
 
     // constructor
     public ScoringArm() {}

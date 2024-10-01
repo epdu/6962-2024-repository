@@ -9,7 +9,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.Mecanum;
 @TeleOp(name="Only Mecanum Drive", group="Active TeleOps")
 public class DriveTeleOp extends OpMode {
     // creating subsystems
-    private Mecanum mecanum = new Mecanum();
+    private final Mecanum mecanum = new Mecanum();
 //    private OTOSManager otosManager = new OTOSManager();
 
     /*

@@ -13,7 +13,7 @@ import org.firstinspires.ftc.teamcode.Util.RobotHardware;
 public class Mecanum {
     private OpMode opmode;
 
-    private RobotHardware rHardware = new RobotHardware();
+    private final RobotHardware rHardware = new RobotHardware();
     private MotorEx frontLeft, backLeft, backRight, frontRight;
     private NavxMicroNavigationSensor navx;
     protected NavxManager gyroManager;
@@ -21,7 +21,7 @@ public class Mecanum {
 //    private DistanceSensor distSensor;
 
     // constants
-    private double slowModeFactor = 10.0/3;
+    private final double slowModeFactor = 10.0/3;
 //    private static double kP = 0;
 //    private static double kI = 0;
 //    private static double kD = 0;

@@ -14,10 +14,10 @@ import org.firstinspires.ftc.teamcode.Subsystems.VerticalSlides;
 @TeleOp(name="Only Intake Test", group="Active TeleOps")
 public class IntakeTeleOp extends OpMode {
     // creating subsystems
-    private Intake intake = new Intake();
-    private CustomTimer timer = new CustomTimer();
+    private final Intake intake = new Intake();
+    private final CustomTimer timer = new CustomTimer();
 
-    private boolean onRedAlliance = true;
+    private final boolean onRedAlliance = true;
 
     /*
      * Code to run ONCE when the driver hits INIT
