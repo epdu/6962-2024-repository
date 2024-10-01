@@ -30,9 +30,9 @@ public class BoxAuto extends LinearOpMode{
         MecanumDrive drive = new MecanumDrive(hardwareMap, startPose);
 
         TrajectoryActionBuilder box = drive.actionBuilder(startPose)
-                .lineToY(36)
+                .strafeTo(new Vector2d(36, 36))
                 .strafeTo(new Vector2d(-36, 36))
-                .lineToY(-36)
+                .strafeTo(new Vector2d(-36,-36))
                 .strafeTo(new Vector2d(36, -36));
 
         while (!isStarted() && !opModeIsActive()) {}

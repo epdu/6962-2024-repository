@@ -49,13 +49,13 @@ public class RobotHardware {
         leftBackMotor = new MotorEx(hMap, "Bl/Le");
         rightBackMotor = new MotorEx(hMap, "Br/Fe");
 
-        armServo = hMap.get(Servo.class, "aServo");
-        cWristServoR = hMap.get(Servo.class, "cWristR");
-        cWristServoL = hMap.get(Servo.class, "cWristL");
-        claw = hMap.get(Servo.class, "cServo");
+//        armServo = hMap.get(Servo.class, "aServo");
+//        cWristServoR = hMap.get(Servo.class, "cWristR");
+//        cWristServoL = hMap.get(Servo.class, "cWristL");
+//        claw = hMap.get(Servo.class, "cServo");
 
         intakeMotor = hMap.get(DcMotorEx.class,"intake");
-        iWristServo = hMap.get(Servo.class, "iWrist");
+//        iWristServo = hMap.get(Servo.class, "iWrist");
 
         hSlideMotor = hMap.get(DcMotorEx.class , "hSlide");
 
