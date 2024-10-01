@@ -26,29 +26,29 @@ import org.firstinspires.ftc.teamcode.Subsystems.Intake;
 @Autonomous(name = "Test Auto", group = "Autonomous")
 public class TestAuto extends LinearOpMode{
 
-    private double startX = 7;
-    private double startY = -63.75;
-    private double startHeading = Math.toRadians(-90);
-    private double scorePreloadX = 0;
-    private double scorePreloadY = -33;
-    private double afterPreloadX = 0;
-    private double afterPreloadY = -37;
-    private double prepClipX = 62;
-    private double prepClipY = -47;
-    private double pickupClipX = 62;
-    private double pickupCLipY = -62;
-    private double scoreClipX = 8;
-    private double scoreClipY = -33;
-    private double intake1X = -48;
-    private double intake1Y = -43;
-    private double scoreBucketX = -57;
-    private double scoreBucketY = -57;
-    private double intake2X = -57;
-    private double intake2Y = -43;
-    private double prepParkX = -36;
-    private double prepParkY = -12;
-    private double parkX = -23;
-    private double parkY = -12;
+    public static double startX = 7;
+    public static double startY = -63.75;
+    public static double startHeading = Math.toRadians(-90);
+    public static double scorePreloadX = 0;
+    public static double scorePreloadY = -36;
+    public static double afterPreloadX = 0;
+    public static double afterPreloadY = -42;
+    public static double prepClipX = 62;
+    public static double prepClipY = -47;
+    public static double pickupClipX = 62;
+    public static double pickupCLipY = -62;
+    public static double scoreClipX = 8;
+    public static double scoreClipY = -33;
+    public static double intake1X = -48;
+    public static double intake1Y = -43;
+    public static double scoreBucketX = -57;
+    public static double scoreBucketY = -57;
+    public static double intake2X = -57;
+    public static double intake2Y = -43;
+    public static double prepParkX = -36;
+    public static double prepParkY = -12;
+    public static double parkX = -23;
+    public static double parkY = -12;
 
     @Override
     public void runOpMode() {
@@ -80,7 +80,7 @@ public class TestAuto extends LinearOpMode{
 //                    lift.pickupClip();
                     //scoringArm.clip();
                 })
-                .lineToY(pickupCLipY)
+                .strafeTo(new Vector2d(pickupClipX, pickupCLipY))
                 .afterTime(7.4, () -> {
                     //scoringArm.clawClose();
 //                    lift.prepClip();
