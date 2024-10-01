@@ -40,15 +40,16 @@ public class ScoringArm {
 
     // Operates the test mode for controlling the claw, arm, and wrist
     public void operateTest() {
+        // gamepad 2, all incrementals to find servo values first try
         if (opmode.gamepad2.left_bumper) {
-            claw.toggleClaw();
+            claw.incremental(-1);
+        }
+        else if (opmode.gamepad2.right_bumper) {
+            claw.incremental(1);
         }
 
         wrist.incrementalWristL(getSign(-opmode.gamepad2.left_stick_y));
         wrist.incrementalWristR(getSign(-opmode.gamepad2.right_stick_y));
-
-        wrist.incrementalWristTurn(getSign(-opmode.gamepad1.left_stick_y));
-        wrist.incrementalWristRotate(getSign(opmode.gamepad1.left_stick_x));
 
         if (opmode.gamepad2.dpad_up) {
             arm.incrementalArm(1);
@@ -56,29 +57,39 @@ public class ScoringArm {
             arm.incrementalArm(-1);
         }
 
-        if (opmode.gamepad2.a) {
+        // gamepad 1
+        wrist.incrementalWristTurn(getSign(-opmode.gamepad1.left_stick_y));
+        wrist.incrementalWristRotate(getSign(opmode.gamepad1.left_stick_x));
+
+        if (opmode.gamepad1.a) {
             arm.scoreArm();
             wrist.setWristScoring();
-        } else if (opmode.gamepad2.b) {
+        } else if (opmode.gamepad1.b) {
             arm.stowArm();
             wrist.setWristStow();
-        } else if (opmode.gamepad2.x) {
+        } else if (opmode.gamepad1.x) {
             arm.transferArm();
             wrist.setWristTransfer();
+        }
+
+        if (opmode.gamepad1.right_bumper) {
+            claw.toggleClaw();
         }
 
         // Adding telemetry data for debugging
         opmode.telemetry.addData("Arm Pos: ", arm.arm.getPosition());
         opmode.telemetry.addData("Right Wrist Pos: ", wrist.wristR.getPosition());
         opmode.telemetry.addData("Left Wrist Pos: ", wrist.wristL.getPosition());
+        opmode.telemetry.addData("Claw Pos: ", claw.claw.getPosition());
     }
 
     // Claw Subsystem Class
-    public class Claw {
+    public static class Claw {
         public Servo claw;
         public boolean isClawOpen = true;
-        private static final double clawClosedPosition = 0.245;
-        private static final double clawOpenPosition = 0.5;
+        public static double clawClosedPosition = 0.245;
+        public static double clawOpenPosition = 0.5;
+        public static double clawIncrement = 0.01;
 
         public Claw() {}
 
@@ -107,16 +118,20 @@ public class ScoringArm {
             claw.setPosition(clawOpenPosition);
             isClawOpen = true;
         }
+
+        public void incremental(int sign) {
+            claw.setPosition(claw.getPosition() + sign * clawIncrement);
+        }
     }
 
     // Arm Subsystem Class
-    public class Arm {
+    public static class Arm {
         public Servo arm;
         public boolean isArmTransferring = true;
-        private static final double armScoringPosition = 0.3;
-        private static final double armStowPosition = 0.7;
-        private static final double armTransferPosition = 0.8;
-        private static final double armIncrement = 0.02;
+        public static double armScoringPosition = 0.3;
+        public static double armStowPosition = 0.7;
+        public static double armTransferPosition = 0.8;
+        public static double armIncrement = 0.02;
 
         public Arm() {}
         public void initialize(RobotHardware hardware) {
@@ -153,16 +168,16 @@ public class ScoringArm {
     }
 
     // Wrist Subsystem Class
-    public class Wrist {
+    public static class Wrist {
         public Servo wristL, wristR;
         public boolean isWristTransferring = true;
-        private static final double wristLTransferPosition = 0.25;
-        private static final double wristRTransferPosition = 0;
-        private static final double wristLStowPosition = 0.5;
-        private static final double wristRStowPosition = 0.5;
-        private static final double wristLScorePosition = 0.75;
-        private static final double wristRScorePosition = 0.75;
-        private static final double wristIncrement = 0.02;
+        public static double wristLTransferPosition = 0.25;
+        public static double wristRTransferPosition = 0;
+        public static double wristLStowPosition = 0.5;
+        public static double wristRStowPosition = 0.5;
+        public static double wristLScorePosition = 0.75;
+        public static double wristRScorePosition = 0.75;
+        public static double wristIncrement = 0.02;
 
         public Wrist() {}
         public void initialize(RobotHardware hardware) {

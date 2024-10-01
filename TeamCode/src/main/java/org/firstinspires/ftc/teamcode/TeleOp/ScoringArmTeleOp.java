@@ -16,17 +16,18 @@ public class ScoringArmTeleOp extends OpMode {
     @Override
     public void init() {
         scoringArm.initialize(this);
-        telemetry.addLine("Gamepad 2:");
-        telemetry.addLine("Left Bumper - toggle claw open and close");
+        telemetry.addLine("Gamepad 2: incrementals for tuning");
+        telemetry.addLine("Left and Right Bumper - toggle claw open and close");
         telemetry.addLine("D-Pad Up and Down - incremental arm");
         telemetry.addLine("Left Joystick Y - incremental left servo (might be reversed)");
         telemetry.addLine("Right Joystick Y - incremental right servo");
+        telemetry.addLine("\nGamepad 1: set pos, only after gamepad 2 incrementals");
+        telemetry.addLine("Right Bumper - claw toggle");
+        telemetry.addLine("Left Joystick Y - incremental wrist turning");
+        telemetry.addLine("Left Joystick X - incremental wrist rotation");
         telemetry.addLine("A - whole arm score position");
         telemetry.addLine("B - whole arm stow position");
         telemetry.addLine("X - whole arm transfer position");
-        telemetry.addLine("\nGamepad 1:");
-        telemetry.addLine("Left Joystick Y - incremental wrist turning");
-        telemetry.addLine("Left Joystick X - incremental wrist rotation");
         telemetry.update();
     }
 

@@ -20,20 +20,20 @@ public class HorizontalSlides
 
     // constants
     /** all of the constants need to be tuned*/
-    private double joystickScalar = 1;
-    private double slideScalar = 1;
-    private double Kp = 0.05;
-    private double Ki = 0;
-    private double Kd = 0;
-    private double Kg = 0; // gravity constant, tune till the slide holds itself in place
-    private double upperLimit = 300;
-    private double lowerLimit = -2;
-    private double retractedThreshold = 10;
+    public static double joystickScalar = 1;
+    public static double slideScalar = 1;
+    public static double Kp = 0.004;
+    public static double Ki = 0;
+    public static double Kd = 0;
+    public static double Kg = 0; // gravity constant, tune till the slide holds itself in place
+    public static double upperLimit = 300;
+    public static double lowerLimit = -2;
+    public static double retractedThreshold = 10;
 
-    private int extendedPos = 280;
-    private int retractedPos = 0;
+    public static int extendedPos = 280;
+    public static int retractedPos = 0;
 
-    private double mappingExponent = 0.4; // paste this into desmos to see graph: x^{0.4}\ \left\{0\le x\le1\right\}
+    public static double mappingExponent = 0.4; // paste this into desmos to see graph: x^{0.4}\ \left\{0\le x\le1\right\}
                                           // making the mapping exponent smaller makes graph steeper
 
     // declaring variables for later modification
