@@ -1,12 +1,7 @@
 package org.firstinspires.ftc.teamcode.Auto;
 
-import androidx.annotation.NonNull;
-
 import com.acmerobotics.dashboard.config.Config;
-import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
-import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Action;
-import com.acmerobotics.roadrunner.ParallelAction;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.SequentialAction;
 import com.acmerobotics.roadrunner.TrajectoryActionBuilder;
@@ -14,17 +9,13 @@ import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import org.firstinspires.ftc.teamcode.Util.RobotHardware;
 
 import org.firstinspires.ftc.teamcode.Roadrunner.MecanumDrive;
 import org.firstinspires.ftc.teamcode.Subsystems.VerticalSlides;
-import org.firstinspires.ftc.teamcode.Subsystems.HorizontalSlides;
-import org.firstinspires.ftc.teamcode.Subsystems.Intake;
 
 @Config
-@Autonomous(name = "Test Auto", group = "Autonomous")
-public class TestAuto extends LinearOpMode{
+@Autonomous(name = "Full Auto", group = "Autonomous")
+public class FullAuto extends LinearOpMode{
 
     public static double startX = 7;
     public static double startY = -63.75;
@@ -32,13 +23,13 @@ public class TestAuto extends LinearOpMode{
     public static double scorePreloadX = 0;
     public static double scorePreloadY = -36;
     public static double afterPreloadX = 0;
-    public static double afterPreloadY = -42;
+    public static double afterPreloadY = -46;
     public static double prepClipX = 62;
     public static double prepClipY = -47;
     public static double pickupClipX = 62;
-    public static double pickupCLipY = -62;
+    public static double pickupCLipY = -68;
     public static double scoreClipX = 8;
-    public static double scoreClipY = -33;
+    public static double scoreClipY = -36;
     public static double intake1X = -48;
     public static double intake1Y = -43;
     public static double scoreBucketX = -57;

@@ -26,13 +26,13 @@ import org.firstinspires.ftc.teamcode.Subsystems.ScoringArm;
 @Config
 @Autonomous(name = "Preload Auto", group = "Autonomous")
 public class PreloadAuto extends LinearOpMode{
-    private double startX = 7;
-    private double startY = -63.75;
-    private double startHeading = Math.toRadians(-90);
-    private double scorePreloadX = 0;
-    private double scorePreloadY = -33;
-    private double parkX = 36;
-    private double parkY = -60;
+    public static double startX = 7;
+    public static double startY = -63.75;
+    public static double startHeading = Math.toRadians(-90);
+    public static double scorePreloadX = 0;
+    public static double scorePreloadY = -36;
+    public static double parkX = 36;
+    public static double parkY = -60;
 
     @Override
     public void runOpMode() {
