@@ -24,24 +24,24 @@ public class VerticalSlides
 
     // constants
     /** all constants need to be tuned*/
-    private double joystickScalar = 1;
-    private double slideScalar = 1;
-    private double KpUp = 0.05;
-    private double KpDown = 0.01;
-    private double Ki = 1;
-    private double Kd = 0.4;
-    private double Kg = 0; // gravity constant, tune till the slide holds itself in place
-    private double upperLimit = 800;
-    private double lowerLimit = -2;
-    private double retractedThreshold = 5;
+    public static double joystickScalar = 1;
+    public static double slideScalar = 1;
+    public static double KpUp = 0.006;
+    public static double KpDown = 0.001;
+    public static double Ki = 1;
+    public static double Kd = 0.4;
+    public static double Kg = 0; // gravity constant, tune till the slide holds itself in place
+    public static double upperLimit = 800;
+    public static double lowerLimit = -2;
+    public static double retractedThreshold = 5;
 
-    private int highBucketPos = 500;
-    private int lowBucketPos = 250;
-    private int lowChamberPos = 400;
-    private int highChamberPos = 400;
-    private int retractedPos = 0;
-    private int pickupClipPos = 200;
-    private int prepClipPos = 400;
+    public static int highBucketPos = 500;
+    public static int lowBucketPos = 250;
+    public static int lowChamberPos = 400;
+    public static int highChamberPos = 400;
+    public static int retractedPos = 0;
+    public static int pickupClipPos = 200;
+    public static int prepClipPos = 400;
 
     //declaring variables for later modification
     private volatile double slidePower;
@@ -71,8 +71,8 @@ public class VerticalSlides
         leftSlideMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         rightSlideMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
 
-//        leftSlideMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-        rightSlideMotor.setDirection(DcMotorEx.Direction.REVERSE);
+        leftSlideMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+//        rightSlideMotor.setDirection(DcMotorEx.Direction.REVERSE);
 
         leftSlideMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         rightSlideMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
@@ -176,13 +176,7 @@ public class VerticalSlides
         double error = target - encoderPosition;
 
         // error is negative when moving down
-        if (error <= 0) {
-            movingDown = true;
-        }
-        // error is positive when moving up
-        else {
-            movingDown = false;
-        }
+        movingDown = error <= 0;
         // rate of change of the error
         double derivative = (error - lastError) / timer.seconds();
 
