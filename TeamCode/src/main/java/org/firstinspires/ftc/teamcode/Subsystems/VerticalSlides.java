@@ -235,8 +235,10 @@ public class VerticalSlides
 
     // math util
     public double mapToParabola(double output) {
+        // if too high and slides start oscillating (aka spasming), try the commented out ones below
         return (280.0/361)*Math.pow(Math.abs(output)-0.05,2) + 0.3; // desmos visual: \frac{280}{361}\left(x-0.05\right)^{2}+0.3
 //        return ((300.0/361)*Math.pow(Math.abs(output)-0.05,2) + 0.25); // desmos visual: \frac{300}{361}\left(x-0.05\right)^{2}+0.25
+//        return ((320.0/361)*Math.pow(Math.abs(output)-0.05,2) + 0.20); // desmos visual: \frac{300}{361}\left(x-0.05\right)^{2}+0.25
     }
 
 //    public class retractSlides implements Action {
