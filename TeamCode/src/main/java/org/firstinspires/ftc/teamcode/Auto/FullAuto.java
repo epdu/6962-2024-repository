@@ -18,10 +18,10 @@ import org.firstinspires.ftc.teamcode.Subsystems.VerticalSlides;
 public class FullAuto extends LinearOpMode{
 
     public static double startX = 7;
-    public static double startY = -63.75;
+    public static double startY = -58;
     public static double startHeading = Math.toRadians(-90);
     public static double scorePreloadX = 0;
-    public static double scorePreloadY = -36;
+    public static double scorePreloadY = -32;
     public static double afterPreloadX = 0;
     public static double afterPreloadY = -46;
     public static double prepClipX = 62;
