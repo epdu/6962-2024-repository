@@ -57,6 +57,8 @@ public class ScoringArm {
             arm.incrementalArm(-1);
         }
 
+        if (opmode.gamepad2.y) {wrist.setWristStow();}
+
         // gamepad 1
         wrist.incrementalWristTurn(getSign(-opmode.gamepad1.left_stick_y));
         wrist.incrementalWristRotate(getSign(opmode.gamepad1.left_stick_x));

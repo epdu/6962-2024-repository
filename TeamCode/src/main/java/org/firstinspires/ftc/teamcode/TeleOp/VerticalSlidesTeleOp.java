@@ -48,12 +48,11 @@ public class VerticalSlidesTeleOp extends OpMode {
     public void loop() {
         verticalSlides.operateTest();
 //        verticalSlides.operateVincent();
+        // Gamepad 1:
+        // Y - high bucket PID
+        // X - low bucket PID
         // Gamepad 2:
         // Left Joystick Y - vertical slide manual control
-        telemetry.addData("Vertical Slides Retracted: ", verticalSlides.verticalSlidesRetracted);
-//        telemetry.addData("Left Motor Encoder Pos: ", verticalSlides.telemetryLeftMotorPos());
-        telemetry.addData("Right Motor Encoder Pos: ", verticalSlides.telemetryRightMotorPos());
-        telemetry.update();
     }
 
     /*

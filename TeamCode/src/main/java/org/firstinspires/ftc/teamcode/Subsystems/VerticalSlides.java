@@ -26,19 +26,19 @@ public class VerticalSlides
     /** all constants need to be tuned*/
     public static double joystickScalar = 1;
     public static double slideScalar = 1;
-    public static double KpUp = 0.006;
-    public static double KpDown = 0.001;
-    public static double Ki = 1;
-    public static double Kd = 0.4;
+    public static double KpUp = 0.009;
+    public static double KpDown = 0.005;
+    public static double Ki = 0;
+    public static double Kd = 0;
     public static double Kg = 0; // gravity constant, tune till the slide holds itself in place
-    public static double upperLimit = 800;
+    public static double upperLimit = 1200;
     public static double lowerLimit = -2;
     public static double retractedThreshold = 5;
 
-    public static int highBucketPos = 500;
-    public static int lowBucketPos = 250;
+    public static int highBucketPos = 1000;
+    public static int lowBucketPos = 500;
     public static int lowChamberPos = 400;
-    public static int highChamberPos = 400;
+    public static int highChamberPos = 800;
     public static int retractedPos = 0;
     public static int pickupClipPos = 200;
     public static int prepClipPos = 400;
@@ -82,16 +82,19 @@ public class VerticalSlides
     }
 
     public void operateTest() {
-        // manual control
-        slidePower = -1 * opmode.gamepad2.left_stick_y;
-
-        if (opmode.gamepad1.a) {
+        // PID auto extension
+        if (opmode.gamepad1.y) {
             raiseToHighBucket();
         }
         else if (opmode.gamepad1.x) {
             raiseToLowBucket();
         }
+        else if (opmode.gamepad1.a) {
+            retract();
+        }
 
+        // manual control
+        slidePower = -1 * opmode.gamepad2.left_stick_y;
 
         if (Math.abs(slidePower) > 0.05)
         {
@@ -133,8 +136,12 @@ public class VerticalSlides
         verticalSlidesRetracted = rightSlideMotor.getCurrentPosition() < retractedThreshold;
 
 //        opmode.telemetry.addData("PID Power L ", PIDPowerL);
+
+        opmode.telemetry.addData("Vertical Slides Retracted: ", verticalSlidesRetracted);
+        opmode.telemetry.addData("Right Motor Encoder Pos: ", telemetryRightMotorPos());
         opmode.telemetry.addData("PID Power R ", PIDPowerR);
         opmode.telemetry.addData("Slide Target ", target);
+        opmode.telemetry.update();
     }
 
     public void operateVincent() {
