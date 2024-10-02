@@ -200,15 +200,14 @@ public class VerticalSlides
         double output = ((movingDown ? KpDown : KpUp) * error) + (Ki * integralSum) + (Kd * derivative) + Kg;
 
         // deadband-esque behavior to avoid returning super small decimal values
-        if (Math.abs(output) < 0.01) {
+        if (Math.abs(output) < 0.05) {
             output = 0;
         }
-        // keeping output ≤ 1
+        else if (Math.abs(output) >= 1) {
+            output = (output > 0 ? 1 : -1);
+        }
         else {
-            /** if weird things are happening, it could be this, because idk if the logic actually works */
-            // crazy syntax, but basically means if output > 0, then variable is assigned 1, else -1
-            int outputSign = output > 0 ? 1 : -1;
-            output = outputSign * Math.min(1.0, Math.abs(output));
+            output = (output > 0 ? 1 : -1) * mapToParabola(output);
         }
         return output;
     }
@@ -232,6 +231,12 @@ public class VerticalSlides
     }
     public int telemetryRightMotorPos() {
         return rightSlideMotor.getCurrentPosition();
+    }
+
+    // math util
+    public double mapToParabola(double output) {
+        return (280.0/361)*Math.pow(Math.abs(output)-0.05,2) + 0.3; // desmos visual: \frac{280}{361}\left(x-0.05\right)^{2}+0.3
+//        return ((300.0/361)*Math.pow(Math.abs(output)-0.05,2) + 0.25); // desmos visual: \frac{300}{361}\left(x-0.05\right)^{2}+0.25
     }
 
 //    public class retractSlides implements Action {
