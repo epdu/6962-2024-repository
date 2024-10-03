@@ -26,11 +26,11 @@ public class HorizontalSlides
     public static double Ki = 0;
     public static double Kd = 0;
     public static double Kg = 0; // gravity constant, tune till the slide holds itself in place
-    public static double upperLimit = 300;
+    public static double upperLimit = 500;
     public static double lowerLimit = -2;
-    public static double retractedThreshold = 10;
+    public static double retractedThreshold = 5;
 
-    public static int extendedPos = 280;
+    public static int extendedPos = 300;
     public static int retractedPos = 0;
 
     public static double mappingExponent = 0.4; // paste this into desmos to see graph: x^{0.4}\ \left\{0\le x\le1\right\}
@@ -58,7 +58,7 @@ public class HorizontalSlides
 //        slideMotor = opmode.hardwareMap.get(DcMotorEx.class, "");
 
         slideMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
-        slideMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+//        slideMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         slideMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         slideMotor.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
     }
@@ -80,6 +80,12 @@ public class HorizontalSlides
     public void operateTest() {
         // manual control with right stick y
         slidePower = -opmode.gamepad2.right_stick_y;
+
+        if (opmode.gamepad1.y) {
+            extend();
+        } else if (opmode.gamepad1.x) {
+            retract();
+        }
 
         if (Math.abs(slidePower) > 0.05) {
             // if position positive, then can move freely
@@ -145,16 +151,13 @@ public class HorizontalSlides
         double output = (Kp * error) + (Ki * integralSum) + (Kd * derivative) + Kg;
 
         // deadband-esque behavior to avoid returning super small decimal values
-        if (Math.abs(output) < 0.01) {
+        if (Math.abs(output) < 0.1) {
             output = 0;
         }
-        // keeping output ≤ 1
-        else {
-            /** if weird things are happening, it could be this, because idk if the logic actually works */
-            // crazy syntax, but basically means if output > 0, then variable is assigned 1, else -1
-            int outputSign = output > 0 ? 1 : -1;
-            output = outputSign * Math.min(1.0, Math.abs(output));
+        else if (Math.abs(output) >= 1) {
+            output = (output > 0 ? 1 : -1);
         }
+
         return output;
     }
 

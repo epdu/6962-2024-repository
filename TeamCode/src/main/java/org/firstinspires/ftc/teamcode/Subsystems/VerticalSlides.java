@@ -26,19 +26,19 @@ public class VerticalSlides
     /** all constants need to be tuned*/
     public static double joystickScalar = 1;
     public static double slideScalar = 1;
-    public static double KpUp = 0.009;
+    public static double KpUp = 0.01;
     public static double KpDown = 0.005;
     public static double Ki = 0;
     public static double Kd = 0;
     public static double Kg = 0; // gravity constant, tune till the slide holds itself in place
-    public static double upperLimit = 1200;
+    public static double upperLimit = 1500;
     public static double lowerLimit = -2;
     public static double retractedThreshold = 5;
 
-    public static int highBucketPos = 1000;
-    public static int lowBucketPos = 500;
-    public static int lowChamberPos = 400;
-    public static int highChamberPos = 800;
+    public static int highBucketPos = 1300;
+    public static int lowBucketPos = 600;
+    public static int lowChamberPos = 100;
+    public static int highChamberPos = 500;
     public static int retractedPos = 0;
     public static int pickupClipPos = 200;
     public static int prepClipPos = 400;
@@ -200,15 +200,13 @@ public class VerticalSlides
         double output = ((movingDown ? KpDown : KpUp) * error) + (Ki * integralSum) + (Kd * derivative) + Kg;
 
         // deadband-esque behavior to avoid returning super small decimal values
-        if (Math.abs(output) < 0.05) {
+        if (Math.abs(output) < 0.1) {
             output = 0;
         }
         else if (Math.abs(output) >= 1) {
             output = (output > 0 ? 1 : -1);
         }
-        else {
-            output = (output > 0 ? 1 : -1) * mapToParabola(output);
-        }
+
         return output;
     }
 
@@ -236,7 +234,7 @@ public class VerticalSlides
     // math util
     public double mapToParabola(double output) {
         // if too high and slides start oscillating (aka spasming), try the commented out ones below
-        return (280.0/361)*Math.pow(Math.abs(output)-0.05,2) + 0.3; // desmos visual: \frac{280}{361}\left(x-0.05\right)^{2}+0.3
+        return (70.0/81)*Math.pow(Math.abs(output)-0.1,2) + 0.3; // desmos visual: \frac{280}{361}\left(x-0.05\right)^{2}+0.3
 //        return ((300.0/361)*Math.pow(Math.abs(output)-0.05,2) + 0.25); // desmos visual: \frac{300}{361}\left(x-0.05\right)^{2}+0.25
 //        return ((320.0/361)*Math.pow(Math.abs(output)-0.05,2) + 0.20); // desmos visual: \frac{300}{361}\left(x-0.05\right)^{2}+0.25
     }

@@ -49,12 +49,12 @@ public class ScoringArm {
         }
 
         wrist.incrementalWristL(getSign(-opmode.gamepad2.left_stick_y));
-        wrist.incrementalWristR(getSign(-opmode.gamepad2.right_stick_y));
+        wrist.incrementalWristR(getSign(opmode.gamepad2.right_stick_y));
 
         if (opmode.gamepad2.dpad_up) {
-            arm.incrementalArm(1);
-        } else if (opmode.gamepad2.dpad_down) {
             arm.incrementalArm(-1);
+        } else if (opmode.gamepad2.dpad_down) {
+            arm.incrementalArm(1);
         }
 
         if (opmode.gamepad2.y) {wrist.setWristStow();}
@@ -89,9 +89,9 @@ public class ScoringArm {
     public static class Claw {
         public Servo claw;
         public boolean isClawOpen = true;
-        public static double clawClosedPosition = 0.245;
-        public static double clawOpenPosition = 0.5;
-        public static double clawIncrement = 0.01;
+        public static double clawClosedPosition = 0.1667;
+        public static double clawOpenPosition = 0;
+        public static double clawIncrement = 0.001;
 
         public Claw() {}
 
@@ -133,7 +133,7 @@ public class ScoringArm {
         public static double armScoringPosition = 0.3;
         public static double armStowPosition = 0.7;
         public static double armTransferPosition = 0.8;
-        public static double armIncrement = 0.02;
+        public static double armIncrement = 0.001;
 
         public Arm() {}
         public void initialize(RobotHardware hardware) {
@@ -173,13 +173,13 @@ public class ScoringArm {
     public static class Wrist {
         public Servo wristL, wristR;
         public boolean isWristTransferring = true;
-        public static double wristLTransferPosition = 0.25;
-        public static double wristRTransferPosition = 0;
-        public static double wristLStowPosition = 0.5;
-        public static double wristRStowPosition = 0.5;
-        public static double wristLScorePosition = 0.75;
-        public static double wristRScorePosition = 0.75;
-        public static double wristIncrement = 0.02;
+        public static double wristLTransferPosition = 0.05411;
+        public static double wristRTransferPosition = 1;
+        public static double wristLStowPosition = 0.3767;
+        public static double wristRStowPosition = 0.4483;
+        public static double wristLScorePosition = 0.6678;
+        public static double wristRScorePosition = 0.1856;
+        public static double wristIncrement = 0.001;
 
         public Wrist() {}
         public void initialize(RobotHardware hardware) {
