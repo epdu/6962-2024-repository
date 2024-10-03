@@ -26,15 +26,15 @@ public class HorizontalSlides
     public static double Ki = 0;
     public static double Kd = 0;
     public static double Kg = 0; // gravity constant, tune till the slide holds itself in place
-    public static double upperLimit = 500;
+    public static double upperLimit = 780;
     public static double lowerLimit = -2;
     public static double retractedThreshold = 5;
 
-    public static int extendedPos = 300;
+    public static int extendedPos = 700;
     public static int retractedPos = 0;
 
     public static double mappingExponent = 0.4; // paste this into desmos to see graph: x^{0.4}\ \left\{0\le x\le1\right\}
-                                          // making the mapping exponent smaller makes graph steeper
+                                                // making the mapping exponent smaller makes graph steeper
 
     // declaring variables for later modification
     private volatile double slidePower;
@@ -79,7 +79,7 @@ public class HorizontalSlides
 
     public void operateTest() {
         // manual control with right stick y
-        slidePower = -opmode.gamepad2.right_stick_y;
+        slidePower = -opmode.gamepad2.left_stick_y;
 
         if (opmode.gamepad1.y) {
             extend();

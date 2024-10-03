@@ -32,6 +32,7 @@ public class Intake
     public static double intakePower = 0.6;
     public static double stowedPosition = 0.4;
     public static double intakePosition = 0;
+    public static double wristIncrement = 0.001;
 //    public static double detectionThreshold = 0.5; //inches
 //    public static int colorThreshold = 200;
 
@@ -50,41 +51,36 @@ public class Intake
 
     public void operateVincent()
     {
-        if (opmode.gamepad2.right_bumper) {
+        if (opmode.gamepad1.right_bumper) {
             // start intaking
             intakePieces();// flip out
-            if (opmode.gamepad2.a) {
+            if (opmode.gamepad1.a) {
                 eject();
             }
         }
         else {
             // stop
             stopIntaking();
-            // flip in
-            wristServo.setPosition(stowedPosition);
         }
-
     }
 
     public void operateTest() {
+        intakeMotor.setPower(-opmode.gamepad2.left_stick_y);
 
-        intakeMotor.setPower(opmode.gamepad2.left_stick_y);
-//        if (opmode.gamepad2.x) {
-//            intakeMotor.setPower(intakePower);
-//
-//            wristServo.setPosition(intakePosition);
-//        }
-//        if (opmode.gamepad2.a) {
-//            eject();
-//        }
+        if (opmode.gamepad2.dpad_up) {
+            incremental(1);
+        } else if (opmode.gamepad2.dpad_down) {
+            incremental(-1);
+        }
 
-        if (opmode.gamepad2.a) {
+        // gamepad 1
+        if (opmode.gamepad1.dpad_down) {
             intakePieces();
         }
-        else if (opmode.gamepad2.b) {
+        else if (opmode.gamepad1.dpad_up) {
             stopIntaking();
         }
-        else if (opmode.gamepad2.x) {
+        else if (opmode.gamepad1.x) {
             eject();
         }
     }
@@ -107,8 +103,12 @@ public class Intake
     }
     public void eject() {
         // reverse direction for 2 seconds, then return
-        intakeMotor.setPower(-intakePower);
+        intakeMotor.setPower(-0.5*intakePower);
         timer.safeDelay(2000);
+    }
+
+    public void incremental(int sign) {
+        wristServo.setPosition(wristServo.getPosition() + sign * wristIncrement);
     }
 
 //    public void fullIntakeSequence() {

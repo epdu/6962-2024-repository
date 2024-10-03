@@ -56,8 +56,11 @@ public class IntakeTeleOp extends OpMode {
 //        intake.operateTest();
         intake.operateTest();
         // Gamepad 2:
-        // A - start intake and flip down
-        // B - stop intake and flip up
+        // Left Joystick Y - direct to motor power (up to intake, down to reverse)
+        // D-Pad Up and Down - incremental wrist
+        // Gamepad 1:
+        // D-pad Up - stop intake and flip up
+        // D-Pad Down - start intake and flip down
         // X - reverse intake for 2 seconds
 //        telemetry.addData("Piece Taken In: ", intake.pieceTakenInBool());
 //        telemetry.addData("Detected Piece Color: ", intake.identifyColor());

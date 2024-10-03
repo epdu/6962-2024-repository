@@ -145,15 +145,15 @@ public class VerticalSlides
     }
 
     public void operateVincent() {
-        if (opmode.gamepad1.a) {
-            raiseToHighBucket();
-        }
-        else if (opmode.gamepad1.x) {
-            raiseToLowBucket();
-        }
-        else if (opmode.gamepad1.b) {
-            retract();
-        }
+//        if (opmode.gamepad1.a) {
+//            raiseToHighBucket();
+//        }
+//        else if (opmode.gamepad1.x) {
+//            raiseToLowBucket();
+//        }
+//        else if (opmode.gamepad1.b) {
+//            retract();
+//        }
 
 //        PIDPowerL = PIDControl(target, leftSlideMotor);
         PIDPowerR = PIDControl(target, rightSlideMotor);

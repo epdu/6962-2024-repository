@@ -59,11 +59,14 @@ public class ScoringCombined {
     }
 
     public void operateTest() {
-        verticalSlides.operateTest();
-        horizontalSlides.operateTest();
-        scoringArm.operateTest();
-        intake.operateTest();
+        verticalSlides.operateVincent();
+        horizontalSlides.operateVincent();
+        scoringArm.operateVincent();
+//        intake.operateTest();
 
+        if (opmode.gamepad1.a) {
+            autoPrepHighBucket();
+        }
         opmode.telemetry.addData("Vertical Slides Retracted: ", verticalSlides.verticalSlidesRetracted);
         opmode.telemetry.addData("Horizontal Slides Retracted: ", horizontalSlides.horizontalSlidesRetracted);
         opmode.telemetry.addData("Claw Transferring: ", scoringArm.arm.isArmTransferring);
@@ -116,7 +119,6 @@ public class ScoringCombined {
         verticalSlides.raiseToHighBucket();     // extending slides
         scoringArm.wrist.setWristScoring();
         scoringArm.arm.scoreArm();              // flip arm over to score
-        scoringArm.wrist.setWristScoring();
 //            timer.safeDelay(0);                   // wait for __ milliseconds
         scoringArm.wrist.setWristScoring();     // prepping wrist to drop pixel (currently useless because the intake is now starting horizontal)
         while (!scoringArm.claw.isClawOpen) {}// wait until driver drops piece
@@ -143,6 +145,18 @@ public class ScoringCombined {
 //        }
     }
 
+    // extends vertical slides, and sets arm to scoring, but doesn't open claw, then retracts once claw opens
+    // idk if the while loop will break everything, but it shouldn't
+    public void autoPrepHighBucket() {
+        verticalSlides.raiseToHighBucket();     // extending slides
+        scoringArm.wrist.setWristScoring();
+        scoringArm.arm.scoreArm();              // flip arm over to score
+        while(!scoringArm.claw.isClawOpen) {}
+        scoringArm.arm.stowArm();
+        scoringArm.wrist.setWristStow();
+        verticalSlides.retract();
+    }
+
     // Nick's autonomous Action functions
     public class clawOpen implements Action {
         @Override
@@ -154,5 +168,7 @@ public class ScoringCombined {
     public Action clawOpen() {
         return new clawOpen();
     }
+
+
 }
 

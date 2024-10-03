@@ -58,18 +58,19 @@ public class ScoringArmTeleOp extends OpMode {
     public void loop() {
         scoringArm.operateTest();
         // Gamepad 2:
-        // Left Bumper - toggle claw open and close
-        // Left Joystick Y - incremental left servo (might be reversed)
+        // Left Bumper - incremental open claw
+        // Right Bumper - incremental close claw
+        // Left Joystick Y - incremental left servo
         // Right Joystick Y - incremental right servo
-        // D-Pad Up - incremental arm up (might be reversed on first try)
+        // D-Pad Up - incremental arm up
         // D-Pad Down - incremental arm down
-        // A - whole arm score position
-        // B - whole arm stow position
-        // X - whole arm transfer position
 
         // Gamepad 1:
         // Left Joystick Y - wrist turn
         // Left Joystick X - wrist rotate
+        // Y - whole arm score position
+        // B - whole arm stow position
+        // X - whole arm transfer position
 
         telemetry.addData("Arm Transferring: ", scoringArm.arm.isArmTransferring);
         telemetry.addData("Claw Open: ", scoringArm.claw.isClawOpen);
