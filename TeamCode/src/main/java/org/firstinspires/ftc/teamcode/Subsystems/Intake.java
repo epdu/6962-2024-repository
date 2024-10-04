@@ -33,10 +33,7 @@ public class Intake
     // constants
     /** all of the constants need to be tuned*/
     public static double intakePower = 0.6;
-    public static double stowedPosition = 0.4;
-
-    //TODO: tune transfer position unless stowed is transfer position
-    public static double transferPosition = 1;
+    public static double transferPosition = 0.4;
     public static double intakePosition = 0;
     public static double wristIncrement = 0.001;
 //    public static double detectionThreshold = 0.5; //inches
@@ -99,8 +96,7 @@ public class Intake
     public void shutdown() {}
 
     public void intakePieces() {
-        // right trigger extend hori slides
-        intakeMotor.setPower(intakePower);
+//        intakeMotor.setPower(intakePower);
         //Countinous servo
         iCRServoR.setPower(intakePower);
         iCRServoL.setPower(intakePower);
@@ -110,12 +106,12 @@ public class Intake
     }
     public void stopIntaking() {
         // stop
-        intakeMotor.setPower(0);
+//        intakeMotor.setPower(0);
         //CR servo
-        iCRServoL.setPower(intakePower);
-        iCRServoR.setPower(intakePower);
+        iCRServoL.setPower(0);
+        iCRServoR.setPower(0);
         // flip in
-        wristServo.setPosition(stowedPosition);
+        wristServo.setPosition(transferPosition);
         flippedUp = true;
     }
     public void eject() {
