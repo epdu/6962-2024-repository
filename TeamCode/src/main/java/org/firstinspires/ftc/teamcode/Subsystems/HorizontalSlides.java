@@ -100,11 +100,11 @@ public class HorizontalSlides
             }
             // if out of range, sets target to back in range
             if (slideMotor.getCurrentPosition() > upperLimit) {
-                target = upperLimit-2;
+                target = upperLimit;
             }
             // if out of range, sets target to back in range
             else if (slideMotor.getCurrentPosition() < lowerLimit) {
-                target = lowerLimit+2;
+                target = lowerLimit;
             }
         }
         // PID control

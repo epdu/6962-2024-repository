@@ -115,11 +115,11 @@ public class VerticalSlides
             // if out of range, sets target to back in range
             if (rightSlideMotor.getCurrentPosition() > upperLimit)
             {
-                target = upperLimit-2;
+                target = upperLimit;
             }
             else if (rightSlideMotor.getCurrentPosition() < lowerLimit)
             {
-                target = lowerLimit+2;
+                target = lowerLimit;
             }
         }
         // PID control
