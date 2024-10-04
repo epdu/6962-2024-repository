@@ -128,15 +128,13 @@ public class Intake
     }
 
     public void transfer() {
-        //TODO: Tune intake wrist trasnfer position
-        if (wristServo.getPosition() != transferPosition) {wristServo.setPosition(transferPosition);}
+        //TODO: Tune intake wrist transfer position
+        if (!flippedUp) {wristServo.setPosition(transferPosition);}
 
         iCRServoL.setPower(-0.3*intakePower);
         iCRServoR.setPower(-0.3*intakePower);
-        //TODO: tune timer delay secconds
+        //TODO: tune timer delay seconds
         timer.safeDelay(2000);
-        //reset to intake position
-        wristServo.setPosition(intakePosition);
     }
 
     public void incremental(int sign) {
