@@ -16,14 +16,16 @@ public class ScoringArm {
     public Claw claw = new Claw();
     public Arm arm = new Arm();
     public Wrist wrist = new Wrist();
+    private CustomTimer timer = new CustomTimer();
     private final RobotHardware rHardware = new RobotHardware();
 
     // constructor
     public ScoringArm() {}
 
     // Initializes the sub-subsystems
-    public void initialize(OpMode opmode) {
+    public void initialize(OpMode opmode, CustomTimer timer) {
         this.opmode = opmode;
+        this.timer = timer;
         rHardware.init(opmode.hardwareMap);
 
         claw.initialize(rHardware);
@@ -48,8 +50,8 @@ public class ScoringArm {
             claw.incremental(1);
         }
 
-        wrist.incrementalWristL(getSign(-opmode.gamepad2.left_stick_y));
-        wrist.incrementalWristR(getSign(opmode.gamepad2.right_stick_y));
+        wrist.incrementalWristTurn(getSign(opmode.gamepad2.left_stick_y));
+        wrist.incrementalWristRotate(getSign(opmode.gamepad2.left_stick_x));
 
         if (opmode.gamepad2.dpad_up) {
             arm.incrementalArm(-1);
@@ -61,29 +63,25 @@ public class ScoringArm {
         if (opmode.gamepad2.x) {wrist.setWristTransfer();}
 
         // gamepad 1
-        wrist.incrementalWristTurn(getSign(-opmode.gamepad1.left_stick_y));
-        wrist.incrementalWristRotate(getSign(opmode.gamepad1.left_stick_x));
-
         if (opmode.gamepad1.y) {
             arm.scoreArm();
-            wrist.setWristScoring();
+            wrist.setWristScoringBucket();
+        }
+        else if (opmode.gamepad1.a) {
+            arm.scoreArm();
+            wrist.setWristScoringClip();
         } else if (opmode.gamepad1.b) {
             arm.stowArm();
             wrist.setWristStow();
         } else if (opmode.gamepad1.x) {
-            arm.transferArm();
             wrist.setWristTransfer();
+            timer.safeDelay(100);
+            arm.transferArm();
         }
 
         if (opmode.gamepad1.right_bumper) {
             claw.toggleClaw();
-            // the refresh rate is way too high, so the claw spasms,
-            // and I think this might add a short pause (this probably won't work, never do this)
-            for(int i = 1; i<50; i++) {
-                for(int j = 1; j<50; j++) {
-                    int k = j+i;
-                }
-            }
+            timer.safeDelay(100);
         }
 
         // Adding telemetry data for debugging
@@ -138,9 +136,9 @@ public class ScoringArm {
     public static class Arm {
         public Servo arm;
         public boolean isArmTransferring = true;
-        public static double armScoringPosition = 0.3;
-        public static double armStowPosition = 0.7;
-        public static double armTransferPosition = 0.8;
+        public static double armScoringPosition = 0.4;
+        public static double armStowPosition = 0.8;
+        public static double armTransferPosition = 1;
         public static double armIncrement = 0.001;
 
         public Arm() {}
@@ -181,12 +179,14 @@ public class ScoringArm {
     public static class Wrist {
         public Servo wristL, wristR;
         public boolean isWristTransferring = true;
-        public static double wristLTransferPosition = 0.05411;
+        public static double wristLTransferPosition = 0.5144;
         public static double wristRTransferPosition = 1;
         public static double wristLStowPosition = 0.3767;
         public static double wristRStowPosition = 0.4483;
-        public static double wristLScorePosition = 0.6678;
-        public static double wristRScorePosition = 0.1856;
+        public static double wristLScoreBucketPosition = 1;
+        public static double wristRScoreBucketPosition = 0.5128;
+        public static double wristLScoreClipPosition = 0.675;
+        public static double wristRScoreClipPosition = 0.15;
         public static double wristIncrement = 0.001;
 
         public Wrist() {}
@@ -210,9 +210,15 @@ public class ScoringArm {
         }
 
         // Sets wrist to scoring position
-        public void setWristScoring() {
-            wristL.setPosition(wristLScorePosition);
-            wristR.setPosition(wristRScorePosition);
+        public void setWristScoringBucket() {
+            wristL.setPosition(wristLScoreBucketPosition);
+            wristR.setPosition(wristRScoreBucketPosition);
+            isWristTransferring = false;
+        }
+
+        public void setWristScoringClip() {
+            wristL.setPosition(wristLScoreClipPosition);
+            wristR.setPosition(wristRScoreClipPosition);
             isWristTransferring = false;
         }
 

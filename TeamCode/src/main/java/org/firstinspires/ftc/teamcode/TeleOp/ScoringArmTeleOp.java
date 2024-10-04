@@ -3,19 +3,21 @@ package org.firstinspires.ftc.teamcode.TeleOp;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.teamcode.Subsystems.CustomTimer;
 import org.firstinspires.ftc.teamcode.Subsystems.ScoringArm;
 
 @TeleOp(name="Only Scoring Arm Test", group="Active TeleOps")
 public class ScoringArmTeleOp extends OpMode {
     // creating subsystems
-    private final ScoringArm scoringArm = new ScoringArm();
+    private ScoringArm scoringArm = new ScoringArm();
+    private CustomTimer timer = new CustomTimer();
 
     /*
      * Code to run ONCE when the driver hits INIT
      */
     @Override
     public void init() {
-        scoringArm.initialize(this);
+        scoringArm.initialize(this, timer);
         telemetry.addLine("Gamepad 2: incrementals for tuning");
         telemetry.addLine("Left and Right Bumper - toggle claw open and close");
         telemetry.addLine("D-Pad Up and Down - incremental arm");

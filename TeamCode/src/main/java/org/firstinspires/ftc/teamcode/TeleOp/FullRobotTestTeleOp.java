@@ -33,7 +33,7 @@ public class FullRobotTestTeleOp extends OpMode {
         horizontalSlides.initialize(this);
         intake.initialize(this, timer, onRedAlliance);
         verticalSlides.initialize(this);
-        scoringArm.initialize(this);
+        scoringArm.initialize(this, timer);
         scoring.initialize(this, horizontalSlides, intake, verticalSlides, scoringArm, timer);
     }
 
