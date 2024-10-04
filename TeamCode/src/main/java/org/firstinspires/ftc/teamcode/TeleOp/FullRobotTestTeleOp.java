@@ -64,6 +64,8 @@ public class FullRobotTestTeleOp extends OpMode {
     public void loop() {
         mecanum.operateFieldCentricTest(); // press A button to toggle slow mode (refresh rate too high)
         scoring.operateTest();
+        verticalSlides.operateTest();
+        scoringArm.operateTest();
     }
 
     /*
@@ -73,6 +75,8 @@ public class FullRobotTestTeleOp extends OpMode {
     public void stop() {
         mecanum.shutdown();
         scoring.shutdown();
+        verticalSlides.shutdown();
+        scoringArm.shutdown();
     }
 }
 
