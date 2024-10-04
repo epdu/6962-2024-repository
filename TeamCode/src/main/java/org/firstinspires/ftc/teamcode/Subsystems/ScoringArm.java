@@ -74,14 +74,16 @@ public class ScoringArm {
             arm.stowArm();
             wrist.setWristStow();
         } else if (opmode.gamepad1.x) {
+            claw.openClaw();
+            timer.safeDelay(200);
             wrist.setWristTransfer();
-            timer.safeDelay(100);
+            timer.safeDelay(200);
             arm.transferArm();
         }
 
         if (opmode.gamepad1.right_bumper) {
             claw.toggleClaw();
-            timer.safeDelay(100);
+            timer.safeDelay(300);
         }
 
         // Adding telemetry data for debugging
@@ -95,8 +97,8 @@ public class ScoringArm {
     public static class Claw {
         public Servo claw;
         public boolean isClawOpen = true;
-        public static double clawClosedPosition = 0.1667;
-        public static double clawOpenPosition = 0;
+        public static double clawClosedPosition = 0.7389;
+        public static double clawOpenPosition = 0.5011;
         public static double clawIncrement = 0.001;
 
         public Claw() {}
@@ -117,12 +119,12 @@ public class ScoringArm {
             }
         }
 
-        public void openClaw() {
+        public void closeClaw() {
             claw.setPosition(clawClosedPosition);
             isClawOpen = false;
         }
 
-        public void closeClaw() {
+        public void openClaw() {
             claw.setPosition(clawOpenPosition);
             isClawOpen = true;
         }
@@ -136,9 +138,9 @@ public class ScoringArm {
     public static class Arm {
         public Servo arm;
         public boolean isArmTransferring = true;
-        public static double armScoringPosition = 0.4;
-        public static double armStowPosition = 0.8;
-        public static double armTransferPosition = 1;
+        public static double armScoringPosition = 0.075;
+        public static double armStowPosition = 0.7683;
+        public static double armTransferPosition = 0.8578;
         public static double armIncrement = 0.001;
 
         public Arm() {}
@@ -179,14 +181,14 @@ public class ScoringArm {
     public static class Wrist {
         public Servo wristL, wristR;
         public boolean isWristTransferring = true;
-        public static double wristLTransferPosition = 0.5144;
-        public static double wristRTransferPosition = 1;
-        public static double wristLStowPosition = 0.3767;
-        public static double wristRStowPosition = 0.4483;
-        public static double wristLScoreBucketPosition = 1;
-        public static double wristRScoreBucketPosition = 0.5128;
-        public static double wristLScoreClipPosition = 0.675;
-        public static double wristRScoreClipPosition = 0.15;
+        public static double wristLTransferPosition = 0.0967;
+        public static double wristRTransferPosition = 0.865;
+        public static double wristLStowPosition = 0.1217;
+        public static double wristRStowPosition = 0.8533;
+        public static double wristLScoreBucketPosition = 0.4722;
+        public static double wristRScoreBucketPosition = 0.5211;
+        public static double wristLScoreClipPosition = 0.2106;
+        public static double wristRScoreClipPosition = 0.1372;
         public static double wristIncrement = 0.001;
 
         public Wrist() {}
