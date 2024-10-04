@@ -21,16 +21,22 @@ public class Intake
     CustomTimer timer;
     private DcMotorEx intakeMotor;
     private Servo wristServo;
+
+    private CRServo iCRServoL, iCRServoR;
     private ColorRangeSensor colorSensor;
     private boolean ON_RED_ALLIANCE;
 
     // variables created for later modification, not constants
     public volatile boolean flippedUp = true;
 
+
     // constants
     /** all of the constants need to be tuned*/
     public static double intakePower = 0.6;
     public static double stowedPosition = 0.4;
+
+    //TODO: tune transfer position unless stowed is transfer position
+    public static double transferPosition = 1;
     public static double intakePosition = 0;
     public static double wristIncrement = 0.001;
 //    public static double detectionThreshold = 0.5; //inches
@@ -46,6 +52,9 @@ public class Intake
         this.timer = timer;
         this.intakeMotor = rHardware.intakeMotor;
         this.wristServo = rHardware.iWristServo;
+
+        this.iCRServoL = rHardware.iCRServoL;
+        this.iCRServoR = rHardware.iCRServoR;
 //        intakeServo.setDirection(DcMotorSimple.Direction.REVERSE);
     }
 
@@ -82,6 +91,8 @@ public class Intake
         }
         else if (opmode.gamepad1.x) {
             eject();
+        } else if (opmode.gamepad1.y) {
+            transfer();
         }
     }
 
@@ -90,6 +101,9 @@ public class Intake
     public void intakePieces() {
         // right trigger extend hori slides
         intakeMotor.setPower(intakePower);
+        //Countinous servo
+        iCRServoR.setPower(intakePower);
+        iCRServoL.setPower(intakePower);
         // flip out
         wristServo.setPosition(intakePosition);
         flippedUp = false;
@@ -97,6 +111,9 @@ public class Intake
     public void stopIntaking() {
         // stop
         intakeMotor.setPower(0);
+        //CR servo
+        iCRServoL.setPower(intakePower);
+        iCRServoR.setPower(intakePower);
         // flip in
         wristServo.setPosition(stowedPosition);
         flippedUp = true;
@@ -104,7 +121,22 @@ public class Intake
     public void eject() {
         // reverse direction for 2 seconds, then return
         intakeMotor.setPower(-0.5*intakePower);
+        //CRServo
+        iCRServoL.setPower(-0.5*intakePower);
+        iCRServoR.setPower(-0.5*intakePower);
         timer.safeDelay(2000);
+    }
+
+    public void transfer() {
+        //TODO: Tune intake wrist trasnfer position
+        if (wristServo.getPosition() != transferPosition) {wristServo.setPosition(transferPosition);}
+
+        iCRServoL.setPower(-0.3*intakePower);
+        iCRServoR.setPower(-0.3*intakePower);
+        //TODO: tune timer delay secconds
+        timer.safeDelay(2000);
+        //reset to intake position
+        wristServo.setPosition(intakePosition);
     }
 
     public void incremental(int sign) {

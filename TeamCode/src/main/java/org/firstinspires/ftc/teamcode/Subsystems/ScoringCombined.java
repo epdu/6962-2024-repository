@@ -66,6 +66,8 @@ public class ScoringCombined {
 
         if (opmode.gamepad1.a) {
             autoPrepHighBucket();
+        } else if (opmode.gamepad1.b) {
+            autoPrepLowBucket();
         }
         opmode.telemetry.addData("Vertical Slides Retracted: ", verticalSlides.verticalSlidesRetracted);
         opmode.telemetry.addData("Horizontal Slides Retracted: ", horizontalSlides.horizontalSlidesRetracted);
@@ -135,10 +137,19 @@ public class ScoringCombined {
         if (!scoringArm.claw.isClawOpen) {scoringArm.claw.openClaw();}
         if (!verticalSlides.verticalSlidesRetracted) {verticalSlides.retract();}
         if (!horizontalSlides.horizontalSlidesRetracted) {horizontalSlides.retract();}
+        //set the arm out of the way of transfer?
+        scoringArm.arm.scoreArm();
+        scoringArm.wrist.setWristScoringBucket();
+
+        //intake command
+        intake.transfer();
+        timer.safeDelay(2000);
 
         scoringArm.arm.transferArm();
         scoringArm.wrist.setWristTransfer();
 //        timer.safeDelay(0);// might need delay
+
+
         scoringArm.claw.closeClaw();
         scoringArm.arm.stowArm();
         scoringArm.wrist.setWristStow();
@@ -151,6 +162,16 @@ public class ScoringCombined {
         verticalSlides.raiseToHighBucket();     // extending slides
         scoringArm.wrist.setWristScoringBucket();
         scoringArm.arm.scoreArm();              // flip arm over to score
+        while(!scoringArm.claw.isClawOpen) {}
+        scoringArm.arm.stowArm();
+        scoringArm.wrist.setWristStow();
+        verticalSlides.retract();
+    }
+
+    public void autoPrepLowBucket() {
+        verticalSlides.raiseToLowBucket();
+        scoringArm.wrist.setWristScoringBucket();
+        scoringArm.arm.scoreArm();
         while(!scoringArm.claw.isClawOpen) {}
         scoringArm.arm.stowArm();
         scoringArm.wrist.setWristStow();
