@@ -83,13 +83,13 @@ public class VerticalSlides
 
     public void operateTest() {
         // PID auto extension
-        if (opmode.gamepad1.y) {
+        if (opmode.gamepad2.y) {
             raiseToHighBucket();
         }
-        else if (opmode.gamepad1.x) {
+        else if (opmode.gamepad2.x) {
             raiseToLowBucket();
         }
-        else if (opmode.gamepad1.a) {
+        else if (opmode.gamepad2.a) {
             retract();
         }
 
