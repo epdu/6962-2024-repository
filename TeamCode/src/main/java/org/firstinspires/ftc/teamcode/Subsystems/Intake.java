@@ -71,6 +71,7 @@ public class Intake
     }
 
     public void operateTest() {
+        // gamepad 2
         intakeMotor.setPower(-opmode.gamepad2.left_stick_y);
 
         if (opmode.gamepad2.dpad_up) {
@@ -116,19 +117,21 @@ public class Intake
     }
     public void eject() {
         // reverse direction for 2 seconds, then return
-        intakeMotor.setPower(-0.5*intakePower);
+//        intakeMotor.setPower(-0.5*intakePower);
         //CRServo
         iCRServoL.setPower(-0.5*intakePower);
         iCRServoR.setPower(-0.5*intakePower);
         timer.safeDelay(2000);
+        iCRServoL.setPower(0);
+        iCRServoR.setPower(0);
     }
 
     public void transfer() {
         //TODO: Tune intake wrist transfer position
         if (!flippedUp) {wristServo.setPosition(transferPosition);}
 
-        iCRServoL.setPower(-0.3*intakePower);
-        iCRServoR.setPower(-0.3*intakePower);
+        iCRServoL.setPower(0.3*intakePower);
+        iCRServoR.setPower(0.3*intakePower);
         //TODO: tune timer delay seconds
         timer.safeDelay(2000);
     }
