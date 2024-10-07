@@ -49,7 +49,7 @@ public class OuttakeCombined {
         verticalSlides.raiseToHighBucket();     // extending slides
         scoringArm.wrist.setWristScoringBucket();
         scoringArm.arm.scoreArm();              // flip arm over to score
-//            timer.safeDelay(0);                   // wait for __ milliseconds
+        timer.safeDelay(2000);                   // wait for __ milliseconds
         scoringArm.wrist.setWristScoringBucket();     // prepping wrist to drop pixel (currently useless because the intake is now starting horizontal)
         while (!scoringArm.claw.isClawOpen) {}// wait until driver drops piece
 //            claw.openClaw();                      // drop sample

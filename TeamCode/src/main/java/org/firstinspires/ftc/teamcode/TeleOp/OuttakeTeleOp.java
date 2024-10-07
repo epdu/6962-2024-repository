@@ -72,7 +72,7 @@ public class OuttakeTeleOp extends OpMode {
 
         // kill switch for the robot's safety if it starts going nuts
         if (gamepad1.a && gamepad1.b) {
-            stop();
+            requestOpModeStop();
         }
 
         telemetry.update();
