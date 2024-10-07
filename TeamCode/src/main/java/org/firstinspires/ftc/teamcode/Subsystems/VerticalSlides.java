@@ -38,7 +38,7 @@ public class VerticalSlides
     public static int highBucketPos = 1300;
     public static int lowBucketPos = 600;
     public static int lowChamberPos = 100;
-    public static int highChamberPos = 500;
+    public static int highChamberPos = 600;
     public static int retractedPos = 0;
     public static int pickupClipPos = 200;
     public static int prepClipPos = 400;
@@ -145,15 +145,15 @@ public class VerticalSlides
     }
 
     public void operateVincent() {
-//        if (opmode.gamepad1.a) {
-//            raiseToHighBucket();
-//        }
-//        else if (opmode.gamepad1.x) {
-//            raiseToLowBucket();
-//        }
-//        else if (opmode.gamepad1.b) {
-//            retract();
-//        }
+        if (opmode.gamepad1.a) {
+            raiseToHighBucket();
+        }
+        else if (opmode.gamepad1.x) {
+            raiseToLowBucket();
+        }
+        else if (opmode.gamepad1.b) {
+            retract();
+        }
 
 //        PIDPowerL = PIDControl(target, leftSlideMotor);
         PIDPowerR = PIDControl(target, rightSlideMotor);
@@ -184,6 +184,7 @@ public class VerticalSlides
 
         // error is negative when moving down
         movingDown = error <= 0;
+
         // rate of change of the error
         double derivative = (error - lastError) / timer.seconds();
 

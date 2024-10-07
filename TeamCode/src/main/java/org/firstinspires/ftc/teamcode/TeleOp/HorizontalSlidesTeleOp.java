@@ -52,6 +52,7 @@ public class HorizontalSlidesTeleOp extends OpMode {
     @Override
     public void loop() {
         horizontalSlides.operateTest();
+        horizontalSlides.operateVincent();
         // Gamepad 2:
         // Right Joystick Y - horizontal slide manual control
         telemetry.addData("Horizontal Slides Retracted: ", horizontalSlides.horizontalSlidesRetracted);

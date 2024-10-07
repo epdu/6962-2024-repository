@@ -27,12 +27,10 @@ public class ScoringRobotTeleOp extends OpMode {
         telemetry.addLine("Gamepad 2: incrementals for tuning");
         telemetry.addLine("Left and Right Bumper - toggle claw open and close");
         telemetry.addLine("D-Pad Up and Down - incremental arm");
-        telemetry.addLine("Left Joystick Y - incremental left servo (might be reversed)");
-        telemetry.addLine("Right Joystick Y - incremental right servo");
-        telemetry.addLine("\nGamepad 1: set pos, only after gamepad 2 incrementals");
-        telemetry.addLine("Right Bumper - claw toggle");
         telemetry.addLine("Left Joystick Y - incremental wrist turning");
         telemetry.addLine("Left Joystick X - incremental wrist rotation");
+        telemetry.addLine("\nGamepad 1: set pos, only after gamepad 2 incrementals");
+        telemetry.addLine("Right Bumper - claw toggle");
         telemetry.addLine("A - whole arm score position");
         telemetry.addLine("B - whole arm stow position");
         telemetry.addLine("X - whole arm transfer position");
@@ -70,14 +68,12 @@ public class ScoringRobotTeleOp extends OpMode {
         // Gamepad 2:
         // Left Bumper - incremental open claw
         // Right Bumper - incremental close claw
-        // Left Joystick Y - incremental left servo
-        // Right Joystick Y - incremental right servo
+        // Left Joystick Y - wrist turn
+        // Left Joystick X - wrist rotate
         // D-Pad Up - incremental arm up
         // D-Pad Down - incremental arm down
 
         // Gamepad 1:
-        // Left Joystick Y - wrist turn
-        // Left Joystick X - wrist rotate
         // Y - whole arm score position
         // B - whole arm stow position
         // X - whole arm transfer position
