@@ -51,7 +51,7 @@ public class OuttakeCombined {
         scoringArm.arm.scoreArm();              // flip arm over to score
         timer.safeDelay(2000);                   // wait for __ milliseconds
         scoringArm.wrist.setWristScoringBucket();     // prepping wrist to drop pixel (currently useless because the intake is now starting horizontal)
-        while (!scoringArm.claw.isClawOpen) {}// wait until driver drops piece
+        timer.safeDelay(2000);
 //            claw.openClaw();                      // drop sample
         verticalSlides.retract();               // retract slides
         scoringArm.arm.stowArm();               // stow arm while retracting (might switch order)
