@@ -74,7 +74,7 @@ public class ScoringRobotTeleOp extends OpMode {
         // D-Pad Down - incremental arm down
 
         // Gamepad 1:
-        // right bumper - toggle
+        // right bumper - toggle claw
         // left trigger - past 0.7, score high bucket
         //                between 0.3 and 0.7, score high clip
         //                else, retract fully
