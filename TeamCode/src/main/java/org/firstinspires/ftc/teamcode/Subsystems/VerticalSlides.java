@@ -83,13 +83,10 @@ public class VerticalSlides
 
     public void operateTest() {
         // PID auto extension
-        if (opmode.gamepad1.left_trigger >= 0.7) {
+        if (opmode.gamepad1.dpad_up) {
             raiseToHighBucket();
         }
-        else if ( 0.3 < opmode.gamepad1.left_trigger && opmode.gamepad1.left_trigger < 0.7) {
-            raiseToHighChamber();
-        }
-        else {
+        else if (opmode.gamepad1.dpad_down) {
             retract();
         }
 

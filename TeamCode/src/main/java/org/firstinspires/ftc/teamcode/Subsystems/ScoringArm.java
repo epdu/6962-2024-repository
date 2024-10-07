@@ -70,10 +70,12 @@ public class ScoringArm {
         else if (opmode.gamepad1.a) {
             arm.scoreArm();
             wrist.setWristScoringClip();
-        } else if (opmode.gamepad1.b) {
+        }
+        else if (opmode.gamepad1.b) {
             arm.stowArm();
             wrist.setWristStow();
-        } else if (opmode.gamepad1.x) {
+        }
+        else if (opmode.gamepad1.x) {
             claw.openClaw();
             timer.safeDelay(200);
             wrist.setWristTransfer();
