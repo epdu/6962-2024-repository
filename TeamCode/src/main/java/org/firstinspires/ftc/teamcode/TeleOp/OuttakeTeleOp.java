@@ -60,15 +60,20 @@ public class OuttakeTeleOp extends OpMode {
      */
     @Override
     public void loop() {
-        // hopefully only macro-based control
+        // only macro-based control
         outtake.operateTest();
         mecanumDrive.operateFieldCentricTest();
 
         // Gamepad 1:
         // Right Bumper - toggle claw
         // Both Joysticks - regular field centric mecanum driving
-        // Y - bucket score macro,
+        // Y - bucket score macro
         // X - auto transfer macro
+
+        // kill switch for the robot's safety if it starts going nuts
+        if (gamepad1.a && gamepad1.b) {
+            stop();
+        }
 
         telemetry.update();
     }
