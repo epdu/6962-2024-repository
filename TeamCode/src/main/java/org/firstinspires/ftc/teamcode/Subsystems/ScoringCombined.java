@@ -8,8 +8,6 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.teamcode.Util.RobotHardware;
 
-import java.util.Timer;
-
 public class ScoringCombined {
     OpMode opmode;
 

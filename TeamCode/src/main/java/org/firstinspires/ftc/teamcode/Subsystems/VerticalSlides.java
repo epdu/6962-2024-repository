@@ -142,15 +142,15 @@ public class VerticalSlides
     }
 
     public void operateVincent() {
-        if (opmode.gamepad1.a) {
-            raiseToHighBucket();
-        }
-        else if (opmode.gamepad1.x) {
-            raiseToLowBucket();
-        }
-        else if (opmode.gamepad1.b) {
-            retract();
-        }
+//        if (opmode.gamepad1.a) {
+//            raiseToHighBucket();
+//        }
+//        else if (opmode.gamepad1.x) {
+//            raiseToLowBucket();
+//        }
+//        else if (opmode.gamepad1.b) {
+//            retract();
+//        }
 
 //        PIDPowerL = PIDControl(target, leftSlideMotor);
         PIDPowerR = PIDControl(target, rightSlideMotor);
@@ -159,7 +159,12 @@ public class VerticalSlides
         rightSlideMotor.setPower(PIDPowerR);
 
         // updates boolean
-        verticalSlidesRetracted = leftSlideMotor.getCurrentPosition() < retractedThreshold /*&& leftSlideMotor.getCurrentPosition() < retractedThreshold*/;
+        verticalSlidesRetracted = leftSlideMotor.getCurrentPosition() < retractedThreshold;
+        opmode.telemetry.addData("Vertical Slides Retracted: ", verticalSlidesRetracted);
+        opmode.telemetry.addData("Right Motor Encoder Pos: ", telemetryRightMotorPos());
+        opmode.telemetry.addData("PID Power R ", PIDPowerR);
+        opmode.telemetry.addData("Slide Target ", target);
+        opmode.telemetry.update();
     }
 
     public void shutdown() {

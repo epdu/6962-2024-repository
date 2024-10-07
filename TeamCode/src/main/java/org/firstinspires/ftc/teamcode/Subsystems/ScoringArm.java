@@ -16,7 +16,7 @@ public class ScoringArm {
     public Claw claw = new Claw();
     public Arm arm = new Arm();
     public Wrist wrist = new Wrist();
-    private CustomTimer timer = new CustomTimer();
+    private static CustomTimer timer = new CustomTimer();
     private final RobotHardware rHardware = new RobotHardware();
 
     // constructor
@@ -38,6 +38,15 @@ public class ScoringArm {
         if (opmode.gamepad1.left_bumper) {
             claw.toggleClaw();
         }
+
+        // Adding telemetry data for debugging
+        opmode.telemetry.addData("Arm Pos: ", arm.arm.getPosition());
+        opmode.telemetry.addData("Wrist Transferring Bool", wrist.isWristTransferring);
+        opmode.telemetry.addData("Arm Transferring Bool: ", arm.isArmTransferring);
+        opmode.telemetry.addData("Right Wrist Pos: ", wrist.wristR.getPosition());
+        opmode.telemetry.addData("Left Wrist Pos: ", wrist.wristL.getPosition());
+        opmode.telemetry.addData("Claw Pos: ", claw.claw.getPosition());
+        opmode.telemetry.addData("Claw Pos: ", claw.isClawOpen);
     }
 
     // Operates the test mode for controlling the claw, arm, and wrist
@@ -76,16 +85,11 @@ public class ScoringArm {
             wrist.setWristStow();
         }
         else if (opmode.gamepad1.x) {
-            claw.openClaw();
-            timer.safeDelay(200);
-            wrist.setWristTransfer();
-            timer.safeDelay(200);
-            arm.transferArm();
+            wholeArmTransfer();
         }
 
         if (opmode.gamepad1.right_bumper) {
             claw.toggleClaw();
-            timer.safeDelay(300);
         }
 
         // Adding telemetry data for debugging
@@ -119,6 +123,7 @@ public class ScoringArm {
                 claw.setPosition(clawOpenPosition);
                 isClawOpen = true;
             }
+            timer.safeDelay(300);
         }
 
         public void closeClaw() {
@@ -252,6 +257,15 @@ public class ScoringArm {
         public double telemetryWristLPos() {
             return wristR.getPosition();
         }
+    }
+
+    // whole arm macros
+    public void wholeArmTransfer() {
+        claw.openClaw();
+        timer.safeDelay(100);
+        wrist.setWristTransfer();
+        timer.safeDelay(200);
+        arm.transferArm();
     }
 
 //    public class clawOpen implements Action {
