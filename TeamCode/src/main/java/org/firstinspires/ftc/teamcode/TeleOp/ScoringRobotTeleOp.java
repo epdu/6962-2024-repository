@@ -74,9 +74,17 @@ public class ScoringRobotTeleOp extends OpMode {
         // D-Pad Down - incremental arm down
 
         // Gamepad 1:
-        // Y - whole arm score position
-        // B - whole arm stow position
-        // X - whole arm transfer position
+        // right bumper - toggle
+        // left trigger - past 0.7, score high bucket
+        //                between 0.3 and 0.7, score high clip
+        //                else, retract fully
+        // Both Joysticks - regular field centric mecanum driving
+        // dpad-left - toggle slow mode (buggy because refresh rate too high)
+        // dpad-down - navx reset
+        // A - arm preset to score clip
+        // Y - arm preset to score bucket
+        // B - arm preset to stow
+        // X - arm preset to transfer
 
         telemetry.addData("Arm Transferring: ", scoringArm.arm.isArmTransferring);
         telemetry.addData("Claw Open: ", scoringArm.claw.isClawOpen);
