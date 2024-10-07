@@ -61,12 +61,8 @@ public class OuttakeCombined {
     public void autoTransfer() {
         // check both slides fully retracted and ready to transfer
         /** this is probably what will break, but idk what will break*/
-//        if (intake.correctPiece()) {
         if (!scoringArm.claw.isClawOpen) {scoringArm.claw.openClaw();}
         if (!verticalSlides.verticalSlidesRetracted) {verticalSlides.retract();}
-        //set the arm out of the way of transfer?
-        scoringArm.arm.scoreArm();
-        scoringArm.wrist.setWristScoringBucket();
 
         scoringArm.wholeArmTransfer();
         timer.safeDelay(750);
@@ -74,7 +70,6 @@ public class OuttakeCombined {
         scoringArm.claw.closeClaw();
         scoringArm.arm.stowArm();
         scoringArm.wrist.setWristStow();
-//        }
     }
 
     // extends vertical slides, and sets arm to scoring, but doesn't open claw, then retracts once claw opens
