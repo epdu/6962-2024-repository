@@ -29,19 +29,17 @@ public class RobotHardware {
 
     public DcMotorEx hSlideMotor = null;
 
-    public DcMotorEx intakeMotor = null;
+//    public DcMotorEx intakeMotor = null;
     public Servo iWristServo = null;
+    public CRServo iCRServoL = null, iCRServoR = null;
+
 
     public Servo cWristServoR = null, cWristServoL = null, armServo = null, claw = null;
 
-    public CRServo iCRServoL = null, iCRServoR = null;
-
-    //TODO: replace with OTOS
     public NavxMicroNavigationSensor navx;
 
     public GamepadEx gamepad1, gamepad2;
 
-    //TODO: Replace with names in config
     public void init(@NonNull HardwareMap hardwareMap) {
         this.hMap = hardwareMap;
 
@@ -56,9 +54,9 @@ public class RobotHardware {
         cWristServoL = hMap.get(Servo.class, "cWristL");
         claw = hMap.get(Servo.class, "cServo");
 
-        intakeMotor = hMap.get(DcMotorEx.class,"intake");
-//        iCRServoL = hMap.get(CRServo.class, "iCRServoL");
-//        iCRServoR = hMap.get(CRServo.class, "iCRServoR");
+//        intakeMotor = hMap.get(DcMotorEx.class,"intake");
+        iCRServoL = hMap.get(CRServo.class, "iCRServoL");
+        iCRServoR = hMap.get(CRServo.class, "iCRServoR");
         iWristServo = hMap.get(Servo.class, "iWrist");
 
         hSlideMotor = hMap.get(DcMotorEx.class , "hSlide");

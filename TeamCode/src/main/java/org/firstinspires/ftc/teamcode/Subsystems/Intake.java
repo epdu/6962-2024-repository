@@ -19,7 +19,7 @@ public class Intake
 
     private final RobotHardware rHardware = new RobotHardware();
     CustomTimer timer;
-    private DcMotorEx intakeMotor;
+//    private DcMotorEx intakeMotor;
     private Servo wristServo;
 
     private CRServo iCRServoL, iCRServoR;
@@ -47,12 +47,13 @@ public class Intake
         ON_RED_ALLIANCE = redAlliance;
 
         this.timer = timer;
-        this.intakeMotor = rHardware.intakeMotor;
+//        this.intakeMotor = rHardware.intakeMotor;
         this.wristServo = rHardware.iWristServo;
 
         this.iCRServoL = rHardware.iCRServoL;
         this.iCRServoR = rHardware.iCRServoR;
-//        intakeServo.setDirection(DcMotorSimple.Direction.REVERSE);
+//        iCRServoL.setDirection(DcMotorSimple.Direction.REVERSE);
+        iCRServoR.setDirection(DcMotorSimple.Direction.REVERSE);
     }
 
     public void operateVincent()
@@ -72,7 +73,8 @@ public class Intake
 
     public void operateTest() {
         // gamepad 2
-        intakeMotor.setPower(-opmode.gamepad2.left_stick_y);
+        iCRServoL.setPower(-opmode.gamepad2.left_stick_y);
+        iCRServoR.setPower(-opmode.gamepad2.left_stick_y);
 
         if (opmode.gamepad2.dpad_up) {
             incremental(1);
