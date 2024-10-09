@@ -27,7 +27,7 @@ public class VerticalSlides
     public static double joystickScalar = 1;
     public static double slideScalar = 1;
     public static double KpUp = 0.01;
-    public static double KpDown = 0.005;
+    public static double KpDown = 0.006;
     public static double Ki = 0;
     public static double Kd = 0;
     public static double Kg = 0; // gravity constant, tune till the slide holds itself in place
@@ -48,6 +48,7 @@ public class VerticalSlides
     private volatile double target = 0;
     private volatile boolean movingDown = false;
     public volatile boolean verticalSlidesRetracted = true;
+    public volatile boolean atTarget = true;
 
     // PID stuff
     private double PIDPowerL, PIDPowerR;
@@ -203,11 +204,17 @@ public class VerticalSlides
         double output = ((movingDown ? KpDown : KpUp) * error) + (Ki * integralSum) + (Kd * derivative) + Kg;
 
         // deadband-esque behavior to avoid returning super small decimal values
+        if (Math.abs(output) < 0.2) {
+            atTarget = true;
+        }
         if (Math.abs(output) < 0.1) {
             output = 0;
         }
         else if (Math.abs(output) >= 1) {
             output = (output > 0 ? 1 : -1);
+        }
+        else {
+            atTarget = false;
         }
 
         return output;

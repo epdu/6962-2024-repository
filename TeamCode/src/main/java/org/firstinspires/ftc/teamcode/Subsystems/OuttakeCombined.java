@@ -24,9 +24,6 @@ public class OuttakeCombined {
     }
 
     public void operateTest() {
-        verticalSlides.operateVincent(); // using operateVincent is not a mistake, please leave here
-        scoringArm.operateVincent();
-
         if (opmode.gamepad1.y) {
             autoPrepHighBucket();
         } else if (opmode.gamepad1.x) {
@@ -63,22 +60,25 @@ public class OuttakeCombined {
         /** this is probably what will break, but idk what will break*/
         if (!scoringArm.claw.isClawOpen) {scoringArm.claw.openClaw();}
         if (!verticalSlides.verticalSlidesRetracted) {verticalSlides.retract();}
-
+        while (!verticalSlides.atTarget) {verticalSlides.operateVincent();}
         scoringArm.wholeArmTransfer();
         timer.safeDelay(750);
-
         scoringArm.claw.closeClaw();
+        timer.safeDelay(200);
         scoringArm.arm.stowArm();
         scoringArm.wrist.setWristStow();
     }
 
     // extends vertical slides, and sets arm to scoring, but doesn't open claw, then retracts once claw opens
-    // idk if the while loop will break everything, but it shouldn't
     public void autoPrepHighBucket() {
-        verticalSlides.raiseToHighBucket();     // extending slides
         scoringArm.wrist.setWristScoringBucket();
-        scoringArm.arm.scoreArm();              // flip arm over to score
-        while(!scoringArm.claw.isClawOpen) {}/** THIS LINE MIGHT PAUSE THE WHOLE SUBSYSTEM AND NOT ALLOW THE CLAW TO OPEN, BUT HOPEFULLY IT'S FINE*/
+        scoringArm.arm.scoreArm();
+        verticalSlides.raiseToHighBucket();
+        timer.safeDelay(100);
+        while (!verticalSlides.atTarget) {verticalSlides.operateVincent();}
+        timer.safeDelay(1000);
+        scoringArm.claw.openClaw();
+        timer.safeDelay(500);
         scoringArm.arm.stowArm();
         scoringArm.wrist.setWristStow();
         verticalSlides.retract();

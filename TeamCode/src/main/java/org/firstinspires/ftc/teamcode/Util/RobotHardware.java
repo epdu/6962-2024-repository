@@ -55,8 +55,8 @@ public class RobotHardware {
         claw = hMap.get(Servo.class, "cServo");
 
 //        intakeMotor = hMap.get(DcMotorEx.class,"intake");
-        iCRServoL = hMap.get(CRServo.class, "iCRServoL");
-        iCRServoR = hMap.get(CRServo.class, "iCRServoR");
+//        iCRServoL = hMap.get(CRServo.class, "iCRServoL");
+//        iCRServoR = hMap.get(CRServo.class, "iCRServoR");
         iWristServo = hMap.get(Servo.class, "iWrist");
 
         hSlideMotor = hMap.get(DcMotorEx.class , "hSlide");

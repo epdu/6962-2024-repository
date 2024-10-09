@@ -62,6 +62,8 @@ public class OuttakeTeleOp extends OpMode {
     public void loop() {
         // only macro-based control
         outtake.operateTest();
+//        vertSlides.operateTest(); // using operateVincent is not a mistake, please leave here
+        scoringArm.operateVincent();
         mecanumDrive.operateFieldCentricTest();
 
         // Gamepad 1:
