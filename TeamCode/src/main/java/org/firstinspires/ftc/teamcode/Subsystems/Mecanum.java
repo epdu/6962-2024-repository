@@ -79,9 +79,9 @@ public class Mecanum {
     }
 
     public void operateFieldCentricTest() {
-//        if (opmode.gamepad1.dpad_down) { gyroManager.reset(); }
+        if (opmode.gamepad1.dpad_down) { gyroManager.reset(); }
 
-//        if (opmode.gamepad1.dpad_left) { toggleSlowMode(); }
+        if (opmode.gamepad1.right_trigger > 0.5) { slowModeBool = true; }
 
         // driving field centric
         if (slowModeBool) {
