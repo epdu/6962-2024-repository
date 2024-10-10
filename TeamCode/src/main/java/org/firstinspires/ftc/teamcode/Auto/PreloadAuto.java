@@ -30,7 +30,7 @@ public class PreloadAuto extends LinearOpMode{
     public static double startY = -63.75;
     public static double startHeading = Math.toRadians(-90);
     public static double scorePreloadX = 0;
-    public static double scorePreloadY = -36;
+    public static double scorePreloadY = -42;
     public static double parkX = 36;
     public static double parkY = -60;
 
@@ -42,6 +42,7 @@ public class PreloadAuto extends LinearOpMode{
         TrajectoryActionBuilder move1 = drive.actionBuilder(startPose)
                 .strafeTo(new Vector2d(scorePreloadX, scorePreloadY))
                 .waitSeconds(1)
+                .strafeTo(new Vector2d(parkX, parkY))
                 .strafeTo(new Vector2d(parkX, parkY));
 
         while(!isStarted() && !opModeIsActive()) {
