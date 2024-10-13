@@ -9,6 +9,17 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import org.firstinspires.ftc.teamcode.Util.RobotHardware;
 
 public class ScoringCombined {
+    // DEPRECATED CLASS     DEPRECATED CLASS
+    // DEPRECATED CLASS     DEPRECATED CLASS
+    // DEPRECATED CLASS     DEPRECATED CLASS
+    // DEPRECATED CLASS     DEPRECATED CLASS
+    // DEPRECATED CLASS     DEPRECATED CLASS
+    // DEPRECATED CLASS     DEPRECATED CLASS
+    // DEPRECATED CLASS     DEPRECATED CLASS
+    // DEPRECATED CLASS     DEPRECATED CLASS
+    // DEPRECATED CLASS     DEPRECATED CLASS
+    // DEPRECATED CLASS     DEPRECATED CLASS
+
     OpMode opmode;
 
     HorizontalSlides horizontalSlides;
@@ -57,32 +68,24 @@ public class ScoringCombined {
     }
 
     public void operateTest() {
-        verticalSlides.operateVincent();
-        horizontalSlides.operateVincent();
-        scoringArm.operateVincent();
-//        intake.operateTest();
-
-        if (opmode.gamepad1.a) {
-            autoPrepHighBucket();
-        } else if (opmode.gamepad1.b) {
-            autoPrepLowBucket();
-        }
-        opmode.telemetry.addData("Vertical Slides Retracted: ", verticalSlides.verticalSlidesRetracted);
-        opmode.telemetry.addData("Horizontal Slides Retracted: ", horizontalSlides.horizontalSlidesRetracted);
-        opmode.telemetry.addData("Claw Transferring: ", scoringArm.arm.isArmTransferring);
-        opmode.telemetry.addData("Claw Open: ", scoringArm.claw.isClawOpen);
+//        verticalSlides.operateVincent();
+//        horizontalSlides.operateVincent();
+//        scoringArm.operateVincent();
+////        intake.operateTest();
+//
+//        if (opmode.gamepad1.a) {
+//            autoPrepHighBucket();
+//        } else if (opmode.gamepad1.b) {
+//            autoPrepLowBucket();
+//        }
+//        opmode.telemetry.addData("Vertical Slides Retracted: ", verticalSlides.verticalSlidesRetracted);
+//        opmode.telemetry.addData("Horizontal Slides Retracted: ", horizontalSlides.horizontalSlidesRetracted);
+//        opmode.telemetry.addData("Claw Transferring: ", scoringArm.arm.isArmTransferring);
+//        opmode.telemetry.addData("Claw Open: ", scoringArm.claw.isClawOpen);
 //        opmode.telemetry.addData("Piece Taken In: ", intake.pieceTakenInBool());
 //        opmode.telemetry.addData("Detected Piece Color: ", intake.identifyColor());
 //        opmode.telemetry.addData("Correct Color: ", intake.correctColorBool());
 //        opmode.telemetry.addData("Has Sample & Correct Color: ", intake.correctPiece());
-    }
-
-    public void shutdown() {
-        verticalSlides.shutdown();
-        horizontalSlides.shutdown();
-        scoringArm.shutdown();
-        intake.shutdown();
-        timer.shutdown();
     }
 
 //    public void autoPickUpColorSensor() {
@@ -140,9 +143,6 @@ public class ScoringCombined {
         scoringArm.wrist.setWristScoringBucket();
 
         //intake command
-        intake.transfer();
-        timer.safeDelay(2000);
-
         scoringArm.arm.transferArm();
         scoringArm.wrist.setWristTransfer();
 //        timer.safeDelay(0);// might need delay

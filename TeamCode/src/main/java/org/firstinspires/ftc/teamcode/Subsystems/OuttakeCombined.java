@@ -31,16 +31,7 @@ public class OuttakeCombined {
         }
     }
 
-    public void shutdown() {
-        verticalSlides.shutdown();
-        scoringArm.shutdown();
-        timer.shutdown();
-    }
-
-
-    /** This is guaranteed not to work first try, but idk which section is wrong until I can CameraPortal it*/
     public void autoTransferAndScore() {
-        /** this is probably what will break, but idk what will break*/
 //        if (intake.correctPiece()) {
         autoTransfer();
         verticalSlides.raiseToHighBucket();     // extending slides
@@ -57,7 +48,6 @@ public class OuttakeCombined {
 
     public void autoTransfer() {
         // check both slides fully retracted and ready to transfer
-        /** this is probably what will break, but idk what will break*/
         if (!scoringArm.claw.isClawOpen) {scoringArm.claw.openClaw();}
         if (!verticalSlides.verticalSlidesRetracted) {verticalSlides.retract();}
         while (!verticalSlides.atTarget) {verticalSlides.operateVincent();}
@@ -94,4 +84,3 @@ public class OuttakeCombined {
         verticalSlides.retract();
     }
 }
-
