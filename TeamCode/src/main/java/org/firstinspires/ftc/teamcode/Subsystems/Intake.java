@@ -58,17 +58,14 @@ public class Intake
 
     public void operateVincent()
     {
-        if (opmode.gamepad1.right_bumper) {
-            // start intaking
-            intakePieces();// flip out
-            if (opmode.gamepad1.a) {
-                eject();
-            }
-        }
-        else {
-            // stop
-            stopIntaking();
-        }
+//        if (opmode.gamepad1.right_bumper && flippedUp) {
+//            intakePieces();
+//        } else if (!flippedUp) {
+//            stopIntaking();
+//        }
+//        if (opmode.gamepad1.dpad_up) {
+//            eject();
+//        }
     }
 
     public void operateTest() {
@@ -90,13 +87,9 @@ public class Intake
             stopIntaking();
         }
         else if (opmode.gamepad1.x) {
-            eject();
-        } else if (opmode.gamepad1.y) {
-            transfer();
+            reverse();
         }
     }
-
-    public void shutdown() {}
 
     public void intakePieces() {
 //        intakeMotor.setPower(intakePower);
@@ -117,26 +110,31 @@ public class Intake
         wristServo.setPosition(transferPosition);
         flippedUp = true;
     }
-    public void eject() {
-        // reverse direction for 2 seconds, then return
+    public void reverse() {
+        // reverse direction for 2 seconds, then stop
 //        intakeMotor.setPower(-0.5*intakePower);
         //CRServo
         iCRServoL.setPower(-0.5*intakePower);
         iCRServoR.setPower(-0.5*intakePower);
-        timer.safeDelay(2000);
+//        timer.safeDelay(2000);
+//        iCRServoL.setPower(0);
+//        iCRServoR.setPower(0);
+    }
+
+    public void stopServos() {
         iCRServoL.setPower(0);
         iCRServoR.setPower(0);
     }
 
-    public void transfer() {
-        //TODO: Tune intake wrist transfer position
-        if (!flippedUp) {wristServo.setPosition(transferPosition);}
-
-        iCRServoL.setPower(0.3*intakePower);
-        iCRServoR.setPower(0.3*intakePower);
-        //TODO: tune timer delay seconds
-        timer.safeDelay(2000);
-    }
+//    public void transfer() {
+//        //TODO: Tune intake wrist transfer position
+//        if (!flippedUp) {wristServo.setPosition(transferPosition);}
+//
+//        iCRServoL.setPower(0.3*intakePower);
+//        iCRServoR.setPower(0.3*intakePower);
+//        //TODO: tune timer delay seconds
+//        timer.safeDelay(2000);
+//    }
 
     public void incremental(int sign) {
         wristServo.setPosition(wristServo.getPosition() + sign * wristIncrement);

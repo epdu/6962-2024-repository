@@ -29,12 +29,6 @@ public class HorizontalSlidesTeleOp extends OpMode {
     /*
      * Code to run REPEATEDLY after the driver hits INIT, but before they hit PLAY
      */
-
-    /*
-     * allows driver to indicate that the IMU should not be reset
-     * used when starting TeleOp after auto or if program crashes in the middle of match
-     * relevant because of field-centric controls
-     */
     @Override
     public void init_loop() {
     }
@@ -64,9 +58,7 @@ public class HorizontalSlidesTeleOp extends OpMode {
      * Code to run ONCE after the driver hits STOP
      */
     @Override
-    public void stop() {
-        horizontalSlides.shutdown();
-    }
+    public void stop() {}
 }
 
 

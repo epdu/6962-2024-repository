@@ -113,7 +113,6 @@ public class ScoringArm {
             this.claw = rHardware.claw;
         }
 
-
         // Toggles the claw between open and closed positions
         public void toggleClaw() {
             if (isClawOpen) {
@@ -259,7 +258,7 @@ public class ScoringArm {
         }
     }
 
-    // whole arm macros
+    // whole arm transfer macro
     public void wholeArmTransfer() {
         claw.openClaw();
         timer.safeDelay(100);
@@ -341,5 +340,4 @@ public class ScoringArm {
         return input > 0 ? 1 : input == 0 ? 0 : -1;
     }
 
-    public void shutdown() {}
 }

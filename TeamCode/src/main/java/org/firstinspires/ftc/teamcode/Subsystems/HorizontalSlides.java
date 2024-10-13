@@ -65,7 +65,6 @@ public class HorizontalSlides
 
     public void operateVincent() {
         // maps to percent of upper limit (ex: 1 -> 100%, 0.5 -> 80%, 0.1 -> 60%, 0 -> 0%)
-        /** this is very very likely to go very fast and break the slides before it's tuned, so be careful*/
         target = mapTriggerToTarget(opmode.gamepad1.right_trigger);
         PIDPower = PIDControl(target, slideMotor);
         slideMotor.setPower(PIDPower);
@@ -119,12 +118,6 @@ public class HorizontalSlides
         opmode.telemetry.addData("PID Power", PIDPower);
         opmode.telemetry.addData("Slide Target", target);
         opmode.telemetry.addData("Encoder Position", slideMotor.getCurrentPosition());
-    }
-
-    public void shutdown() {
-        // not sure if necessary, but including just in case
-        PIDPower = 0;
-        slideMotor.setPower(0);
     }
 
     private double PIDControl(double target, DcMotorEx motor)

@@ -66,9 +66,6 @@ public class VerticalSlides
         leftSlideMotor = rHardware.vLslideMotor;
         rightSlideMotor = rHardware.vRslideMotor;
 
-//        leftSlideMotor = opmode.hardwareMap.get(DcMotorEx.class, "");
-//        rightSlideMotor = opmode.hardwareMap.get(DcMotorEx.class, "");
-
         leftSlideMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         rightSlideMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
 
@@ -80,6 +77,22 @@ public class VerticalSlides
 
         leftSlideMotor.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
         rightSlideMotor.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
+    }
+
+    public void operateVincent() {
+//        PIDPowerL = PIDControl(target, leftSlideMotor);
+        PIDPowerR = PIDControl(target, rightSlideMotor);
+//        leftSlideMotor.setPower(PIDPowerL);
+        leftSlideMotor.setPower(PIDPowerR);
+        rightSlideMotor.setPower(PIDPowerR);
+
+        // updates boolean
+        verticalSlidesRetracted = leftSlideMotor.getCurrentPosition() < retractedThreshold;
+        opmode.telemetry.addData("Vertical Slides Retracted: ", verticalSlidesRetracted);
+        opmode.telemetry.addData("Right Motor Encoder Pos: ", telemetryRightMotorPos());
+        opmode.telemetry.addData("PID Power R ", PIDPowerR);
+        opmode.telemetry.addData("Slide Target ", target);
+        opmode.telemetry.update();
     }
 
     public void operateTest() {
@@ -140,40 +153,6 @@ public class VerticalSlides
         opmode.telemetry.addData("PID Power R ", PIDPowerR);
         opmode.telemetry.addData("Slide Target ", target);
         opmode.telemetry.update();
-    }
-
-    public void operateVincent() {
-//        if (opmode.gamepad1.a) {
-//            raiseToHighBucket();
-//        }
-//        else if (opmode.gamepad1.x) {
-//            raiseToLowBucket();
-//        }
-//        else if (opmode.gamepad1.b) {
-//            retract();
-//        }
-
-//        PIDPowerL = PIDControl(target, leftSlideMotor);
-        PIDPowerR = PIDControl(target, rightSlideMotor);
-//        leftSlideMotor.setPower(PIDPowerL);
-        leftSlideMotor.setPower(PIDPowerR);
-        rightSlideMotor.setPower(PIDPowerR);
-
-        // updates boolean
-        verticalSlidesRetracted = leftSlideMotor.getCurrentPosition() < retractedThreshold;
-        opmode.telemetry.addData("Vertical Slides Retracted: ", verticalSlidesRetracted);
-        opmode.telemetry.addData("Right Motor Encoder Pos: ", telemetryRightMotorPos());
-        opmode.telemetry.addData("PID Power R ", PIDPowerR);
-        opmode.telemetry.addData("Slide Target ", target);
-        opmode.telemetry.update();
-    }
-
-    public void shutdown() {
-        // not sure if necessary, but including just in case
-        PIDPowerL = 0;
-        PIDPowerR = 0;
-        leftSlideMotor.setPower(0);
-        rightSlideMotor.setPower(0);
     }
 
     private double PIDControl(double target, DcMotorEx motor)
