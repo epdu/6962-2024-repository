@@ -115,10 +115,12 @@ public class FullRobotActionTeleOp extends OpMode {
 
         // retract slides and stow arm whenever claw opens
         if (scoringArm.claw.isClawOpen && !scoringArm.arm.isArmTransferring) {
-            runningActions.add(new ParallelAction(
-                    new InstantAction(() -> verticalSlides.retract()),
-                    new InstantAction(() -> scoringArm.wrist.setWristStow()),
-                    new InstantAction(() -> scoringArm.arm.stowArm())
+            runningActions.add(new SequentialAction(
+                    new ParallelAction(
+                        new InstantAction(() -> scoringArm.wrist.setWristStow()),
+                        new InstantAction(() -> scoringArm.arm.stowArm())
+                    ),
+                    new InstantAction(() -> verticalSlides.retract())
             ));
         }
 
