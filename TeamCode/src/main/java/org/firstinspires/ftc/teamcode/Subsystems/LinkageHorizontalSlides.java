@@ -19,7 +19,7 @@
 //
 //    // constants
 //    public static double increment = 0.005;
-//    public static double extendedPos = 0.6;
+//    public static double extendedPos = 0.5;
 //    public static double retractedPos = 0;
 //    public static double retractedThreshold = 0.05;
 //    public static double mappingExponent = 0.4; // paste this into desmos to see graph: x^{0.4}\ \left\{0\le x\le1\right\}
@@ -79,11 +79,15 @@
 //    }
 //    public void moveToPosition(double pos) {
 //        hSlideServoR.setPosition(pos);
-//        hSlideServoL.setPosition(pos);
+//        hSlideServoL.setPosition(1-pos);
 //    }
 //
 //    public void extend() { moveToPosition(extendedPos); }
 //    public void retract() { moveToPosition(retractedPos); }
+//
+//    public void extendAdjustable(double trigger_input) {
+//        moveToPosition(mapTriggerToTarget(trigger_input));
+//    }
 //
 //    // math util
 //    public double mapTriggerToTarget(double input) {

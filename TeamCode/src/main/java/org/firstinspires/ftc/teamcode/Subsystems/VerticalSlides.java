@@ -88,6 +88,7 @@ public class VerticalSlides
 
         // updates boolean
         verticalSlidesRetracted = leftSlideMotor.getCurrentPosition() < retractedThreshold;
+
         opmode.telemetry.addData("Vertical Slides Retracted: ", verticalSlidesRetracted);
         opmode.telemetry.addData("Right Motor Encoder Pos: ", telemetryRightMotorPos());
         opmode.telemetry.addData("PID Power R ", PIDPowerR);

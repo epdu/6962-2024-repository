@@ -11,6 +11,7 @@ import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.teamcode.Subsystems.CustomTimer;
 import org.firstinspires.ftc.teamcode.Subsystems.HorizontalSlides;
@@ -32,6 +33,11 @@ public class FullRobotActionTeleOp extends OpMode {
 
     // optimizing stuff apparently?
     List<LynxModule> allHubs = hardwareMap.getAll(LynxModule.class);
+
+    final Gamepad currentGamepad1 = new Gamepad();
+    final Gamepad currentGamepad2 = new Gamepad();
+    final Gamepad previousGamepad1 = new Gamepad();
+    final Gamepad previousGamepad2 = new Gamepad();
 
     // subsystems
     private Mecanum mecanum                   = new Mecanum();
@@ -57,9 +63,14 @@ public class FullRobotActionTeleOp extends OpMode {
 
     @Override
     public void loop() {
-        for (LynxModule hub : allHubs) {
-            hub.clearBulkCache();
-        }
+        for (LynxModule hub : allHubs) { hub.clearBulkCache(); }
+
+        // for rising edge detection (just google it)
+        previousGamepad1.copy(currentGamepad1);
+        previousGamepad2.copy(currentGamepad2);
+
+        currentGamepad1.copy(gamepad1);
+        currentGamepad2.copy(gamepad2);
 
         TelemetryPacket packet = new TelemetryPacket();
         List<Action> newActions = new ArrayList<>();
@@ -86,14 +97,15 @@ public class FullRobotActionTeleOp extends OpMode {
         horizontalSlides.operateVincent();
 
         // claw toggle
-        if (gamepad1.left_bumper) {
+        if (currentGamepad1.left_bumper && !previousGamepad1.left_bumper) {
             runningActions.add(new InstantAction(() -> scoringArm.claw.toggleClaw()));
         }
 
         // macro prep high bucket scoring
-        if (gamepad1.y) {
+        if (currentGamepad1.a && !previousGamepad1.a) {
             runningActions.add(
                     new ParallelAction(
+                        new InstantAction(() -> scoringArm.claw.closeClaw()),
                         new InstantAction(() -> verticalSlides.raiseToHighBucket()),
                         new InstantAction(() -> scoringArm.wrist.setWristScoringBucket()),
                         new InstantAction(() -> scoringArm.arm.scoreArm())
@@ -113,9 +125,18 @@ public class FullRobotActionTeleOp extends OpMode {
         // could potentially fill up queue with duplicates
 
         // auto transfer
-        if (gamepad1.b) {
+        if (currentGamepad1.b && !previousGamepad1.b) {
             // haha funny haptic feedback when pressing button at wrong time
-            if (!horizontalSlides.horizontalSlidesRetracted || !intake.flippedUp || scoringArm.arm.isArmTransferring) {gamepad1.rumble(0.5, 0.5, 250);}
+            if (!horizontalSlides.horizontalSlidesRetracted || !intake.flippedUp || scoringArm.arm.isArmTransferring) {
+                currentGamepad1.rumble(0.5, 0.5, 250);
+                runningActions.add(
+                    new ParallelAction(
+                        new InstantAction(() -> horizontalSlides.retract()),
+                        new InstantAction(() -> intake.stopIntaking()),
+                        new InstantAction(() -> scoringArm.arm.stowArm()),
+                        new InstantAction(() -> scoringArm.wrist.setWristStow())
+                ));
+            }
             else {
                 runningActions.add(
                     new SequentialAction(
@@ -136,12 +157,12 @@ public class FullRobotActionTeleOp extends OpMode {
 
 
         // intaking
-        if (gamepad1.right_bumper && intake.flippedUp) {
+        if (currentGamepad1.right_bumper && previousGamepad1.right_bumper && !horizontalSlides.horizontalSlidesRetracted) {
             runningActions.add(new InstantAction(() -> intake.intakePieces()));
         } else if (!intake.flippedUp) {
             runningActions.add(new InstantAction(() -> intake.stopIntaking()));
         }
-        if (gamepad1.x) {
+        if (currentGamepad1.x && previousGamepad1.x) {
             runningActions.add(new SequentialAction(
                     new InstantAction(() -> intake.reverse()),
                     new SleepAction(2),
@@ -149,6 +170,16 @@ public class FullRobotActionTeleOp extends OpMode {
             ));
         }
 
+//        // for linkage extendo
+//        if (gamepad1.right_trigger >= 0.25 && currentGamepad1.right_trigger != previousGamepad1.rightTrigger) {
+//            runningActions.add(new SequentialAction(
+//                    new InstantAction(() -> horizontalSlides.extendAdjustable(currentGamepad1.right_trigger)),
+//                    new SleepAction(0), // potential need to add delay
+//                    new InstantAction(() -> intake.intakePieces())
+//            ));
+//
+//        }
     }
+
 
 }

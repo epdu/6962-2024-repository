@@ -122,7 +122,6 @@ public class ScoringArm {
                 claw.setPosition(clawOpenPosition);
                 isClawOpen = true;
             }
-            timer.safeDelay(300);
         }
 
         public void closeClaw() {
