@@ -62,6 +62,15 @@ public class FullRobotActionTeleOp extends OpMode {
     }
 
     @Override
+    public void start() {
+        // to make sure arm doesn't spasm when pressing
+        scoringArm.arm.stowArm();
+        scoringArm.wrist.setWristStow();
+        scoringArm.claw.closeClaw();
+        intake.stopIntaking();
+    }
+
+    @Override
     public void loop() {
         for (LynxModule hub : allHubs) { hub.clearBulkCache(); }
 
@@ -129,7 +138,7 @@ public class FullRobotActionTeleOp extends OpMode {
         // auto transfer
         if (currentGamepad1.b && !previousGamepad1.b) {
             // haha funny haptic feedback when pressing button at wrong time
-            if (!horizontalSlides.horizontalSlidesRetracted || !intake.flippedUp || scoringArm.arm.isArmTransferring) {
+            if (!horizontalSlides.horizontalSlidesRetracted || !intake.flippedUp) {
                 currentGamepad1.rumble(0.5, 0.5, 250);
                 runningActions.add(
                     new ParallelAction(
@@ -159,7 +168,7 @@ public class FullRobotActionTeleOp extends OpMode {
 
 
         // intaking
-        if (currentGamepad1.right_bumper && previousGamepad1.right_bumper && !horizontalSlides.horizontalSlidesRetracted) {
+        if (currentGamepad1.right_trigger > 0.1 && currentGamepad1.right_trigger != previousGamepad1.right_trigger && !horizontalSlides.horizontalSlidesRetracted) {
             runningActions.add(new InstantAction(() -> intake.intakePieces()));
         } else if (!intake.flippedUp) {
             runningActions.add(new InstantAction(() -> intake.stopIntaking()));

@@ -33,8 +33,7 @@ public class HorizontalSlides
     public static int extendedPos = 700;
     public static int retractedPos = 0;
 
-    public static double mappingExponent = 0.4; // paste this into desmos to see graph: x^{0.4}\ \left\{0\le x\le1\right\}
-                                                // making the mapping exponent smaller makes graph steeper
+    public static double mappingExponent = 0.4;
 
     // declaring variables for later modification
     private volatile double slidePower;
@@ -165,6 +164,8 @@ public class HorizontalSlides
 
     public int mapTriggerToTarget(double input) {
         return (int) Math.round(Math.pow(input, mappingExponent) * upperLimit);
+        // paste this into desmos to see graph: x^{0.4}\ \left\{0\le x\le1\right\}
+        // making the mapping exponent smaller makes the graph steeper
     }
 
     public int telemetryMotorPos() {
