@@ -39,13 +39,14 @@
 //        this.hSlideServoL = rHardware.hSlideServoL;
 //        this.hSlideServoR = rHardware.hSlideServoR;
 //
+//        hSlideServoR.setDirection(Servo.Direction.REVERSE);
 //    }
 //
 //    public void operateVincent() {
 //        // maps to percent of upper limit (ex: 1 -> 100%, 0.5 -> 80%, 0.1 -> 60%, 0 -> 0%)
 //        target = mapTriggerToTarget(opmode.gamepad1.right_trigger);
 //        hSlideServoR.setPosition(target);
-//        hSlideServoL.setPosition(1-target);
+//        hSlideServoL.setPosition(target);
 //
 //        // updates boolean
 //        horizontalSlidesRetracted = hSlideServoR.getPosition() < retractedThreshold;
@@ -71,7 +72,7 @@
 //
 //    public void incremental(int sign) {
 //        hSlideServoR.setPosition(hSlideServoR.getPosition() + sign * increment);
-//        hSlideServoL.setPosition(hSlideServoR.getPosition() - sign * increment);
+//        hSlideServoL.setPosition(hSlideServoR.getPosition() + sign * increment);
 //    }
 //
 //    public void setTarget(double targetPos) {
@@ -79,7 +80,7 @@
 //    }
 //    public void moveToPosition(double pos) {
 //        hSlideServoR.setPosition(pos);
-//        hSlideServoL.setPosition(1-pos);
+//        hSlideServoL.setPosition(pos);
 //    }
 //
 //    public void extend() { moveToPosition(extendedPos); }
