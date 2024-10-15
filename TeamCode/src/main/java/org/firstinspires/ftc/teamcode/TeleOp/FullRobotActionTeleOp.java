@@ -30,9 +30,9 @@ public class FullRobotActionTeleOp extends OpMode {
     // Action stuff
     private FtcDashboard dash = FtcDashboard.getInstance();
     private List<Action> runningActions = new ArrayList<>();
+    private List<LynxModule> allHubs;
 
     // optimizing stuff apparently?
-    List<LynxModule> allHubs = hardwareMap.getAll(LynxModule.class);
 
     final Gamepad currentGamepad1 = new Gamepad();
     final Gamepad currentGamepad2 = new Gamepad();
@@ -56,7 +56,7 @@ public class FullRobotActionTeleOp extends OpMode {
         intake.initialize(this, timer, onRedAlliance);
         verticalSlides.initialize(this);
         scoringArm.initialize(this, timer);
-
+        allHubs = hardwareMap.getAll(LynxModule.class);
         // apparently optimizes reading from hardware (ex: getCurrentPosition) and makes runtime a bit faster
         for (LynxModule hub : allHubs) { hub.setBulkCachingMode(LynxModule.BulkCachingMode.MANUAL); }
     }
@@ -65,7 +65,6 @@ public class FullRobotActionTeleOp extends OpMode {
     public void start() {
         // to make sure arm doesn't spasm when pressing
         scoringArm.arm.stowArm();
-        scoringArm.wrist.setWristStow();
         scoringArm.claw.closeClaw();
         intake.stopIntaking();
     }
@@ -136,6 +135,7 @@ public class FullRobotActionTeleOp extends OpMode {
         // retract slides and stow arm whenever claw opens
         if (scoringArm.claw.isClawOpen && !scoringArm.arm.isArmTransferring) {
             runningActions.add(new SequentialAction(
+                    new SleepAction(0.3),
                     new ParallelAction(
                             new InstantAction(() -> scoringArm.wrist.setWristStow()),
                             new InstantAction(() -> scoringArm.arm.stowArm())
@@ -159,10 +159,8 @@ public class FullRobotActionTeleOp extends OpMode {
             } else {
                 runningActions.add(
                         new SequentialAction(
-                                new ParallelAction(
-                                        new InstantAction(() -> scoringArm.claw.openClaw()),
-                                        new InstantAction(() -> scoringArm.arm.transferArm())
-                                ),
+                                new InstantAction(() -> scoringArm.claw.openClaw()),
+                                new InstantAction(() -> scoringArm.arm.transferArm()),
                                 new SleepAction(0.6), // this could stop the entire robot, but
                                 new InstantAction(() -> scoringArm.claw.closeClaw()),
                                 new SleepAction(0.2),
