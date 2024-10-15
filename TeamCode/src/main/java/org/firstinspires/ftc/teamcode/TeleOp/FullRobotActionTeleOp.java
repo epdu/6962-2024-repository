@@ -109,7 +109,7 @@ public class FullRobotActionTeleOp extends OpMode {
 
         // claw toggle
         if (currentGamepad1.left_bumper && !previousGamepad1.left_bumper) {
-            runningActions.add(new InstantAction(() -> scoringArm.claw.toggleClaw()));
+            scoringArm.claw.toggleClaw();
         }
 
         // macro prep high bucket scoring
@@ -177,16 +177,16 @@ public class FullRobotActionTeleOp extends OpMode {
 
         // intaking
         if (currentGamepad1.right_bumper && !previousGamepad1.right_bumper && intake.flippedUp) {
-            if(horizontalSlides.slidesMostlyRetracted){
+            if(horizontalSlides.slidesMostlyRetracted) {
                 gamepad1.rumble(0.5, 0.5, 200);
             }
             else {
-                runningActions.add(new InstantAction(() -> intake.intakePieces()));
+                intake.intakePieces();
             }
         } else if (!intake.flippedUp) {
-            runningActions.add(new InstantAction(() -> intake.stopIntaking()));
+            intake.stopIntaking();
         }
-        if (currentGamepad1.x && previousGamepad1.x) {
+        if (currentGamepad1.x && !previousGamepad1.x) {
             runningActions.add(new SequentialAction(
                     new InstantAction(() -> intake.reverse()),
                     new SleepAction(2),
