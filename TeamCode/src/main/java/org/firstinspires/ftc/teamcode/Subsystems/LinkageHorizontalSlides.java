@@ -22,12 +22,14 @@
 //    public static double extendedPos = 0.5;
 //    public static double retractedPos = 0;
 //    public static double retractedThreshold = 0.05;
+//    public static double mostlyRetractedThreshold = 0.2;
 //    public static double mappingExponent = 0.4; // paste this into desmos to see graph: x^{0.4}\ \left\{0\le x\le1\right\}
 //                                                // making the mapping exponent smaller makes graph steeper
 //
 //    // declaring variables for later modification
 //    private volatile double target = 0;
-//    public volatile boolean horizontalSlidesRetracted = true;
+//    public volatile boolean slidesRetracted = true;
+//    public volatile boolean slidesMostlyRetracted = true;
 //
 //    public LinkageHorizontalSlides() {}
 //
@@ -49,7 +51,9 @@
 //        hSlideServoL.setPosition(target);
 //
 //        // updates boolean
-//        horizontalSlidesRetracted = hSlideServoR.getPosition() < retractedThreshold;
+//        slidesRetracted = hSlideServoR.getPosition() < retractedThreshold;
+//        slidesMostlyRetracted = hSlideServoR.getPosition() < mostlyRetractedThreshold;
+//
 //        opmode.telemetry.addData("Left Extendo Servo Pos: ", hSlideServoL.getPosition());
 //        opmode.telemetry.addData("Right Extendo Servo Pos: ", hSlideServoR.getPosition());
 //        opmode.telemetry.update();
@@ -64,7 +68,11 @@
 //        }
 //
 //        // updates boolean
-//        horizontalSlidesRetracted = hSlideServoR.getPosition() < retractedThreshold;
+//        slidesRetracted = hSlideServoR.getPosition() < retractedThreshold;
+//        slidesMostlyRetracted = hSlideServoR.getPosition() < mostlyRetractedThreshold;
+//
+//        opmode.telemetry.addData("Horizontal Slides Retracted: ", slidesRetracted);
+//        opmode.telemetry.addData("Horizontal Slides Mostly Retracted: ", slidesMostlyRetracted);
 //        opmode.telemetry.addData("Left Extendo Servo Pos: ", hSlideServoL.getPosition());
 //        opmode.telemetry.addData("Right Extendo Servo Pos: ", hSlideServoR.getPosition());
 //        opmode.telemetry.update();

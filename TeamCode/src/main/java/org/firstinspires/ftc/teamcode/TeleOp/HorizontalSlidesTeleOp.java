@@ -15,6 +15,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.VerticalSlides;
 public class HorizontalSlidesTeleOp extends OpMode {
     // creating subsystems
     private final HorizontalSlides horizontalSlides = new HorizontalSlides();
+//    private final LinkageHorizontalSlides horizontalSlides = new LinkageHorizontalSlides();
 
     /*
      * Code to run ONCE when the driver hits INIT
@@ -23,7 +24,7 @@ public class HorizontalSlidesTeleOp extends OpMode {
     public void init() {
 
         horizontalSlides.initialize(this);
-        telemetry.addLine("Right Joystick Y - horizontal slide manual control");
+        telemetry.addLine("Dpad Up and Down - extendo incremental");
     }
 
     /*
@@ -47,10 +48,14 @@ public class HorizontalSlidesTeleOp extends OpMode {
     public void loop() {
         horizontalSlides.operateTest();
         horizontalSlides.operateVincent();
+        // Gamepad 1: (linkage and spooled)
+        // Right trigger - exponential mapping control (be careful)
         // Gamepad 2:
-        // Right Joystick Y - horizontal slide manual control
-        telemetry.addData("Horizontal Slides Retracted: ", horizontalSlides.horizontalSlidesRetracted);
-        telemetry.addData("Encoder Pos: ", horizontalSlides.telemetryMotorPos());
+        // Left Joystick Y - manual control
+        // Y - PID extend
+        // X - PID retract
+        // Gamepad 2: (when linkage)
+        // D-pad Up and Down - incremental control
         telemetry.update();
     }
 

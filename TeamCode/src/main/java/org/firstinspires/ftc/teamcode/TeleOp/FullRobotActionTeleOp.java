@@ -72,7 +72,9 @@ public class FullRobotActionTeleOp extends OpMode {
 
     @Override
     public void loop() {
-        for (LynxModule hub : allHubs) { hub.clearBulkCache(); }
+        for (LynxModule hub : allHubs) {
+            hub.clearBulkCache();
+        }
 
         // for rising edge detection (just google it)
         previousGamepad1.copy(currentGamepad1);
@@ -112,64 +114,75 @@ public class FullRobotActionTeleOp extends OpMode {
 
         // macro prep high bucket scoring
         if (currentGamepad1.a && !previousGamepad1.a) {
-            runningActions.add(
+            if (!horizontalSlides.slidesMostlyRetracted) {
+                currentGamepad1.rumble(0.5, 0.5, 250);
+                runningActions.add(
+                    new ParallelAction(
+                        new InstantAction(() -> intake.stopIntaking()),
+                        new InstantAction(() -> horizontalSlides.retract())
+                    ));
+            } else {
+                runningActions.add(
                     new ParallelAction(
                         new InstantAction(() -> scoringArm.claw.closeClaw()),
                         new InstantAction(() -> verticalSlides.raiseToHighBucket()),
                         new InstantAction(() -> scoringArm.wrist.setWristScoringBucket()),
                         new InstantAction(() -> scoringArm.arm.scoreArm())
                     )
-            );
+                );
+            }
         }
 
         // retract slides and stow arm whenever claw opens
         if (scoringArm.claw.isClawOpen && !scoringArm.arm.isArmTransferring) {
             runningActions.add(new SequentialAction(
                     new ParallelAction(
-                        new InstantAction(() -> scoringArm.wrist.setWristStow()),
-                        new InstantAction(() -> scoringArm.arm.stowArm())
+                            new InstantAction(() -> scoringArm.wrist.setWristStow()),
+                            new InstantAction(() -> scoringArm.arm.stowArm())
                     ),
                     new InstantAction(() -> verticalSlides.retract())
             ));
         }
 
-        // could potentially fill up queue with duplicates
-
         // auto transfer
         if (currentGamepad1.b && !previousGamepad1.b) {
             // haha funny haptic feedback when pressing button at wrong time
-            if (!horizontalSlides.horizontalSlidesRetracted || !intake.flippedUp) {
+            if (!horizontalSlides.slidesRetracted || !intake.flippedUp) {
                 currentGamepad1.rumble(0.5, 0.5, 250);
                 runningActions.add(
-                    new ParallelAction(
-                        new InstantAction(() -> horizontalSlides.retract()),
-                        new InstantAction(() -> intake.stopIntaking()),
-                        new InstantAction(() -> scoringArm.arm.stowArm()),
-                        new InstantAction(() -> scoringArm.wrist.setWristStow())
-                ));
-            }
-            else {
+                        new ParallelAction(
+                                new InstantAction(() -> horizontalSlides.retract()),
+                                new InstantAction(() -> intake.stopIntaking()),
+                                new InstantAction(() -> scoringArm.arm.stowArm()),
+                                new InstantAction(() -> scoringArm.wrist.setWristStow())
+                        ));
+            } else {
                 runningActions.add(
-                    new SequentialAction(
-                        new ParallelAction(
-                            new InstantAction(() -> scoringArm.claw.openClaw()),
-                            new InstantAction(() -> scoringArm.arm.transferArm())
-                        ),
-                        new SleepAction(0.6), // this could stop the entire robot, but
-                        new InstantAction(() -> scoringArm.claw.closeClaw()),
-                        new SleepAction(0.2),
-                        new ParallelAction(
-                            new InstantAction(() -> scoringArm.arm.stowArm()),
-                            new InstantAction(() -> scoringArm.wrist.setWristStow())
-                        )
-                    ));
+                        new SequentialAction(
+                                new ParallelAction(
+                                        new InstantAction(() -> scoringArm.claw.openClaw()),
+                                        new InstantAction(() -> scoringArm.arm.transferArm())
+                                ),
+                                new SleepAction(0.6), // this could stop the entire robot, but
+                                new InstantAction(() -> scoringArm.claw.closeClaw()),
+                                new SleepAction(0.2),
+                                new ParallelAction(
+                                        new InstantAction(() -> scoringArm.arm.stowArm()),
+                                        new InstantAction(() -> scoringArm.wrist.setWristStow())
+                                )
+                        ));
             }
         }
 
 
         // intaking
-        if (currentGamepad1.right_trigger > 0.1 && currentGamepad1.right_trigger != previousGamepad1.right_trigger && !horizontalSlides.horizontalSlidesRetracted) {
-            runningActions.add(new InstantAction(() -> intake.intakePieces()));
+        if (currentGamepad1.right_bumper && !previousGamepad1.right_bumper && intake.flippedUp) {
+            if(horizontalSlides.slidesMostlyRetracted){
+                gamepad1.rumble(0.5, 0.5, 200);
+            }
+            else {
+                runningActions.add(new InstantAction(() -> intake.intakePieces()));
+            }
         } else if (!intake.flippedUp) {
             runningActions.add(new InstantAction(() -> intake.stopIntaking()));
         }
@@ -182,15 +195,17 @@ public class FullRobotActionTeleOp extends OpMode {
         }
 
 //        // for linkage extendo
-//        if (gamepad1.right_trigger >= 0.25 && currentGamepad1.right_trigger != previousGamepad1.rightTrigger) {
+//        if (gamepad1.right_trigger >= 0.1 && currentGamepad1.right_trigger != previousGamepad1.rightTrigger) {
 //            runningActions.add(new SequentialAction(
 //                    new InstantAction(() -> horizontalSlides.extendAdjustable(currentGamepad1.right_trigger)),
 //                    new SleepAction(0), // potential need to add delay
 //                    new InstantAction(() -> intake.intakePieces())
 //            ));
-//
+//        } else if (!intake.flippedUp) {
+//            runningActions.add(new SequentialAction(
+//                    new InstantAction(() -> intake.stopIntaking()),
+//                    new InstantAction(() -> horizontalSlides.retract())
+//            ));
 //        }
     }
-
-
 }

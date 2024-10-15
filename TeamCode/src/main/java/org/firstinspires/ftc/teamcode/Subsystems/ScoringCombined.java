@@ -58,7 +58,7 @@ public class ScoringCombined {
 //        }
 
         opmode.telemetry.addData("Vertical Slides Retracted: ", verticalSlides.verticalSlidesRetracted);
-        opmode.telemetry.addData("Horizontal Slides Retracted: ", horizontalSlides.horizontalSlidesRetracted);
+        opmode.telemetry.addData("Horizontal Slides Retracted: ", horizontalSlides.slidesRetracted);
         opmode.telemetry.addData("Claw Transferring: ", scoringArm.arm.isArmTransferring);
         opmode.telemetry.addData("Claw Open: ", scoringArm.claw.isClawOpen);
 //        opmode.telemetry.addData("Piece Taken In: ", intake.pieceTakenInBool());
@@ -137,7 +137,7 @@ public class ScoringCombined {
 //        if (intake.correctPiece()) {
         if (!scoringArm.claw.isClawOpen) {scoringArm.claw.openClaw();}
         if (!verticalSlides.verticalSlidesRetracted) {verticalSlides.retract();}
-        if (!horizontalSlides.horizontalSlidesRetracted) {horizontalSlides.retract();}
+        if (!horizontalSlides.slidesRetracted) {horizontalSlides.retract();}
         //set the arm out of the way of transfer?
         scoringArm.arm.scoreArm();
         scoringArm.wrist.setWristScoringBucket();

@@ -28,7 +28,8 @@ public class HorizontalSlides
     public static double Kg = 0; // gravity constant, tune till the slide holds itself in place
     public static double upperLimit = 780;
     public static double lowerLimit = -2;
-    public static double retractedThreshold = 5;
+    public static double retractedThreshold = 10;
+    public static double mostlyRetractedThreshold = 100;
 
     public static int extendedPos = 700;
     public static int retractedPos = 0;
@@ -38,7 +39,8 @@ public class HorizontalSlides
     // declaring variables for later modification
     private volatile double slidePower;
     private volatile double target = 0;
-    public volatile boolean horizontalSlidesRetracted = true;
+    public volatile boolean slidesMostlyRetracted = true;
+    public volatile boolean slidesRetracted = true;
 
     // PID stuff
     private double PIDPower;
@@ -69,7 +71,8 @@ public class HorizontalSlides
         slideMotor.setPower(PIDPower);
 
         // updates boolean
-        horizontalSlidesRetracted = slideMotor.getCurrentPosition() < retractedThreshold;
+        slidesRetracted = slideMotor.getCurrentPosition() < retractedThreshold;
+        slidesMostlyRetracted = slideMotor.getCurrentPosition() < mostlyRetractedThreshold;
 
         opmode.telemetry.addData("PID Power", PIDPower);
         opmode.telemetry.addData("Slide Target", target);
@@ -79,9 +82,9 @@ public class HorizontalSlides
         // manual control with right stick y
         slidePower = -opmode.gamepad2.left_stick_y;
 
-        if (opmode.gamepad1.y) {
+        if (opmode.gamepad2.y) {
             extend();
-        } else if (opmode.gamepad1.x) {
+        } else if (opmode.gamepad2.x) {
             retract();
         }
 
@@ -112,7 +115,7 @@ public class HorizontalSlides
         }
 
         // updates boolean
-        horizontalSlidesRetracted = slideMotor.getCurrentPosition() < retractedThreshold;
+        slidesRetracted = slideMotor.getCurrentPosition() < retractedThreshold;
 
         opmode.telemetry.addData("PID Power", PIDPower);
         opmode.telemetry.addData("Slide Target", target);
