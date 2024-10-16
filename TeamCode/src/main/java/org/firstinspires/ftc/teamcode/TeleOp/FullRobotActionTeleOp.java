@@ -147,29 +147,29 @@ public class FullRobotActionTeleOp extends OpMode {
         // auto transfer
         if (currentGamepad1.b && !previousGamepad1.b) {
             // haha funny haptic feedback when pressing button at wrong time
-            if (!horizontalSlides.slidesRetracted || !intake.flippedUp) {
-                currentGamepad1.rumble(0.5, 0.5, 250);
-                runningActions.add(
-                        new ParallelAction(
-                                new InstantAction(() -> horizontalSlides.retract()),
-                                new InstantAction(() -> intake.stopIntaking()),
-                                new InstantAction(() -> scoringArm.arm.stowArm()),
-                                new InstantAction(() -> scoringArm.wrist.setWristStow())
-                        ));
-            } else {
+//            if (!horizontalSlides.slidesRetracted || !intake.flippedUp) {
+//                currentGamepad1.rumble(0.5, 0.5, 250);
+//                runningActions.add(
+//                        new ParallelAction(
+//                                new InstantAction(() -> horizontalSlides.retract()),
+//                                new InstantAction(() -> intake.stopIntaking()),
+//                                new InstantAction(() -> scoringArm.arm.stowArm()),
+//                                new InstantAction(() -> scoringArm.wrist.setWristStow())
+//                        ));
+//            } else {
                 runningActions.add(
                         new SequentialAction(
                                 new InstantAction(() -> scoringArm.claw.openClaw()),
+                                new InstantAction(() -> scoringArm.wrist.setWristTransfer()),
+                                new SleepAction(0.15),
                                 new InstantAction(() -> scoringArm.arm.transferArm()),
-                                new SleepAction(0.6), // this could stop the entire robot, but
+                                new SleepAction(0.4),
                                 new InstantAction(() -> scoringArm.claw.closeClaw()),
-                                new SleepAction(0.2),
-                                new ParallelAction(
-                                        new InstantAction(() -> scoringArm.arm.stowArm()),
-                                        new InstantAction(() -> scoringArm.wrist.setWristStow())
-                                )
+                                new SleepAction(0.15),
+                                new InstantAction(() -> scoringArm.arm.stowArm()),
+                                new InstantAction(() -> scoringArm.wrist.setWristStow())
                         ));
-            }
+//            }
         }
 
 

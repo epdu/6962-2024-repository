@@ -39,6 +39,7 @@ public class HorizontalSlides
     // declaring variables for later modification
     private volatile double slidePower;
     private volatile double target = 0;
+    private volatile boolean isRetracting = false;
     public volatile boolean slidesMostlyRetracted = true;
     public volatile boolean slidesRetracted = true;
 
@@ -130,6 +131,9 @@ public class HorizontalSlides
 
         // calculate the error
         double error = target - encoderPosition;
+
+        isRetracting = error <= 0;
+
         // rate of change of the error
         double derivative = (error - lastError) / timer.seconds();
 
@@ -148,6 +152,9 @@ public class HorizontalSlides
         // deadband-esque behavior to avoid returning super small decimal values
         if (Math.abs(output) < 0.1) {
             output = 0;
+        }
+        else if (isRetracting && Math.abs(output) <= 0.3) {
+            output = (output > 0 ? 1 : -1) * 0.3;
         }
         else if (Math.abs(output) >= 1) {
             output = (output > 0 ? 1 : -1);

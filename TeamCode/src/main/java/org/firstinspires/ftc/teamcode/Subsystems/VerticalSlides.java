@@ -35,7 +35,7 @@ public class VerticalSlides
     public static double lowerLimit = -2;
     public static double retractedThreshold = 5;
 
-    public static int highBucketPos = 1300;
+    public static int highBucketPos = 1400;
     public static int lowBucketPos = 600;
     public static int lowChamberPos = 100;
     public static int highChamberPos = 600;

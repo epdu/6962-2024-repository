@@ -73,19 +73,20 @@ public class ScoringArm {
 
         // gamepad 1
         if (opmode.gamepad1.y) {
-            arm.scoreArm();
+//            arm.scoreArm();
             wrist.setWristScoringBucket();
         }
         else if (opmode.gamepad1.a) {
-            arm.scoreArm();
+//            arm.scoreArm();
             wrist.setWristScoringClip();
         }
         else if (opmode.gamepad1.b) {
-            arm.stowArm();
+//            arm.stowArm();
             wrist.setWristStow();
         }
         else if (opmode.gamepad1.x) {
-            wholeArmTransfer();
+//            wholeArmTransfer();
+            wrist.setWristTransfer();
         }
 
         if (opmode.gamepad1.right_bumper) {
@@ -143,9 +144,9 @@ public class ScoringArm {
     public static class Arm {
         public Servo arm;
         public boolean isArmTransferring = true;
-        public static double armScoringPosition = 0.075;
-        public static double armStowPosition = 0.7683;
-        public static double armTransferPosition = 0.8578;
+        public static double armScoringPosition = 0.3;
+        public static double armStowPosition = 0.65;
+        public static double armTransferPosition = 0.7;
         public static double armIncrement = 0.001;
 
         public Arm() {}
@@ -169,7 +170,7 @@ public class ScoringArm {
 
         public void stowArm() {
             setArmPosition(armStowPosition);
-            isArmTransferring = false;
+            isArmTransferring = true;
         }
 
         public void transferArm() {
@@ -186,20 +187,21 @@ public class ScoringArm {
     public static class Wrist {
         public Servo wristL, wristR;
         public boolean isWristTransferring = true;
-        public static double wristLTransferPosition = 0.0967;
-        public static double wristRTransferPosition = 0.865;
-        public static double wristLStowPosition = 0.1217;
-        public static double wristRStowPosition = 0.8533;
-        public static double wristLScoreBucketPosition = 0.4722;
-        public static double wristRScoreBucketPosition = 0.5211;
-        public static double wristLScoreClipPosition = 0.2106;
-        public static double wristRScoreClipPosition = 0.1372;
+        public static double wristLTransferPosition = 0;
+        public static double wristRTransferPosition = 0;
+        public static double wristLStowPosition = 0;
+        public static double wristRStowPosition = 0;
+        public static double wristLScoreBucketPosition = 0.2156;
+        public static double wristRScoreBucketPosition = 0.89;
+        public static double wristLScoreClipPosition = 0.635;
+        public static double wristRScoreClipPosition = 0.635;
         public static double wristIncrement = 0.001;
 
         public Wrist() {}
         public void initialize(RobotHardware hardware) {
             this.wristL = hardware.cWristServoL;
             this.wristR = hardware.cWristServoR;
+            wristR.setDirection(Servo.Direction.REVERSE);
         }
 
         // Sets wrist to transfer position
@@ -232,13 +234,13 @@ public class ScoringArm {
         // Incremental wrist rotation (both servos rotate in same direction)
         public void incrementalWristRotate(int sign) {
             wristR.setPosition(wristR.getPosition() + sign * wristIncrement);
-            wristL.setPosition(wristL.getPosition() + sign * wristIncrement);
+            wristL.setPosition(wristL.getPosition() - sign * wristIncrement);
         }
 
         // Incremental wrist turn (servos rotate in opposite directions)
         public void incrementalWristTurn(int sign) {
             wristR.setPosition(wristR.getPosition() + sign * wristIncrement);
-            wristL.setPosition(wristL.getPosition() - sign * wristIncrement);
+            wristL.setPosition(wristL.getPosition() + sign * wristIncrement);
         }
 
         public void incrementalWristL(int sign) {
