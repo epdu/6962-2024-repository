@@ -115,11 +115,6 @@ public class FullRobotActionTeleOp extends OpMode {
         if (currentGamepad1.a && !previousGamepad1.a) {
             if (!horizontalSlides.slidesMostlyRetracted) {
                 currentGamepad1.rumble(0.5, 0.5, 250);
-                runningActions.add(
-                    new ParallelAction(
-                        new InstantAction(() -> intake.stopIntaking()),
-                        new InstantAction(() -> horizontalSlides.retract())
-                    ));
             } else {
                 runningActions.add(
                     new ParallelAction(
@@ -131,6 +126,30 @@ public class FullRobotActionTeleOp extends OpMode {
                 );
             }
         }
+
+        // macro grab clip
+        if (currentGamepad1.dpad_down && !previousGamepad1.dpad_down) {
+            runningActions.add(
+                    new ParallelAction(
+                            new InstantAction(() -> scoringArm.claw.openClaw()),
+                            new InstantAction(() -> scoringArm.wrist.setWristScoringClip()),
+                            new InstantAction(() -> scoringArm.arm.grabClipArm())
+                    )
+            );
+        }
+
+        // macro prep score clip
+        if (currentGamepad1.y && !previousGamepad1.y) {
+            runningActions.add(
+                    new ParallelAction(
+                            new InstantAction(() -> scoringArm.claw.closeClaw()),
+                            new InstantAction(() -> verticalSlides.raiseToPrepClip()),
+                            new InstantAction(() -> scoringArm.wrist.setWristScoringClip()),
+                            new InstantAction(() -> scoringArm.arm.scoreArm())
+                    )
+            );
+        }
+
 
         // retract slides and stow arm whenever claw opens
         if (scoringArm.claw.isClawOpen && !scoringArm.arm.isArmTransferring) {
@@ -175,7 +194,7 @@ public class FullRobotActionTeleOp extends OpMode {
 
         // intaking
         if (currentGamepad1.right_bumper && !previousGamepad1.right_bumper && intake.flippedUp) {
-            if(horizontalSlides.slidesMostlyRetracted) {
+            if (horizontalSlides.slidesMostlyRetracted) {
                 gamepad1.rumble(0.5, 0.5, 200);
             }
             else {

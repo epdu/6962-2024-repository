@@ -3,9 +3,7 @@ package org.firstinspires.ftc.teamcode.Subsystems;
 import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.acmerobotics.roadrunner.Action;
-import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
-import androidx.annotation.NonNull;
+
 import org.firstinspires.ftc.teamcode.Util.RobotHardware;
 
 @Config
@@ -166,6 +164,11 @@ public class ScoringArm {
         public void scoreArm() {
             setArmPosition(armScoringPosition);
             isArmTransferring = false;
+        }
+
+        public void grabClipArm() {
+            setArmPosition(armScoringPosition);
+            isArmTransferring = true;
         }
 
         public void stowArm() {
