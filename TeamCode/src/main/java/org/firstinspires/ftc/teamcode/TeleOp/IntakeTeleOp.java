@@ -60,6 +60,7 @@ public class IntakeTeleOp extends OpMode {
 //        telemetry.addData("Detected Piece Color: ", intake.identifyColor());
 //        telemetry.addData("Correct Color: ", intake.correctColorBool());
 //        telemetry.addData("Has Sample & Correct Color: ", intake.correctPiece());
+
         telemetry.addData("Is Flipped Up: ", intake.flippedUp);
     }
 

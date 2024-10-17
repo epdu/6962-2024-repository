@@ -89,6 +89,11 @@ public class Intake
         else if (opmode.gamepad1.x) {
             reverse();
         }
+
+        opmode.telemetry.addData("L power",iCRServoL.getPower());
+        opmode.telemetry.addData("R power",iCRServoL.getPower());
+        opmode.telemetry.addData("L port",iCRServoL.getPortNumber());
+        opmode.telemetry.addData("R port",iCRServoR.getPortNumber());
     }
 
     public void intakePieces() {

@@ -143,8 +143,8 @@ public class ScoringArm {
         public Servo arm;
         public boolean isArmTransferring = true;
         public static double armScoringPosition = 0.3;
-        public static double armStowPosition = 0.65;
-        public static double armTransferPosition = 0.7;
+        public static double armStowPosition = 0.63;
+        public static double armTransferPosition = 0.746;
         public static double armIncrement = 0.001;
 
         public Arm() {}
