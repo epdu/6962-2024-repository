@@ -132,7 +132,7 @@ public class FullRobotActionTeleOp extends OpMode {
             runningActions.add(
                     new ParallelAction(
                             new InstantAction(() -> scoringArm.claw.openClaw()),
-                            new InstantAction(() -> scoringArm.wrist.setWristScoringClip()),
+                            new InstantAction(() -> scoringArm.wrist.setWristGrabClip()),
                             new InstantAction(() -> scoringArm.arm.grabClipArm())
                     )
             );

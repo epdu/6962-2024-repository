@@ -21,7 +21,6 @@ public class Intake
     CustomTimer timer;
 //    private DcMotorEx intakeMotor;
     private Servo wristServo;
-
     private CRServo iCRServoL, iCRServoR;
     private ColorRangeSensor colorSensor;
     private boolean ON_RED_ALLIANCE;
@@ -32,9 +31,9 @@ public class Intake
 
     // constants
     /** all of the constants need to be tuned*/
-    public static double intakePower = 0.6;
-    public static double transferPosition = 0.4;
-    public static double intakePosition = 0;
+    public static double intakePower = 1;
+    public static double transferPosition = 0.3472;
+    public static double intakePosition = 0.8567;
     public static double wristIncrement = 0.001;
 //    public static double detectionThreshold = 0.5; //inches
 //    public static int colorThreshold = 200;
@@ -92,8 +91,7 @@ public class Intake
 
         opmode.telemetry.addData("L power",iCRServoL.getPower());
         opmode.telemetry.addData("R power",iCRServoL.getPower());
-        opmode.telemetry.addData("L port",iCRServoL.getPortNumber());
-        opmode.telemetry.addData("R port",iCRServoR.getPortNumber());
+        opmode.telemetry.addData("Wrist pos", wristServo.getPosition());
     }
 
     public void intakePieces() {
