@@ -103,13 +103,6 @@ public class PreloadAuto extends LinearOpMode{
             );
         }
         waitForStart();
-
-        //run on start
-        Actions.runBlocking(
-                new ParallelAction(
-
-                )
-        );
         if (isStopRequested()) return;
 
         Action preloadAutoTrajectory = move1.build();
