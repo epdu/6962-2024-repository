@@ -29,7 +29,7 @@ public class HorizontalSlides
     public static double upperLimit = 780;
     public static double lowerLimit = -2;
     public static double retractedThreshold = 10;
-    public static double mostlyRetractedThreshold = 100;
+    public static double mostlyRetractedThreshold = 60;
 
     public static int extendedPos = 700;
     public static int retractedPos = 0;

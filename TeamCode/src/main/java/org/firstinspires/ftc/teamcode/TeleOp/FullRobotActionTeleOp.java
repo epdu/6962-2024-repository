@@ -65,6 +65,7 @@ public class FullRobotActionTeleOp extends OpMode {
     public void start() {
         // to make sure arm doesn't spasm when pressing
         scoringArm.arm.stowArm();
+        scoringArm.wrist.setWristStow();
         scoringArm.claw.closeClaw();
         intake.stopIntaking();
     }
@@ -103,32 +104,56 @@ public class FullRobotActionTeleOp extends OpMode {
         // no manual control, only PID
         verticalSlides.operateVincent();
 
-        // right trigger manual control (very fast, be careful, can force to slow down if necessary)
+        // GAMEPAD 1: right trigger manual control (very fast, be careful, can force to slow down if necessary)
         horizontalSlides.operateVincent();
 
+        // intaking
+        if (currentGamepad1.right_bumper && previousGamepad1.right_bumper) {
+            if (horizontalSlides.slidesMostlyRetracted) {
+                gamepad1.rumble(0.5, 0.5, 200);
+            }
+            else {
+                intake.intakePieces();
+            }
+        } else if (!currentGamepad1.right_bumper && !intake.flippedUp) {
+            intake.stopIntaking();
+        }
+
+        // reverse
+        if (currentGamepad1.x && !previousGamepad1.x) {
+            runningActions.add(new SequentialAction(
+                    new InstantAction(() -> intake.reverse()),
+                    new SleepAction(2),
+                    new InstantAction(() -> intake.stopServos())
+            ));
+        }
+
         // claw toggle
-        if (currentGamepad1.left_bumper && !previousGamepad1.left_bumper) {
+        if (currentGamepad2.left_bumper && !previousGamepad2.left_bumper) {
             scoringArm.claw.toggleClaw();
         }
 
         // macro prep high bucket scoring
-        if (currentGamepad1.a && !previousGamepad1.a) {
+        if (currentGamepad2.a && !previousGamepad2.a) {
             if (!horizontalSlides.slidesMostlyRetracted) {
-                currentGamepad1.rumble(0.5, 0.5, 250);
+                gamepad2.rumble(0.5, 0.5, 250);
             } else {
                 runningActions.add(
-                    new ParallelAction(
-                        new InstantAction(() -> scoringArm.claw.closeClaw()),
+                    new SequentialAction(
                         new InstantAction(() -> verticalSlides.raiseToHighBucket()),
-                        new InstantAction(() -> scoringArm.wrist.setWristScoringBucket()),
-                        new InstantAction(() -> scoringArm.arm.scoreArm())
+                        new SleepAction(0.65),
+                        new ParallelAction(
+                            new InstantAction(() -> scoringArm.claw.closeClaw()),
+                            new InstantAction(() -> scoringArm.wrist.setWristScoringBucket()),
+                            new InstantAction(() -> scoringArm.arm.scoreArm())
+                        )
                     )
                 );
             }
         }
 
         // macro grab clip
-        if (currentGamepad1.dpad_down && !previousGamepad1.dpad_down) {
+        if (currentGamepad2.dpad_down && !previousGamepad2.dpad_down) {
             runningActions.add(
                     new ParallelAction(
                             new InstantAction(() -> scoringArm.claw.openClaw()),
@@ -139,13 +164,13 @@ public class FullRobotActionTeleOp extends OpMode {
         }
 
         // macro prep score clip
-        if (currentGamepad1.y && !previousGamepad1.y) {
+        if (currentGamepad2.dpad_up && !previousGamepad2.dpad_up) {
             runningActions.add(
                     new ParallelAction(
                             new InstantAction(() -> scoringArm.claw.closeClaw()),
                             new InstantAction(() -> verticalSlides.raiseToPrepClip()),
                             new InstantAction(() -> scoringArm.wrist.setWristScoringClip()),
-                            new InstantAction(() -> scoringArm.arm.scoreArm())
+                            new InstantAction(() -> scoringArm.arm.scoreClipArm())
                     )
             );
         }
@@ -154,7 +179,7 @@ public class FullRobotActionTeleOp extends OpMode {
         // retract slides and stow arm whenever claw opens
         if (scoringArm.claw.isClawOpen && !scoringArm.arm.isArmTransferring) {
             runningActions.add(new SequentialAction(
-                    new SleepAction(0.3),
+                    new SleepAction(0.25),
                     new ParallelAction(
                             new InstantAction(() -> scoringArm.wrist.setWristStow()),
                             new InstantAction(() -> scoringArm.arm.stowArm())
@@ -163,8 +188,17 @@ public class FullRobotActionTeleOp extends OpMode {
             ));
         }
 
+        if (currentGamepad2.dpad_left && !previousGamepad2.dpad_left) {
+            runningActions.add(
+                    new SequentialAction(
+                        new InstantAction(() -> verticalSlides.raiseToScoreClip()),
+                        new SleepAction(0.2),
+                        new InstantAction(() -> scoringArm.claw.openClaw())
+                    ));
+        }
+
         // auto transfer
-        if (currentGamepad1.b && !previousGamepad1.b) {
+        if (currentGamepad2.b && !previousGamepad2.b) {
             // haha funny haptic feedback when pressing button at wrong time
 //            if (!horizontalSlides.slidesRetracted || !intake.flippedUp) {
 //                currentGamepad1.rumble(0.5, 0.5, 250);
@@ -189,26 +223,6 @@ public class FullRobotActionTeleOp extends OpMode {
                                 new InstantAction(() -> scoringArm.wrist.setWristStow())
                         ));
 //            }
-        }
-
-
-        // intaking
-        if (currentGamepad1.right_bumper && !previousGamepad1.right_bumper && intake.flippedUp) {
-            if (horizontalSlides.slidesMostlyRetracted) {
-                gamepad1.rumble(0.5, 0.5, 200);
-            }
-            else {
-                intake.intakePieces();
-            }
-        } else if (!intake.flippedUp) {
-            intake.stopIntaking();
-        }
-        if (currentGamepad1.x && !previousGamepad1.x) {
-            runningActions.add(new SequentialAction(
-                    new InstantAction(() -> intake.reverse()),
-                    new SleepAction(2),
-                    new InstantAction(() -> intake.stopServos())
-            ));
         }
 
 //        // for linkage extendo

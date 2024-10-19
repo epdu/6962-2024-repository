@@ -32,8 +32,8 @@ public class Intake
     // constants
     /** all of the constants need to be tuned*/
     public static double intakePower = 1;
-    public static double transferPosition = 0.3472;
-    public static double intakePosition = 0.8567;
+    public static double transferPosition = 0.1622;
+    public static double intakePosition = 0.6483;
     public static double wristIncrement = 0.001;
 //    public static double detectionThreshold = 0.5; //inches
 //    public static int colorThreshold = 200;
@@ -52,7 +52,7 @@ public class Intake
         this.iCRServoL = rHardware.iCRServoL;
         this.iCRServoR = rHardware.iCRServoR;
 //        iCRServoL.setDirection(DcMotorSimple.Direction.REVERSE);
-        iCRServoR.setDirection(DcMotorSimple.Direction.REVERSE);
+        iCRServoL.setDirection(DcMotorSimple.Direction.REVERSE);
     }
 
     public void operateVincent()

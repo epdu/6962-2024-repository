@@ -145,10 +145,11 @@ public class ScoringArm {
     public static class Arm {
         public Servo arm;
         public boolean isArmTransferring = true;
-        public static double armScoringPosition = 0.4;
-        public static double armStowPosition = 0.75;
-        public static double armTransferPosition = 0.963;
-        public static double armGrabClipPosition = 0;
+        public static double armScoringPosition = 0.46;
+        public static double armScoringClipPosition = 0.43;
+        public static double armStowPosition = 0.826;
+        public static double armTransferPosition = 0.9911;
+        public static double armGrabClipPosition = 0.04;
         public static double armIncrement = 0.001;
 
         public Arm() {}
@@ -167,6 +168,11 @@ public class ScoringArm {
 
         public void scoreArm() {
             setArmPosition(armScoringPosition);
+            isArmTransferring = false;
+        }
+
+        public void scoreClipArm() {
+            setArmPosition(armScoringClipPosition);
             isArmTransferring = false;
         }
 
@@ -200,10 +206,10 @@ public class ScoringArm {
         public static double wristRStowPosition = 0;
         public static double wristLScoreBucketPosition = 0.2156;
         public static double wristRScoreBucketPosition = 0.89;
-        public static double wristLScoreClipPosition = 0.635;
-        public static double wristRScoreClipPosition = 0.635;
-        public static double wristLGrabClipPosition = 0.29;
-        public static double wristRGrabClipPosition = 0.33;
+        public static double wristLScoreClipPosition = 0.645;
+        public static double wristRScoreClipPosition = 0.645;
+        public static double wristLGrabClipPosition = 0.1794;
+        public static double wristRGrabClipPosition = 0.1794;
         public static double wristIncrement = 0.001;
 
         public Wrist() {}
@@ -241,8 +247,8 @@ public class ScoringArm {
         }
 
         public void setWristGrabClip() {
-            wristL.setPosition(wristLScoreClipPosition);
-            wristR.setPosition(wristRScoreClipPosition);
+            wristL.setPosition(wristLGrabClipPosition);
+            wristR.setPosition(wristRGrabClipPosition);
             isWristTransferring = false;
         }
 

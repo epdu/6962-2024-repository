@@ -35,13 +35,14 @@ public class VerticalSlides
     public static double lowerLimit = -2;
     public static double retractedThreshold = 5;
 
-    public static int highBucketPos = 1400;
+    public static int highBucketPos = 1300;
     public static int lowBucketPos = 600;
     public static int lowChamberPos = 100;
     public static int highChamberPos = 600;
     public static int retractedPos = 0;
-    public static int pickupClipPos = 200;
-    public static int prepClipPos = 400;
+    public static int pickupClipPos = 0;
+    public static int prepClipPos = 555;
+    public static int scoreClipPos = 220;
 
     //declaring variables for later modification
     private volatile double slidePower;
@@ -213,6 +214,7 @@ public class VerticalSlides
     public void raiseToPickupClip() { moveToPosition(pickupClipPos);}
     public void raiseToPrepClip() { moveToPosition(prepClipPos);}
     public void retract() { moveToPosition(retractedPos); }
+    public void raiseToScoreClip() { moveToPosition(scoreClipPos);}
 
     public int telemetryLeftMotorPos() {
         return leftSlideMotor.getCurrentPosition();
