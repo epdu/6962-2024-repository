@@ -63,7 +63,7 @@ public class MecanumDrive {
         // drive model parameters
         public double inPerTick = 0.00105687441; // calculated with math
         public double lateralInPerTick = inPerTick;
-        public double trackWidthTicks = 10862.339045851164;
+        public double trackWidthTicks = 10217.758617095797;
 
         // feedforward parameters (in tick units)
         public double kS = 1.1538485850191234;
@@ -86,7 +86,7 @@ public class MecanumDrive {
 
         public double axialVelGain = 0.0;
         public double lateralVelGain = 0.0;
-        public double headingVelGain = 0.0; // shared with turn
+        public double headingVelGain = 5.0; // shared with turn
     }
 
     public static Params PARAMS = new Params();

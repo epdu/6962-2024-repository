@@ -17,7 +17,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.VerticalSlides;
 @Autonomous(name = "Sample Auto", group = "Autonomous")
 public class SampleOnlyAuto extends LinearOpMode{
 
-    public static double startX = 8;
+    public static double startX = -8;
     public static double startY = -63.75;
     public static double startHeading = Math.toRadians(-90);
     public static double scorePreloadX = 0;

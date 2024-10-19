@@ -3,6 +3,9 @@ package org.firstinspires.ftc.teamcode.Subsystems;
 import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.acmerobotics.roadrunner.Action;
+import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
+import androidx.annotation.NonNull;
 
 import org.firstinspires.ftc.teamcode.Util.RobotHardware;
 
@@ -311,17 +314,17 @@ public class ScoringArm {
 //    public Action clawClose() {
 //        return new clawClose();
 //    }
-//    public class clip implements Action {
-//        @Override
-//        public boolean run(@NonNull TelemetryPacket packet) {
-//            arm.scoreArm();
-//            wrist.setWristScoring();
-//            return false;
-//        }
-//    }
-//    public Action clip() {
-//        return new clip();
-//    }
+    public class clip implements Action {
+        @Override
+        public boolean run(@NonNull TelemetryPacket packet) {
+            arm.scoreClipArm();
+            wrist.setWristScoringClip();
+            return false;
+        }
+    }
+    public Action clip() {
+        return new clip();
+    }
 //    public class bucket implements Action {
 //        @Override
 //        public boolean run(@NonNull TelemetryPacket packet) {

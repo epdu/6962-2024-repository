@@ -19,25 +19,24 @@ import org.firstinspires.ftc.teamcode.Util.RobotHardware;
 
 import org.firstinspires.ftc.teamcode.Roadrunner.MecanumDrive;
 import org.firstinspires.ftc.teamcode.Subsystems.VerticalSlides;
-import org.firstinspires.ftc.teamcode.Subsystems.HorizontalSlides;
-import org.firstinspires.ftc.teamcode.Subsystems.Intake;
 import org.firstinspires.ftc.teamcode.Subsystems.ScoringArm;
 
 @Config
 @Autonomous(name = "Preload Auto", group = "Autonomous")
 public class PreloadAuto extends LinearOpMode{
-    public static double startX = 7;
+    public static double startX = -7;
     public static double startY = -63.75;
     public static double startHeading = Math.toRadians(-90);
     public static double scorePreloadX = 0;
     public static double scorePreloadY = -42;
     public static double parkX = 36;
     public static double parkY = -60;
-
     @Override
     public void runOpMode() {
         Pose2d startPose = new Pose2d(startX,startY, startHeading);
         MecanumDrive drive = new MecanumDrive(hardwareMap, startPose);
+        ScoringArm arm = new ScoringArm();
+        VerticalSlides slides = new VerticalSlides();
 
         TrajectoryActionBuilder move1 = drive.actionBuilder(startPose)
                 .strafeTo(new Vector2d(scorePreloadX, scorePreloadY))
@@ -56,6 +55,7 @@ public class PreloadAuto extends LinearOpMode{
 
         Actions.runBlocking(
                 new SequentialAction(
+                        arm.clip(),
                         preloadAutoTrajectory
                 )
         );
