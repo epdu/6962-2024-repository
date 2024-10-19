@@ -17,7 +17,7 @@ public class ScoringArmTeleOp extends OpMode {
      */
     @Override
     public void init() {
-        scoringArm.initialize(this, timer);
+        scoringArm.initialize(this);
         telemetry.addLine("Gamepad 2: incrementals for tuning");
         telemetry.addLine("Left and Right Bumper - toggle claw open and close");
         telemetry.addLine("D-Pad Up and Down - incremental arm");

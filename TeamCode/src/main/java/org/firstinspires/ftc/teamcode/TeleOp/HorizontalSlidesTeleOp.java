@@ -4,12 +4,7 @@ import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.Subsystems.CustomTimer;
 import org.firstinspires.ftc.teamcode.Subsystems.HorizontalSlides;
-import org.firstinspires.ftc.teamcode.Subsystems.Intake;
-import org.firstinspires.ftc.teamcode.Subsystems.Mecanum;
-import org.firstinspires.ftc.teamcode.Subsystems.OTOSManager;
-import org.firstinspires.ftc.teamcode.Subsystems.VerticalSlides;
 
 @TeleOp(name="Only Horizontal Slides Test", group="Active TeleOps")
 public class HorizontalSlidesTeleOp extends OpMode {
