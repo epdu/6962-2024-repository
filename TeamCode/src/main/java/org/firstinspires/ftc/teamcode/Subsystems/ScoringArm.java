@@ -281,19 +281,19 @@ public class ScoringArm {
         }
     }
 
-    public class StowClose implements Action {
+    public class StowWholeArm implements Action {
         @Override
         public boolean run(@NonNull TelemetryPacket packet) {
-            claw.closeClaw();
             arm.setArmStow();
             wrist.setWristStow();
+            claw.closeClaw();
             return false;
         }
     }
-    public Action StowClose() {
-        return new StowClose();
+    public Action StowWholeArm() {
+        return new StowWholeArm();
     }
-    public class ScoreClip implements Action {
+    public class ArmScoreClip implements Action {
         @Override
         public boolean run(@NonNull TelemetryPacket packet) {
             arm.setArmScoreClip();
@@ -301,8 +301,8 @@ public class ScoringArm {
             return false;
         }
     }
-    public Action ScoreClip() {
-        return new ScoreClip();
+    public Action ArmScoreClip() {
+        return new ArmScoreClip();
     }
 
     public class PickupClip implements Action {

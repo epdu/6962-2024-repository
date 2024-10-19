@@ -16,11 +16,15 @@ import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+
+import org.firstinspires.ftc.teamcode.Subsystems.SubsystemsCombined;
 import org.firstinspires.ftc.teamcode.Util.RobotHardware;
 
 import org.firstinspires.ftc.teamcode.Roadrunner.MecanumDrive;
 import org.firstinspires.ftc.teamcode.Subsystems.VerticalSlides;
 import org.firstinspires.ftc.teamcode.Subsystems.ScoringArm;
+import org.firstinspires.ftc.teamcode.Subsystems.IntakeArm;
+import org.firstinspires.ftc.teamcode.Subsystems.HorizontalSlides;
 
 @Config
 @Autonomous(name = "Preload Auto", group = "Autonomous")
@@ -40,24 +44,26 @@ public class PreloadAuto extends LinearOpMode{
     public void runOpMode() {
         Pose2d startPose = new Pose2d(startX,startY, startHeading);
         MecanumDrive drive = new MecanumDrive(hardwareMap, startPose);
-        ScoringArm arm = new ScoringArm();
-        VerticalSlides slides = new VerticalSlides();
+
+        HorizontalSlides horizontalSlides = new HorizontalSlides();
+        IntakeArm intakeArm = new IntakeArm();
+        VerticalSlides verticalSlides = new VerticalSlides();
+        ScoringArm scoringArm = new ScoringArm();
+        SubsystemsCombined subsystems = new SubsystemsCombined();
 
         TrajectoryActionBuilder move1 = drive.actionBuilder(startPose)
                 .strafeTo(new Vector2d(scorePreloadX, scorePreloadY))
                 .afterTime(0.5, () -> {
-                    arm.ScoreClip();
-                    slides.LiftUpToClip();
+                    subsystems.PrepClipSequence();
                 })
-                .waitSeconds(1)
-//                .afterTime( 2, () -> {
-//                    new SequentialAction(
-//                            slides.LiftScoreClip(),
-//                            new SleepAction(0.2),
-//                            arm.StowClose(),
-//                            slides.Retract()
-//                    );
-//                })
+//                .waitSeconds(1)
+                .afterTime( 1.5, () -> {
+                    new SequentialAction(
+                            subsystems.ScoreClipSequence(),
+                            new SleepAction(0.2),
+                            subsystems.StowScoring()
+                    );
+                })
                 .strafeToLinearHeading(new Vector2d(prepPickupX, prepPickupY), Math.toRadians(90))
 //                .afterTime(3, () -> {
 //                    arm.PickupClip();
@@ -81,12 +87,18 @@ public class PreloadAuto extends LinearOpMode{
                 .strafeTo(new Vector2d(parkX, parkY));
 
         while(!isStarted() && !opModeIsActive()) {
+            horizontalSlides.initialize(this);
+            intakeArm.initialize(this);
+            verticalSlides.initialize(this);
+            scoringArm.initialize(this);
+            subsystems.initialize(this, horizontalSlides, intakeArm, verticalSlides, scoringArm);
+
             telemetry.addLine("Initialized Preload Auto");
             telemetry.update();
             //run on init NO MOTORS
             Actions.runBlocking(
                     new ParallelAction(
-                            arm.StowClose()
+                            scoringArm.StowWholeArm()
                     )
             );
         }
