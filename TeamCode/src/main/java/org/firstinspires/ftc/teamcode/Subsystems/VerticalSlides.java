@@ -265,6 +265,66 @@ public class VerticalSlides
         return new LiftUpToClip();
     }
 
+    public class LiftScoreClip implements Action {
+        private boolean initialized = false;
+
+        @Override
+        public boolean run(@NonNull TelemetryPacket packet) {
+            if (!initialized) {
+                target = scoreClipPos;
+                initialized = true;
+            }
+
+            PIDPowerR = PIDControl(target, rightSlideMotor);
+            leftSlideMotor.setPower(PIDPowerR);
+            rightSlideMotor.setPower(PIDPowerR);
+
+            packet.put("liftPos", rightSlideMotor.getCurrentPosition());
+
+            if (!atTarget) {
+                return true;
+            } else {
+                leftSlideMotor.setPower(0);
+                rightSlideMotor.setPower(0);
+                return false;
+            }
+        }
+    }
+
+    public Action LiftScoreClip() {
+        return new LiftScoreClip();
+    }
+
+    public class Retract implements Action {
+        private boolean initialized = false;
+
+        @Override
+        public boolean run(@NonNull TelemetryPacket packet) {
+            if (!initialized) {
+                target = retractedPos;
+                initialized = true;
+            }
+
+            PIDPowerR = PIDControl(target, rightSlideMotor);
+            leftSlideMotor.setPower(PIDPowerR);
+            rightSlideMotor.setPower(PIDPowerR);
+
+            packet.put("liftPos", rightSlideMotor.getCurrentPosition());
+
+            if (!atTarget) {
+                return true;
+            } else {
+                leftSlideMotor.setPower(0);
+                rightSlideMotor.setPower(0);
+                return false;
+            }
+        }
+    }
+
+    public Action Retract() {
+        return new Retract();
+    }
+
 //    public class retractSlides implements Action {
 //        @Override
 //        public boolean run(@NonNull TelemetryPacket packet) {

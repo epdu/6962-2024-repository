@@ -281,27 +281,19 @@ public class ScoringArm {
         }
     }
 
-//    public class clawOpen implements Action {
-//        @Override
-//        public boolean run(@NonNull TelemetryPacket packet) {
-//            claw.openClaw();
-//            return false;
-//        }
-//    }
-//    public Action clawOpen() {
-//        return new clawOpen();
-//    }
-//    public class clawClose implements Action {
-//        @Override
-//        public boolean run(@NonNull TelemetryPacket packet) {
-//            claw.closeClaw();
-//            return false;
-//        }
-//    }
-//    public Action clawClose() {
-//        return new clawClose();
-//    }
-    public class clip implements Action {
+    public class StowClose implements Action {
+        @Override
+        public boolean run(@NonNull TelemetryPacket packet) {
+            claw.closeClaw();
+            arm.setArmStow();
+            wrist.setWristStow();
+            return false;
+        }
+    }
+    public Action StowClose() {
+        return new StowClose();
+    }
+    public class ScoreClip implements Action {
         @Override
         public boolean run(@NonNull TelemetryPacket packet) {
             arm.setArmScoreClip();
@@ -309,42 +301,22 @@ public class ScoringArm {
             return false;
         }
     }
-    public Action clip() {
-        return new clip();
+    public Action ScoreClip() {
+        return new ScoreClip();
     }
-//    public class bucket implements Action {
-//        @Override
-//        public boolean run(@NonNull TelemetryPacket packet) {
-//            arm.setArmScore();
-//            wrist.setWristScoring();
-//            return false;
-//        }
-//    }
-//    public Action bucket() {
-//        return new bucket();
-//    }
-//    public class stow implements Action {
-//        @Override
-//        public boolean run(@NonNull TelemetryPacket packet) {
-//            arm.setArmStow();
-//            wrist.setWristStow();
-//            return false;
-//        }
-//    }
-//    public Action stow() {
-//        return new stow();
-//    }
-//
-//    public class wristSetHorizontal implements Action {
-//        @Override
-//        public boolean run(@NonNull TelemetryPacket packet) {
-//            wrist.setWristScoring();
-//            return false;
-//        }
-//    }
-//    public Action wristSetHorizontal() {
-//        return new wristSetHorizontal();
-//    }
+
+    public class PickupClip implements Action {
+        @Override
+        public boolean run(@NonNull TelemetryPacket packet) {
+            arm.setArmGrabClip();
+            wrist.setWristGrabClip();
+            return false;
+        }
+    }
+    public Action PickupClip() {
+        return new PickupClip();
+    }
+
 
     // math util functions
     public boolean isClose(double a, double b) {
