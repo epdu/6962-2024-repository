@@ -19,22 +19,24 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 public class RobotHardware {
     public HardwareMap hMap;
 
+    // drive motors
     public MotorEx leftFrontMotor = null;
     public MotorEx rightFrontMotor = null;
     public MotorEx leftBackMotor = null;
     public MotorEx rightBackMotor = null;
 
+    // vertical slides
     public DcMotorEx vRslideMotor = null;
     public DcMotorEx vLslideMotor = null;
 
+    // horizontal slides
     public DcMotorEx hSlideMotor = null;
 
-//    public DcMotorEx intakeMotor = null;
-    public Servo iWristServo = null;
-    public CRServo iCRServoL = null, iCRServoR = null;
+    // intake arm
+    public Servo iArmServo = null, iWristServoR = null, iWristServoF = null, iClawServo = null;
 
-
-    public Servo cWristServoR = null, cWristServoL = null, armServo = null, claw = null;
+    // scoring arm
+    public Servo cWristServoR = null, cWristServoL = null, cArmServo = null, cClawServo = null;
 
     public NavxMicroNavigationSensor navx;
 
@@ -49,15 +51,15 @@ public class RobotHardware {
         leftBackMotor = new MotorEx(hMap, "Bl/Le");
         rightBackMotor = new MotorEx(hMap, "Br/Fe");
 
-        armServo = hMap.get(Servo.class, "aServo");
+        cArmServo = hMap.get(Servo.class, "aServo");
         cWristServoR = hMap.get(Servo.class, "cWristR");
         cWristServoL = hMap.get(Servo.class, "cWristL");
-        claw = hMap.get(Servo.class, "cServo");
+        cClawServo = hMap.get(Servo.class, "cServo");
 
-//        intakeMotor = hMap.get(DcMotorEx.class,"intake");
-        iCRServoL = hMap.get(CRServo.class, "iCRServoL");
-        iCRServoR = hMap.get(CRServo.class, "iCRServoR");
-        iWristServo = hMap.get(Servo.class, "iWrist");
+        iArmServo = hMap.get(Servo.class, "iArmServo");
+        iWristServoR = hMap.get(Servo.class, "iWristServoR");
+        iWristServoF = hMap.get(Servo.class, "iWristServoF");
+        iClawServo = hMap.get(Servo.class, "iClawServo");
 
         hSlideMotor = hMap.get(DcMotorEx.class , "hSlide");
 

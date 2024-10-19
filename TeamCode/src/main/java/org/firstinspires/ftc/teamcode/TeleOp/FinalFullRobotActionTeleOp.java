@@ -14,7 +14,7 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.teamcode.Subsystems.CustomTimer;
 import org.firstinspires.ftc.teamcode.Subsystems.HorizontalSlides;
-import org.firstinspires.ftc.teamcode.Subsystems.Intake;
+import org.firstinspires.ftc.teamcode.Subsystems.IntakeArm;
 import org.firstinspires.ftc.teamcode.Subsystems.Mecanum;
 import org.firstinspires.ftc.teamcode.Subsystems.ScoringArm;
 import org.firstinspires.ftc.teamcode.Subsystems.VerticalSlides;
@@ -22,8 +22,9 @@ import org.firstinspires.ftc.teamcode.Subsystems.VerticalSlides;
 import java.util.ArrayList;
 import java.util.List;
 
-@TeleOp(name="RED Action-based Whole Robot Test", group="Active TeleOps")
-public class FullRobotActionTeleOp extends OpMode {
+
+@TeleOp(name="FINAL Full Robot TeleOp", group="Active TeleOps")
+public class FinalFullRobotActionTeleOp extends OpMode {
     // Action stuff
     private FtcDashboard dash = FtcDashboard.getInstance();
     private List<Action> runningActions = new ArrayList<>();
@@ -40,7 +41,7 @@ public class FullRobotActionTeleOp extends OpMode {
     private Mecanum mecanum                   = new Mecanum();
     private HorizontalSlides horizontalSlides = new HorizontalSlides();
     private VerticalSlides verticalSlides     = new VerticalSlides();
-    private Intake intake                     = new Intake();
+    private IntakeArm intakeArm               = new IntakeArm();
     private ScoringArm scoringArm             = new ScoringArm();
     private CustomTimer timer                 = new CustomTimer();
 
@@ -50,7 +51,7 @@ public class FullRobotActionTeleOp extends OpMode {
     public void init() {
         mecanum.initialize(this);
         horizontalSlides.initialize(this);
-        intake.initialize(this, timer, onRedAlliance);
+        intakeArm.initialize(this);
         verticalSlides.initialize(this);
         scoringArm.initialize(this);
         allHubs = hardwareMap.getAll(LynxModule.class);
@@ -60,11 +61,14 @@ public class FullRobotActionTeleOp extends OpMode {
 
     @Override
     public void start() {
-        // to make sure arm doesn't spasm when pressing
+        // to make sure arms don't spasm when out of pos
         scoringArm.arm.setArmStow();
         scoringArm.wrist.setWristStow();
         scoringArm.claw.closeClaw();
-        intake.stopIntaking();
+
+        intakeArm.arm.setArmTransfer();
+        intakeArm.wrist.setWristTransfer();
+        intakeArm.claw.closeClaw();
     }
 
     @Override
@@ -104,31 +108,55 @@ public class FullRobotActionTeleOp extends OpMode {
         // no manual control, only PID
         horizontalSlides.operateVincent();
 
-        // intaking
-        if (currentGamepad1.right_bumper && previousGamepad1.right_bumper) {
-            if (horizontalSlides.slidesMostlyRetracted) {
-                gamepad1.rumble(0.5, 0.5, 200);
-            }
-            else {
-                intake.intakePieces();
-            }
-        } else if (!currentGamepad1.right_bumper && !intake.flippedUp) {
-            intake.stopIntaking();
-        }
+        ////////////////////////////////////// GAMEPAD 1 CONTROLS /////////////////////////////////////
 
-        // reverse intake
-        if (currentGamepad1.x && !previousGamepad1.x) {
-            runningActions.add(new SequentialAction(
-                new InstantAction(() -> intake.reverse()),
-                new SleepAction(2),
-                new InstantAction(() -> intake.stopServos())
+        // horizontal slides button control
+//        if      (currentGamepad1.right_trigger > 0.8) {
+//            runningActions.add(
+//                    new ParallelAction(
+//                            new InstantAction(() -> intakeArm.arm.setArmHover()),
+//                            new InstantAction(() -> intakeArm.wrist.setWristIntake()),
+//                            new InstantAction(() -> horizontalSlides.extend())
+//                    ));
+//        }
+//        else
+        if (currentGamepad1.right_trigger >= 0.01 && previousGamepad1.right_trigger < 0.01) {
+            runningActions.add(
+                new ParallelAction(
+                    new InstantAction(() -> intakeArm.arm.setArmHover()),
+                    new InstantAction(() -> intakeArm.wrist.setWristIntake()),
+                    new InstantAction(() -> horizontalSlides.extendHalfway())
+            ));
+        }
+        else if (!intakeArm.arm.isArmTransferring) {
+            runningActions.add(
+                new ParallelAction(
+                    new InstantAction(() -> intakeArm.arm.setArmTransfer()),
+                    new InstantAction(() -> intakeArm.wrist.setWristTransfer()),
+                    new InstantAction(() -> horizontalSlides.retract())
             ));
         }
 
-        // claw toggle
-        if (currentGamepad2.left_bumper && !previousGamepad2.left_bumper) {
-            scoringArm.claw.toggleClaw();
+        // intake wrist rotate
+        if      (currentGamepad1.dpad_left)  { intakeArm.wrist.incrementalWristRotateActual(-1); }
+        else if (currentGamepad1.dpad_right) { intakeArm.wrist.incrementalWristRotateActual(1); }
+
+        // intake claw toggle
+        if (currentGamepad1.right_bumper && !previousGamepad1.right_bumper) {
+            runningActions.add(
+                new SequentialAction(
+                    new InstantAction(() -> intakeArm.arm.toggleHoverGrab()),
+                    new SleepAction(0.15),
+                    new InstantAction(() ->  intakeArm.claw.toggleClaw())
+            ));
         }
+
+
+
+        ////////////////////////////////////// GAMEPAD 2 CONTROLS /////////////////////////////////////
+
+        // scoring claw toggle
+        if (currentGamepad2.left_bumper && !previousGamepad2.left_bumper) { scoringArm.claw.toggleClaw(); }
 
         // macro prep high bucket scoring
         if (currentGamepad2.a && !previousGamepad2.a) {
@@ -152,63 +180,66 @@ public class FullRobotActionTeleOp extends OpMode {
         // macro grab clip
         if (currentGamepad2.dpad_down && !previousGamepad2.dpad_down) {
             runningActions.add(
-                new ParallelAction(
-                    new InstantAction(() -> verticalSlides.retract()),
-                    new InstantAction(() -> scoringArm.claw.openClaw()),
-                    new InstantAction(() -> scoringArm.wrist.setWristGrabClip()),
-                    new InstantAction(() -> scoringArm.arm.setArmGrabClip())
-                )
+                    new ParallelAction(
+                        new InstantAction(() -> verticalSlides.retract()),
+                        new InstantAction(() -> scoringArm.claw.openClaw()),
+                        new InstantAction(() -> scoringArm.wrist.setWristGrabClip()),
+                        new InstantAction(() -> scoringArm.arm.setArmGrabClip())
+                    )
             );
         }
 
         // macro prep score clip
         if (currentGamepad2.dpad_up && !previousGamepad2.dpad_up) {
             runningActions.add(
-                new ParallelAction(
-                    new InstantAction(() -> scoringArm.claw.closeClaw()),
-                    new InstantAction(() -> verticalSlides.raiseToPrepClip()),
-                    new InstantAction(() -> scoringArm.wrist.setWristScoringClip()),
-                    new InstantAction(() -> scoringArm.arm.setArmScoreClip())
-                )
+                    new ParallelAction(
+                        new InstantAction(() -> scoringArm.claw.closeClaw()),
+                        new InstantAction(() -> verticalSlides.raiseToPrepClip()),
+                        new InstantAction(() -> scoringArm.wrist.setWristScoringClip()),
+                        new InstantAction(() -> scoringArm.arm.setArmScoreClip())
+                    )
             );
         }
 
-
-        // retract slides and stow arm whenever claw opens
+        // auto retract slides and stow arm whenever claw opens
         if (scoringArm.claw.isClawOpen && !scoringArm.arm.isArmTransferring) {
             runningActions.add(new SequentialAction(
-                new SleepAction(0.25),
-                new ParallelAction(
-                    new InstantAction(() -> scoringArm.wrist.setWristStow()),
-                    new InstantAction(() -> scoringArm.arm.setArmStow())
-                ),
-                new InstantAction(() -> verticalSlides.retract())
+                    new SleepAction(0.25),
+                    new ParallelAction(
+                        new InstantAction(() -> scoringArm.wrist.setWristStow()),
+                        new InstantAction(() -> scoringArm.arm.setArmStow())
+                    ),
+                    new InstantAction(() -> verticalSlides.retract())
             ));
         }
 
         // deposit clip
         if (currentGamepad2.dpad_left && !previousGamepad2.dpad_left) {
             runningActions.add(
-                new SequentialAction(
-                    new InstantAction(() -> verticalSlides.raiseToScoreClip()),
-                    new SleepAction(0.2),
-                    new InstantAction(() -> scoringArm.claw.openClaw())
-            ));
+                    new SequentialAction(
+                        new InstantAction(() -> verticalSlides.raiseToScoreClip()),
+                        new SleepAction(0.2),
+                        new InstantAction(() -> scoringArm.claw.openClaw())
+                    ));
         }
 
         // auto transfer
         if (currentGamepad2.b && !previousGamepad2.b) {
             runningActions.add(
                     new SequentialAction(
-                            new InstantAction(() -> scoringArm.claw.openClaw()),
+                        // both arms prep
+                        new ParallelAction(
                             new InstantAction(() -> scoringArm.wrist.setWristTransfer()),
-                            new SleepAction(0.15),
                             new InstantAction(() -> scoringArm.arm.setArmTransfer()),
-                            new SleepAction(0.4),
-                            new InstantAction(() -> scoringArm.claw.closeClaw()),
-                            new SleepAction(0.15),
-                            new InstantAction(() -> scoringArm.arm.setArmStow()),
-                            new InstantAction(() -> scoringArm.wrist.setWristStow())
+                            new InstantAction(() -> intakeArm.arm.setArmTransfer()),
+                            new InstantAction(() -> intakeArm.wrist.setWristTransfer()),
+                            new InstantAction(() -> scoringArm.claw.openClaw())
+                        ),
+
+                        // acutally transfer
+                        new InstantAction(() -> scoringArm.claw.closeClaw()),
+                        new SleepAction(0.1),
+                        new InstantAction(() -> intakeArm.claw.openClaw())
                     ));
         }
 

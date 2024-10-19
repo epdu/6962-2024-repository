@@ -26,12 +26,13 @@ public class HorizontalSlides
     public static double Ki = 0;
     public static double Kd = 0;
     public static double Kg = 0; // gravity constant, tune till the slide holds itself in place
-    public static double upperLimit = 780;
+    public static double upperLimit = 650;
     public static double lowerLimit = -2;
     public static double retractedThreshold = 10;
     public static double mostlyRetractedThreshold = 60;
 
-    public static int extendedPos = 700;
+    public static int extendedPos = 600;
+    public static int halfExtendedPos = 450;
     public static int retractedPos = 0;
 
     public static double mappingExponent = 0.4;
@@ -67,7 +68,7 @@ public class HorizontalSlides
 
     public void operateVincent() {
         // maps to percent of upper limit (ex: 1 -> 100%, 0.5 -> 80%, 0.1 -> 60%, 0 -> 0%)
-        target = mapTriggerToTarget(opmode.gamepad1.right_trigger);
+//        target = mapTriggerToTarget(opmode.gamepad1.right_trigger);
         PIDPower = PIDControl(target, slideMotor);
         slideMotor.setPower(PIDPower);
 
@@ -170,6 +171,7 @@ public class HorizontalSlides
     }
 
     public void extend() { moveToPosition(extendedPos); }
+    public void extendHalfway() { moveToPosition(halfExtendedPos); }
     public void retract() { moveToPosition(retractedPos); }
 
     public int mapTriggerToTarget(double input) {

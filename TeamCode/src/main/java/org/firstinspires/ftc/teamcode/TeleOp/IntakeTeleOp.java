@@ -5,17 +5,12 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.Subsystems.CustomTimer;
-import org.firstinspires.ftc.teamcode.Subsystems.HorizontalSlides;
-import org.firstinspires.ftc.teamcode.Subsystems.Intake;
-import org.firstinspires.ftc.teamcode.Subsystems.Mecanum;
-import org.firstinspires.ftc.teamcode.Subsystems.OTOSManager;
-import org.firstinspires.ftc.teamcode.Subsystems.VerticalSlides;
+import org.firstinspires.ftc.teamcode.Subsystems.IntakeArm;
 
 @TeleOp(name="Only Intake Test", group="Active TeleOps")
 public class IntakeTeleOp extends OpMode {
     // creating subsystems
-    private final Intake intake = new Intake();
-    private final CustomTimer timer = new CustomTimer();
+    private final IntakeArm intake = new IntakeArm();
 
     private final boolean onRedAlliance = true;
 
@@ -24,7 +19,7 @@ public class IntakeTeleOp extends OpMode {
      */
     @Override
     public void init() {
-        intake.initialize(this, timer, onRedAlliance);
+        intake.initialize(this);
     }
 
     /*
@@ -49,19 +44,9 @@ public class IntakeTeleOp extends OpMode {
     public void loop() {
 //        intake.operateTest();
         intake.operateTest();
-        // Gamepad 2:
-        // Left Joystick Y - direct to motor power (up to intake, down to reverse)
-        // D-Pad Up and Down - incremental wrist
-        // Gamepad 1:
-        // D-pad Up - stop intake and flip up
-        // D-Pad Down - start intake and flip down
-        // X - reverse intake for 2 seconds
-//        telemetry.addData("Piece Taken In: ", intake.pieceTakenInBool());
-//        telemetry.addData("Detected Piece Color: ", intake.identifyColor());
-//        telemetry.addData("Correct Color: ", intake.correctColorBool());
-//        telemetry.addData("Has Sample & Correct Color: ", intake.correctPiece());
+        // Gamepad 2: tuning
+        //
 
-        telemetry.addData("Is Flipped Up: ", intake.flippedUp);
     }
 
     /*

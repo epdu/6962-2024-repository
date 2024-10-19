@@ -17,16 +17,14 @@ public class ScoringArm {
     public Claw claw = new Claw();
     public Arm arm = new Arm();
     public Wrist wrist = new Wrist();
-    private static CustomTimer timer = new CustomTimer();
     private final RobotHardware rHardware = new RobotHardware();
 
     // constructor
     public ScoringArm() {}
 
     // Initializes the sub-subsystems
-    public void initialize(OpMode opmode, CustomTimer timer) {
+    public void initialize(OpMode opmode) {
         this.opmode = opmode;
-        this.timer = timer;
         rHardware.init(opmode.hardwareMap);
 
         claw.initialize(rHardware);
@@ -34,7 +32,6 @@ public class ScoringArm {
         wrist.initialize(rHardware);
     }
 
-    // Operates the claw for Vincent configuration
     public void operateVincent() {
         if (opmode.gamepad1.left_bumper) {
             claw.toggleClaw();
@@ -50,7 +47,6 @@ public class ScoringArm {
         opmode.telemetry.addData("Claw Pos: ", claw.isClawOpen);
     }
 
-    // Operates the test mode for controlling the claw, arm, and wrist
     public void operateTest() {
         // gamepad 2, all incrementals to find servo values first try
         if (opmode.gamepad2.left_bumper) {
@@ -74,15 +70,15 @@ public class ScoringArm {
 
         // gamepad 1
         if (opmode.gamepad1.y) {
-//            arm.scoreArm();
+//            arm.setArmScore();
             wrist.setWristScoringBucket();
         }
         else if (opmode.gamepad1.a) {
-//            arm.scoreArm();
+//            arm.setArmScore();
             wrist.setWristScoringClip();
         }
         else if (opmode.gamepad1.b) {
-//            arm.stowArm();
+//            arm.setArmStow();
             wrist.setWristStow();
         }
         else if (opmode.gamepad1.x) {
@@ -115,7 +111,7 @@ public class ScoringArm {
         public Claw() {}
 
         public void initialize(RobotHardware rHardware) {
-            this.claw = rHardware.claw;
+            this.claw = rHardware.cClawServo;
         }
 
         // Toggles the claw between open and closed positions
@@ -157,7 +153,7 @@ public class ScoringArm {
 
         public Arm() {}
         public void initialize(RobotHardware hardware) {
-            this.arm = hardware.armServo;
+            this.arm = hardware.cArmServo;
         }
 
         public void setArmPosition(double position) {
@@ -169,27 +165,27 @@ public class ScoringArm {
             arm.setPosition(arm.getPosition() + sign * armIncrement);
         }
 
-        public void scoreArm() {
+        public void setArmScore() {
             setArmPosition(armScoringPosition);
             isArmTransferring = false;
         }
 
-        public void scoreClipArm() {
+        public void setArmScoreClip() {
             setArmPosition(armScoringClipPosition);
             isArmTransferring = false;
         }
 
-        public void grabClipArm() {
+        public void setArmGrabClip() {
             setArmPosition(armGrabClipPosition);
             isArmTransferring = true;
         }
 
-        public void stowArm() {
+        public void setArmStow() {
             setArmPosition(armStowPosition);
             isArmTransferring = true;
         }
 
-        public void transferArm() {
+        public void setArmTransfer() {
             setArmPosition(armTransferPosition);
             isArmTransferring = true;
         }
@@ -285,15 +281,6 @@ public class ScoringArm {
         }
     }
 
-    // whole arm transfer macro
-    public void wholeArmTransfer() {
-        claw.openClaw();
-        timer.safeDelay(100);
-        wrist.setWristTransfer();
-        timer.safeDelay(200);
-        arm.transferArm();
-    }
-
 //    public class clawOpen implements Action {
 //        @Override
 //        public boolean run(@NonNull TelemetryPacket packet) {
@@ -317,7 +304,7 @@ public class ScoringArm {
     public class clip implements Action {
         @Override
         public boolean run(@NonNull TelemetryPacket packet) {
-            arm.scoreClipArm();
+            arm.setArmScoreClip();
             wrist.setWristScoringClip();
             return false;
         }
@@ -328,7 +315,7 @@ public class ScoringArm {
 //    public class bucket implements Action {
 //        @Override
 //        public boolean run(@NonNull TelemetryPacket packet) {
-//            arm.scoreArm();
+//            arm.setArmScore();
 //            wrist.setWristScoring();
 //            return false;
 //        }
@@ -339,7 +326,7 @@ public class ScoringArm {
 //    public class stow implements Action {
 //        @Override
 //        public boolean run(@NonNull TelemetryPacket packet) {
-//            arm.stowArm();
+//            arm.setArmStow();
 //            wrist.setWristStow();
 //            return false;
 //        }
