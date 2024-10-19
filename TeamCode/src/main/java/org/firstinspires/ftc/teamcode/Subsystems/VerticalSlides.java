@@ -191,8 +191,11 @@ public class VerticalSlides
         if (Math.abs(output) < 0.1) {
             output = 0;
         }
+        else if (Math.abs(output) < 0.25) {
+            output = (output >= 0 ? 1 : -1) * 0.3;
+        }
         else if (Math.abs(output) >= 1) {
-            output = (output > 0 ? 1 : -1);
+            output = (output >= 0 ? 1 : -1);
         }
         else {
             atTarget = false;
@@ -229,6 +232,37 @@ public class VerticalSlides
         return (70.0/81)*Math.pow(Math.abs(output)-0.1,2) + 0.3; // desmos visual: \frac{280}{361}\left(x-0.05\right)^{2}+0.3
 //        return ((300.0/361)*Math.pow(Math.abs(output)-0.05,2) + 0.25); // desmos visual: \frac{300}{361}\left(x-0.05\right)^{2}+0.25
 //        return ((320.0/361)*Math.pow(Math.abs(output)-0.05,2) + 0.20); // desmos visual: \frac{300}{361}\left(x-0.05\right)^{2}+0.25
+    }
+
+    // within the Lift class
+    public class LiftUpToClip implements Action {
+        private boolean initialized = false;
+
+        @Override
+        public boolean run(@NonNull TelemetryPacket packet) {
+            if (!initialized) {
+                target = prepClipPos;
+                initialized = true;
+            }
+
+            PIDPowerR = PIDControl(target, rightSlideMotor);
+            leftSlideMotor.setPower(PIDPowerR);
+            rightSlideMotor.setPower(PIDPowerR);
+
+            packet.put("liftPos", rightSlideMotor.getCurrentPosition());
+
+            if (!atTarget) {
+                return true;
+            } else {
+                leftSlideMotor.setPower(0);
+                rightSlideMotor.setPower(0);
+                return false;
+            }
+        }
+    }
+
+    public Action LiftUpToClip() {
+        return new LiftUpToClip();
     }
 
 //    public class retractSlides implements Action {
