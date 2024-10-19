@@ -120,7 +120,7 @@ public class FinalFullRobotActionTeleOp extends OpMode {
 //                    ));
 //        }
 //        else
-        if (currentGamepad1.right_trigger >= 0.01 && previousGamepad1.right_trigger < 0.01) {
+        if (currentGamepad1.right_trigger >= 0.01 && !(previousGamepad1.right_trigger >= 0.01)) {
             runningActions.add(
                 new ParallelAction(
                     new InstantAction(() -> intakeArm.arm.setArmHover()),
@@ -128,7 +128,7 @@ public class FinalFullRobotActionTeleOp extends OpMode {
                     new InstantAction(() -> horizontalSlides.extendHalfway())
             ));
         }
-        else if (!intakeArm.arm.isArmTransferring) {
+        else if (currentGamepad1.right_trigger < 0.01 && !(previousGamepad1.right_trigger < 0.01)) {
             runningActions.add(
                 new ParallelAction(
                     new InstantAction(() -> intakeArm.arm.setArmTransfer()),
@@ -143,12 +143,20 @@ public class FinalFullRobotActionTeleOp extends OpMode {
 
         // intake claw toggle
         if (currentGamepad1.right_bumper && !previousGamepad1.right_bumper) {
-            runningActions.add(
-                new SequentialAction(
-                    new InstantAction(() -> intakeArm.arm.toggleHoverGrab()),
-                    new SleepAction(0.15),
-                    new InstantAction(() ->  intakeArm.claw.toggleClaw())
-            ));
+            if (intakeArm.arm.isArmHovering) {
+                runningActions.add(
+                    new SequentialAction(
+                        new InstantAction(() -> intakeArm.arm.setArmGrab()),
+                        new SleepAction(0.1),
+                        new InstantAction(() ->  intakeArm.claw.closeClaw()),
+                        new InstantAction(() -> intakeArm.arm.setArmHover())
+                ));
+            }
+            else {
+                runningActions.add(
+                    new InstantAction(() -> intakeArm.claw.toggleClaw())
+                );
+            }
         }
 
 
