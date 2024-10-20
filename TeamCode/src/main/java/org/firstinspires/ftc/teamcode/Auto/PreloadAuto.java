@@ -53,37 +53,38 @@ public class PreloadAuto extends LinearOpMode{
 
         TrajectoryActionBuilder move1 = drive.actionBuilder(startPose)
                 .strafeTo(new Vector2d(scorePreloadX, scorePreloadY))
-                .afterTime(0.5, () -> {
-                    subsystems.PrepClipSequence();
-                })
-//                .waitSeconds(1)
-                .afterTime( 1.5, () -> {
-                    new SequentialAction(
-                            subsystems.ScoreClipSequence(),
-                            new SleepAction(0.2),
-                            subsystems.StowScoring()
-                    );
-                })
-                .strafeToLinearHeading(new Vector2d(prepPickupX, prepPickupY), Math.toRadians(90))
-//                .afterTime(3, () -> {
-//                    arm.PickupClip();
-//                })
-                .strafeTo(new Vector2d(pickupX, pickupY))
-                .waitSeconds(1)
-//                .afterTime(8, () -> {
-//                    arm.ScoreClip();
-//                    slides.LiftUpToClip();
-//                })
-                .strafeToLinearHeading(new Vector2d(scorePreloadX+10, scorePreloadX), Math.toRadians(-90))
-                .waitSeconds(1)
-//                .afterTime(11, () -> {
-//                    new SequentialAction(
-//                            slides.LiftScoreClip(),
-//                            new SleepAction(0.2),
-//                            arm.StowClose(),
-//                            slides.Retract()
+//                .afterTime(0.5, () -> {
+//                    new ParallelAction(
+//                        verticalSlides.LiftUpToClip(),
+//                        scoringArm.ArmScoreClip()
 //                    );
 //                })
+                .waitSeconds(1)
+//                .afterTime( 2, () -> {
+//                    new SequentialAction(
+//                            subsystems.ScoreClipSequence(),
+//                            new SleepAction(0.2),
+//                            subsystems.StowScoring()
+//                    );
+//                })
+//                .strafeToLinearHeading(new Vector2d(prepPickupX, prepPickupY), Math.toRadians(90))
+////                .afterTime(3, () -> {
+////                    scoringArm.PickupClip();
+////                })
+//                .strafeTo(new Vector2d(pickupX, pickupY))
+//                .waitSeconds(1)
+////                .afterTime(8, () -> {
+////                    subsystems.PrepClipSequence();
+////                })
+//                .strafeToLinearHeading(new Vector2d(scorePreloadX+10, scorePreloadY), Math.toRadians(-90))
+//                .waitSeconds(1)
+////                .afterTime(11, () -> {
+////                    new SequentialAction(
+////                            subsystems.ScoreClipSequence(),
+////                            new SleepAction(0.2),
+////                            subsystems.StowScoring()
+////                    );
+////                })
                 .strafeTo(new Vector2d(parkX, parkY));
 
         while(!isStarted() && !opModeIsActive()) {
@@ -96,11 +97,11 @@ public class PreloadAuto extends LinearOpMode{
             telemetry.addLine("Initialized Preload Auto");
             telemetry.update();
             //run on init NO MOTORS
-            Actions.runBlocking(
-                    new ParallelAction(
-                            scoringArm.StowWholeArm()
-                    )
-            );
+//            Actions.runBlocking(
+//                    new ParallelAction(
+//                            scoringArm.StowWholeArm()
+//                    )
+//            );
         }
         waitForStart();
         if (isStopRequested()) return;
@@ -109,7 +110,11 @@ public class PreloadAuto extends LinearOpMode{
 
         Actions.runBlocking(
                 new SequentialAction(
-                        preloadAutoTrajectory
+                        scoringArm.ArmScoreClip(),
+                        new SleepAction(2),
+                        verticalSlides.LiftScoreClip(),
+                        new SleepAction(2)
+                        //preloadAutoTrajectory
                 )
         );
 
