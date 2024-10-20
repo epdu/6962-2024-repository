@@ -242,8 +242,8 @@ public class VerticalSlides
         public boolean run(@NonNull TelemetryPacket packet) {
             if (!initialized) {
                 target = prepClipPos;
-                leftSlideMotor.setPower(1);
-                rightSlideMotor.setPower(1);
+                leftSlideMotor.setPower(0.7);
+                rightSlideMotor.setPower(0.7);
                 initialized = true;
             }
 
@@ -274,16 +274,18 @@ public class VerticalSlides
         public boolean run(@NonNull TelemetryPacket packet) {
             if (!initialized) {
                 target = scoreClipPos;
+                leftSlideMotor.setPower(0.7);
+                rightSlideMotor.setPower(0.7);
                 initialized = true;
             }
 
-            PIDPowerR = PIDControl(target, rightSlideMotor);
-            leftSlideMotor.setPower(PIDPowerR);
-            rightSlideMotor.setPower(PIDPowerR);
+//            PIDPowerR = PIDControl(target, rightSlideMotor);
+//            leftSlideMotor.setPower(PIDPowerR);
+//            rightSlideMotor.setPower(PIDPowerR);
 
             packet.put("liftPos", rightSlideMotor.getCurrentPosition());
 
-            if (!atTarget) {
+            if (rightSlideMotor.getCurrentPosition() > target) {
                 return true;
             } else {
                 leftSlideMotor.setPower(0);
@@ -304,16 +306,18 @@ public class VerticalSlides
         public boolean run(@NonNull TelemetryPacket packet) {
             if (!initialized) {
                 target = retractedPos;
+                leftSlideMotor.setPower(0.7);
+                rightSlideMotor.setPower(0.7);
                 initialized = true;
             }
 
-            PIDPowerR = PIDControl(target, rightSlideMotor);
-            leftSlideMotor.setPower(PIDPowerR);
-            rightSlideMotor.setPower(PIDPowerR);
+//            PIDPowerR = PIDControl(target, rightSlideMotor);
+//            leftSlideMotor.setPower(PIDPowerR);
+//            rightSlideMotor.setPower(PIDPowerR);
 
             packet.put("liftPos", rightSlideMotor.getCurrentPosition());
 
-            if (!atTarget) {
+            if (rightSlideMotor.getCurrentPosition() > target) {
                 return true;
             } else {
                 leftSlideMotor.setPower(0);

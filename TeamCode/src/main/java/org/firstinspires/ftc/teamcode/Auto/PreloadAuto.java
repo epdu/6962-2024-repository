@@ -53,20 +53,25 @@ public class PreloadAuto extends LinearOpMode{
 
         TrajectoryActionBuilder move1 = drive.actionBuilder(startPose)
                 .strafeTo(new Vector2d(scorePreloadX, scorePreloadY))
-//                .afterTime(0.5, () -> {
-//                    new ParallelAction(
-//                        verticalSlides.LiftUpToClip(),
-//                        scoringArm.ArmScoreClip()
-//                    );
-//                })
+                .afterTime(0.5, () -> {
+                    Actions.runBlocking(
+                            new ParallelAction(
+                                    verticalSlides.LiftUpToClip(),
+                                    scoringArm.ArmScoreClip()
+                            )
+                    );
+                })
                 .waitSeconds(1)
-//                .afterTime( 2, () -> {
-//                    new SequentialAction(
-//                            subsystems.ScoreClipSequence(),
-//                            new SleepAction(0.2),
-//                            subsystems.StowScoring()
-//                    );
-//                })
+                .afterTime( 2, () -> {
+                    Actions.runBlocking(
+                        new SequentialAction(
+                            verticalSlides.LiftScoreClip(),
+                            new SleepAction(0.2),
+                            verticalSlides.Retract(),
+                            scoringArm.StowWholeArm()
+                        )
+                    );
+                })
 //                .strafeToLinearHeading(new Vector2d(prepPickupX, prepPickupY), Math.toRadians(90))
 ////                .afterTime(3, () -> {
 ////                    scoringArm.PickupClip();
@@ -97,11 +102,11 @@ public class PreloadAuto extends LinearOpMode{
             telemetry.addLine("Initialized Preload Auto");
             telemetry.update();
             //run on init NO MOTORS
-//            Actions.runBlocking(
-//                    new ParallelAction(
-//                            scoringArm.StowWholeArm()
-//                    )
-//            );
+            Actions.runBlocking(
+                    new ParallelAction(
+                            scoringArm.StowWholeArm()
+                    )
+            );
         }
         waitForStart();
         if (isStopRequested()) return;
@@ -110,11 +115,9 @@ public class PreloadAuto extends LinearOpMode{
 
         Actions.runBlocking(
                 new SequentialAction(
-                        scoringArm.ArmScoreClip(),
-                        new SleepAction(2),
-                        verticalSlides.LiftScoreClip(),
-                        new SleepAction(2)
-                        //preloadAutoTrajectory
+                        //scoringArm.ArmScoreClip(),
+                        //verticalSlides.LiftUpToClip()
+                        preloadAutoTrajectory
                 )
         );
 
