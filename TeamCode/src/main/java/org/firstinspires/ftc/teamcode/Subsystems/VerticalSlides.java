@@ -47,7 +47,6 @@ public class VerticalSlides
     private volatile double target = 0;
     private volatile boolean movingDown = false;
     public volatile boolean verticalSlidesRetracted = true;
-    public volatile boolean atTarget = true;
 
     // PID stuff
     private double PIDPowerL, PIDPowerR;
@@ -180,23 +179,6 @@ public class VerticalSlides
         // calculates output and returns
         double output = ((movingDown ? KpDown : KpUp) * error) + (Ki * integralSum) + (Kd * derivative) + Kg;
 
-        // deadband-esque behavior to avoid returning super small decimal values
-        if (Math.abs(output) < 0.2) {
-            atTarget = true;
-        }
-        if (Math.abs(output) < 0.1) {
-            output = 0;
-        }
-        else if (Math.abs(output) < 0.25) {
-            output = (output >= 0 ? 1 : -1) * 0.3;
-        }
-        else if (Math.abs(output) >= 1) {
-            output = (output >= 0 ? 1 : -1);
-        }
-        else {
-            atTarget = false;
-        }
-
         return output;
     }
 
@@ -270,6 +252,39 @@ public class VerticalSlides
 
     public Action LiftUpToHighBucket() {
         return new RunToPosition(highBucketPos);
+    }
+
+    public class RTP implements Action {
+        private boolean initialized = false;
+        private int rtpTarget = 0;
+
+        public RTP(int targetPos) {
+            rtpTarget = targetPos;
+        }
+
+        @Override
+        public boolean run(@NonNull TelemetryPacket packet) {
+            if (!initialized) {
+                rtpTarget = prepClipPos;
+                initialized = true;
+            }
+
+            PIDPowerR = PIDControl(rtpTarget, rightSlideMotor);
+            leftSlideMotor.setPower(PIDPowerR);
+            rightSlideMotor.setPower(PIDPowerR);
+
+            if (Math.abs(rtpTarget - rightSlideMotor.getCurrentPosition()) > 20) {
+                return true;
+            } else {
+                leftSlideMotor.setPower(0);
+                rightSlideMotor.setPower(0);
+                return false;
+            }
+        }
+    }
+
+    public Action RTP() {
+        return new RTP(200);
     }
 }
 
