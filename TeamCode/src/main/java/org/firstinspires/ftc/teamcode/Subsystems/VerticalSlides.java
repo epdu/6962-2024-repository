@@ -36,9 +36,7 @@ public class VerticalSlides
     public static double retractedThreshold = 5;
 
     public static int highBucketPos = 1300;
-    public static int lowBucketPos = 600;
-    public static int lowChamberPos = 100;
-    public static int highChamberPos = 600;
+//    public static int lowBucketPos = 600;
     public static int retractedPos = 0;
     public static int pickupClipPos = 0;
     public static int prepClipPos = 555;
@@ -81,17 +79,15 @@ public class VerticalSlides
     }
 
     public void operateVincent() {
-//        PIDPowerL = PIDControl(target, leftSlideMotor);
         PIDPowerR = PIDControl(target, rightSlideMotor);
-//        leftSlideMotor.setPower(PIDPowerL);
         leftSlideMotor.setPower(PIDPowerR);
         rightSlideMotor.setPower(PIDPowerR);
 
         // updates boolean
-        verticalSlidesRetracted = leftSlideMotor.getCurrentPosition() < retractedThreshold;
+        verticalSlidesRetracted = rightSlideMotor.getCurrentPosition() < retractedThreshold;
 
         opmode.telemetry.addData("Vertical Slides Retracted: ", verticalSlidesRetracted);
-        opmode.telemetry.addData("Right Motor Encoder Pos: ", telemetryRightMotorPos());
+        opmode.telemetry.addData("Right Motor Encoder Pos: ", rightSlideMotor.getCurrentPosition());
         opmode.telemetry.addData("PID Power R ", PIDPowerR);
         opmode.telemetry.addData("Slide Target ", target);
         opmode.telemetry.update();
@@ -151,7 +147,7 @@ public class VerticalSlides
 //        opmode.telemetry.addData("PID Power L ", PIDPowerL);
 
         opmode.telemetry.addData("Vertical Slides Retracted: ", verticalSlidesRetracted);
-        opmode.telemetry.addData("Right Motor Encoder Pos: ", telemetryRightMotorPos());
+        opmode.telemetry.addData("Right Motor Encoder Pos: ", rightSlideMotor.getCurrentPosition());
         opmode.telemetry.addData("PID Power R ", PIDPowerR);
         opmode.telemetry.addData("Slide Target ", target);
         opmode.telemetry.update();
@@ -211,13 +207,10 @@ public class VerticalSlides
         target = targetPos;
     }
     public void raiseToHighBucket() { moveToPosition(highBucketPos); }
-    public void raiseToLowBucket() { moveToPosition(lowBucketPos); }
-    public void raiseToLowChamber() { moveToPosition(lowChamberPos); }
-    public void raiseToHighChamber() { moveToPosition(highChamberPos);}
     public void raiseToPickupClip() { moveToPosition(pickupClipPos);}
     public void raiseToPrepClip() { moveToPosition(prepClipPos);}
     public void retract() { moveToPosition(retractedPos); }
-    public void raiseToScoreClip() { moveToPosition(scoreClipPos);}
+    public void slamToScoreClip() { moveToPosition(scoreClipPos);}
 
     public int telemetryLeftMotorPos() {
         return leftSlideMotor.getCurrentPosition();
@@ -234,26 +227,24 @@ public class VerticalSlides
 //        return ((320.0/361)*Math.pow(Math.abs(output)-0.05,2) + 0.20); // desmos visual: \frac{300}{361}\left(x-0.05\right)^{2}+0.25
     }
 
-    // within the Lift class
-    public class LiftUpToClip implements Action {
+    // Action class stuff
+    public class RunToPosition implements Action {
         private boolean initialized = false;
+        private int rtpTarget = 0;
+
+        public RunToPosition(int target) {
+            rtpTarget = target;
+        }
 
         @Override
         public boolean run(@NonNull TelemetryPacket packet) {
             if (!initialized) {
-                target = prepClipPos;
-                leftSlideMotor.setPower(0.7);
-                rightSlideMotor.setPower(0.7);
+                leftSlideMotor.setPower(0.8);
+                rightSlideMotor.setPower(0.8);
                 initialized = true;
             }
 
-//            PIDPowerR = PIDControl(target, rightSlideMotor);
-//            leftSlideMotor.setPower(PIDPowerR);
-//            rightSlideMotor.setPower(PIDPowerR);
-
-            packet.put("liftPos", rightSlideMotor.getCurrentPosition());
-
-            if (rightSlideMotor.getCurrentPosition() < target) {
+            if (rightSlideMotor.getCurrentPosition() < rtpTarget) {
                 return true;
             } else {
                 leftSlideMotor.setPower(0);
@@ -264,122 +255,19 @@ public class VerticalSlides
     }
 
     public Action LiftUpToClip() {
-        return new LiftUpToClip();
+        return new RunToPosition(prepClipPos);
     }
 
-    public class LiftScoreClip implements Action {
-        private boolean initialized = false;
-
-        @Override
-        public boolean run(@NonNull TelemetryPacket packet) {
-            if (!initialized) {
-                target = scoreClipPos;
-                leftSlideMotor.setPower(0.7);
-                rightSlideMotor.setPower(0.7);
-                initialized = true;
-            }
-
-//            PIDPowerR = PIDControl(target, rightSlideMotor);
-//            leftSlideMotor.setPower(PIDPowerR);
-//            rightSlideMotor.setPower(PIDPowerR);
-
-            packet.put("liftPos", rightSlideMotor.getCurrentPosition());
-
-            if (rightSlideMotor.getCurrentPosition() > target) {
-                return true;
-            } else {
-                leftSlideMotor.setPower(0);
-                rightSlideMotor.setPower(0);
-                return false;
-            }
-        }
-    }
-
-    public Action LiftScoreClip() {
-        return new LiftScoreClip();
-    }
-
-    public class Retract implements Action {
-        private boolean initialized = false;
-
-        @Override
-        public boolean run(@NonNull TelemetryPacket packet) {
-            if (!initialized) {
-                target = retractedPos;
-                leftSlideMotor.setPower(0.7);
-                rightSlideMotor.setPower(0.7);
-                initialized = true;
-            }
-
-//            PIDPowerR = PIDControl(target, rightSlideMotor);
-//            leftSlideMotor.setPower(PIDPowerR);
-//            rightSlideMotor.setPower(PIDPowerR);
-
-            packet.put("liftPos", rightSlideMotor.getCurrentPosition());
-
-            if (rightSlideMotor.getCurrentPosition() > target) {
-                return true;
-            } else {
-                leftSlideMotor.setPower(0);
-                rightSlideMotor.setPower(0);
-                return false;
-            }
-        }
+    public Action SlamScoreClip() {
+        return new RunToPosition(scoreClipPos);
     }
 
     public Action Retract() {
-        return new Retract();
+        return new RunToPosition(retractedPos);
     }
 
-//    public class retractSlides implements Action {
-//        @Override
-//        public boolean run(@NonNull TelemetryPacket packet) {
-//            retract();
-//            return false;
-//        }
-//    }
-//    public Action retractSlides() {
-//        return new retractSlides();
-//    }
-//    public class scoreBucket implements Action {
-//        @Override
-//        public boolean run(@NonNull TelemetryPacket packet) {
-//            raiseToHighBucket();
-//            return false;
-//        }
-//    }
-//    public Action scoreBucket() {
-//        return new scoreBucket();
-//    }
-//    public class pickupClip implements Action {
-//        @Override
-//        public boolean run(@NonNull TelemetryPacket packet) {
-//            raiseToPickupClip();
-//            return false;
-//        }
-//    }
-//    public Action pickupClip() {
-//        return new pickupClip();
-//    }
-//    public class prepClip implements Action {
-//        @Override
-//        public boolean run(@NonNull TelemetryPacket packet) {
-//            raiseToPrepClip();
-//            return false;
-//        }
-//    }
-//    public Action prepClip() {
-//        return new prepClip();
-//    }
-//    public class scoreClip implements Action {
-//        @Override
-//        public boolean run(@NonNull TelemetryPacket packet) {
-//            raiseToHighChamber();
-//            return false;
-//        }
-//    }
-//    public Action scoreClip() {
-//        return new scoreClip();
-//    }
+    public Action LiftUpToHighBucket() {
+        return new RunToPosition(highBucketPos);
+    }
 }
 

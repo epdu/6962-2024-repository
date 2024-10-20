@@ -70,11 +70,11 @@ public class ScoringArm {
 
         // gamepad 1
         if (opmode.gamepad1.y) {
-//            arm.setArmScore();
+//            arm.setArmScoreBucket();
             wrist.setWristScoringBucket();
         }
         else if (opmode.gamepad1.a) {
-//            arm.setArmScore();
+//            arm.setArmScoreBucket();
             wrist.setWristScoringClip();
         }
         else if (opmode.gamepad1.b) {
@@ -165,7 +165,7 @@ public class ScoringArm {
             arm.setPosition(arm.getPosition() + sign * armIncrement);
         }
 
-        public void setArmScore() {
+        public void setArmScoreBucket() {
             setArmPosition(armScoringPosition);
             isArmTransferring = false;
         }
@@ -281,6 +281,7 @@ public class ScoringArm {
         }
     }
 
+    // Action classes and functions for auto
     public class StowWholeArm implements Action {
         @Override
         public boolean run(@NonNull TelemetryPacket packet) {
@@ -293,6 +294,19 @@ public class ScoringArm {
     public Action StowWholeArm() {
         return new StowWholeArm();
     }
+
+    public class WholeArmTransfer implements Action {
+        @Override
+        public boolean run(@NonNull TelemetryPacket packet) {
+            arm.setArmScoreClip();
+            wrist.setWristScoringClip();
+            return false;
+        }
+    }
+    public Action WholeArmTransfer() {
+        return new WholeArmTransfer();
+    }
+
     public class ArmScoreClip implements Action {
         @Override
         public boolean run(@NonNull TelemetryPacket packet) {
@@ -305,16 +319,16 @@ public class ScoringArm {
         return new ArmScoreClip();
     }
 
-    public class PickupClip implements Action {
+    public class ArmScoreBucket implements Action {
         @Override
         public boolean run(@NonNull TelemetryPacket packet) {
-            arm.setArmGrabClip();
-            wrist.setWristGrabClip();
+            arm.setArmScoreBucket();
+            wrist.setWristScoringBucket();
             return false;
         }
     }
-    public Action PickupClip() {
-        return new PickupClip();
+    public Action ArmScoreBucket() {
+        return new ArmScoreBucket();
     }
 
 

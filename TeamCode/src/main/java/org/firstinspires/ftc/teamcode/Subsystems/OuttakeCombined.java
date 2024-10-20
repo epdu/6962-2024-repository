@@ -31,7 +31,7 @@
 //        autoTransfer();
 //        verticalSlides.raiseToHighBucket();     // extending slides
 //        scoringArm.wrist.setWristScoringBucket();
-//        scoringArm.arm.setArmScore();              // flip arm over to score
+//        scoringArm.arm.setArmScoreBucket();              // flip arm over to score
 //        timer.safeDelay(2000);                   // wait for __ milliseconds
 //        scoringArm.wrist.setWristScoringBucket();     // prepping wrist to drop pixel (currently useless because the intake is now starting horizontal)
 //        timer.safeDelay(2000);
@@ -57,7 +57,7 @@
 //    // extends vertical slides, and sets arm to scoring, but doesn't open claw, then retracts once claw opens
 //    public void autoPrepHighBucket() {
 //        scoringArm.wrist.setWristScoringBucket();
-//        scoringArm.arm.setArmScore();
+//        scoringArm.arm.setArmScoreBucket();
 //        verticalSlides.raiseToHighBucket();
 //        timer.safeDelay(100);
 //        while (!verticalSlides.atTarget) {verticalSlides.operateVincent();}
@@ -72,7 +72,7 @@
 //    public void autoPrepLowBucket() {
 //        verticalSlides.raiseToLowBucket();
 //        scoringArm.wrist.setWristScoringBucket();
-//        scoringArm.arm.setArmScore();
+//        scoringArm.arm.setArmScoreBucket();
 //        while(!scoringArm.claw.isClawOpen) {}
 //        scoringArm.arm.setArmStow();
 //        scoringArm.wrist.setWristStow();

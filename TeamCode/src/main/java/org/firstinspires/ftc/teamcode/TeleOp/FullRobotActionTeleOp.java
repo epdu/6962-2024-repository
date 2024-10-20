@@ -142,7 +142,7 @@
 //                        new ParallelAction(
 //                            new InstantAction(() -> scoringArm.claw.closeClaw()),
 //                            new InstantAction(() -> scoringArm.wrist.setWristScoringBucket()),
-//                            new InstantAction(() -> scoringArm.arm.setArmScore())
+//                            new InstantAction(() -> scoringArm.arm.setArmScoreBucket())
 //                        )
 //                    )
 //                );

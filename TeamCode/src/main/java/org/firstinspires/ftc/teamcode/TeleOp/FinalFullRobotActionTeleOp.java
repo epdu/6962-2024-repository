@@ -12,7 +12,6 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
-import org.firstinspires.ftc.teamcode.Subsystems.CustomTimer;
 import org.firstinspires.ftc.teamcode.Subsystems.HorizontalSlides;
 import org.firstinspires.ftc.teamcode.Subsystems.IntakeArm;
 import org.firstinspires.ftc.teamcode.Subsystems.Mecanum;
@@ -43,7 +42,6 @@ public class FinalFullRobotActionTeleOp extends OpMode {
     private VerticalSlides verticalSlides     = new VerticalSlides();
     private IntakeArm intakeArm               = new IntakeArm();
     private ScoringArm scoringArm             = new ScoringArm();
-    private CustomTimer timer                 = new CustomTimer();
 
     private boolean onRedAlliance = true;
 
@@ -178,7 +176,7 @@ public class FinalFullRobotActionTeleOp extends OpMode {
                         new ParallelAction(
                             new InstantAction(() -> scoringArm.claw.closeClaw()),
                             new InstantAction(() -> scoringArm.wrist.setWristScoringBucket()),
-                            new InstantAction(() -> scoringArm.arm.setArmScore())
+                            new InstantAction(() -> scoringArm.arm.setArmScoreBucket())
                         )
                     )
                 );
@@ -225,7 +223,7 @@ public class FinalFullRobotActionTeleOp extends OpMode {
         if (currentGamepad2.dpad_left && !previousGamepad2.dpad_left) {
             runningActions.add(
                     new SequentialAction(
-                        new InstantAction(() -> verticalSlides.raiseToScoreClip()),
+                        new InstantAction(() -> verticalSlides.slamToScoreClip()),
                         new SleepAction(0.2),
                         new InstantAction(() -> scoringArm.claw.openClaw())
                     ));

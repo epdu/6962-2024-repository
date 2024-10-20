@@ -17,7 +17,6 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-import org.firstinspires.ftc.teamcode.Subsystems.SubsystemsCombined;
 import org.firstinspires.ftc.teamcode.Util.RobotHardware;
 
 import org.firstinspires.ftc.teamcode.Roadrunner.MecanumDrive;
@@ -49,7 +48,6 @@ public class PreloadAuto extends LinearOpMode{
         IntakeArm intakeArm = new IntakeArm();
         VerticalSlides verticalSlides = new VerticalSlides();
         ScoringArm scoringArm = new ScoringArm();
-        SubsystemsCombined subsystems = new SubsystemsCombined();
 
         TrajectoryActionBuilder move1 = drive.actionBuilder(startPose)
                 .strafeTo(new Vector2d(scorePreloadX, scorePreloadY))
@@ -65,7 +63,7 @@ public class PreloadAuto extends LinearOpMode{
                 .afterTime( 2, () -> {
                     Actions.runBlocking(
                         new SequentialAction(
-                            verticalSlides.LiftScoreClip(),
+                            verticalSlides.SlamScoreClip(),
                             new SleepAction(0.2),
                             verticalSlides.Retract(),
                             scoringArm.StowWholeArm()
@@ -97,7 +95,6 @@ public class PreloadAuto extends LinearOpMode{
             intakeArm.initialize(this);
             verticalSlides.initialize(this);
             scoringArm.initialize(this);
-            subsystems.initialize(this, horizontalSlides, intakeArm, verticalSlides, scoringArm);
 
             telemetry.addLine("Initialized Preload Auto");
             telemetry.update();
@@ -115,8 +112,8 @@ public class PreloadAuto extends LinearOpMode{
 
         Actions.runBlocking(
                 new SequentialAction(
-                        //scoringArm.ArmScoreClip(),
-                        //verticalSlides.LiftUpToClip()
+                        scoringArm.ArmScoreClip(),
+                        verticalSlides.LiftUpToClip(),
                         preloadAutoTrajectory
                 )
         );
