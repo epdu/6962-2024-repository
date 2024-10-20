@@ -232,19 +232,21 @@ public class VerticalSlides
         private boolean initialized = false;
         private int rtpTarget = 0;
 
-        public RunToPosition(int target) {
-            rtpTarget = target;
+        public RunToPosition(int targetPos) {
+            rtpTarget = targetPos;
         }
 
         @Override
         public boolean run(@NonNull TelemetryPacket packet) {
+            int error = rtpTarget - rightSlideMotor.getCurrentPosition();
             if (!initialized) {
-                leftSlideMotor.setPower(0.8);
-                rightSlideMotor.setPower(0.8);
+                int sign = (error >= 0 ? 1 : -1);
+                leftSlideMotor.setPower(sign * 0.8);
+                rightSlideMotor.setPower(sign * 0.8);
                 initialized = true;
             }
 
-            if (rightSlideMotor.getCurrentPosition() < rtpTarget) {
+            if (Math.abs(error) > 20) {
                 return true;
             } else {
                 leftSlideMotor.setPower(0);
