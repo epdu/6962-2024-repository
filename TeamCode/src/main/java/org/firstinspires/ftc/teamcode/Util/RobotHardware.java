@@ -15,6 +15,9 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.robotcore.internal.camera.names.WebcamNameImpl;
+
 @Config
 public class RobotHardware {
     public HardwareMap hMap;
@@ -39,6 +42,9 @@ public class RobotHardware {
     public Servo cWristServoR = null, cWristServoL = null, cArmServo = null, cClawServo = null;
 
     public NavxMicroNavigationSensor navx;
+
+    public WebcamName webcam = null;
+    public int cameraMonitorViewId;
 
     public GamepadEx gamepad1, gamepad2;
 
@@ -65,5 +71,9 @@ public class RobotHardware {
 
         vRslideMotor = hMap.get(DcMotorEx.class, "vRslide");
         vLslideMotor = hMap.get(DcMotorEx.class, "vLslide");
+
+        webcam = hMap.get(WebcamName.class, "Webcam 1");
+        cameraMonitorViewId = hMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hMap.appContext.getPackageName());
+
     }
 }
