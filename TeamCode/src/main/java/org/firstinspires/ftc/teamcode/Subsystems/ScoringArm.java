@@ -311,8 +311,8 @@ public class ScoringArm {
     public class WholeArmTransfer implements Action {
         @Override
         public boolean run(@NonNull TelemetryPacket packet) {
-            arm.setArmScoreClip();
-            wrist.setWristScoringClip();
+            arm.setArmTransfer();
+            wrist.setWristTransfer();
             return false;
         }
     }
@@ -357,7 +357,6 @@ public class ScoringArm {
     public Action ArmGrabClip() {
         return new ArmGrabClip();
     }
-
 
     // math util functions
     public boolean isClose(double a, double b) {

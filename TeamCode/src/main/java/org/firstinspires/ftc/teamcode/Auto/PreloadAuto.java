@@ -89,7 +89,7 @@ public class PreloadAuto extends LinearOpMode{
                     );
                 })
                 .waitSeconds(2)
-                .strafeToLinearHeading(new Vector2d(scorePreload2X, scorePreload2Y), Math.toRadians(-92))
+                .strafeToLinearHeading(new Vector2d(scorePreload2X, scorePreload2Y), Math.toRadians(-89))
                 .afterTime(0.5, () -> {
                     Actions.runBlocking(
                             new SequentialAction(
@@ -125,7 +125,8 @@ public class PreloadAuto extends LinearOpMode{
 
         Actions.runBlocking(
                 new SequentialAction(
-                        preloadAutoTrajectory
+                        preloadAutoTrajectory,
+                        scoringArm.StowWholeArmClose()
                 )
         );
 
