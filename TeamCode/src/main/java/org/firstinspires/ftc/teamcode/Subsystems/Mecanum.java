@@ -5,6 +5,8 @@ import com.arcrobotics.ftclib.drivebase.MecanumDrive;
 import com.arcrobotics.ftclib.hardware.motors.MotorEx;
 import com.qualcomm.hardware.kauailabs.NavxMicroNavigationSensor;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.
+
 
 import org.firstinspires.ftc.teamcode.Subsystems.NavxManager;
 import org.firstinspires.ftc.teamcode.Util.RobotHardware;
@@ -59,6 +61,8 @@ public class Mecanum {
         else {
             drive.driveFieldCentric(opmode.gamepad1.left_stick_x * slowModeFactor, -opmode.gamepad1.left_stick_y * slowModeFactor, (opmode.gamepad1.right_stick_x * 0.75) * slowModeFactor, gyroManager.getHeading());
         }
+
+        opmode.telemetry.addData("Test drive motor accel: ", frontRight.getAcceleration());
     }
 
     public void operateFieldCentricTest() {

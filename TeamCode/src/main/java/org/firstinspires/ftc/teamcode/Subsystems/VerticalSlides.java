@@ -6,12 +6,15 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.VoltageSensor;
 import com.qualcomm.robotcore.robot.Robot;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.ftc.Actions;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import androidx.annotation.NonNull;
+
+import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 import org.firstinspires.ftc.teamcode.Util.RobotHardware;
 
 @Config
@@ -89,6 +92,8 @@ public class VerticalSlides
         opmode.telemetry.addData("Right Motor Encoder Pos: ", rightSlideMotor.getCurrentPosition());
         opmode.telemetry.addData("PID Power R ", PIDPowerR);
         opmode.telemetry.addData("Slide Target ", target);
+        opmode.telemetry.addData("Test slide power draw: ", rightSlideMotor.getCurrent(CurrentUnit.AMPS));
+        opmode.telemetry.addData("Test slide power alert: ", rightSlideMotor.getCurrentAlert(CurrentUnit.AMPS));
         opmode.telemetry.update();
     }
 
