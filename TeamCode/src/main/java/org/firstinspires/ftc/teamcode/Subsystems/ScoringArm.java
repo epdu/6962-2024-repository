@@ -300,7 +300,7 @@ public class ScoringArm {
         public boolean run(@NonNull TelemetryPacket packet) {
             arm.setArmStow();
             wrist.setWristStow();
-            claw.closeClaw();
+            claw.openClaw();
             return false;
         }
     }
