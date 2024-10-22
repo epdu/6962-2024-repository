@@ -43,7 +43,7 @@ public class RobotHardware {
 
     public NavxMicroNavigationSensor navx;
 
-    public WebcamName webcam = null;
+//    public WebcamName webcam = null;
     public int cameraMonitorViewId;
 
     public GamepadEx gamepad1, gamepad2;
@@ -72,8 +72,8 @@ public class RobotHardware {
         vRslideMotor = hMap.get(DcMotorEx.class, "vRslide");
         vLslideMotor = hMap.get(DcMotorEx.class, "vLslide");
 
-        webcam = hMap.get(WebcamName.class, "Webcam 1");
-        cameraMonitorViewId = hMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hMap.appContext.getPackageName());
+//        webcam = hMap.get(WebcamName.class, "Webcam 1");
+//        cameraMonitorViewId = hMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hMap.appContext.getPackageName());
 
     }
 }

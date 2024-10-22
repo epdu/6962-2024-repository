@@ -148,7 +148,7 @@ public class ScoringArm {
         public static double armScoringClipPosition = 0.43;
         public static double armStowPosition = 0.826;
         public static double armTransferPosition = 0.9911;
-        public static double armGrabClipPosition = 0.04;
+        public static double armGrabClipPosition = 0;
         public static double armIncrement = 0.001;
 
         public Arm() {}
@@ -282,6 +282,19 @@ public class ScoringArm {
     }
 
     // Action classes and functions for auto
+    public class StowWholeArmClose implements Action {
+        @Override
+        public boolean run(@NonNull TelemetryPacket packet) {
+            arm.setArmStow();
+            wrist.setWristStow();
+            claw.closeClaw();
+            return false;
+        }
+    }
+    public Action StowWholeArmClose() {
+        return new StowWholeArmClose();
+    }
+
     public class StowWholeArm implements Action {
         @Override
         public boolean run(@NonNull TelemetryPacket packet) {
@@ -310,6 +323,7 @@ public class ScoringArm {
     public class ArmScoreClip implements Action {
         @Override
         public boolean run(@NonNull TelemetryPacket packet) {
+            claw.closeClaw();
             arm.setArmScoreClip();
             wrist.setWristScoringClip();
             return false;
@@ -329,6 +343,19 @@ public class ScoringArm {
     }
     public Action ArmScoreBucket() {
         return new ArmScoreBucket();
+    }
+
+    public class ArmGrabClip implements Action {
+        @Override
+        public boolean run(@NonNull TelemetryPacket packet) {
+            arm.setArmGrabClip();
+            wrist.setWristGrabClip();
+            claw.openClaw();
+            return false;
+        }
+    }
+    public Action ArmGrabClip() {
+        return new ArmGrabClip();
     }
 
 

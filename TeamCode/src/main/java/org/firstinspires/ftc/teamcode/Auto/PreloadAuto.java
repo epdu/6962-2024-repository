@@ -32,11 +32,13 @@ public class PreloadAuto extends LinearOpMode{
     public static double startY = -63.75;
     public static double startHeading = Math.toRadians(-90);
     public static double scorePreloadX = 0;
-    public static double scorePreloadY = -42;
+    public static double scorePreloadY = -39;
+    public static double scorePreload2X = -6;
+    public static double scorePreload2Y = -39;
     public static double prepPickupX = 65;
-    public static double prepPickupY = -54;
+    public static double prepPickupY = -46;
     public static double pickupX = 65;
-    public static double pickupY = -60;
+    public static double pickupY = -58;
     public static double parkX = 36;
     public static double parkY = -60;
     @Override
@@ -50,8 +52,7 @@ public class PreloadAuto extends LinearOpMode{
         ScoringArm scoringArm = new ScoringArm();
 
         TrajectoryActionBuilder move1 = drive.actionBuilder(startPose)
-                .strafeTo(new Vector2d(scorePreloadX, scorePreloadY))
-                .afterTime(0.5, () -> {
+                .afterTime(0, () -> {
                     Actions.runBlocking(
                             new ParallelAction(
                                     verticalSlides.LiftUpToClip(),
@@ -60,34 +61,46 @@ public class PreloadAuto extends LinearOpMode{
                     );
                 })
                 .waitSeconds(1)
-                .afterTime( 2, () -> {
+                .strafeTo(new Vector2d(scorePreloadX, scorePreloadY))
+                .afterTime( 0.5, () -> {
                     Actions.runBlocking(
-                        new SequentialAction(
-                            verticalSlides.SlamScoreClip(),
-                            new SleepAction(0.2),
-                            verticalSlides.Retract(),
-                            scoringArm.StowWholeArm()
-                        )
+                            new SequentialAction(
+                                    verticalSlides.SlamScoreClip(),
+                                    scoringArm.StowWholeArm(),
+                                    verticalSlides.Retract()
+                            )
                     );
                 })
-//                .strafeToLinearHeading(new Vector2d(prepPickupX, prepPickupY), Math.toRadians(90))
-////                .afterTime(3, () -> {
-////                    scoringArm.PickupClip();
-////                })
-//                .strafeTo(new Vector2d(pickupX, pickupY))
-//                .waitSeconds(1)
-////                .afterTime(8, () -> {
-////                    subsystems.PrepClipSequence();
-////                })
-//                .strafeToLinearHeading(new Vector2d(scorePreloadX+10, scorePreloadY), Math.toRadians(-90))
-//                .waitSeconds(1)
-////                .afterTime(11, () -> {
-////                    new SequentialAction(
-////                            subsystems.ScoreClipSequence(),
-////                            new SleepAction(0.2),
-////                            subsystems.StowScoring()
-////                    );
-////                })
+                .waitSeconds(1)
+                .strafeToLinearHeading(new Vector2d(prepPickupX, prepPickupY), Math.toRadians(90))
+                .afterTime(0, () -> {
+                    Actions.runBlocking(
+                            scoringArm.ArmGrabClip()
+                    );
+                })
+                .waitSeconds(1)
+                .strafeTo(new Vector2d(pickupX, pickupY))
+                .afterTime(0.5, () -> {
+                    Actions.runBlocking(
+                            new ParallelAction(
+                                    verticalSlides.LiftUpToClip(),
+                                    scoringArm.ArmScoreClip()
+                            )
+                    );
+                })
+                .waitSeconds(2)
+                .strafeToLinearHeading(new Vector2d(scorePreload2X, scorePreload2Y), Math.toRadians(-92))
+                .afterTime(0.5, () -> {
+                    Actions.runBlocking(
+                            new SequentialAction(
+                                    verticalSlides.SlamScoreClip(),
+                                    new SleepAction(0.05),
+                                    scoringArm.StowWholeArm(),
+                                    verticalSlides.Retract()
+                            )
+                    );
+                })
+                .waitSeconds(1)
                 .strafeTo(new Vector2d(parkX, parkY));
 
         while(!isStarted() && !opModeIsActive()) {
@@ -101,7 +114,7 @@ public class PreloadAuto extends LinearOpMode{
             //run on init NO MOTORS
             Actions.runBlocking(
                     new ParallelAction(
-                            scoringArm.StowWholeArm()
+                            scoringArm.StowWholeArmClose()
                     )
             );
         }
@@ -112,8 +125,6 @@ public class PreloadAuto extends LinearOpMode{
 
         Actions.runBlocking(
                 new SequentialAction(
-                        scoringArm.ArmScoreClip(),
-                        verticalSlides.LiftUpToClip(),
                         preloadAutoTrajectory
                 )
         );
