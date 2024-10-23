@@ -1,25 +1,30 @@
 package org.firstinspires.ftc.teamcode.Subsystems;
 
+import androidx.annotation.NonNull;
+
 import com.acmerobotics.dashboard.config.Config;
+import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.acmerobotics.roadrunner.Action;
 
 import org.firstinspires.ftc.teamcode.Util.RobotHardware;
 
 // code for one motor spooled slides
 @Config
-public class HorizontalSlides
-{
+public class HorizontalSlides {
     OpMode opmode;
 
     private final RobotHardware rHardware = new RobotHardware();
     private DcMotorEx slideMotor;
 
     // constants
-    /** all of the constants need to be tuned*/
+    /**
+     * all of the constants need to be tuned
+     */
     public static double joystickScalar = 1;
     public static double slideScalar = 1;
     public static double Kp = 0.004;
@@ -50,7 +55,8 @@ public class HorizontalSlides
     double integralSum = 0;
     private double lastError = 0;
 
-    public HorizontalSlides() {}
+    public HorizontalSlides() {
+    }
 
     public void initialize(OpMode opmode) {
         // TODO: assign motor names, then reverse the correct motor
@@ -124,8 +130,7 @@ public class HorizontalSlides
         opmode.telemetry.addData("Encoder Position", slideMotor.getCurrentPosition());
     }
 
-    private double PIDControl(double target, DcMotorEx motor)
-    {
+    private double PIDControl(double target, DcMotorEx motor) {
         // PID logic and then return the output
         // obtain the encoder position
         double encoderPosition = motor.getCurrentPosition();
@@ -153,26 +158,34 @@ public class HorizontalSlides
         // deadband-esque behavior to avoid returning super small decimal values
         if (Math.abs(output) < 0.1) {
             output = 0;
-        }
-        else if (isRetracting && Math.abs(output) <= 0.3) {
+        } else if (isRetracting && Math.abs(output) <= 0.3) {
             output = (output > 0 ? 1 : -1) * 0.3;
-        }
-        else if (Math.abs(output) >= 1) {
+        } else if (Math.abs(output) >= 1) {
             output = (output > 0 ? 1 : -1);
         }
 
         return output;
     }
 
-    /** untested and not especially confident in it, so please be cautious when testing */
+    /**
+     * untested and not especially confident in it, so please be cautious when testing
+     */
     // for use during auto or preset button during teleop
     public void moveToPosition(int targetPos) {
         target = targetPos;
     }
 
-    public void extend() { moveToPosition(extendedPos); }
-    public void extendHalfway() { moveToPosition(halfExtendedPos); }
-    public void retract() { moveToPosition(retractedPos); }
+    public void extend() {
+        moveToPosition(extendedPos);
+    }
+
+    public void extendHalfway() {
+        moveToPosition(halfExtendedPos);
+    }
+
+    public void retract() {
+        moveToPosition(retractedPos);
+    }
 
     public int mapTriggerToTarget(double input) {
         return (int) Math.round(Math.pow(input, mappingExponent) * upperLimit);
@@ -182,5 +195,39 @@ public class HorizontalSlides
 
     public int telemetryMotorPos() {
         return slideMotor.getCurrentPosition();
+    }
+
+    public class RunToPosition implements Action {
+        private boolean initialized = false;
+        private int rtpTarget = 0;
+
+        public RunToPosition(int targetPos) {
+            rtpTarget = targetPos;
+        }
+
+        @Override
+        public boolean run(@NonNull TelemetryPacket packet) {
+            int error = rtpTarget - slideMotor.getCurrentPosition();
+            if (!initialized) {
+                int sign = (error >= 0 ? 1 : -1);
+                slideMotor.setPower(sign * 0.8);
+                initialized = true;
+            }
+
+            if (Math.abs(error) > 20) {
+                return true;
+            } else {
+                slideMotor.setPower(0);
+                return false;
+            }
+        }
+    }
+
+    public Action HorizontalExtend() {
+        return new RunToPosition(extendedPos);
+    }
+
+    public Action HorizontalRetract() {
+        return new RunToPosition(retractedPos);
     }
 }

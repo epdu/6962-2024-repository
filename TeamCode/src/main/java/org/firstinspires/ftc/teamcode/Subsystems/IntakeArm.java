@@ -1,9 +1,14 @@
 package org.firstinspires.ftc.teamcode.Subsystems;
 
+import androidx.annotation.NonNull;
+
 import com.acmerobotics.dashboard.config.Config;
+import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.ParallelAction;
+import com.acmerobotics.roadrunner.SleepAction;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.acmerobotics.roadrunner.Action;
 
 import org.firstinspires.ftc.teamcode.Util.RobotHardware;
 
@@ -204,4 +209,46 @@ public class IntakeArm {
         return input > 0 ? 1 : input == 0 ? 0 : -1;
     }
 
+    public class IntakeHover implements Action {
+        @Override
+        public boolean run(@NonNull TelemetryPacket packet) {
+            arm.setArmHover();
+            wrist.setWristIntake();
+            claw.openClaw();
+            return false;
+        }
+    }
+
+    public Action IntakeHover() {
+        return new IntakeHover();
+    }
+
+    public class IntakePickup implements Action {
+        @Override
+        public boolean run(@NonNull TelemetryPacket packet) {
+            arm.setArmGrab();
+            new SleepAction(0.2);
+            claw.closeClaw();
+            new SleepAction(0.2);
+            arm.setArmHover();
+            return false;
+        }
+    }
+
+    public Action IntakePickup() {
+        return new IntakePickup();
+    }
+
+    public class IntakeTransfer implements Action {
+        @Override
+        public boolean run(@NonNull TelemetryPacket packet) {
+            arm.setArmTransfer();
+            wrist.setWristTransfer();
+            return false;
+        }
+    }
+
+    public Action IntakeTransfer() {
+        return new IntakeTransfer();
+    }
 }
