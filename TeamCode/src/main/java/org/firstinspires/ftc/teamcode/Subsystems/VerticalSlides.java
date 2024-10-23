@@ -154,6 +154,8 @@ public class VerticalSlides
         opmode.telemetry.addData("Right Motor Encoder Pos: ", rightSlideMotor.getCurrentPosition());
         opmode.telemetry.addData("PID Power R ", PIDPowerR);
         opmode.telemetry.addData("Slide Target ", target);
+        opmode.telemetry.addData("Test slide power draw: ", rightSlideMotor.getCurrent(CurrentUnit.AMPS));
+        opmode.telemetry.addData("Test slide power alert: ", rightSlideMotor.getCurrentAlert(CurrentUnit.AMPS));
         opmode.telemetry.update();
     }
 

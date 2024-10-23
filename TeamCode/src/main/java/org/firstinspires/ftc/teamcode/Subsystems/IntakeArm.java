@@ -107,7 +107,7 @@ public class IntakeArm {
         public boolean isArmHovering = false;
         public static double armIntakeHoverPosition = 0;
         public static double armIntakeGrabPosition = 0;
-        public static double armTransferPosition = 0;
+        public static double armTransferPosition = 0.7478;
         public static double armIncrement = 0.001;
 
         public Arm() {}
@@ -156,7 +156,7 @@ public class IntakeArm {
     public static class Wrist {
         public Servo wristRotate, wristFlip;
         public boolean isWristTransferring = true;
-        public static double wristRotateTransferPosition = 0;
+        public static double wristRotateTransferPosition = 0.5128;
         public static double wristFlipTransferPosition = 0;
         public static double wristRotateDefaultIntakePosition = 0;
         public static double wristFlipIntakePosition = 0;
