@@ -131,6 +131,7 @@ public class FinalFullRobotActionTeleOp extends OpMode {
                 new ParallelAction(
                     new InstantAction(() -> intakeArm.arm.setArmTransfer()),
                     new InstantAction(() -> intakeArm.wrist.setWristTransfer()),
+                    new SleepAction(0.2),
                     new InstantAction(() -> horizontalSlides.retract())
             ));
         }
@@ -143,20 +144,19 @@ public class FinalFullRobotActionTeleOp extends OpMode {
         if (currentGamepad1.right_bumper && !previousGamepad1.right_bumper) {
             if (intakeArm.arm.isArmHovering) {
                 runningActions.add(
-                    new SequentialAction(
-                        new InstantAction(() -> intakeArm.arm.setArmGrab()),
-                        new SleepAction(0.1),
-                        new InstantAction(() ->  intakeArm.claw.closeClaw()),
-                        new InstantAction(() -> intakeArm.arm.setArmHover())
-                ));
-            }
-            else {
-                runningActions.add(
-                    new InstantAction(() -> intakeArm.claw.toggleClaw())
+                    new InstantAction(() -> intakeArm.arm.setArmGrab())
                 );
             }
         }
-
+        else if (!currentGamepad1.right_bumper && previousGamepad1.right_bumper) {
+            runningActions.add(
+                    new SequentialAction(
+                            new InstantAction(() ->  intakeArm.claw.closeClaw()),
+                            new SleepAction(0.1),
+                            new InstantAction(() -> intakeArm.arm.setArmHover())
+                    )
+            );
+        }
 
 
         ////////////////////////////////////// GAMEPAD 2 CONTROLS /////////////////////////////////////

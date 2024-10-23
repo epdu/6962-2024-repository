@@ -36,11 +36,9 @@ public class IntakeArm {
 
     // Operates the claw for Vincent configuration
     public void operateVincent() {
-        if (opmode.gamepad1.left_bumper) {
-            claw.toggleClaw();
-        }
-
-
+//        if (opmode.gamepad1.left_bumper) {
+//            claw.toggleClaw();
+//        }
     }
 
     // Operates the test mode for controlling the claw, arm, and wrist
