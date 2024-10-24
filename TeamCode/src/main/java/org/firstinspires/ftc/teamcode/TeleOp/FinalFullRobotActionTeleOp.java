@@ -62,7 +62,7 @@ public class FinalFullRobotActionTeleOp extends OpMode {
         // to make sure arms don't spasm when out of pos
         scoringArm.arm.setArmStow();
         scoringArm.wrist.setWristStow();
-        scoringArm.claw.closeClaw();
+        scoringArm.claw.openClaw();
 
         intakeArm.arm.setArmTransfer();
         intakeArm.wrist.setWristTransfer();
@@ -158,7 +158,7 @@ public class FinalFullRobotActionTeleOp extends OpMode {
             runningActions.add(
                     new SequentialAction(
                             new InstantAction(() ->  intakeArm.claw.closeClaw()),
-                            new SleepAction(0.25),
+                            new SleepAction(0.5),
                             new InstantAction(() -> intakeArm.arm.setArmHover())
                     )
             );

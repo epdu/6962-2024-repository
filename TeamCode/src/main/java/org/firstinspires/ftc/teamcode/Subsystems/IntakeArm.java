@@ -249,4 +249,16 @@ public class IntakeArm {
     public Action IntakeTransfer() {
         return new IntakeTransfer();
     }
+
+    public class ClawOpen implements Action {
+        @Override
+        public boolean run(@NonNull TelemetryPacket packet) {
+            claw.openClaw();
+            return false;
+        }
+    }
+
+    public Action ClawOpen() {
+        return new ClawOpen();
+    }
 }

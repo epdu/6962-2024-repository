@@ -224,7 +224,7 @@ public class HorizontalSlides {
     }
 
     public Action HorizontalExtend() {
-        return new RunToPosition(extendedPos);
+        return new RunToPosition(halfExtendedPos);
     }
 
     public Action HorizontalRetract() {

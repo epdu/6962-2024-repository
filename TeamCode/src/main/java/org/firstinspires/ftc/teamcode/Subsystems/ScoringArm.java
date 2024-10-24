@@ -313,6 +313,7 @@ public class ScoringArm {
         public boolean run(@NonNull TelemetryPacket packet) {
             arm.setArmTransfer();
             wrist.setWristTransfer();
+            claw.closeClaw();
             return false;
         }
     }

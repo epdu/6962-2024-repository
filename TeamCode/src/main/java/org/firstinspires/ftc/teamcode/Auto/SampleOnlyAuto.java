@@ -19,7 +19,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.HorizontalSlides;
 import org.firstinspires.ftc.teamcode.Subsystems.IntakeArm;
 
 @Config
-@Autonomous(name = "Sample Auto", group = "Autonomous")
+@Autonomous(name = "1+3 Auto", group = "Autonomous")
 public class SampleOnlyAuto extends LinearOpMode{
 
     public static double startX = -8;
@@ -72,7 +72,7 @@ public class SampleOnlyAuto extends LinearOpMode{
                 .afterTime( 0.5, () -> {
                     Actions.runBlocking(
                             new ParallelAction(
-                                    horizontalSlides.HorizontalExtend(),
+//                                    horizontalSlides.HorizontalExtend(),
                                     intakeArm.IntakeHover()
                             )
                     );
@@ -82,8 +82,8 @@ public class SampleOnlyAuto extends LinearOpMode{
                     Actions.runBlocking(
                             new SequentialAction(
                                     intakeArm.IntakePickup(),
-                                    intakeArm.IntakeTransfer(),
-                                    horizontalSlides.HorizontalRetract()
+                                    intakeArm.IntakeTransfer()
+//                                    horizontalSlides.HorizontalRetract()
 
                             )
                     );
@@ -92,8 +92,9 @@ public class SampleOnlyAuto extends LinearOpMode{
                 .afterTime( 0.5, () -> {
                     Actions.runBlocking(
                             new SequentialAction(
-//                                    scoringArm.WholeArmTransfer(),
-//                                    new SleepAction(0.2),
+                                    scoringArm.WholeArmTransfer(),
+                                    intakeArm.ClawOpen(),
+                                    new SleepAction(0.2),
                                     verticalSlides.LiftUpToHighBucket(),
                                     scoringArm.ArmScoreBucket()
                             )
@@ -105,7 +106,7 @@ public class SampleOnlyAuto extends LinearOpMode{
                             new SequentialAction(
                                     scoringArm.StowWholeArm(),
                                     verticalSlides.Retract(),
-                                    horizontalSlides.HorizontalExtend(),
+//                                    horizontalSlides.HorizontalExtend(),
                                     intakeArm.IntakeHover()
                             )
                     );
@@ -116,8 +117,8 @@ public class SampleOnlyAuto extends LinearOpMode{
                     Actions.runBlocking(
                             new SequentialAction(
                                     intakeArm.IntakePickup(),
-                                    intakeArm.IntakeTransfer(),
-                                    horizontalSlides.HorizontalRetract()
+                                    intakeArm.IntakeTransfer()
+//                                    horizontalSlides.HorizontalRetract()
                             )
                     );
                 })
@@ -125,8 +126,9 @@ public class SampleOnlyAuto extends LinearOpMode{
                 .afterTime( 0.5, () -> {
                     Actions.runBlocking(
                             new SequentialAction(
-//                                    scoringArm.WholeArmTransfer(),
-//                                    new SleepAction(0.2),
+                                    scoringArm.WholeArmTransfer(),
+                                    intakeArm.ClawOpen(),
+                                    new SleepAction(0.2),
                                     verticalSlides.LiftUpToHighBucket(),
                                     scoringArm.ArmScoreBucket()
                             )
@@ -138,7 +140,7 @@ public class SampleOnlyAuto extends LinearOpMode{
                             new SequentialAction(
                                     scoringArm.StowWholeArm(),
                                     verticalSlides.Retract(),
-                                    horizontalSlides.HorizontalExtend(),
+//                                    horizontalSlides.HorizontalExtend(),
                                     intakeArm.IntakeHover()
                             )
                     );
@@ -149,8 +151,8 @@ public class SampleOnlyAuto extends LinearOpMode{
                     Actions.runBlocking(
                             new SequentialAction(
                                     intakeArm.IntakePickup(),
-                                    intakeArm.IntakeTransfer(),
-                                    horizontalSlides.HorizontalRetract()
+                                    intakeArm.IntakeTransfer()
+//                                    horizontalSlides.HorizontalRetract()
                             )
                     );
                 })
@@ -158,8 +160,9 @@ public class SampleOnlyAuto extends LinearOpMode{
                 .afterTime( 0.5, () -> {
                     Actions.runBlocking(
                             new SequentialAction(
-//                                    scoringArm.WholeArmTransfer(),
-//                                    new SleepAction(0.2),
+                                    scoringArm.WholeArmTransfer(),
+                                    intakeArm.ClawOpen(),
+                                    new SleepAction(0.2),
                                     verticalSlides.LiftUpToHighBucket(),
                                     scoringArm.ArmScoreBucket()
                             )
@@ -178,7 +181,7 @@ public class SampleOnlyAuto extends LinearOpMode{
                 .strafeTo(new Vector2d(parkX, parkY));
 
         while (!isStarted() && !opModeIsActive()) {
-            telemetry.addLine("Initialized Sample Auto");
+            telemetry.addLine("Initialized 1+3 Auto");
             telemetry.update();
             Actions.runBlocking(
                     scoringArm.StowWholeArmClose()
