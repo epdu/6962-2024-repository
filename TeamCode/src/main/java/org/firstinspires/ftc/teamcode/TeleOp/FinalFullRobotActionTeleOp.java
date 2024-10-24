@@ -144,15 +144,13 @@ public class FinalFullRobotActionTeleOp extends OpMode {
 
         // intake claw toggle
         if (currentGamepad1.right_bumper && !previousGamepad1.right_bumper) {
-            if (intakeArm.arm.isArmHovering) {
-                runningActions.add(
-                    new SequentialAction(
-                        new InstantAction(() -> intakeArm.claw.openClaw()),
-                        new SleepAction(0.1),
-                        new InstantAction(() -> intakeArm.arm.setArmGrab())
-                    )
-                );
-            }
+            runningActions.add(
+                new SequentialAction(
+                    new InstantAction(() -> intakeArm.claw.openClaw()),
+                    new SleepAction(0.1),
+                    new InstantAction(() -> intakeArm.arm.setArmGrab())
+                )
+            );
         }
         else if (!currentGamepad1.right_bumper && previousGamepad1.right_bumper) {
             runningActions.add(
