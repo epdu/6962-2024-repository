@@ -146,8 +146,8 @@ public class ScoringArm {
         public boolean isArmTransferring = true;
         public static double armScoringPosition = 0.46;
         public static double armScoringClipPosition = 0.43;
-        public static double armStowPosition = 0.826;
-        public static double armTransferPosition = 0.9911;
+        public static double armStowPosition = 0.7789;
+        public static double armTransferPosition = 0.7789;
         public static double armGrabClipPosition = 0;
         public static double armIncrement = 0.001;
 
@@ -199,10 +199,10 @@ public class ScoringArm {
     public static class Wrist {
         public Servo wristL, wristR;
         public boolean isWristTransferring = true;
-        public static double wristLTransferPosition = 0;
-        public static double wristRTransferPosition = 0;
-        public static double wristLStowPosition = 0;
-        public static double wristRStowPosition = 0;
+        public static double wristLTransferPosition = 0.0583;
+        public static double wristRTransferPosition = 0.0583;
+        public static double wristLStowPosition = 0.0583;
+        public static double wristRStowPosition = 0.0583;
         public static double wristLScoreBucketPosition = 0.2156;
         public static double wristRScoreBucketPosition = 0.89;
         public static double wristLScoreClipPosition = 0.645;

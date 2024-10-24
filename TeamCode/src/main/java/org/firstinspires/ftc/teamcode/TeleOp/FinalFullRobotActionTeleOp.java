@@ -123,12 +123,14 @@ public class FinalFullRobotActionTeleOp extends OpMode {
                 new ParallelAction(
                     new InstantAction(() -> intakeArm.arm.setArmHover()),
                     new InstantAction(() -> intakeArm.wrist.setWristIntake()),
-                    new InstantAction(() -> horizontalSlides.extendHalfway())
+                    new InstantAction(() -> horizontalSlides.extendHalfway()),
+                    new InstantAction(() -> intakeArm.claw.openClaw())
             ));
         }
         else if (currentGamepad1.right_trigger < 0.01 && !(previousGamepad1.right_trigger < 0.01)) {
             runningActions.add(
                 new ParallelAction(
+                    new InstantAction(() -> intakeArm.claw.closeClaw()),
                     new InstantAction(() -> intakeArm.arm.setArmTransfer()),
                     new InstantAction(() -> intakeArm.wrist.setWristTransfer()),
                     new SleepAction(0.2),
@@ -144,7 +146,11 @@ public class FinalFullRobotActionTeleOp extends OpMode {
         if (currentGamepad1.right_bumper && !previousGamepad1.right_bumper) {
             if (intakeArm.arm.isArmHovering) {
                 runningActions.add(
-                    new InstantAction(() -> intakeArm.arm.setArmGrab())
+                    new SequentialAction(
+                        new InstantAction(() -> intakeArm.claw.openClaw()),
+                        new SleepAction(0.1),
+                        new InstantAction(() -> intakeArm.arm.setArmGrab())
+                    )
                 );
             }
         }
@@ -152,7 +158,7 @@ public class FinalFullRobotActionTeleOp extends OpMode {
             runningActions.add(
                     new SequentialAction(
                             new InstantAction(() ->  intakeArm.claw.closeClaw()),
-                            new SleepAction(0.1),
+                            new SleepAction(0.25),
                             new InstantAction(() -> intakeArm.arm.setArmHover())
                     )
             );

@@ -67,8 +67,8 @@ public class IntakeArm {
     public static class Claw {
         public Servo claw;
         public boolean isClawOpen = true;
-        public static double clawClosedPosition = 0.85;
-        public static double clawOpenPosition = 0.4139;
+        public static double clawClosedPosition = 0.8495;
+        public static double clawOpenPosition = 0.4211;
         public static double clawIncrement = 0.001;
 
         public Claw() {}
@@ -108,9 +108,9 @@ public class IntakeArm {
         public Servo arm;
         public boolean isArmTransferring = true;
         public boolean isArmHovering = false;
-        public static double armIntakeHoverPosition = 0.4461;
-        public static double armIntakeGrabPosition = 0.3906;
-        public static double armTransferPosition = 0.7344;
+        public static double armIntakeHoverPosition = 0.5683;
+        public static double armIntakeGrabPosition = 0.5017;
+        public static double armTransferPosition = 0.89;
         public static double armIncrement = 0.001;
 
         public Arm() {}
@@ -159,10 +159,10 @@ public class IntakeArm {
     public static class Wrist {
         public Servo wristRotate, wristFlip;
         public boolean isWristTransferring = true;
-        public static double wristRotateTransferPosition = 0.5011;
-        public static double wristFlipTransferPosition = 0.3133;
-        public static double wristRotateDefaultIntakePosition = 0.1872;
-        public static double wristFlipIntakePosition = 0.8711;
+        public static double wristRotateTransferPosition = 0.515;
+        public static double wristFlipTransferPosition = 0.4994;
+        public static double wristRotateDefaultIntakePosition = 0.515;
+        public static double wristFlipIntakePosition = 0.96;
         public static double wristTestIncrement = 0.001;
         public static double wristActualIncrement = 0.005;
 
