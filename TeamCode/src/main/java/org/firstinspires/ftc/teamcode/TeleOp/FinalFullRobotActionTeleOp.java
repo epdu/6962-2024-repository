@@ -118,7 +118,7 @@ public class FinalFullRobotActionTeleOp extends OpMode {
 //                    ));
 //        }
 //        else
-        if (currentGamepad1.right_trigger >= 0.01 && !(previousGamepad1.right_trigger >= 0.01)) {
+        if (currentGamepad1.right_trigger >= 0.01 && !(previousGamepad1.right_trigger >= 0.01) || currentGamepad1.left_trigger >= 0.01 && !(previousGamepad1.left_trigger >= 0.01)) {
             runningActions.add(
                 new ParallelAction(
                     new InstantAction(() -> intakeArm.arm.setArmHover()),
@@ -143,7 +143,7 @@ public class FinalFullRobotActionTeleOp extends OpMode {
         else if (currentGamepad1.dpad_right) { intakeArm.wrist.incrementalWristRotateActual(1); }
 
         // intake claw toggle
-        if (currentGamepad1.right_bumper && !previousGamepad1.right_bumper) {
+        if (currentGamepad1.right_bumper && !previousGamepad1.right_bumper || currentGamepad1.left_bumper && !previousGamepad1.left_bumper) {
             runningActions.add(
                 new SequentialAction(
                     new InstantAction(() -> intakeArm.claw.openClaw()),
