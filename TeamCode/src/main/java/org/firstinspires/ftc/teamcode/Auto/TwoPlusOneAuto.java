@@ -141,7 +141,7 @@ public class TwoPlusOneAuto extends LinearOpMode{
             //run on init NO MOTORS
             Actions.runBlocking(
                     new ParallelAction(
-                            scoringArm.StowWholeArmClose()
+                            scoringArm.WholeArmTransfer()
                     )
             );
         }
@@ -153,7 +153,7 @@ public class TwoPlusOneAuto extends LinearOpMode{
         Actions.runBlocking(
                 new SequentialAction(
                         preloadAutoTrajectory,
-                        scoringArm.StowWholeArmClose()
+                        scoringArm.WholeArmTransfer()
                 )
         );
 

@@ -65,7 +65,6 @@ public class ScoringArm {
             arm.incrementalArm(1);
         }
 
-        if (opmode.gamepad2.y) {wrist.setWristStow();}
         if (opmode.gamepad2.x) {wrist.setWristTransfer();}
 
         // gamepad 1
@@ -76,10 +75,6 @@ public class ScoringArm {
         else if (opmode.gamepad1.a) {
 //            arm.setArmScoreBucket();
             wrist.setWristScoringClip();
-        }
-        else if (opmode.gamepad1.b) {
-//            arm.setArmStow();
-            wrist.setWristStow();
         }
         else if (opmode.gamepad1.x) {
 //            wholeArmTransfer();
@@ -146,7 +141,6 @@ public class ScoringArm {
         public boolean isArmTransferring = true;
         public static double armScoringPosition = 0.46;
         public static double armScoringClipPosition = 0.43;
-        public static double armStowPosition = 0.7789;
         public static double armTransferPosition = 0.7789;
         public static double armGrabClipPosition = 0;
         public static double armIncrement = 0.001;
@@ -180,11 +174,6 @@ public class ScoringArm {
             isArmTransferring = true;
         }
 
-        public void setArmStow() {
-            setArmPosition(armStowPosition);
-            isArmTransferring = true;
-        }
-
         public void setArmTransfer() {
             setArmPosition(armTransferPosition);
             isArmTransferring = true;
@@ -201,8 +190,6 @@ public class ScoringArm {
         public boolean isWristTransferring = true;
         public static double wristLTransferPosition = 0.0583;
         public static double wristRTransferPosition = 0.0583;
-        public static double wristLStowPosition = 0.0583;
-        public static double wristRStowPosition = 0.0583;
         public static double wristLScoreBucketPosition = 0.2156;
         public static double wristRScoreBucketPosition = 0.89;
         public static double wristLScoreClipPosition = 0.645;
@@ -223,13 +210,6 @@ public class ScoringArm {
             wristL.setPosition(wristLTransferPosition);
             wristR.setPosition(wristRTransferPosition);
             isWristTransferring = true;
-        }
-
-        // Sets wrist to stow position
-        public void setWristStow() {
-            wristL.setPosition(wristLStowPosition);
-            wristR.setPosition(wristRStowPosition);
-            isWristTransferring = false;
         }
 
         // Sets wrist to scoring position
@@ -282,24 +262,12 @@ public class ScoringArm {
     }
 
     // Action classes and functions for auto
-    public class StowWholeArmClose implements Action {
-        @Override
-        public boolean run(@NonNull TelemetryPacket packet) {
-            arm.setArmStow();
-            wrist.setWristStow();
-            claw.closeClaw();
-            return false;
-        }
-    }
-    public Action StowWholeArmClose() {
-        return new StowWholeArmClose();
-    }
 
     public class StowWholeArm implements Action {
         @Override
         public boolean run(@NonNull TelemetryPacket packet) {
-            arm.setArmStow();
-            wrist.setWristStow();
+            arm.setArmTransfer();
+            wrist.setWristTransfer();
             claw.openClaw();
             return false;
         }

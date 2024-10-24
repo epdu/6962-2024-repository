@@ -184,7 +184,7 @@ public class SampleOnlyAuto extends LinearOpMode{
             telemetry.addLine("Initialized 1+3 Auto");
             telemetry.update();
             Actions.runBlocking(
-                    scoringArm.StowWholeArmClose()
+                    scoringArm.WholeArmTransfer()
             );
         }
 
@@ -197,7 +197,7 @@ public class SampleOnlyAuto extends LinearOpMode{
         Actions.runBlocking(
                 new SequentialAction(
                         autoTrajectoryTest,
-                        scoringArm.StowWholeArmClose()
+                        scoringArm.WholeArmTransfer()
                 )
         );
     }
