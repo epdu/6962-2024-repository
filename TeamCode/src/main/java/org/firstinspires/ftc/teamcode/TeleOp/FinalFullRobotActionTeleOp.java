@@ -119,7 +119,7 @@ public class FinalFullRobotActionTeleOp extends OpMode {
 //        }
 //        else
         if (scoringArm.arm.armPos == ScoringArm.Arm.STATE.TRANSFERRING) {
-            if (currentGamepad1.right_trigger >= 0.01 && !(previousGamepad1.right_trigger >= 0.01)) { //|| currentGamepad1.left_trigger >= 0.01 && !(previousGamepad1.left_trigger >= 0.01)) {
+            if (currentGamepad1.right_trigger >= 0.01 && !(previousGamepad1.right_trigger >= 0.01)) {
                 runningActions.add(
                     new SequentialAction(
                         new InstantAction(() -> horizontalSlides.extendHalfway()),
@@ -132,8 +132,6 @@ public class FinalFullRobotActionTeleOp extends OpMode {
                         new InstantAction(() -> intakeArm.claw.openClaw())
                     )
                 );
-                if      (currentGamepad1.dpad_right)  { intakeArm.wrist.incrementalWristRotateActual(-1); }
-                else if (currentGamepad1.dpad_left) { intakeArm.wrist.incrementalWristRotateActual(1); }
             } else if (currentGamepad1.right_trigger < 0.01 && !(previousGamepad1.right_trigger < 0.01)) {
                 runningActions.add(
                     new SequentialAction(
@@ -178,27 +176,6 @@ public class FinalFullRobotActionTeleOp extends OpMode {
                     new SequentialAction(
                             new InstantAction(() ->  intakeArm.claw.closeClaw()),
                             new SleepAction(0.5),
-                            new InstantAction(() -> intakeArm.arm.setArmHover())
-                    )
-            );
-        }
-
-        // intake without slides
-        if (currentGamepad1.left_bumper && !previousGamepad1.left_bumper) {
-            runningActions.add(
-                    new SequentialAction(
-                            new InstantAction(() -> intakeArm.wrist.setWristIntake()),
-                            new InstantAction(() -> intakeArm.claw.openClaw()),
-                            new InstantAction(() -> intakeArm.arm.setArmHover())
-                    )
-            );
-        }
-        else if (!currentGamepad1.left_bumper && previousGamepad1.left_bumper) {
-            runningActions.add(
-                    new SequentialAction(
-                            new InstantAction(() ->  intakeArm.claw.closeClaw()),
-                            new SleepAction(0.5),
-                            new InstantAction(() -> intakeArm.wrist.setWristTransfer()),
                             new InstantAction(() -> intakeArm.arm.setArmHover())
                     )
             );
