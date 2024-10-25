@@ -40,7 +40,7 @@ public class ScoringArm {
         // Adding telemetry data for debugging
         opmode.telemetry.addData("Arm Pos: ", arm.arm.getPosition());
         opmode.telemetry.addData("Wrist Transferring Bool", wrist.isWristTransferring);
-        opmode.telemetry.addData("Arm Transferring Bool: ", arm.isArmTransferring);
+        opmode.telemetry.addData("Arm Transferring Bool: ", arm.armPos);
         opmode.telemetry.addData("Right Wrist Pos: ", wrist.wristR.getPosition());
         opmode.telemetry.addData("Left Wrist Pos: ", wrist.wristL.getPosition());
         opmode.telemetry.addData("Claw Pos: ", claw.claw.getPosition());
@@ -138,7 +138,12 @@ public class ScoringArm {
     // Arm Subsystem Class
     public static class Arm {
         public Servo arm;
-        public boolean isArmTransferring = true;
+        public enum STATE {
+            TRANSFERRING,
+            SCORING,
+            GRABBING_CLIP
+        }
+        public Arm.STATE armPos = STATE.TRANSFERRING;
         public static double armScoringPosition = 0.46;
         public static double armScoringClipPosition = 0.43;
         public static double armTransferPosition = 0.7789;
@@ -161,22 +166,22 @@ public class ScoringArm {
 
         public void setArmScoreBucket() {
             setArmPosition(armScoringPosition);
-            isArmTransferring = false;
+            armPos = STATE.SCORING;
         }
 
         public void setArmScoreClip() {
             setArmPosition(armScoringClipPosition);
-            isArmTransferring = false;
+            armPos = STATE.SCORING;
         }
 
         public void setArmGrabClip() {
             setArmPosition(armGrabClipPosition);
-            isArmTransferring = true;
+            armPos = STATE.GRABBING_CLIP;
         }
 
         public void setArmTransfer() {
             setArmPosition(armTransferPosition);
-            isArmTransferring = true;
+            armPos = STATE.TRANSFERRING;
         }
 
         public double telemetryArmPos() {

@@ -68,7 +68,7 @@ public class ScoringArmTeleOp extends OpMode {
         // B - whole arm stow position
         // X - whole arm transfer position
 
-        telemetry.addData("Arm Transferring: ", scoringArm.arm.isArmTransferring);
+        telemetry.addData("Arm State Enum: ", scoringArm.arm.armPos);
         telemetry.addData("Claw Open: ", scoringArm.claw.isClawOpen);
         telemetry.addData("Wrist Transferring", scoringArm.wrist.isWristTransferring);
         telemetry.addData("Arm Pos: ", scoringArm.arm.telemetryArmPos());
