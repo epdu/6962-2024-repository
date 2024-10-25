@@ -1,10 +1,6 @@
 package org.firstinspires.ftc.teamcode.Auto;
 
-import androidx.annotation.NonNull;
-
 import com.acmerobotics.dashboard.config.Config;
-import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
-import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.ParallelAction;
 import com.acmerobotics.roadrunner.Pose2d;
@@ -15,21 +11,16 @@ import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-
-import org.firstinspires.ftc.teamcode.Util.RobotHardware;
 
 import org.firstinspires.ftc.teamcode.Roadrunner.MecanumDrive;
-import org.firstinspires.ftc.teamcode.Subsystems.VerticalSlides;
-import org.firstinspires.ftc.teamcode.Subsystems.ScoringArm;
-import org.firstinspires.ftc.teamcode.Subsystems.IntakeArm;
 import org.firstinspires.ftc.teamcode.Subsystems.HorizontalSlides;
+import org.firstinspires.ftc.teamcode.Subsystems.IntakeArm;
+import org.firstinspires.ftc.teamcode.Subsystems.ScoringArm;
+import org.firstinspires.ftc.teamcode.Subsystems.VerticalSlides;
 
 @Config
-@Autonomous(name = "Preload Auto", group = "Autonomous")
-public class PreloadAuto extends LinearOpMode{
+@Autonomous(name = "1+0 Auto", group = "Autonomous")
+public class PreloadOnlyAuto extends LinearOpMode{
     public static double startX = 7;
     public static double startY = -63.75;
     public static double startHeading = Math.toRadians(-90);
@@ -73,37 +64,8 @@ public class PreloadAuto extends LinearOpMode{
                             )
                     );
                 })
-                .waitSeconds(1)
-                .strafeToLinearHeading(new Vector2d(prepPickupX, prepPickupY), Math.toRadians(90))
-                .afterTime(0, () -> {
-                    Actions.runBlocking(
-                            scoringArm.ArmGrabClip()
-                    );
-                })
-                .waitSeconds(1)
-                .strafeTo(new Vector2d(pickupX, pickupY))
-                .afterTime(0.5, () -> {
-                    Actions.runBlocking(
-                            new ParallelAction(
-                                    verticalSlides.LiftUpToClip(),
-                                    scoringArm.ArmScoreClip()
-                            )
-                    );
-                })
-                .waitSeconds(2)
-                .strafeToLinearHeading(new Vector2d(scorePreload2X, scorePreload2Y), Math.toRadians(-89))
-                .afterTime(0.5, () -> {
-                    Actions.runBlocking(
-                            new SequentialAction(
-                                    verticalSlides.SlamScoreClip(),
-                                    new SleepAction(0.05),
-                                    scoringArm.StowWholeArm(),
-                                    verticalSlides.Retract()
-                            )
-                    );
-                })
-                .waitSeconds(1)
-                .strafeTo(new Vector2d(parkX, parkY));
+                .strafeTo(new Vector2d(parkX, parkY))
+                .turnTo(Math.toRadians(90));
 
         while(!isStarted() && !opModeIsActive()) {
             horizontalSlides.initialize(this);
@@ -111,7 +73,7 @@ public class PreloadAuto extends LinearOpMode{
             verticalSlides.initialize(this);
             scoringArm.initialize(this);
 
-            telemetry.addLine("Initialized Preload Auto");
+            telemetry.addLine("Initialized 2+0 Auto");
             telemetry.update();
             //run on init NO MOTORS
             Actions.runBlocking(
