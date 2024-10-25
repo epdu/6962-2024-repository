@@ -181,7 +181,7 @@ public class FinalFullRobotActionTeleOp extends OpMode {
             );
         }
 
-        if (currentGamepad1.a && !previousGamepad1.a) {
+        if (currentGamepad1.left_bumper && !previousGamepad1.left_bumper) {
             runningActions.add(
                     new InstantAction(() -> intakeArm.claw.openClaw())
             );
