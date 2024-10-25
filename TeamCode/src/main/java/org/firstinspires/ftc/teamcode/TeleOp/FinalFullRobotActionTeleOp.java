@@ -132,6 +132,8 @@ public class FinalFullRobotActionTeleOp extends OpMode {
                         new InstantAction(() -> intakeArm.claw.openClaw())
                     )
                 );
+                if      (currentGamepad1.dpad_right)  { intakeArm.wrist.incrementalWristRotateActual(-1); }
+                else if (currentGamepad1.dpad_left) { intakeArm.wrist.incrementalWristRotateActual(1); }
             } else if (currentGamepad1.right_trigger < 0.01 && !(previousGamepad1.right_trigger < 0.01)) {
                 runningActions.add(
                     new SequentialAction(
@@ -161,7 +163,7 @@ public class FinalFullRobotActionTeleOp extends OpMode {
         else if (currentGamepad1.dpad_left) { intakeArm.wrist.incrementalWristRotateActual(1); }
 
         // intake claw toggle
-        if (currentGamepad1.right_bumper && !previousGamepad1.right_bumper || currentGamepad1.left_bumper && !previousGamepad1.left_bumper) {
+        if (currentGamepad1.right_bumper && !previousGamepad1.right_bumper) {
             runningActions.add(
                 new SequentialAction(
                     new InstantAction(() -> intakeArm.wrist.setWristIntake()),
@@ -171,7 +173,27 @@ public class FinalFullRobotActionTeleOp extends OpMode {
                 )
             );
         }
-        else if (!currentGamepad1.right_bumper && previousGamepad1.right_bumper  || !currentGamepad1.left_bumper && previousGamepad1.left_bumper) {
+        else if (!currentGamepad1.right_bumper && previousGamepad1.right_bumper) {
+            runningActions.add(
+                    new SequentialAction(
+                            new InstantAction(() ->  intakeArm.claw.closeClaw()),
+                            new SleepAction(0.5),
+                            new InstantAction(() -> intakeArm.arm.setArmHover())
+                    )
+            );
+        }
+
+        // intake without slides
+        if (currentGamepad1.left_bumper && !previousGamepad1.left_bumper) {
+            runningActions.add(
+                    new SequentialAction(
+                            new InstantAction(() -> intakeArm.wrist.setWristIntake()),
+                            new InstantAction(() -> intakeArm.claw.openClaw()),
+                            new InstantAction(() -> intakeArm.arm.setArmHover())
+                    )
+            );
+        }
+        else if (!currentGamepad1.left_bumper && previousGamepad1.left_bumper) {
             runningActions.add(
                     new SequentialAction(
                             new InstantAction(() ->  intakeArm.claw.closeClaw()),
@@ -193,6 +215,11 @@ public class FinalFullRobotActionTeleOp extends OpMode {
 
         // scoring claw toggle
         if (currentGamepad2.left_bumper && !previousGamepad2.left_bumper) { scoringArm.claw.toggleClaw(); }
+
+        // intake claw toggle (for emergencies)
+        if (currentGamepad2.right_bumper && !previousGamepad2.right_bumper) {
+            intakeArm.claw.closeClaw();
+        }
 
         // macro prep high bucket scoring
         if (currentGamepad2.x && !previousGamepad2.x) {
