@@ -164,7 +164,7 @@ public class IntakeArm {
         public static double wristRotateDefaultIntakePosition = 0.515;
         public static double wristFlipIntakePosition = 0.96;
         public static double wristTestIncrement = 0.001;
-        public static double wristActualIncrement = 0.005;
+        public static double wristActualIncrement = 0.1;
 
         public Wrist() {}
 
