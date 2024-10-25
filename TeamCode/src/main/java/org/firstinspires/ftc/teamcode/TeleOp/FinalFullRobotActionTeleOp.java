@@ -121,20 +121,24 @@ public class FinalFullRobotActionTeleOp extends OpMode {
         if (scoringArm.arm.armPos == ScoringArm.Arm.STATE.TRANSFERRING) {
             if (currentGamepad1.right_trigger >= 0.01 && !(previousGamepad1.right_trigger >= 0.01) || currentGamepad1.left_trigger >= 0.01 && !(previousGamepad1.left_trigger >= 0.01)) {
                 runningActions.add(
-                    new ParallelAction(
-                        new InstantAction(() -> intakeArm.arm.setArmHover()),
-                        new InstantAction(() -> intakeArm.wrist.setWristIntake()),
+                    new SequentialAction(
                         new InstantAction(() -> horizontalSlides.extendHalfway()),
+                        new SleepAction(0.1),
+                        new ParallelAction(
+                            new InstantAction(() -> intakeArm.arm.setArmHover()),
+                            new InstantAction(() -> intakeArm.wrist.setWristIntake())
+                        ),
+                        new SleepAction(0.2),
                         new InstantAction(() -> intakeArm.claw.openClaw())
                     )
                 );
             } else if (currentGamepad1.right_trigger < 0.01 && !(previousGamepad1.right_trigger < 0.01)) {
                 runningActions.add(
-                    new ParallelAction(
+                    new SequentialAction(
                         new InstantAction(() -> intakeArm.claw.closeClaw()),
-                        new InstantAction(() -> intakeArm.arm.setArmTransfer()),
                         new InstantAction(() -> intakeArm.wrist.setWristTransfer()),
                         new SleepAction(0.2),
+                        new InstantAction(() -> intakeArm.arm.setArmTransfer()),
                         new InstantAction(() -> horizontalSlides.retract())
                     )
                 );
@@ -153,13 +157,14 @@ public class FinalFullRobotActionTeleOp extends OpMode {
         }
 
         // intake wrist rotate
-        if      (currentGamepad1.dpad_left)  { intakeArm.wrist.incrementalWristRotateActual(-1); }
-        else if (currentGamepad1.dpad_right) { intakeArm.wrist.incrementalWristRotateActual(1); }
+        if      (currentGamepad1.dpad_right)  { intakeArm.wrist.incrementalWristRotateActual(-1); }
+        else if (currentGamepad1.dpad_left) { intakeArm.wrist.incrementalWristRotateActual(1); }
 
         // intake claw toggle
         if (currentGamepad1.right_bumper && !previousGamepad1.right_bumper || currentGamepad1.left_bumper && !previousGamepad1.left_bumper) {
             runningActions.add(
                 new SequentialAction(
+                    new InstantAction(() -> intakeArm.wrist.setWristIntake()),
                     new InstantAction(() -> intakeArm.claw.openClaw()),
                     new SleepAction(0.1),
                     new InstantAction(() -> intakeArm.arm.setArmGrab())
@@ -171,8 +176,15 @@ public class FinalFullRobotActionTeleOp extends OpMode {
                     new SequentialAction(
                             new InstantAction(() ->  intakeArm.claw.closeClaw()),
                             new SleepAction(0.5),
+                            new InstantAction(() -> intakeArm.wrist.setWristTransfer()),
                             new InstantAction(() -> intakeArm.arm.setArmHover())
                     )
+            );
+        }
+
+        if (currentGamepad1.a && !previousGamepad1.a) {
+            runningActions.add(
+                    new InstantAction(() -> intakeArm.claw.openClaw())
             );
         }
 
@@ -183,14 +195,14 @@ public class FinalFullRobotActionTeleOp extends OpMode {
         if (currentGamepad2.left_bumper && !previousGamepad2.left_bumper) { scoringArm.claw.toggleClaw(); }
 
         // macro prep high bucket scoring
-        if (currentGamepad2.a && !previousGamepad2.a) {
+        if (currentGamepad2.x && !previousGamepad2.x) {
             runningActions.add(
                 new SequentialAction(
+                    new InstantAction(() -> scoringArm.claw.closeClaw()),
                     new InstantAction(() -> verticalSlides.raiseToHighBucket()),
-                    new SleepAction(0.65),
+                    new InstantAction(() -> scoringArm.wrist.setWristScoringBucket()),
+                    new SleepAction(0.6),
                     new ParallelAction(
-                        new InstantAction(() -> scoringArm.claw.closeClaw()),
-                        new InstantAction(() -> scoringArm.wrist.setWristScoringBucket()),
                         new InstantAction(() -> scoringArm.arm.setArmScoreBucket())
                     )
                 )
@@ -251,12 +263,14 @@ public class FinalFullRobotActionTeleOp extends OpMode {
                         new ParallelAction(
                             new InstantAction(() -> scoringArm.wrist.setWristTransfer()),
                             new InstantAction(() -> scoringArm.arm.setArmTransfer()),
-                            new InstantAction(() -> intakeArm.arm.setArmTransfer()),
                             new InstantAction(() -> intakeArm.wrist.setWristTransfer()),
+                            new SleepAction(0.1),
+                            new InstantAction(() -> intakeArm.arm.setArmTransfer()),
                             new InstantAction(() -> scoringArm.claw.openClaw())
                         ),
 
                         // acutally transfer
+//                            new InstantAction(() -> )
                         new InstantAction(() -> scoringArm.claw.closeClaw()),
                         new SleepAction(0.1),
                         new InstantAction(() -> intakeArm.claw.openClaw())
