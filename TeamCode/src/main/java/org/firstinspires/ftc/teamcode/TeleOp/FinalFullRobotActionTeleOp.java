@@ -119,7 +119,7 @@ public class FinalFullRobotActionTeleOp extends OpMode {
 //        }
 //        else
         if (scoringArm.arm.armPos == ScoringArm.Arm.STATE.TRANSFERRING) {
-            if (currentGamepad1.right_trigger >= 0.01 && !(previousGamepad1.right_trigger >= 0.01) || currentGamepad1.left_trigger >= 0.01 && !(previousGamepad1.left_trigger >= 0.01)) {
+            if (currentGamepad1.right_trigger >= 0.01 && !(previousGamepad1.right_trigger >= 0.01)) { //|| currentGamepad1.left_trigger >= 0.01 && !(previousGamepad1.left_trigger >= 0.01)) {
                 runningActions.add(
                     new SequentialAction(
                         new InstantAction(() -> horizontalSlides.extendHalfway()),
@@ -137,8 +137,8 @@ public class FinalFullRobotActionTeleOp extends OpMode {
                     new SequentialAction(
                         new InstantAction(() -> intakeArm.claw.closeClaw()),
                         new InstantAction(() -> intakeArm.wrist.setWristTransfer()),
-                        new SleepAction(0.2),
                         new InstantAction(() -> intakeArm.arm.setArmTransfer()),
+                        new SleepAction(0.2),
                         new InstantAction(() -> horizontalSlides.retract())
                     )
                 );
@@ -236,7 +236,7 @@ public class FinalFullRobotActionTeleOp extends OpMode {
         // auto retract slides and stow arm whenever claw opens
         if (scoringArm.claw.isClawOpen && scoringArm.arm.armPos == ScoringArm.Arm.STATE.SCORING) {
             runningActions.add(new SequentialAction(
-                    new SleepAction(0.25),
+                    new SleepAction(0.5),
                     new ParallelAction(
                         new InstantAction(() -> scoringArm.wrist.setWristTransfer()),
                         new InstantAction(() -> scoringArm.arm.setArmTransfer())

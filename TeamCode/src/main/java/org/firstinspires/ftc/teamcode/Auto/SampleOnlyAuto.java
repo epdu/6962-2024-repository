@@ -42,12 +42,13 @@ public class SampleOnlyAuto extends LinearOpMode{
     public void runOpMode() {
         Pose2d startPose = new Pose2d(startX, startY, startHeading);
         MecanumDrive drive = new MecanumDrive(hardwareMap, startPose);
+
         VerticalSlides verticalSlides = new VerticalSlides();
         ScoringArm scoringArm = new ScoringArm();
         HorizontalSlides horizontalSlides = new HorizontalSlides();
         IntakeArm intakeArm = new IntakeArm();
 
-        TrajectoryActionBuilder move1 = drive.actionBuilder(startPose)
+        TrajectoryActionBuilder move2 = drive.actionBuilder(startPose)
                 .afterTime(0, () -> {
                     Actions.runBlocking(
                             new ParallelAction(
@@ -181,6 +182,11 @@ public class SampleOnlyAuto extends LinearOpMode{
                 .strafeTo(new Vector2d(parkX, parkY));
 
         while (!isStarted() && !opModeIsActive()) {
+            horizontalSlides.initialize(this);
+            intakeArm.initialize(this);
+            verticalSlides.initialize(this);
+            scoringArm.initialize(this);
+
             telemetry.addLine("Initialized 1+3 Auto");
             telemetry.update();
             Actions.runBlocking(
@@ -192,12 +198,11 @@ public class SampleOnlyAuto extends LinearOpMode{
 
         if (isStopRequested()) return;
 
-        Action autoTrajectoryTest = move1.build();
+        Action autoTrajectoryTest = move2.build();
 
         Actions.runBlocking(
                 new SequentialAction(
-                        autoTrajectoryTest,
-                        scoringArm.WholeArmTransfer()
+                        autoTrajectoryTest
                 )
         );
     }

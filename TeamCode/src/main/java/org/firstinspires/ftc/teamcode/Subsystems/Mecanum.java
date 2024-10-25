@@ -51,7 +51,7 @@ public class Mecanum {
 
     public void operateFieldCentricVincent() {
 
-        if (opmode.gamepad1.dpad_down) { gyroManager.reset(); }
+        if (opmode.gamepad1.y) { gyroManager.reset(); }
 
         // driving field centric
         if (opmode.gamepad1.left_trigger > 0.5) {
