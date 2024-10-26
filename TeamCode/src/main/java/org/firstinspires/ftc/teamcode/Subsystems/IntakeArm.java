@@ -160,9 +160,10 @@ public class IntakeArm {
         public Servo wristRotate, wristFlip;
         public boolean isWristTransferring = true;
         public static double wristRotateTransferPosition = 0.515;
-        public static double wristFlipTransferPosition = 0.4994;
+        public static double wristFlipTransferPosition = 0.3827;
         public static double wristRotateDefaultIntakePosition = 0.515;
-        public static double wristFlipIntakePosition = 0.96;
+        public static double wristRotateIntakePerpendicularPosition = wristRotateDefaultIntakePosition+0.03;
+        public static double wristFlipIntakePosition = 0.8433;
         public static double wristTestIncrement = 0.001;
         public static double wristActualIncrement = 0.03;
 
@@ -182,6 +183,17 @@ public class IntakeArm {
         public void setWristIntake() {
             wristFlip.setPosition(wristFlipIntakePosition);
             wristRotate.setPosition(wristRotateDefaultIntakePosition);
+            isWristTransferring = false;
+        }
+
+        public void setFlipIntake() {
+            wristFlip.setPosition(wristFlipIntakePosition);
+            isWristTransferring = false;
+        }
+
+        public void setWristIntakePerpendicular() {
+            wristFlip.setPosition(wristFlipIntakePosition);
+            wristRotate.setPosition(wristRotateIntakePerpendicularPosition);
             isWristTransferring = false;
         }
 
@@ -257,5 +269,19 @@ public class IntakeArm {
 
     public Action ClawOpen() {
         return new ClawOpen();
+    }
+
+    public class IntakeHoverPerpendicular implements Action {
+        @Override
+        public boolean run(@NonNull TelemetryPacket packet) {
+            wrist.setWristIntakePerpendicular();
+            arm.setArmHover();
+            claw.openClaw();
+            return false;
+        }
+    }
+
+    public Action IntakeHoverPerpendicular() {
+        return new IntakeHoverPerpendicular();
     }
 }
