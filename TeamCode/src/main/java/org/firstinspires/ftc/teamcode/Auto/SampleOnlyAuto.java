@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.Auto;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.Action;
+import com.acmerobotics.roadrunner.InstantAction;
 import com.acmerobotics.roadrunner.ParallelAction;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.SequentialAction;
@@ -29,8 +30,8 @@ public class SampleOnlyAuto extends LinearOpMode{
     public static double scorePreloadY = -39;
     public static double intake1X = -49;
     public static double intake1Y = -43;
-    public static double scoreBucketX = -53;
-    public static double scoreBucketY = -53;
+    public static double scoreBucketX = -56;
+    public static double scoreBucketY = -56;
     public static double intake2X = -58;
     public static double intake2Y = -43;
     public static double intake3X = -55;
@@ -47,26 +48,29 @@ public class SampleOnlyAuto extends LinearOpMode{
         ScoringArm scoringArm = new ScoringArm();
         IntakeArm intakeArm = new IntakeArm();
 
+
         TrajectoryActionBuilder move2 = drive.actionBuilder(startPose)
 //                .afterTime(0, () -> {
 //                    Actions.runBlocking(
-//                            new ParallelAction(
-//                                    verticalSlides.LiftUpToClip(),
-//                                    scoringArm.ArmScoreClip()
-//                            )
-//                    );
-//                })
-                .waitSeconds(1)
-                .strafeTo(new Vector2d(scorePreloadX, scorePreloadY))
-//                .afterTime( 0.5, () -> {
-//                    Actions.runBlocking(
 //                            new SequentialAction(
-//                                    verticalSlides.SlamScoreClip(),
-//                                    scoringArm.StowWholeArm(),
-//                                    verticalSlides.Retract()
+
 //                            )
 //                    );
 //                })
+
+                .strafeTo(new Vector2d(scorePreloadX, scorePreloadY))
+                .afterTime( 0.5, () -> {
+                    Actions.runBlocking(
+                            new SequentialAction(
+                                    scoringArm.ArmScoreClip(),
+                                    verticalSlides.LiftUpToClip(),
+                                    verticalSlides.SlamScoreClip(),
+
+                                    scoringArm.StowWholeArm(),
+                                    verticalSlides.Retract()
+                            )
+                    );
+                })
                 .waitSeconds(1)
                 //.splineTo(new Vector2d(intake1X, intake1Y), Math.toRadians(90))
                 .strafeToLinearHeading(new Vector2d(intake1X, intake1Y), Math.toRadians(90.1))
@@ -183,12 +187,12 @@ public class SampleOnlyAuto extends LinearOpMode{
 
             telemetry.addLine("Initialized 1+3 Auto");
             telemetry.update();
-            Actions.runBlocking(
-                    new SequentialAction(
-                        scoringArm.WholeArmTransfer(),
-                        intakeArm.IntakeTransfer()
-                    )
-            );
+//            Actions.runBlocking(
+//                    new SequentialAction(
+//                        scoringArm.WholeArmTransfer(),
+//                        intakeArm.IntakeTransfer()
+//                    )
+//            );
         }
 
         waitForStart();
