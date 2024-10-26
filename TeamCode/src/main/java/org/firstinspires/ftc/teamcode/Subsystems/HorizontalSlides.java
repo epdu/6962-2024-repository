@@ -86,6 +86,19 @@ public class HorizontalSlides {
         opmode.telemetry.addData("Slide Target", target);
     }
 
+    public void operateFix() {
+        // manual override control
+        slidePower = -opmode.gamepad2.right_stick_y;
+
+        if (Math.abs(slidePower) > 0.05) {
+            slideMotor.setPower(slidePower * slideScalar);
+        }
+
+        if (opmode.gamepad2.right_stick_button) {
+            slideMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+        }
+    }
+
     public void operateTest() {
         // manual control with right stick y
         slidePower = -opmode.gamepad2.left_stick_y;

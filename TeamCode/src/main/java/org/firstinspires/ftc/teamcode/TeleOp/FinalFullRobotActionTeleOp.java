@@ -101,10 +101,21 @@ public class FinalFullRobotActionTeleOp extends OpMode {
         mecanum.operateFieldCentricVincent();
 
         // no manual control, only PID
-        verticalSlides.operateVincent();
+        if (currentGamepad2.right_trigger > 0.1 && currentGamepad2.left_trigger > 0.1) {
+            verticalSlides.operateFix();
+        }
+        else {
+            verticalSlides.operateVincent();
+        }
 
         // no manual control, only PID
-        horizontalSlides.operateVincent();
+        if (currentGamepad2.right_trigger > 0.1 && currentGamepad2.left_trigger > 0.1) {
+            horizontalSlides.operateFix();
+        }
+        else {
+            horizontalSlides.operateVincent();
+        }
+
 
         ////////////////////////////////////// GAMEPAD 1 CONTROLS /////////////////////////////////////
 
@@ -281,6 +292,7 @@ public class FinalFullRobotActionTeleOp extends OpMode {
                         new InstantAction(() -> intakeArm.claw.openClaw())
                     ));
         }
+
 
 //        // for linkage extendo
 //        if (gamepad1.right_trigger >= 0.1 && currentGamepad1.right_trigger != previousGamepad1.rightTrigger) {

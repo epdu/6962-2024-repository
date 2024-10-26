@@ -34,9 +34,9 @@ public class VerticalSlides
     public static double Ki = 0;
     public static double Kd = 0;
     public static double Kg = 0; // gravity constant, tune till the slide holds itself in place
-    public static double upperLimit = 1500;
-    public static double lowerLimit = -2;
-    public static double retractedThreshold = 5;
+    public static int upperLimit = 1500;
+    public static int lowerLimit = -2;
+    public static int retractedThreshold = 5;
 
     public static int highBucketPos = 1300;
 //    public static int lowBucketPos = 600;
@@ -47,7 +47,7 @@ public class VerticalSlides
 
     //declaring variables for later modification
     private volatile double slidePower;
-    private volatile double target = 0;
+    private volatile int target = 0;
     private volatile boolean movingDown = false;
     public volatile boolean verticalSlidesRetracted = true;
 
@@ -88,13 +88,31 @@ public class VerticalSlides
         // updates boolean
         verticalSlidesRetracted = rightSlideMotor.getCurrentPosition() < retractedThreshold;
 
-        opmode.telemetry.addData("Vertical Slides Retracted: ", verticalSlidesRetracted);
-        opmode.telemetry.addData("Right Motor Encoder Pos: ", rightSlideMotor.getCurrentPosition());
-        opmode.telemetry.addData("PID Power R ", PIDPowerR);
-        opmode.telemetry.addData("Slide Target ", target);
-        opmode.telemetry.addData("Test slide power draw: ", rightSlideMotor.getCurrent(CurrentUnit.AMPS));
-        opmode.telemetry.addData("Test slide power alert: ", rightSlideMotor.getCurrentAlert(CurrentUnit.AMPS));
-        opmode.telemetry.update();
+//        opmode.telemetry.addData("Vertical Slides Retracted: ", verticalSlidesRetracted);
+//        opmode.telemetry.addData("Right Motor Encoder Pos: ", rightSlideMotor.getCurrentPosition());
+//        opmode.telemetry.addData("PID Power R ", PIDPowerR);
+//        opmode.telemetry.addData("Slide Target ", target);
+//        opmode.telemetry.addData("Test slide power draw: ", rightSlideMotor.getCurrent(CurrentUnit.AMPS));
+//        opmode.telemetry.addData("Test slide power alert: ", rightSlideMotor.getCurrentAlert(CurrentUnit.AMPS));
+//        opmode.telemetry.update();
+    }
+
+    public void operateFix() {
+
+        // manual control
+        slidePower = -opmode.gamepad2.left_stick_y;
+
+        if (Math.abs(slidePower) > 0.05)
+        {
+            leftSlideMotor.setPower(slidePower * slideScalar);
+            rightSlideMotor.setPower(slidePower * slideScalar);
+        }
+
+        if (opmode.gamepad2.left_stick_button) {
+            leftSlideMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+            rightSlideMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+        }
+
     }
 
     public void operateTest() {
@@ -135,31 +153,9 @@ public class VerticalSlides
                 target = lowerLimit;
             }
         }
-        // PID control
-        else
-        {
-//            PIDPowerL = PIDControl(target, leftSlideMotor);
-            PIDPowerR = PIDControl(target, rightSlideMotor);
-//            leftSlideMotor.setPower(PIDPowerL);
-            leftSlideMotor.setPower(PIDPowerR);
-            rightSlideMotor.setPower(PIDPowerR);
-        }
-
-        // updates boolean
-        verticalSlidesRetracted = rightSlideMotor.getCurrentPosition() < retractedThreshold;
-
-//        opmode.telemetry.addData("PID Power L ", PIDPowerL);
-
-        opmode.telemetry.addData("Vertical Slides Retracted: ", verticalSlidesRetracted);
-        opmode.telemetry.addData("Right Motor Encoder Pos: ", rightSlideMotor.getCurrentPosition());
-        opmode.telemetry.addData("PID Power R ", PIDPowerR);
-        opmode.telemetry.addData("Slide Target ", target);
-        opmode.telemetry.addData("Test slide power draw: ", rightSlideMotor.getCurrent(CurrentUnit.AMPS));
-        opmode.telemetry.addData("Test slide power alert: ", rightSlideMotor.getCurrentAlert(CurrentUnit.AMPS));
-        opmode.telemetry.update();
     }
 
-    private double PIDControl(double target, DcMotorEx motor)
+    private double PIDControl(int target, DcMotorEx motor)
     {
         // PID logic and then return the output
         // obtain the encoder position
