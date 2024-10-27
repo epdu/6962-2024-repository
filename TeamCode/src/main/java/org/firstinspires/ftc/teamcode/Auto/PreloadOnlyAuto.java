@@ -19,7 +19,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.ScoringArm;
 import org.firstinspires.ftc.teamcode.Subsystems.VerticalSlides;
 
 @Config
-@Autonomous(name = "1+0 Auto", group = "Autonomous")
+@Autonomous(name = "1+0 Auto", group = "Autonomous", preselectTeleOp = "FinalFullRobotActionTeleOp")
 public class PreloadOnlyAuto extends LinearOpMode{
     public static double startX = 7;
     public static double startY = -63.75;
@@ -74,7 +74,7 @@ public class PreloadOnlyAuto extends LinearOpMode{
             verticalSlides.initialize(this);
             scoringArm.initialize(this);
 
-            telemetry.addLine("Initialized 2+0 Auto");
+            telemetry.addLine("Initialized 1+0 Auto");
             telemetry.update();
             //run on init NO MOTORS
             Actions.runBlocking(
@@ -91,7 +91,12 @@ public class PreloadOnlyAuto extends LinearOpMode{
         Actions.runBlocking(
                 new SequentialAction(
                         preloadAutoTrajectory,
-                        scoringArm.WholeArmTransfer()
+                        new ParallelAction(
+                                verticalSlides.Retract(),
+                                horizontalSlides.HorizontalRetract(),
+                                scoringArm.ArmInitPosition(),
+                                intakeArm.IntakeTransfer()
+                        )
                 )
         );
 

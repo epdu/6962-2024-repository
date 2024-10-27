@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.Auto;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.Action;
+import com.acmerobotics.roadrunner.SleepAction;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.SequentialAction;
 import com.acmerobotics.roadrunner.TrajectoryActionBuilder;
@@ -29,7 +30,9 @@ public class TestSubsystems extends LinearOpMode{
 
         Actions.runBlocking(
                 new SequentialAction(
-//                        lift.scoreClip()
+                        lift.LiftUpToClip(),
+                        new SleepAction(1),
+                        lift.Retract()
                 )
         );
     }

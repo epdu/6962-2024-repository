@@ -223,11 +223,6 @@ public class FinalFullRobotActionTeleOp extends OpMode {
         // scoring claw toggle
         if (currentGamepad2.left_bumper && !previousGamepad2.left_bumper) { scoringArm.claw.toggleClaw(); }
 
-        // intake claw toggle (for emergencies)
-        if (currentGamepad2.right_bumper && !previousGamepad2.right_bumper) {
-            intakeArm.claw.toggleClaw();
-        }
-
         // macro prep high bucket scoring
         if (currentGamepad2.x && !previousGamepad2.x) {
             runningActions.add(
