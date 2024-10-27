@@ -25,14 +25,14 @@ public class PreloadOnlyAuto extends LinearOpMode{
     public static double startY = -63.75;
     public static double startHeading = Math.toRadians(-90);
     public static double scorePreloadX = 0;
-    public static double scorePreloadY = -39;
+    public static double scorePreloadY = -37;
     public static double scorePreload2X = -6;
     public static double scorePreload2Y = -39;
     public static double prepPickupX = 64;
     public static double prepPickupY = -46;
     public static double pickupX = 65;
     public static double pickupY = -58;
-    public static double parkX = 36;
+    public static double parkX = 40;
     public static double parkY = -60;
     @Override
     public void runOpMode() {
@@ -64,6 +64,7 @@ public class PreloadOnlyAuto extends LinearOpMode{
                             )
                     );
                 })
+                .waitSeconds(2)
                 .strafeTo(new Vector2d(parkX, parkY))
                 .turnTo(Math.toRadians(90));
 

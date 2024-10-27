@@ -147,7 +147,7 @@ public class ScoringArm {
         public Arm.STATE armPos = STATE.TRANSFERRING;
         public static double armScoringPosition = 0.46;
         public static double armScoringClipPosition = 0.43;
-        public static double armTransferPosition = 0.775;
+        public static double armTransferPosition = 0.7622;
         public static double armGrabClipPosition = 0;
         public static double armInitPosition = 0.4956;
         public static double armStowPosition = 0.6183;
@@ -204,8 +204,8 @@ public class ScoringArm {
     public static class Wrist {
         public Servo wristL, wristR;
         public boolean isWristTransferring = true;
-        public static double wristLTransferPosition = 0.0744;
-        public static double wristRTransferPosition = 0.0744;
+        public static double wristLTransferPosition = 0.0844;
+        public static double wristRTransferPosition = 0.0872;
         public static double wristLScoreBucketPosition = 0.2156;
         public static double wristRScoreBucketPosition = 0.89;
         public static double wristLScoreClipPosition = 0.645;
@@ -283,9 +283,6 @@ public class ScoringArm {
         @Override
         public boolean run(@NonNull TelemetryPacket packet) {
             claw.openClaw();
-            new SleepAction(0.2);
-            arm.setArmTransfer();
-            wrist.setWristTransfer();
             return false;
         }
     }

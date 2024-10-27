@@ -159,7 +159,7 @@ public class IntakeArm {
     public static class Wrist {
         public Servo wristRotate, wristFlip;
         public boolean isWristTransferring = true;
-        public static double wristRotateTransferPosition = 0.515;
+        public static double wristRotateTransferPosition = 0.5378;
         public static double wristFlipTransferPosition = 0.3827;
         public static double wristRotateDefaultIntakePosition = 0.515;
         public static double wristRotateIntakePerpendicularPosition = 0.1972;

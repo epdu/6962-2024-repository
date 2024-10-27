@@ -24,16 +24,16 @@ import org.firstinspires.ftc.teamcode.Subsystems.IntakeArm;
 public class SampleOnlyAuto extends LinearOpMode{
 
     public static double startX = -8;
-    public static double startY = -63;
+    public static double startY = -63.5;
     public static double startHeading = Math.toRadians(-90);
     public static double scorePreloadX = 0;
-    public static double scorePreloadY = -39;
+    public static double scorePreloadY = -38;
     public static double intake1X = -52;
-    public static double intake1Y = -39;
+    public static double intake1Y = -40;
     public static double scoreBucketX = -57;
     public static double scoreBucketY = -57;
     public static double intake2X = -60;
-    public static double intake2Y = -39;
+    public static double intake2Y = -40;
     public static double intake3X = -53;
     public static double intake3Y = -25;
     public static double parkX = -30;
@@ -82,7 +82,7 @@ public class SampleOnlyAuto extends LinearOpMode{
                 .afterTime( 0, () -> {
                     Actions.runBlocking(
                             new SequentialAction(
-                                    scoringArm.ArmStow(),
+                                    //scoringArm.ArmStow(),
                                     intakeArm.IntakePickup(),
                                     new SleepAction(0.5),
                                     intakeArm.IntakeTransfer(),
@@ -91,11 +91,11 @@ public class SampleOnlyAuto extends LinearOpMode{
                             )
                     );
                 })
-                .afterTime( 2, () -> {
+                .afterTime( 2.5, () -> {
                     Actions.runBlocking(
                             new SequentialAction(
                                     intakeArm.ClawOpen(),
-                                    new SleepAction(0.2),
+                                    new SleepAction(0.5),
                                     verticalSlides.LiftUpToHighBucket(),
                                     scoringArm.ArmScoreBucket()
                             )
@@ -117,7 +117,7 @@ public class SampleOnlyAuto extends LinearOpMode{
                     Actions.runBlocking(
                             new SequentialAction(
                                     verticalSlides.Retract(),
-                                    scoringArm.ArmStow(),
+                                    scoringArm.StowWholeArm(),
                                     intakeArm.IntakePickup(),
                                     new SleepAction(0.5),
                                     intakeArm.IntakeTransfer(),
@@ -126,7 +126,7 @@ public class SampleOnlyAuto extends LinearOpMode{
                             )
                     );
                 })
-                .afterTime( 2, () -> {
+                .afterTime( 2.5, () -> {
                     Actions.runBlocking(
                             new SequentialAction(
                                     intakeArm.ClawOpen(),
