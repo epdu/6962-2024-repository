@@ -61,7 +61,7 @@ public class Mecanum {
             drive.driveFieldCentric(opmode.gamepad1.left_stick_x * slowModeFactor, -opmode.gamepad1.left_stick_y * slowModeFactor, (opmode.gamepad1.right_stick_x * 0.75) * slowModeFactor, gyroManager.getHeading());
         }
 
-        opmode.telemetry.addData("Test drive motor accel: ", frontRight.getAcceleration());
+//        opmode.telemetry.addData("Test drive motor accel: ", frontRight.getAcceleration());
     }
 
     public void operateFieldCentricTest() {

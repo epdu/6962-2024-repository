@@ -11,6 +11,7 @@ import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Gamepad;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.Subsystems.HorizontalSlides;
 import org.firstinspires.ftc.teamcode.Subsystems.IntakeArm;
@@ -30,11 +31,11 @@ public class FinalFullRobotActionTeleOp extends OpMode {
     private List<LynxModule> allHubs;
 
     // optimizing stuff apparently?
-
     final Gamepad currentGamepad1 = new Gamepad();
     final Gamepad currentGamepad2 = new Gamepad();
     final Gamepad previousGamepad1 = new Gamepad();
     final Gamepad previousGamepad2 = new Gamepad();
+    private ElapsedTime elapsedtime;
 
     // subsystems
     private Mecanum mecanum                   = new Mecanum();
@@ -47,6 +48,7 @@ public class FinalFullRobotActionTeleOp extends OpMode {
 
     @Override
     public void init() {
+        elapsedtime = new ElapsedTime();
         mecanum.initialize(this);
         horizontalSlides.initialize(this);
         intakeArm.initialize(this);
@@ -59,6 +61,7 @@ public class FinalFullRobotActionTeleOp extends OpMode {
 
     @Override
     public void start() {
+        elapsedtime.reset();
         // to make sure arms don't spasm when out of pos
         scoringArm.arm.setArmTransfer();
         scoringArm.wrist.setWristTransfer();
@@ -306,6 +309,9 @@ public class FinalFullRobotActionTeleOp extends OpMode {
                     ));
         }
 
+        // loop time
+        telemetry.addData("Loop Times", elapsedtime.milliseconds());
+        elapsedtime.reset();
 
 //        // for linkage extendo
 //        if (gamepad1.right_trigger >= 0.1 && currentGamepad1.right_trigger != previousGamepad1.rightTrigger) {

@@ -81,9 +81,6 @@ public class HorizontalSlides {
         // updates boolean
         slidesRetracted = slideMotor.getCurrentPosition() < retractedThreshold;
         slidesMostlyRetracted = slideMotor.getCurrentPosition() < mostlyRetractedThreshold;
-
-        opmode.telemetry.addData("PID Power", PIDPower);
-        opmode.telemetry.addData("Slide Target", target);
     }
 
     public void operateFix() {
