@@ -45,7 +45,7 @@ public class ScoringArm {
         opmode.telemetry.addData("Right Wrist Pos: ", wrist.wristR.getPosition());
         opmode.telemetry.addData("Left Wrist Pos: ", wrist.wristL.getPosition());
         opmode.telemetry.addData("Claw Pos: ", claw.claw.getPosition());
-        opmode.telemetry.addData("Claw Pos: ", claw.isClawOpen);
+        opmode.telemetry.addData("Claw Open: ", claw.isClawOpen);
     }
 
     public void operateTest() {
