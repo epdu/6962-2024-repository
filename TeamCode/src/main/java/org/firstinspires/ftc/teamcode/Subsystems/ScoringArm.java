@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.Subsystems;
 
 import com.acmerobotics.dashboard.config.Config;
+import com.acmerobotics.roadrunner.SleepAction;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.acmerobotics.roadrunner.Action;
@@ -146,8 +147,10 @@ public class ScoringArm {
         public Arm.STATE armPos = STATE.TRANSFERRING;
         public static double armScoringPosition = 0.46;
         public static double armScoringClipPosition = 0.43;
-        public static double armTransferPosition = 0.7789;
+        public static double armTransferPosition = 0.775;
         public static double armGrabClipPosition = 0;
+        public static double armInitPosition = 0.4956;
+        public static double armStowPosition = 0.6183;
         public static double armIncrement = 0.001;
 
         public Arm() {}
@@ -184,6 +187,14 @@ public class ScoringArm {
             armPos = STATE.TRANSFERRING;
         }
 
+        public void setArmInitPosition() {
+            setArmPosition(armInitPosition);
+        }
+
+        public void setArmStow() {
+            setArmPosition(armStowPosition);
+        }
+
         public double telemetryArmPos() {
             return arm.getPosition();
         }
@@ -193,8 +204,8 @@ public class ScoringArm {
     public static class Wrist {
         public Servo wristL, wristR;
         public boolean isWristTransferring = true;
-        public static double wristLTransferPosition = 0.0583;
-        public static double wristRTransferPosition = 0.0583;
+        public static double wristLTransferPosition = 0.0744;
+        public static double wristRTransferPosition = 0.0744;
         public static double wristLScoreBucketPosition = 0.2156;
         public static double wristRScoreBucketPosition = 0.89;
         public static double wristLScoreClipPosition = 0.645;
@@ -268,6 +279,18 @@ public class ScoringArm {
 
     // Action classes and functions for auto
 
+    public class DropBucket implements Action {
+        @Override
+        public boolean run(@NonNull TelemetryPacket packet) {
+            claw.openClaw();
+            new SleepAction(0.2);
+            arm.setArmTransfer();
+            wrist.setWristTransfer();
+            return false;
+        }
+    }
+    public Action DropBucket(){return new DropBucket();}
+
     public class StowWholeArm implements Action {
         @Override
         public boolean run(@NonNull TelemetryPacket packet) {
@@ -284,6 +307,9 @@ public class ScoringArm {
     public class WholeArmTransfer implements Action {
         @Override
         public boolean run(@NonNull TelemetryPacket packet) {
+            arm.setArmTransfer();
+            wrist.setWristTransfer();
+            new SleepAction(0.2);
             claw.closeClaw();
             return false;
         }
@@ -329,6 +355,25 @@ public class ScoringArm {
     public Action ArmGrabClip() {
         return new ArmGrabClip();
     }
+
+    public class ArmInitPosition implements Action {
+        @Override
+        public boolean run(@NonNull TelemetryPacket packet) {
+            arm.setArmInitPosition();
+            return false;
+        }
+    }
+    public Action ArmInitPosition() {return new ArmInitPosition();}
+
+    public class ArmStow implements Action {
+        @Override
+        public boolean run(@NonNull TelemetryPacket packet) {
+            wrist.setWristTransfer();
+            arm.setArmStow();
+            return false;
+        }
+    }
+    public Action ArmStow() {return new ArmStow();}
 
     // math util functions
     public boolean isClose(double a, double b) {

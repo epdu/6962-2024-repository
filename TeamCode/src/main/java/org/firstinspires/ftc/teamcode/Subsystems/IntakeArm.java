@@ -162,7 +162,7 @@ public class IntakeArm {
         public static double wristRotateTransferPosition = 0.515;
         public static double wristFlipTransferPosition = 0.3827;
         public static double wristRotateDefaultIntakePosition = 0.515;
-        public static double wristRotateIntakePerpendicularPosition = wristRotateDefaultIntakePosition+0.03;
+        public static double wristRotateIntakePerpendicularPosition = 0.1972;
         public static double wristFlipIntakePosition = 0.8433;
         public static double wristTestIncrement = 0.001;
         public static double wristActualIncrement = 0.03;
@@ -249,8 +249,9 @@ public class IntakeArm {
     public class IntakeTransfer implements Action {
         @Override
         public boolean run(@NonNull TelemetryPacket packet) {
-            arm.setArmTransfer();
             wrist.setWristTransfer();
+            new SleepAction(0.4);
+            arm.setArmTransfer();
             return false;
         }
     }
