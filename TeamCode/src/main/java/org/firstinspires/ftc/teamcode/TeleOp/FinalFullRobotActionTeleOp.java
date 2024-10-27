@@ -100,7 +100,7 @@ public class FinalFullRobotActionTeleOp extends OpMode {
         // gamepad1: left-trigger > 0.5 - fastmode
         mecanum.operateFieldCentricVincent();
 
-        // no manual control, only PID
+        // manual control in case auto messes up, else only PID
         if (currentGamepad2.right_trigger > 0.1 && currentGamepad2.left_trigger > 0.1) {
             verticalSlides.operateFix();
         }
@@ -108,7 +108,7 @@ public class FinalFullRobotActionTeleOp extends OpMode {
             verticalSlides.operateVincent();
         }
 
-        // no manual control, only PID
+        // manual control in case auto messes up, else only PID
         if (currentGamepad2.right_trigger > 0.1 && currentGamepad2.left_trigger > 0.1) {
             horizontalSlides.operateFix();
         }
@@ -129,7 +129,9 @@ public class FinalFullRobotActionTeleOp extends OpMode {
 //                    ));
 //        }
 //        else
+
         if (scoringArm.arm.armPos == ScoringArm.Arm.STATE.TRANSFERRING) {
+            // horizontal slides extend and intake arm hover
             if (currentGamepad1.right_trigger >= 0.01 && !(previousGamepad1.right_trigger >= 0.01)) {
                 runningActions.add(
                     new SequentialAction(
@@ -143,7 +145,9 @@ public class FinalFullRobotActionTeleOp extends OpMode {
                         new InstantAction(() -> intakeArm.claw.openClaw())
                     )
                 );
-            } else if (currentGamepad1.right_trigger < 0.01 && !(previousGamepad1.right_trigger < 0.01)) {
+            }
+            // horizontal slides retract and intake arm transfer
+            else if (currentGamepad1.right_trigger < 0.01 && !(previousGamepad1.right_trigger < 0.01)) {
                 runningActions.add(
                     new SequentialAction(
                         new InstantAction(() -> intakeArm.claw.closeClaw()),
@@ -166,6 +170,19 @@ public class FinalFullRobotActionTeleOp extends OpMode {
                 )
             );
         }
+
+        if (currentGamepad1.a && !previousGamepad1.a) {
+            runningActions.add(
+                    new SequentialAction(
+                            new InstantAction(() -> intakeArm.claw.closeClaw()),
+                            new InstantAction(() -> intakeArm.wrist.setWristTransfer()),
+                            new InstantAction(() -> intakeArm.arm.setArmTransfer()),
+                            new SleepAction(0.2),
+                            new InstantAction(() -> horizontalSlides.retract())
+                    )
+            );
+        }
+
 
         // intake wrist rotate
         if      (currentGamepad1.dpad_right)  { intakeArm.wrist.incrementalWristRotateActual(-1); }
@@ -193,6 +210,7 @@ public class FinalFullRobotActionTeleOp extends OpMode {
             );
         }
 
+        // intake claw open (for emergencies)
         if (currentGamepad1.left_bumper && !previousGamepad1.left_bumper) {
             runningActions.add(
                     new InstantAction(() -> intakeArm.claw.openClaw())
@@ -207,7 +225,7 @@ public class FinalFullRobotActionTeleOp extends OpMode {
 
         // intake claw toggle (for emergencies)
         if (currentGamepad2.right_bumper && !previousGamepad2.right_bumper) {
-            intakeArm.claw.closeClaw();
+            intakeArm.claw.toggleClaw();
         }
 
         // macro prep high bucket scoring
