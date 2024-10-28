@@ -122,17 +122,6 @@ public class FinalFullRobotActionTeleOp extends OpMode {
 
         ////////////////////////////////////// GAMEPAD 1 CONTROLS /////////////////////////////////////
 
-        // horizontal slides button control
-//        if      (currentGamepad1.right_trigger > 0.8) {
-//            runningActions.add(
-//                    new ParallelAction(
-//                            new InstantAction(() -> intakeArm.arm.setArmHover()),
-//                            new InstantAction(() -> intakeArm.wrist.setWristIntake()),
-//                            new InstantAction(() -> horizontalSlides.extend())
-//                    ));
-//        }
-//        else
-
         if (scoringArm.arm.armPos == ScoringArm.Arm.STATE.TRANSFERRING) {
             // horizontal slides extend and intake arm hover
             if (currentGamepad1.right_trigger >= 0.01 && !(previousGamepad1.right_trigger >= 0.01)) {
@@ -225,6 +214,28 @@ public class FinalFullRobotActionTeleOp extends OpMode {
 
         // scoring claw toggle
         if (currentGamepad2.left_bumper && !previousGamepad2.left_bumper) { scoringArm.claw.toggleClaw(); }
+
+        // scoring arm grab off floor toggle
+//        if (currentGamepad2.right_bumper && !previousGamepad2.right_bumper) {
+//            runningActions.add(
+//                    new SequentialAction(
+//                            new InstantAction(() -> verticalSlides.retract()),
+//                            new InstantAction(() -> scoringArm.wrist.setWristGrabClipFloorHover()),
+//                            new InstantAction(() -> scoringArm.claw.openClaw())
+//                    )
+//            );
+//        }
+//        else if (!currentGamepad2.right_bumper && previousGamepad2.right_bumper) {
+//            runningActions.add(
+//                    new SequentialAction(
+//                            new InstantAction(() -> scoringArm.arm.setArmGrabClipFloor()),
+//                            new SleepAction(0.2),
+//                            new InstantAction(() ->  scoringArm.claw.closeClaw()),
+//                            new SleepAction(0.2),
+//                            new InstantAction(() -> scoringArm.arm.setArmGrabClipFloorHover())
+//                    )
+//            );
+//        }
 
         // macro prep high bucket scoring
         if (currentGamepad2.x && !previousGamepad2.x) {

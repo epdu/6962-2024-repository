@@ -121,13 +121,17 @@
 //        public enum STATE {
 //            TRANSFERRING,
 //            SCORING,
-//            GRABBING_CLIP
+//            GRABBING_CLIP_WALL,
+//            GRABBING_CLIP_FLOOR,
+//            GRABBING_CLIP_FLOOR_HOVER
 //        }
 //        public Arm.STATE armPos = STATE.TRANSFERRING;
 //        public static double armScoringPosition = 0.46;
 //        public static double armScoringClipPosition = 0.43;
 //        public static double armTransferPosition = 0.7622;
-//        public static double armGrabClipPosition = 0;
+//        public static double armGrabClipWallPosition = 0;
+//        public static double armGrabClipFloorPosition = 0;
+//        public static double armGrabClipFloorHoverPosition = 0;
 //        public static double armInitPosition = 0.4956;
 //        public static double armStowPosition = 0.6183;
 //        public static double armIncrement = 0.001;
@@ -135,6 +139,7 @@
 //        public Arm() {}
 //        public void initialize(RobotHardware hardware) {
 //            this.arm = hardware.cArmServo;
+//            arm.setDirection(Servo.Direction.REVERSE);
 //        }
 //
 //        public void setArmPosition(double position) {
@@ -156,9 +161,19 @@
 //            armPos = STATE.SCORING;
 //        }
 //
-//        public void setArmGrabClip() {
-//            setArmPosition(armGrabClipPosition);
-//            armPos = STATE.GRABBING_CLIP;
+//        public void setArmGrabClipWall() {
+//            setArmPosition(armGrabClipWallPosition);
+//            armPos = STATE.GRABBING_CLIP_WALL;
+//        }
+//
+//        public void setArmGrabClipFloor() {
+//            setArmPosition(armGrabClipFloorPosition);
+//            armPos = STATE.GRABBING_CLIP_FLOOR;
+//        }
+//
+//        public void setArmGrabClipFloorHover() {
+//            setArmPosition(armGrabClipFloorHoverPosition);
+//            armPos = STATE.GRABBING_CLIP_FLOOR_HOVER;
 //        }
 //
 //        public void setArmTransfer() {
@@ -182,7 +197,9 @@
 //        public static double wristTransferPosition = 0.0844;
 //        public static double wristScoreBucketPosition = 0.2156;
 //        public static double wristScoreClipPosition = 0.645;
-//        public static double wristGrabClipPosition = 0.1794;
+//        public static double wristGrabClipWallPosition = 0.1794;
+//        public static double wristGrabClipFloorPosition = 0;
+//        public static double wristGrabClipFloorHoverPosition = 0;
 //        public static double wristIncrement = 0.001;
 //
 //        public Wrist() {}
@@ -208,8 +225,18 @@
 //            isWristTransferring = false;
 //        }
 //
-//        public void setWristGrabClip() {
-//            wrist.setPosition(wristGrabClipPosition);
+//        public void setWristGrabClipWall() {
+//            wrist.setPosition(wristGrabClipWallPosition);
+//            isWristTransferring = false;
+//        }
+//
+//        public void setWristGrabClipFloor() {
+//            wrist.setPosition(wristGrabClipFloorPosition);
+//            isWristTransferring = false;
+//        }
+//
+//        public void setWristGrabClipFloorHover() {
+//            wrist.setPosition(wristGrabClipFloorHoverPosition);
 //            isWristTransferring = false;
 //        }
 //
@@ -284,7 +311,7 @@
 //    public class ArmGrabClip implements Action {
 //        @Override
 //        public boolean run(@NonNull TelemetryPacket packet) {
-//            arm.setArmGrabClip();
+//            arm.setArmGrabClipWall();
 //            wrist.setWristGrabClip();
 //            claw.openClaw();
 //            return false;
