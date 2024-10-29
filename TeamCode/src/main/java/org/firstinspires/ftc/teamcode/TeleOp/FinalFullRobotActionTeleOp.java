@@ -139,7 +139,7 @@ public class FinalFullRobotActionTeleOp extends OpMode {
                 );
             }
             // horizontal slides retract and intake arm transfer
-            else if (currentGamepad1.right_trigger < 0.01 && !(previousGamepad1.right_trigger < 0.01)) {
+            else if (currentGamepad1.right_trigger < 0.1 && !(previousGamepad1.right_trigger < 0.1)) {
                 runningActions.add(
                     new SequentialAction(
                         new InstantAction(() -> intakeArm.claw.closeClaw()),
@@ -181,25 +181,26 @@ public class FinalFullRobotActionTeleOp extends OpMode {
         else if (currentGamepad1.dpad_left) { intakeArm.wrist.incrementalWristRotateActual(1); }
 
         // intake claw toggle
-        if (currentGamepad1.right_bumper && !previousGamepad1.right_bumper) {
-            runningActions.add(
-                new SequentialAction(
-                    new InstantAction(() -> intakeArm.wrist.setFlipIntake()),
-                    new InstantAction(() -> intakeArm.claw.openClaw()),
-                    new SleepAction(0.1),
-                    new InstantAction(() -> intakeArm.arm.setArmGrab())
-                )
-            );
-        }
-        else if (!currentGamepad1.right_bumper && previousGamepad1.right_bumper) {
-            runningActions.add(
-                    new SequentialAction(
-                            new InstantAction(() ->  intakeArm.claw.closeClaw()),
-                            new SleepAction(0.5),
-                            new InstantAction(() -> intakeArm.arm.setArmHover()),
-                            new InstantAction(() -> intakeArm.wrist.setWristTransfer())
-                    )
-            );
+        if (currentGamepad1.right_trigger > 0.1) {
+            if (currentGamepad1.right_bumper && !previousGamepad1.right_bumper) {
+                runningActions.add(
+                        new SequentialAction(
+                                new InstantAction(() -> intakeArm.claw.openClaw()),
+                                new InstantAction(() -> intakeArm.wrist.setFlipIntake()),
+                                new SleepAction(!intakeArm.claw.isClawOpen ? 0.5 : 0.1),
+                                new InstantAction(() -> intakeArm.arm.setArmGrab())
+                        )
+                );
+            } else if (!currentGamepad1.right_bumper && previousGamepad1.right_bumper) {
+                runningActions.add(
+                        new SequentialAction(
+                                new InstantAction(() -> intakeArm.claw.closeClaw()),
+                                new SleepAction(0.5),
+                                new InstantAction(() -> intakeArm.arm.setArmHover()),
+                                new InstantAction(() -> intakeArm.wrist.setWristIntake())
+                        )
+                );
+            }
         }
 
         // intake claw open (for emergencies)
