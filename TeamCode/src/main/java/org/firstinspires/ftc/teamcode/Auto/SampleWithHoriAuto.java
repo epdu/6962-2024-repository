@@ -27,13 +27,13 @@ public class SampleWithHoriAuto extends LinearOpMode{
     public static double startHeading = Math.toRadians(-90);
     public static double scorePreloadX = 0;
     public static double scorePreloadY = -38;
-    public static double intake1X = -36;
-    public static double intake1Y = -40;
-    public static double scoreBucketX = -57;
-    public static double scoreBucketY = -57;
-    public static double intake2X = -60;
-    public static double intake2Y = -56;
-    public static double intake3X = -39;
+    public static double intake1X = -51;
+    public static double intake1Y = -48.5;
+    public static double scoreBucketX = -58;
+    public static double scoreBucketY = -56;
+    public static double intake2X = -59;
+    public static double intake2Y = -48.5;
+    public static double intake3X = -45;
     public static double intake3Y = -25;
     public static double parkX = -30;
     public static double parkY = -18;
@@ -73,12 +73,12 @@ public class SampleWithHoriAuto extends LinearOpMode{
                 .afterTime(0, () -> {
                     Actions.runBlocking(
                             new ParallelAction(
-                                    intakeArm.IntakeHoverPerpendicular(),
+                                    intakeArm.IntakeHover(),
                                     horizontalSlides.HorizontalExtend()
                             )
                     );
                 })
-                .strafeToLinearHeading(new Vector2d(intake1X, intake1Y), Math.toRadians(180))
+                .strafeToLinearHeading(new Vector2d(intake1X, intake1Y), Math.toRadians(90))
                 .afterTime( 0, () -> {
                     Actions.runBlocking(
                             new SequentialAction(
@@ -89,14 +89,19 @@ public class SampleWithHoriAuto extends LinearOpMode{
                                     horizontalSlides.HorizontalRetract(),
                                     new SleepAction(0.5),
                                     scoringArm.WholeArmTransfer(),
-                                    intakeArm.ClawOpen(),
-                                    new SleepAction(1),
+                                    intakeArm.ClawOpen()
+                            )
+                    );
+                })
+                .waitSeconds(1)
+                .afterTime(0.2, () -> {
+                    Actions.runBlocking(
+                            new ParallelAction(
                                     verticalSlides.LiftUpToHighBucket(),
                                     scoringArm.ArmScoreBucket()
                             )
                     );
                 })
-                .waitSeconds(1)
                 .strafeToLinearHeading(new Vector2d(scoreBucketX, scoreBucketY), Math.toRadians(45))
                 .afterTime( 0.5, () -> {
                     Actions.runBlocking(
@@ -121,14 +126,19 @@ public class SampleWithHoriAuto extends LinearOpMode{
                                     horizontalSlides.HorizontalRetract(),
                                     new SleepAction(0.5),
                                     scoringArm.WholeArmTransfer(),
-                                    intakeArm.ClawOpen(),
-                                    new SleepAction(1),
+                                    intakeArm.ClawOpen()
+                            )
+                    );
+                })
+                .waitSeconds(1)
+                .afterTime(0.2, () -> {
+                    Actions.runBlocking(
+                            new ParallelAction(
                                     verticalSlides.LiftUpToHighBucket(),
                                     scoringArm.ArmScoreBucket()
                             )
                     );
                 })
-                .waitSeconds(1)
                 .strafeToLinearHeading(new Vector2d(scoreBucketX, scoreBucketY), Math.toRadians(45))
                 .afterTime( 0.5, () -> {
                     Actions.runBlocking(
@@ -153,14 +163,19 @@ public class SampleWithHoriAuto extends LinearOpMode{
                                     horizontalSlides.HorizontalRetract(),
                                     new SleepAction(0.5),
                                     scoringArm.WholeArmTransfer(),
-                                    intakeArm.ClawOpen(),
-                                    new SleepAction(1),
+                                    intakeArm.ClawOpen()
+                            )
+                    );
+                })
+                .waitSeconds(1)
+                .afterTime(0.2, () -> {
+                    Actions.runBlocking(
+                            new ParallelAction(
                                     verticalSlides.LiftUpToHighBucket(),
                                     scoringArm.ArmScoreBucket()
                             )
                     );
                 })
-                .waitSeconds(1)
                 .strafeToLinearHeading(new Vector2d(scoreBucketX, scoreBucketY), Math.toRadians(45))
                 .afterTime( 0.2, () -> {
                     Actions.runBlocking(
