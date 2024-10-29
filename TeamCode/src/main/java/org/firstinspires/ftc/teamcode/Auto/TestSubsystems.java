@@ -43,6 +43,7 @@ public class TestSubsystems extends LinearOpMode{
                                     intakeArm.IntakePickup(),
                                     new SleepAction(0.5),
                                     intakeArm.IntakeTransfer(),
+                                    new SleepAction(0.2),
                                     horizontalSlides.HorizontalRetract(),
                                     new SleepAction(0.5),
                                     scoringArm.WholeArmTransfer(),
@@ -60,6 +61,7 @@ public class TestSubsystems extends LinearOpMode{
                                     intakeArm.IntakePickup(),
                                     new SleepAction(0.5),
                                     intakeArm.IntakeTransfer(),
+                                    new SleepAction(0.2),
                                     horizontalSlides.HorizontalRetract(),
                                     new SleepAction(0.5),
                                     scoringArm.WholeArmTransfer(),
@@ -80,6 +82,14 @@ public class TestSubsystems extends LinearOpMode{
             verticalSlides.initialize(this);
             scoringArm.initialize(this);
             horizontalSlides.initialize(this);
+
+            Actions.runBlocking(
+                    new ParallelAction(
+                            horizontalSlides.HorizontalRetract(),
+                            scoringArm.StowWholeArm(),
+                            intakeArm.IntakeTransfer()
+                    )
+            );
         }
 
         waitForStart();
