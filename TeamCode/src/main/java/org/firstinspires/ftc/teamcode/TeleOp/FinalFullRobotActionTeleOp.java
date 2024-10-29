@@ -163,6 +163,17 @@ public class FinalFullRobotActionTeleOp extends OpMode {
             );
         }
 
+        // auto prep intake arm for transfer (vincent proofing in case let go of both, but press right trigger immediately after)
+        if (horizontalSlides.slidesMostlyRetracted && !currentGamepad1.right_bumper && !(currentGamepad1.right_trigger >= 0.1)) {
+            runningActions.add(
+                    new ParallelAction(
+                            new InstantAction(() -> intakeArm.claw.closeClaw()),
+                            new InstantAction(() -> intakeArm.arm.setArmTransfer()),
+                            new InstantAction(() -> intakeArm.wrist.setWristTransfer())
+                    )
+            );
+        }
+
         if (currentGamepad1.a && !previousGamepad1.a) {
             runningActions.add(
                     new SequentialAction(
@@ -191,7 +202,8 @@ public class FinalFullRobotActionTeleOp extends OpMode {
                                 new InstantAction(() -> intakeArm.arm.setArmGrab())
                         )
                 );
-            } else if (!currentGamepad1.right_bumper && previousGamepad1.right_bumper) {
+            }
+            else if (!currentGamepad1.right_bumper && previousGamepad1.right_bumper) {
                 runningActions.add(
                         new SequentialAction(
                                 new InstantAction(() -> intakeArm.claw.closeClaw()),
