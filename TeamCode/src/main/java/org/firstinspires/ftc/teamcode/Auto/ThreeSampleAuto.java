@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode.Auto;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.Action;
-import com.acmerobotics.roadrunner.InstantAction;
 import com.acmerobotics.roadrunner.ParallelAction;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.SequentialAction;
@@ -14,27 +13,27 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.Roadrunner.MecanumDrive;
-import org.firstinspires.ftc.teamcode.Subsystems.ScoringArm;
-import org.firstinspires.ftc.teamcode.Subsystems.VerticalSlides;
 import org.firstinspires.ftc.teamcode.Subsystems.HorizontalSlides;
 import org.firstinspires.ftc.teamcode.Subsystems.IntakeArm;
+import org.firstinspires.ftc.teamcode.Subsystems.ScoringArm;
+import org.firstinspires.ftc.teamcode.Subsystems.VerticalSlides;
 
 @Config
-@Autonomous(name = "1+3 Auto", group = "Autonomous")
-public class SampleOnlyAuto extends LinearOpMode{
+@Autonomous(name = "1+3 Auto", group = "Autonomous", preselectTeleOp = "FinalFullRobotActionTeleOp")
+public class ThreeSampleAuto extends LinearOpMode{
 
     public static double startX = -8;
     public static double startY = -63.5;
     public static double startHeading = Math.toRadians(-90);
     public static double scorePreloadX = 0;
     public static double scorePreloadY = -38;
-    public static double intake1X = -52;
-    public static double intake1Y = -40;
-    public static double scoreBucketX = -57;
-    public static double scoreBucketY = -57;
-    public static double intake2X = -60;
-    public static double intake2Y = -40;
-    public static double intake3X = -53;
+    public static double intake1X = -51;
+    public static double intake1Y = -48.5;
+    public static double scoreBucketX = -58;
+    public static double scoreBucketY = -56;
+    public static double intake2X = -59;
+    public static double intake2Y = -48.5;
+    public static double intake3X = -45;
     public static double intake3Y = -25;
     public static double parkX = -30;
     public static double parkY = -18;
@@ -50,7 +49,8 @@ public class SampleOnlyAuto extends LinearOpMode{
         HorizontalSlides horizontalSlides = new HorizontalSlides();
 
 
-        TrajectoryActionBuilder move2 = drive.actionBuilder(startPose)
+        TrajectoryActionBuilder traj = drive.actionBuilder(startPose)
+                //extend
                 .afterTime(0, () -> {
                     Actions.runBlocking(
                             new ParallelAction(
@@ -61,6 +61,7 @@ public class SampleOnlyAuto extends LinearOpMode{
                     );
                 })
                 .strafeTo(new Vector2d(scorePreloadX, scorePreloadY))
+                //clip
                 .afterTime( 0.5, () -> {
                     Actions.runBlocking(
                             new SequentialAction(
@@ -73,117 +74,124 @@ public class SampleOnlyAuto extends LinearOpMode{
                 .waitSeconds(1)
                 .afterTime(0, () -> {
                     Actions.runBlocking(
-                            new SequentialAction(
-                                    intakeArm.IntakeHover()
+                            new ParallelAction(
+                                    intakeArm.IntakeHover(),
+                                    horizontalSlides.HorizontalExtend()
                             )
                     );
                 })
                 .strafeToLinearHeading(new Vector2d(intake1X, intake1Y), Math.toRadians(90))
+                //first intake
                 .afterTime( 0, () -> {
                     Actions.runBlocking(
                             new SequentialAction(
-                                    //scoringArm.ArmStow(),
                                     intakeArm.IntakePickup(),
                                     new SleepAction(0.5),
                                     intakeArm.IntakeTransfer(),
-                                    new SleepAction(0.5),
-                                    scoringArm.WholeArmTransfer()
-                            )
-                    );
-                })
-                .afterTime( 2.5, () -> {
-                    Actions.runBlocking(
-                            new SequentialAction(
+                                    new SleepAction(0.2),
+                                    horizontalSlides.HorizontalRetract(),
+                                    new SleepAction(0.1),
+                                    scoringArm.WholeArmTransfer(),
                                     intakeArm.ClawOpen(),
-                                    new SleepAction(0.5),
-                                    verticalSlides.LiftUpToHighBucket(),
-                                    scoringArm.ArmScoreBucket()
-                            )
-                    );
-                })
-                .waitSeconds(3)
-                .strafeToLinearHeading(new Vector2d(scoreBucketX, scoreBucketY), Math.toRadians(45))
-                .afterTime( 0.5, () -> {
-                    Actions.runBlocking(
-                            new SequentialAction(
-                                    scoringArm.DropBucket(),
-                                    intakeArm.IntakeHover()
+                                    new ParallelAction(
+                                            verticalSlides.LiftUpToHighBucket(),
+                                            scoringArm.ArmScoreBucket()
+                                    )
                             )
                     );
                 })
                 .waitSeconds(1)
+                .strafeToLinearHeading(new Vector2d(scoreBucketX, scoreBucketY), Math.toRadians(45))
+                //first bucket
+                .afterTime( 0.2, () -> {
+                    Actions.runBlocking(
+                            new ParallelAction(
+                                    scoringArm.DropBucket(),
+                                    intakeArm.IntakeHover(),
+                                    horizontalSlides.HorizontalExtend()
+                            )
+                    );
+                })
+                .waitSeconds(0.5)
                 .strafeToLinearHeading(new Vector2d(intake2X, intake2Y), Math.toRadians(90))
+                //second intake
                 .afterTime( 0, () -> {
                     Actions.runBlocking(
-                            new SequentialAction(
+                            new ParallelAction(
                                     verticalSlides.Retract(),
                                     scoringArm.StowWholeArm(),
-                                    intakeArm.IntakePickup(),
-                                    new SleepAction(0.5),
-                                    intakeArm.IntakeTransfer(),
-                                    new SleepAction(0.5),
-                                    scoringArm.WholeArmTransfer()
+                                    new SequentialAction(
+                                            intakeArm.IntakePickup(),
+                                            new SleepAction(0.5),
+                                            intakeArm.IntakeTransfer(),
+                                            new SleepAction(0.2),
+                                            horizontalSlides.HorizontalRetract(),
+                                            new SleepAction(0.5),
+                                            scoringArm.WholeArmTransfer(),
+                                            intakeArm.ClawOpen(),
+                                            new ParallelAction(
+                                                verticalSlides.LiftUpToHighBucket(),
+                                                scoringArm.ArmScoreBucket()
+                                            )
+                                    )
                             )
+
                     );
                 })
-                .afterTime( 2.5, () -> {
-                    Actions.runBlocking(
-                            new SequentialAction(
-                                    intakeArm.ClawOpen(),
-                                    new SleepAction(0.2),
-                                    verticalSlides.LiftUpToHighBucket(),
-                                    scoringArm.ArmScoreBucket()
-                            )
-                    );
-                })
-                .waitSeconds(3)
+                .waitSeconds(1)
                 .strafeToLinearHeading(new Vector2d(scoreBucketX, scoreBucketY), Math.toRadians(45))
-                .afterTime( 0.5, () -> {
+                //second bucket
+                .afterTime( 0.2, () -> {
+                    Actions.runBlocking(
+                            new ParallelAction(
+                                    scoringArm.DropBucket(),
+                                    intakeArm.IntakeHoverPerpendicular(),
+                                    horizontalSlides.HorizontalExtend()
+                            )
+                    );
+                })
+                .waitSeconds(0.5)
+                .strafeToLinearHeading(new Vector2d(intake3X, intake3Y), Math.toRadians(180))
+                //third intake
+                .afterTime( 0, () -> {
+                    Actions.runBlocking(
+                            new ParallelAction(
+                                    verticalSlides.Retract(),
+                                    scoringArm.StowWholeArm(),
+                                    new SequentialAction(
+                                            intakeArm.IntakePickup(),
+                                            new SleepAction(0.5),
+                                            intakeArm.IntakeTransfer(),
+                                            new SleepAction(0.2),
+                                            horizontalSlides.HorizontalRetract(),
+                                            new SleepAction(0.5),
+                                            scoringArm.WholeArmTransfer(),
+                                            intakeArm.ClawOpen(),
+                                            new ParallelAction(
+                                                    verticalSlides.LiftUpToHighBucket(),
+                                                    scoringArm.ArmScoreBucket()
+                                            )
+                                    )
+                            )
+
+                    );
+                })
+                .waitSeconds(1)
+                .strafeToLinearHeading(new Vector2d(scoreBucketX, scoreBucketY), Math.toRadians(45))
+                //third bucket
+                .afterTime( 0.2, () -> {
                     Actions.runBlocking(
                             new SequentialAction(
                                     scoringArm.DropBucket()
-                                    //intakeArm.IntakeHoverPerpendicular()
                             )
                     );
                 })
-                .waitSeconds(1)
-//                .strafeToLinearHeading(new Vector2d(intake3X, intake3Y), Math.toRadians(180))
-//                .afterTime(0.5, () -> {
-//                    Actions.runBlocking(
-//                            new SequentialAction(
-//                                    verticalSlides.Retract(),
-//                                    intakeArm.IntakePickup(),
-//                                    new SleepAction(0.5),
-//                                    intakeArm.IntakeTransfer()
-//                            )
-//                    );
-//                })
-//                .afterTime( 2, () -> {
-//                    Actions.runBlocking(
-//                            new SequentialAction(
-//                                    scoringArm.WholeArmTransfer(),
-//                                    intakeArm.ClawOpen(),
-//                                    new SleepAction(0.2),
-//                                    verticalSlides.LiftUpToHighBucket(),
-//                                    scoringArm.ArmScoreBucket()
-//                            )
-//                    );
-//                })
-//                .waitSeconds(3)
-//                .strafeToLinearHeading(new Vector2d(scoreBucketX, scoreBucketY), Math.toRadians(45))
-//                .afterTime( 0.2, () -> {
-//                    Actions.runBlocking(
-//                            new SequentialAction(
-//                                    scoringArm.StowWholeArm()
-//                            )
-//                    );
-//                })
-                //.waitSeconds(1)
+                .waitSeconds(0.5)
                 .afterTime( 0.2, () -> {
                     Actions.runBlocking(
                             new SequentialAction(
                                     verticalSlides.Retract(),
-                                    scoringArm.ArmInitPosition()
+                                    scoringArm.StowWholeArm()
                             )
                     );
                 })
@@ -210,11 +218,17 @@ public class SampleOnlyAuto extends LinearOpMode{
 
         if (isStopRequested()) return;
 
-        Action autoTrajectoryTest = move2.build();
+        Action threeSampleTrajectory = traj.build();
 
         Actions.runBlocking(
                 new SequentialAction(
-                        autoTrajectoryTest
+                        threeSampleTrajectory,
+                        new ParallelAction(
+                            verticalSlides.Retract(),
+                            horizontalSlides.HorizontalRetract(),
+                            scoringArm.ArmInitPosition(),
+                            intakeArm.IntakeTransfer()
+                        )
                 )
         );
     }
