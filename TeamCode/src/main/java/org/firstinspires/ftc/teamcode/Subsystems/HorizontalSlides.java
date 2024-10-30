@@ -140,6 +140,50 @@ public class HorizontalSlides {
         opmode.telemetry.addData("Encoder Position", slideMotor.getCurrentPosition());
     }
 
+    public void operateIncremental() {
+
+        if (opmode.gamepad1.x) {
+            extend();
+        }
+        else if (opmode.gamepad1.y) {
+            retract();
+        }
+
+        slidePower = -1 * opmode.gamepad1.right_stick_y;
+        if (Math.abs(slidePower) > 0.05) {
+            // if position positive, then can move freely
+            if (slideMotor.getCurrentPosition() > lowerLimit) {
+                slideMotor.setPower(slidePower * slideScalar);
+                target = slideMotor.getCurrentPosition();
+            }
+            // if position negative, but want to move positive, then can move
+            else if (slideMotor.getCurrentPosition() <= lowerLimit && slidePower > 0) {
+                slideMotor.setPower(slidePower * slideScalar);
+                target = slideMotor.getCurrentPosition();
+            }
+            // if out of range, sets target to back in range
+            if (slideMotor.getCurrentPosition() > upperLimit) {
+                target = upperLimit;
+            }
+            // if out of range, sets target to back in range
+            else if (slideMotor.getCurrentPosition() < lowerLimit) {
+                target = lowerLimit;
+            }
+        }
+        // PID control
+        else {
+            PIDPower = PIDControl(target, slideMotor);
+            slideMotor.setPower(PIDPower);
+        }
+
+        // updates boolean
+        slidesRetracted = slideMotor.getCurrentPosition() < retractedThreshold;
+
+        opmode.telemetry.addData("PID Power", PIDPower);
+        opmode.telemetry.addData("Slide Target", target);
+        opmode.telemetry.addData("Encoder Position", slideMotor.getCurrentPosition());
+    }
+
     private double PIDControl(double target, DcMotorEx motor) {
         // PID logic and then return the output
         // obtain the encoder position

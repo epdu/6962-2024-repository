@@ -63,6 +63,40 @@ public class IntakeArm {
         opmode.telemetry.addData("Claw Pos: ", claw.claw.getPosition());
     }
 
+    public void operateIncremental() {
+
+        if (opmode.gamepad1.a) {
+            arm.setArmHover();
+            wrist.setWristIntake();
+            claw.openClaw();
+        }
+        else if (opmode.gamepad1.b) {
+            arm.setArmTransfer();
+            wrist.setWristTransfer();
+            claw.closeClaw();
+        }
+
+        if (opmode.gamepad1.left_bumper) { claw.incrementalClaw(-1); }
+        else if (opmode.gamepad1.right_bumper) { claw.incrementalClaw(1); }
+
+        wrist.incrementalWristFlip(getSign(-opmode.gamepad1.left_stick_y));
+
+        if (opmode.gamepad1.dpad_left) {
+            wrist.incrementalWristRotateTest(1);
+        }
+        else if (opmode.gamepad1.dpad_right) {
+            wrist.incrementalWristRotateTest(-1);
+        }
+
+        if (opmode.gamepad1.dpad_up) { arm.incrementalArm(-1); }
+        else if (opmode.gamepad1.dpad_down) { arm.incrementalArm(1); }
+
+        opmode.telemetry.addData("Arm Pos: ", arm.arm.getPosition());
+        opmode.telemetry.addData("Flip Wrist Pos: ", wrist.wristFlip.getPosition());
+        opmode.telemetry.addData("Rotate Wrist Pos: ", wrist.wristRotate.getPosition());
+        opmode.telemetry.addData("Claw Pos: ", claw.claw.getPosition());
+    }
+
     // Claw Subsystem Class
     public static class Claw {
         public Servo claw;

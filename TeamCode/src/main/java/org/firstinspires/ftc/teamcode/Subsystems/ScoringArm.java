@@ -96,6 +96,39 @@ public class ScoringArm {
         opmode.telemetry.addData("Claw Pos: ", claw.claw.getPosition());
     }
 
+    public void operateIncremental() {
+        if (opmode.gamepad2.left_bumper) {
+            claw.incremental(-1);
+        }
+        else if (opmode.gamepad2.right_bumper) {
+            claw.incremental(1);
+        }
+
+        wrist.incrementalWristTurn(getSign(opmode.gamepad2.left_stick_y));
+        wrist.incrementalWristRotate(getSign(opmode.gamepad2.left_stick_x));
+
+        if (opmode.gamepad2.dpad_up) {
+            arm.incrementalArm(-1);
+        } else if (opmode.gamepad2.dpad_down) {
+            arm.incrementalArm(1);
+        }
+        if (opmode.gamepad2.b) {
+            wrist.setWristTransfer();
+            arm.setArmTransfer();
+            claw.openClaw();
+        }
+        else if (opmode.gamepad2.a) {
+            wrist.setWristScoringBucket();
+            arm.setArmScoreBucket();
+            claw.closeClaw();
+        }
+
+        opmode.telemetry.addData("Scoring Arm Pos: ", arm.arm.getPosition());
+        opmode.telemetry.addData("Right Wrist Pos: ", wrist.wristR.getPosition());
+        opmode.telemetry.addData("Left Wrist Pos: ", wrist.wristL.getPosition());
+        opmode.telemetry.addData("Scoring Claw Pos: ", claw.claw.getPosition());
+    }
+
     // Claw Subsystem Class
     public static class Claw {
         public Servo claw;

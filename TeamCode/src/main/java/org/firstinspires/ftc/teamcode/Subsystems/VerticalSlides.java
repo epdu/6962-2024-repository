@@ -154,6 +154,48 @@ public class VerticalSlides
         }
     }
 
+    public void operateIncremental() {
+
+        if (opmode.gamepad2.y) {
+            raiseToHighBucket();
+        }
+        else if (opmode.gamepad2.x) {
+            retract();
+        }
+
+        slidePower = -1 * opmode.gamepad2.right_stick_y;
+        if (Math.abs(slidePower) > 0.05)
+        {
+            // if position positive, then can move freely
+            if (rightSlideMotor.getCurrentPosition() > lowerLimit) {
+                leftSlideMotor.setPower(slidePower * slideScalar);
+                rightSlideMotor.setPower(slidePower * slideScalar);
+                target = rightSlideMotor.getCurrentPosition();
+            }
+            // if position negative, but want to move positive, then can move
+            else if (leftSlideMotor.getCurrentPosition() <= lowerLimit && slidePower > 0)
+            {
+                leftSlideMotor.setPower(slidePower * slideScalar);
+                rightSlideMotor.setPower(slidePower * slideScalar);
+                target = rightSlideMotor.getCurrentPosition();
+            }
+
+            // if out of range, sets target to back in range
+            if (rightSlideMotor.getCurrentPosition() > upperLimit)
+            {
+                target = upperLimit;
+            }
+            else if (rightSlideMotor.getCurrentPosition() < lowerLimit)
+            {
+                target = lowerLimit;
+            }
+        }
+
+        opmode.telemetry.addData("Vertical Encoder Position:", rightSlideMotor.getCurrentPosition());
+        opmode.telemetry.addData("Vertical Slide Target:", target);
+        opmode.telemetry.addData("Vertical Slide Power:", slidePower);
+    }
+
     private double PIDControl(int target, DcMotorEx motor)
     {
         // PID logic and then return the output

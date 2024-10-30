@@ -19,21 +19,21 @@ import org.firstinspires.ftc.teamcode.Subsystems.ScoringArm;
 import org.firstinspires.ftc.teamcode.Subsystems.VerticalSlides;
 
 @Config
-@Autonomous(name = "0+4 Auto", group = "Autonomous", preselectTeleOp = "FinalFullRobotActionTeleOp")
+@Autonomous(name = "0+4 Auto", group = "Autonomous", preselectTeleOp = "FINAL Full Robot TeleOp")
 public class FourSampleAuto extends LinearOpMode{
 
     public static double startX = -32;
     public static double startY = -63.5;
     public static double startHeading = Math.toRadians(90);
     public static double scorePreloadX = 0;
-    public static double scorePreloadY = -38;
+    public static double scorePreloadY = -41;
     public static double intake1X = -51;
-    public static double intake1Y = -48.5;
+    public static double intake1Y = -49;
     public static double scoreBucketX = -58;
     public static double scoreBucketY = -56;
-    public static double intake2X = -59;
-    public static double intake2Y = -48.5;
-    public static double intake3X = -45;
+    public static double intake2X = -60;
+    public static double intake2Y = -49;
+    public static double intake3X = -46;
     public static double intake3Y = -25;
     public static double parkX = -30;
     public static double parkY = -18;
