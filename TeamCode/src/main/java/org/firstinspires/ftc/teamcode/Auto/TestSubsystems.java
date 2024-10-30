@@ -35,45 +35,10 @@ public class TestSubsystems extends LinearOpMode{
 
         TrajectoryActionBuilder move3 = drive.actionBuilder(startPose)
                 .afterTime(0, () -> {
-                    Actions.runBlocking(
-                            new SequentialAction(
-                                    intakeArm.IntakeHoverPerpendicular(),
-                                    horizontalSlides.HorizontalExtend(),
-                                    new SleepAction(2),
-                                    intakeArm.IntakePickup(),
-                                    new SleepAction(0.5),
-                                    intakeArm.IntakeTransfer(),
-                                    new SleepAction(0.2),
-                                    horizontalSlides.HorizontalRetract(),
-                                    new SleepAction(0.5),
-                                    scoringArm.WholeArmTransfer(),
-                                    intakeArm.ClawOpen(),
-                                    new SleepAction(1),
-                                    verticalSlides.LiftUpToHighBucket(),
-                                    scoringArm.ArmScoreBucket(),
-                                    new SleepAction(2),
-                                    scoringArm.DropBucket(),
-                                    intakeArm.IntakeHover(),
-                                    horizontalSlides.HorizontalExtend(),
-                                    new SleepAction(2),
-                                    verticalSlides.Retract(),
-                                    scoringArm.StowWholeArm(),
-                                    intakeArm.IntakePickup(),
-                                    new SleepAction(0.5),
-                                    intakeArm.IntakeTransfer(),
-                                    new SleepAction(0.2),
-                                    horizontalSlides.HorizontalRetract(),
-                                    new SleepAction(0.5),
-                                    scoringArm.WholeArmTransfer(),
-                                    intakeArm.ClawOpen(),
-                                    new SleepAction(1),
-                                    verticalSlides.LiftUpToHighBucket(),
-                                    scoringArm.ArmScoreBucket(),
-                                    new SleepAction(2),
-                                    scoringArm.DropBucket(),
-                                    scoringArm.StowWholeArm(),
-                                    verticalSlides.Retract()
-                            )
+                    new SequentialAction(
+                        verticalSlides.LiftUpToClip(),
+                        new SleepAction(5),
+                        verticalSlides.Retract()
                     );
                 });
 

@@ -288,5 +288,7 @@ public class VerticalSlides
     public Action RTP() {
         return new RTP(200);
     }
+
+    public Action PIDTest() {return new RTP(prepClipPos);}
 }
 
