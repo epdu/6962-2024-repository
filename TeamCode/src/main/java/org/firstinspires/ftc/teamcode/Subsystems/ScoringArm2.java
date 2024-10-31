@@ -113,6 +113,10 @@
 //        public void incremental(int sign) {
 //            claw.setPosition(claw.getPosition() + sign * clawIncrement);
 //        }
+//
+//        public double telemetryClawPos() {
+//            return claw.getPosition();
+//        }
 //    }
 //
 //    // Arm Subsystem Class
@@ -188,6 +192,10 @@
 //        public void setArmStow() {
 //            setArmPosition(armStowPosition);
 //        }
+//
+//        public double telemetryArmPos() {
+//            return arm.getPosition();
+//        }
 //    }
 //
 //    // Wrist Subsystem Class
@@ -244,7 +252,11 @@
 //        public void incremental(int sign) {
 //            wrist.setPosition(wrist.getPosition() + sign * wristIncrement);
 //        }
-//    }
+//
+//        public double telemetryWristPos() {
+//            return wrist.getPosition();
+//}
+//        }
 //
 //    // Action classes and functions for auto
 //    public class DropBucket implements Action {

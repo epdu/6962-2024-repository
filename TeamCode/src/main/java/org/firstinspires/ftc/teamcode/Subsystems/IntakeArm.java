@@ -36,9 +36,7 @@ public class IntakeArm {
 
     // Operates the claw for Vincent configuration
     public void operateVincent() {
-//        if (opmode.gamepad1.left_bumper) {
-//            claw.toggleClaw();
-//        }
+        // empty, not used in final teleop
     }
 
     // Operates the test mode for controlling the claw, arm, and wrist
@@ -61,6 +59,7 @@ public class IntakeArm {
         opmode.telemetry.addData("Flip Wrist Pos: ", wrist.wristFlip.getPosition());
         opmode.telemetry.addData("Rotate Wrist Pos: ", wrist.wristRotate.getPosition());
         opmode.telemetry.addData("Claw Pos: ", claw.claw.getPosition());
+        opmode.telemetry.update();
     }
 
     public void operateIncremental() {
@@ -95,6 +94,7 @@ public class IntakeArm {
         opmode.telemetry.addData("Flip Wrist Pos: ", wrist.wristFlip.getPosition());
         opmode.telemetry.addData("Rotate Wrist Pos: ", wrist.wristRotate.getPosition());
         opmode.telemetry.addData("Claw Pos: ", claw.claw.getPosition());
+        opmode.telemetry.update();
     }
 
     // Claw Subsystem Class

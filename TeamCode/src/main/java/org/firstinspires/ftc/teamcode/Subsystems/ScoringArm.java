@@ -1,12 +1,13 @@
 package org.firstinspires.ftc.teamcode.Subsystems;
 
-import com.acmerobotics.dashboard.config.Config;
-import com.acmerobotics.roadrunner.SleepAction;
-import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.acmerobotics.roadrunner.Action;
-import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import androidx.annotation.NonNull;
+
+import com.acmerobotics.dashboard.config.Config;
+import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
+import com.acmerobotics.roadrunner.Action;
+import com.acmerobotics.roadrunner.SleepAction;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.Util.RobotHardware;
 
@@ -34,31 +35,18 @@ public class ScoringArm {
     }
 
     public void operateVincent() {
-        if (opmode.gamepad1.left_bumper) {
-            claw.toggleClaw();
-        }
-
-        // Adding telemetry data for debugging
-        opmode.telemetry.addData("Arm Pos: ", arm.arm.getPosition());
-        opmode.telemetry.addData("Wrist Transferring Bool", wrist.isWristTransferring);
-        opmode.telemetry.addData("Arm Transferring Bool: ", arm.armPos);
-        opmode.telemetry.addData("Right Wrist Pos: ", wrist.wristR.getPosition());
-        opmode.telemetry.addData("Left Wrist Pos: ", wrist.wristL.getPosition());
-        opmode.telemetry.addData("Claw Pos: ", claw.claw.getPosition());
-        opmode.telemetry.addData("Claw Open: ", claw.isClawOpen);
+        // nothing, unused during teleop
     }
 
     public void operateTest() {
         // gamepad 2, all incrementals to find servo values first try
         if (opmode.gamepad2.left_bumper) {
             claw.incremental(-1);
-        }
-        else if (opmode.gamepad2.right_bumper) {
+        } else if (opmode.gamepad2.right_bumper) {
             claw.incremental(1);
         }
 
-        wrist.incrementalWristTurn(getSign(opmode.gamepad2.left_stick_y));
-        wrist.incrementalWristRotate(getSign(opmode.gamepad2.left_stick_x));
+        wrist.incremental(getSign(-opmode.gamepad2.left_stick_y));
 
         if (opmode.gamepad2.dpad_up) {
             arm.incrementalArm(-1);
@@ -66,33 +54,16 @@ public class ScoringArm {
             arm.incrementalArm(1);
         }
 
-        if (opmode.gamepad2.x) {wrist.setWristTransfer();}
+        if (opmode.gamepad2.y) {wrist.setWristTransfer();}
 
         // gamepad 1
-        if (opmode.gamepad1.y) {
-//            arm.setArmScoreBucket();
-            wrist.setWristScoringBucket();
-        }
-        else if (opmode.gamepad1.a) {
-//            arm.setArmScoreBucket();
-            wrist.setWristScoringClip();
-        }
-        else if (opmode.gamepad1.x) {
-//            wholeArmTransfer();
-            wrist.setWristTransfer();
-        }
-        else if (opmode.gamepad1.dpad_down) {
-            wrist.setWristGrabClip();
-        }
-
         if (opmode.gamepad1.right_bumper) {
             claw.toggleClaw();
         }
 
         // Adding telemetry data for debugging
         opmode.telemetry.addData("Arm Pos: ", arm.arm.getPosition());
-        opmode.telemetry.addData("Right Wrist Pos: ", wrist.wristR.getPosition());
-        opmode.telemetry.addData("Left Wrist Pos: ", wrist.wristL.getPosition());
+        opmode.telemetry.addData("Right Wrist Pos: ", wrist.wrist.getPosition());
         opmode.telemetry.addData("Claw Pos: ", claw.claw.getPosition());
     }
 
@@ -104,8 +75,7 @@ public class ScoringArm {
             claw.incremental(1);
         }
 
-        wrist.incrementalWristTurn(getSign(opmode.gamepad2.left_stick_y));
-        wrist.incrementalWristRotate(getSign(opmode.gamepad2.left_stick_x));
+        wrist.incremental(getSign(opmode.gamepad2.left_stick_y));
 
         if (opmode.gamepad2.dpad_up) {
             arm.incrementalArm(-1);
@@ -124,9 +94,9 @@ public class ScoringArm {
         }
 
         opmode.telemetry.addData("Scoring Arm Pos: ", arm.arm.getPosition());
-        opmode.telemetry.addData("Right Wrist Pos: ", wrist.wristR.getPosition());
-        opmode.telemetry.addData("Left Wrist Pos: ", wrist.wristL.getPosition());
+        opmode.telemetry.addData("Scoring Wrist Pos: ", wrist.wrist.getPosition());
         opmode.telemetry.addData("Scoring Claw Pos: ", claw.claw.getPosition());
+        opmode.telemetry.update();
     }
 
     // Claw Subsystem Class
@@ -167,6 +137,10 @@ public class ScoringArm {
         public void incremental(int sign) {
             claw.setPosition(claw.getPosition() + sign * clawIncrement);
         }
+
+        public double telemetryClawPos() {
+            return claw.getPosition();
+        }
     }
 
     // Arm Subsystem Class
@@ -181,7 +155,9 @@ public class ScoringArm {
         public static double armScoringPosition = 0.46;
         public static double armScoringClipPosition = 0.43;
         public static double armTransferPosition = 0.7622;
-        public static double armGrabClipPosition = 0;
+        public static double armGrabClipWallPosition = 0;
+        public static double armGrabClipFloorPosition = 0;
+        public static double armGrabClipFloorHoverPosition = 0;
         public static double armInitPosition = 0.4956;
         public static double armStowPosition = 0.6183;
         public static double armIncrement = 0.001;
@@ -189,6 +165,7 @@ public class ScoringArm {
         public Arm() {}
         public void initialize(RobotHardware hardware) {
             this.arm = hardware.cArmServo;
+            arm.setDirection(Servo.Direction.REVERSE);
         }
 
         public void setArmPosition(double position) {
@@ -211,7 +188,7 @@ public class ScoringArm {
         }
 
         public void setArmGrabClip() {
-            setArmPosition(armGrabClipPosition);
+            setArmPosition(armGrabClipWallPosition);
             armPos = STATE.GRABBING_CLIP;
         }
 
@@ -235,83 +212,55 @@ public class ScoringArm {
 
     // Wrist Subsystem Class
     public static class Wrist {
-        public Servo wristL, wristR;
+        public Servo wrist;
         public boolean isWristTransferring = true;
-        public static double wristLTransferPosition = 0.0844;
-        public static double wristRTransferPosition = 0.0872;
-        public static double wristLScoreBucketPosition = 0.2156;
-        public static double wristRScoreBucketPosition = 0.89;
-        public static double wristLScoreClipPosition = 0.645;
-        public static double wristRScoreClipPosition = 0.645;
-        public static double wristLGrabClipPosition = 0.1794;
-        public static double wristRGrabClipPosition = 0.1794;
+        public static double wristTransferPosition = 0.0844;
+        public static double wristScoreBucketPosition = 0.2156;
+        public static double wristScoreClipPosition = 0.645;
+        public static double wristGrabClipWallPosition = 0.1794;
+        public static double wristGrabClipFloorPosition = 0;
+        public static double wristGrabClipFloorHoverPosition = 0;
         public static double wristIncrement = 0.001;
 
         public Wrist() {}
         public void initialize(RobotHardware hardware) {
-            this.wristL = hardware.cWristServoL;
-            this.wristR = hardware.cWristServoR;
-            wristR.setDirection(Servo.Direction.REVERSE);
+            this.wrist = hardware.cWristServo;
+//            wrist.setDirection(Servo.Direction.REVERSE);
         }
 
         // Sets wrist to transfer position
         public void setWristTransfer() {
-            wristL.setPosition(wristLTransferPosition);
-            wristR.setPosition(wristRTransferPosition);
+            wrist.setPosition(wristTransferPosition);
             isWristTransferring = true;
         }
 
         // Sets wrist to scoring position
         public void setWristScoringBucket() {
-            wristL.setPosition(wristLScoreBucketPosition);
-            wristR.setPosition(wristRScoreBucketPosition);
+            wrist.setPosition(wristScoreBucketPosition);
             isWristTransferring = false;
         }
 
         public void setWristScoringClip() {
-            wristL.setPosition(wristLScoreClipPosition);
-            wristR.setPosition(wristRScoreClipPosition);
+            wrist.setPosition(wristScoreClipPosition);
             isWristTransferring = false;
         }
 
         public void setWristGrabClip() {
-            wristL.setPosition(wristLGrabClipPosition);
-            wristR.setPosition(wristRGrabClipPosition);
+            wrist.setPosition(wristGrabClipWallPosition);
             isWristTransferring = false;
         }
 
-
-
-        // Incremental wrist rotation (both servos rotate in same direction)
-        public void incrementalWristRotate(int sign) {
-            wristR.setPosition(wristR.getPosition() + sign * wristIncrement);
-            wristL.setPosition(wristL.getPosition() - sign * wristIncrement);
-        }
-
         // Incremental wrist turn (servos rotate in opposite directions)
-        public void incrementalWristTurn(int sign) {
-            wristR.setPosition(wristR.getPosition() + sign * wristIncrement);
-            wristL.setPosition(wristL.getPosition() + sign * wristIncrement);
+        public void incremental(int sign) {
+            wrist.setPosition(wrist.getPosition() + sign * wristIncrement);
         }
 
-        public void incrementalWristL(int sign) {
-            wristL.setPosition(wristL.getPosition() + sign * wristIncrement);
+        public double telemetryWristPos() {
+            return wrist.getPosition();
+}
         }
-
-        public void incrementalWristR(int sign) {
-            wristR.setPosition(wristR.getPosition() + sign * wristIncrement);
-        }
-
-        public double telemetryWristRPos() {
-            return wristR.getPosition();
-        }
-        public double telemetryWristLPos() {
-            return wristR.getPosition();
-        }
-    }
 
     // Action classes and functions for auto
-
     public class DropBucket implements Action {
         @Override
         public boolean run(@NonNull TelemetryPacket packet) {
@@ -412,5 +361,4 @@ public class ScoringArm {
     public int getSign(double input) {
         return input > 0 ? 1 : input == 0 ? 0 : -1;
     }
-
 }

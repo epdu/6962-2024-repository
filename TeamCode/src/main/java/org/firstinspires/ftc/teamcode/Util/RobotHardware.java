@@ -39,7 +39,7 @@ public class RobotHardware {
     public Servo iArmServo = null, iWristServoR = null, iWristServoF = null, iClawServo = null;
 
     // scoring arm
-    public Servo cWristServoR = null, cWristServoL = null, cArmServo = null, cClawServo = null;
+    public Servo cWristServo = null, cArmServo = null, cClawServo = null;
 
     public NavxMicroNavigationSensor navx;
 
@@ -59,10 +59,9 @@ public class RobotHardware {
         leftBackMotor = new MotorEx(hMap, "Bl/Le");
         rightBackMotor = new MotorEx(hMap, "Br/Fe");
 
-        cArmServo = hMap.get(Servo.class, "aServo");
-        cWristServoR = hMap.get(Servo.class, "cWristR");
-        cWristServoL = hMap.get(Servo.class, "cWristL");
-        cClawServo = hMap.get(Servo.class, "cServo");
+        cArmServo = hMap.get(Servo.class, "cArmServo");
+        cWristServo = hMap.get(Servo.class, "cWristServo");
+        cClawServo = hMap.get(Servo.class, "cClawServo");
 
         iArmServo = hMap.get(Servo.class, "iArmServo");
         iWristServoR = hMap.get(Servo.class, "iWristServoR");

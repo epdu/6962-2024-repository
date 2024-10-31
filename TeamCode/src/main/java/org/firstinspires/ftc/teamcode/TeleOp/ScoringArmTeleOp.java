@@ -72,8 +72,7 @@ public class ScoringArmTeleOp extends OpMode {
         telemetry.addData("Claw Open: ", scoringArm.claw.isClawOpen);
         telemetry.addData("Wrist Transferring", scoringArm.wrist.isWristTransferring);
         telemetry.addData("Arm Pos: ", scoringArm.arm.telemetryArmPos());
-        telemetry.addData("Wrist R Pos: ", scoringArm.wrist.telemetryWristRPos());
-        telemetry.addData("Wrist L Pos: ",scoringArm.wrist.telemetryWristLPos());
+        telemetry.addData("Wrist Pos: ", scoringArm.wrist.telemetryWristPos());
         telemetry.update();
     }
 
