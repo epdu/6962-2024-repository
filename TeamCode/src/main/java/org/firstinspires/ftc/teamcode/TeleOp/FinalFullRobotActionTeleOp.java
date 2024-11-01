@@ -13,6 +13,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Subsystems.HorizontalSlides;
 import org.firstinspires.ftc.teamcode.Subsystems.IntakeArm;
 import org.firstinspires.ftc.teamcode.Subsystems.Mecanum;
@@ -27,6 +28,7 @@ import java.util.List;
 public class FinalFullRobotActionTeleOp extends OpMode {
     // Action stuff
     private FtcDashboard dash = FtcDashboard.getInstance();
+    private Telemetry dashboardTelemetry = dash.getTelemetry();
     private List<Action> runningActions = new ArrayList<>();
     private List<LynxModule> allHubs;
 
@@ -334,7 +336,8 @@ public class FinalFullRobotActionTeleOp extends OpMode {
         }
 
         // loop time
-        telemetry.addData("Loop Times", elapsedtime.milliseconds());
+        dashboardTelemetry.addData("elapsed time (loop time)", elapsedtime.milliseconds());
+        dashboardTelemetry.update();
         elapsedtime.reset();
 
 //        // for linkage extendo

@@ -42,7 +42,6 @@ public class HorizontalSlidesTeleOp extends OpMode {
     @Override
     public void loop() {
         horizontalSlides.operateTest();
-        horizontalSlides.operateVincent();
         // Gamepad 1: (linkage and spooled)
         // Right trigger - exponential mapping control (be careful)
         // Gamepad 2:
