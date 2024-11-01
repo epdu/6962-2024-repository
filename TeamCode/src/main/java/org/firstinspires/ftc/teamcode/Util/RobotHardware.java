@@ -47,8 +47,7 @@ public class RobotHardware {
     public int cameraMonitorViewId;
 
     public GamepadEx gamepad1, gamepad2;
-    public CRServo hangServo1;
-    public CRServo hangServo2;
+    public CRServo hangServoL = null, hangServoR = null;
 
     public void init(@NonNull HardwareMap hardwareMap) {
         this.hMap = hardwareMap;
@@ -72,6 +71,9 @@ public class RobotHardware {
 
         vRslideMotor = hMap.get(DcMotorEx.class, "vRslide");
         vLslideMotor = hMap.get(DcMotorEx.class, "vLslide");
+
+        hangServoL = hMap.get(CRServo.class, "hangServoL");
+        hangServoR = hMap.get(CRServo.class, "hangServoR");
 
 //        webcam = hMap.get(WebcamName.class, "Webcam 1");
 //        cameraMonitorViewId = hMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hMap.appContext.getPackageName());

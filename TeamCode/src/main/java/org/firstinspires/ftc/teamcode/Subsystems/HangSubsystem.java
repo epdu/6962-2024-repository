@@ -7,12 +7,13 @@ import com.acmerobotics.roadrunner.SleepAction;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.teamcode.Util.RobotHardware;
 
 public class HangSubsystem {
     private final RobotHardware rHardware = new RobotHardware();
-    private CRServo hangServo1, hangServo2;
+    private CRServo hangServoL, hangServoR;
     private DcMotorEx slideMotor;
 
     private static final double CR_SERVO_POWER = 1.0;
@@ -29,11 +30,13 @@ public class HangSubsystem {
     public HangSubsystem() {}
     public void initialize(OpMode opmode) {
         rHardware.init(opmode.hardwareMap);
-        hangServo1 = rHardware.hangServo1;
-        hangServo2 = rHardware.hangServo2;
+        hangServoL = rHardware.hangServoL;
+        hangServoR = rHardware.hangServoR;
+//        hangServoL.setDirection(DcMotorSimple.Direction.REVERSE);
+        hangServoR.setDirection(DcMotorSimple.Direction.REVERSE);
         slideMotor = rHardware.hSlideMotor;
         stopServos();
-        slideMotor.setPower(0);
+//        slideMotor.setPower(0);
     }
 
 // hang sequence as an action
@@ -66,13 +69,13 @@ public class HangSubsystem {
 
     // Helper methods to control servos and slide motor
     private void runServos(double power) {
-        hangServo1.setPower(power);
-        hangServo2.setPower(power);
+        hangServoR.setPower(power);
+        hangServoL.setPower(power);
     }
 
     private void stopServos() {
-        hangServo1.setPower(0);
-        hangServo2.setPower(0);
+        hangServoR.setPower(0);
+        hangServoL.setPower(0);
     }
     public boolean isDeployed() {
         return deployed;
