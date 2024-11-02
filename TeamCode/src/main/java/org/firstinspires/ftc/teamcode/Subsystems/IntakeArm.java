@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.Subsystems;
 
 import androidx.annotation.NonNull;
 
+import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.ParallelAction;
@@ -10,12 +11,16 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.acmerobotics.roadrunner.Action;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Util.RobotHardware;
 
 @Config
 public class IntakeArm {
 
     OpMode opmode;
+
+    private FtcDashboard dash = FtcDashboard.getInstance();
+    private Telemetry dashboardTelemetry = dash.getTelemetry();
     public Claw claw = new Claw();
     public Arm arm = new Arm();
     public Wrist wrist = new Wrist();
@@ -74,9 +79,17 @@ public class IntakeArm {
             wrist.setWristTransfer();
             claw.closeClaw();
         }
+        else if (opmode.gamepad1.left_bumper) {
+            arm.setArmGrab();
+//            claw.closeClaw();
+        }
 
-        if (opmode.gamepad1.left_bumper) { claw.incrementalClaw(-1); }
-        else if (opmode.gamepad1.right_bumper) { claw.incrementalClaw(1); }
+        if (opmode.gamepad1.y) { claw.closeClaw(); }
+        if (opmode.gamepad1.x) { claw.openClaw(); }
+
+//        if (opmode.gamepad1.left_bumper) { claw.incrementalClaw(-1); }
+
+//        else if (opmode.gamepad1.right_bumper) { claw.incrementalClaw(1); }
 
         wrist.incrementalWristFlip(getSign(-opmode.gamepad1.left_stick_y));
 
@@ -94,6 +107,9 @@ public class IntakeArm {
         opmode.telemetry.addData("Flip Wrist Pos: ", wrist.wristFlip.getPosition());
         opmode.telemetry.addData("Rotate Wrist Pos: ", wrist.wristRotate.getPosition());
         opmode.telemetry.addData("Claw Pos: ", claw.claw.getPosition());
+        dashboardTelemetry.addData("Arm Pos: ", arm.arm.getPosition());
+        dashboardTelemetry.addData("Flip Wrist Pos: ", wrist.wristFlip.getPosition());
+        dashboardTelemetry.update();
         opmode.telemetry.update();
     }
 
@@ -101,8 +117,8 @@ public class IntakeArm {
     public static class Claw {
         public Servo claw;
         public boolean isClawOpen = true;
-        public static double clawClosedPosition = 0.8495;
-        public static double clawOpenPosition = 0.4211;
+        public static double clawClosedPosition = 0.4828;
+        public static double clawOpenPosition = 0.2567;
         public static double clawIncrement = 0.001;
 
         public Claw() {}
@@ -142,9 +158,9 @@ public class IntakeArm {
         public Servo arm;
         public boolean isArmTransferring = true;
         public boolean isArmHovering = false;
-        public static double armIntakeHoverPosition = 0.5683;
-        public static double armIntakeGrabPosition = 0.5017;
-        public static double armTransferPosition = 0.89;
+        public static double armIntakeHoverPosition = 0.2194;
+        public static double armIntakeGrabPosition = 0;
+        public static double armTransferPosition = 0.46;
         public static double armIncrement = 0.001;
 
         public Arm() {}
@@ -194,10 +210,10 @@ public class IntakeArm {
         public Servo wristRotate, wristFlip;
         public boolean isWristTransferring = true;
         public static double wristRotateTransferPosition = 0.5378;
-        public static double wristFlipTransferPosition = 0.3827;
+        public static double wristFlipTransferPosition = 0.3461;
         public static double wristRotateDefaultIntakePosition = 0.515;
         public static double wristRotateIntakePerpendicularPosition = 0.1972;
-        public static double wristFlipIntakePosition = 0.8433;
+        public static double wristFlipIntakePosition = 0.96;
         public static double wristTestIncrement = 0.001;
         public static double wristActualIncrement = 0.03;
 

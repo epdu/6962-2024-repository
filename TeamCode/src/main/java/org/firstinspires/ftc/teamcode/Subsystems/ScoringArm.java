@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.Subsystems;
 
 import androidx.annotation.NonNull;
 
+import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Action;
@@ -9,6 +10,7 @@ import com.acmerobotics.roadrunner.SleepAction;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Util.RobotHardware;
 
 @Config
@@ -17,6 +19,10 @@ public class ScoringArm {
     // Main ScoringArm Class that creates instances of the subsystems
     OpMode opmode;
     public Claw claw = new Claw();
+    private FtcDashboard dash = FtcDashboard.getInstance();
+
+    private Telemetry dashboardTelemetry = dash.getTelemetry();
+
     public Arm arm = new Arm();
     public Wrist wrist = new Wrist();
     private final RobotHardware rHardware = new RobotHardware();
@@ -96,6 +102,9 @@ public class ScoringArm {
         opmode.telemetry.addData("Scoring Arm Pos: ", arm.arm.getPosition());
         opmode.telemetry.addData("Scoring Wrist Pos: ", wrist.wrist.getPosition());
         opmode.telemetry.addData("Scoring Claw Pos: ", claw.claw.getPosition());
+        dashboardTelemetry.addData("Scoring Arm Pos: ", arm.arm.getPosition());
+        dashboardTelemetry.addData("Scoring Wrist Pos: ", wrist.wrist.getPosition());
+        dashboardTelemetry.update();
         opmode.telemetry.update();
     }
 
