@@ -57,6 +57,7 @@ public class IncrementalTeleOp extends OpMode {
         intakeArm.operateIncremental();
         horizontalSlides.operateIncremental();
         verticalSlides.operateIncremental();
+        telemetry.update();
 
     }
 }

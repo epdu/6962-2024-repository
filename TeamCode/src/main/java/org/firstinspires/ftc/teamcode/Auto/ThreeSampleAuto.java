@@ -191,11 +191,14 @@ public class ThreeSampleAuto extends LinearOpMode{
                     Actions.runBlocking(
                             new SequentialAction(
                                     verticalSlides.Retract(),
-                                    scoringArm.StowWholeArm()
+                                    scoringArm.ArmInitPosition(),
+                                    intakeArm.IntakeTransfer(),
+                                    horizontalSlides.HorizontalRetract()
                             )
                     );
                 })
-                .strafeToLinearHeading(new Vector2d(parkX, parkY), Math.toRadians(90));
+                .strafeToLinearHeading(new Vector2d(parkX, parkY), Math.toRadians(90))
+                ;
 
         while (!isStarted() && !opModeIsActive()) {
             intakeArm.initialize(this);
@@ -221,15 +224,7 @@ public class ThreeSampleAuto extends LinearOpMode{
         Action threeSampleTrajectory = traj.build();
 
         Actions.runBlocking(
-                new SequentialAction(
-                        threeSampleTrajectory,
-                        new ParallelAction(
-                            verticalSlides.Retract(),
-                            horizontalSlides.HorizontalRetract(),
-                            scoringArm.ArmInitPosition(),
-                            intakeArm.IntakeTransfer()
-                        )
-                )
+                threeSampleTrajectory
         );
     }
 }
