@@ -69,8 +69,8 @@ public class VerticalSlides
         leftSlideMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         rightSlideMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
 
-        leftSlideMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-//        rightSlideMotor.setDirection(DcMotorEx.Direction.REVERSE);
+//        leftSlideMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        rightSlideMotor.setDirection(DcMotorEx.Direction.REVERSE);
 
         leftSlideMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         rightSlideMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
