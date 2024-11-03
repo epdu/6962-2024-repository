@@ -152,6 +152,10 @@ public class VerticalSlides
                 target = lowerLimit;
             }
         }
+
+        opmode.telemetry.addData("Vertical Encoder Position:", rightSlideMotor.getCurrentPosition());
+        opmode.telemetry.addData("Vertical Slide Target:", target);
+        opmode.telemetry.addData("Vertical Slide Power:", slidePower);
     }
 
     public void operateIncremental() {
@@ -194,6 +198,7 @@ public class VerticalSlides
         opmode.telemetry.addData("Vertical Encoder Position:", rightSlideMotor.getCurrentPosition());
         opmode.telemetry.addData("Vertical Slide Target:", target);
         opmode.telemetry.addData("Vertical Slide Power:", slidePower);
+        opmode.telemetry.update();
     }
 
     private double PIDControl(int target, DcMotorEx motor)
