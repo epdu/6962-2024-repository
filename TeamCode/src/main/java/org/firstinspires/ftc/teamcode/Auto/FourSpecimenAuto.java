@@ -3,8 +3,11 @@ package org.firstinspires.ftc.teamcode.Auto;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.Action;
+import com.acmerobotics.roadrunner.InstantAction;
 import com.acmerobotics.roadrunner.ParallelAction;
 import com.acmerobotics.roadrunner.Pose2d;
+import com.acmerobotics.roadrunner.SequentialAction;
+import com.acmerobotics.roadrunner.SleepAction;
 import com.acmerobotics.roadrunner.TrajectoryActionBuilder;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
@@ -54,24 +57,131 @@ public class FourSpecimenAuto extends LinearOpMode {
         HorizontalSlides horizontalSlides = new HorizontalSlides();
 
         TrajectoryActionBuilder traj = drive.actionBuilder(startPose)
+                .afterTime(0, () -> {
+                    Actions.runBlocking(
+                            new ParallelAction(
+                                    verticalSlides.LiftUpToClip(),
+                                    scoringArm.ArmScoreClip(),
+                                    horizontalSlides.HorizontalRetract()
+                            )
+                    );
+                })
                 .strafeToConstantHeading(new Vector2d(scorePreloadX, scorePreloadY))
-                .waitSeconds(1)
+                .afterTime( 0.5, () -> {
+                    Actions.runBlocking(
+                            new ParallelAction(
+                                    scoringArm.StowWholeArm(),
+                                    verticalSlides.Retract()
+                            )
+                    );
+                })
+                .waitSeconds(0.5)
                 .strafeToConstantHeading(new Vector2d(coord1X, coord1Y))
                 .splineToConstantHeading(new Vector2d(push1X, push1Y), Math.toRadians(0))
                 .strafeToConstantHeading(new Vector2d(zone1X, zone1Y))
                 .splineToConstantHeading(new Vector2d(push2X, push2Y), Math.toRadians(0))
                 .strafeToConstantHeading(new Vector2d(zone2X, zone2Y))
+                .afterTime(0.5, () -> {
+                    Actions.runBlocking(
+                            new ParallelAction(
+                                    horizontalSlides.HorizontalExtend(),
+                                    intakeArm.IntakeHover()
+                            )
+                    );
+                })
                 .strafeToLinearHeading(new Vector2d(pickupX, pickupY), Math.toRadians(-45))
+                .afterTime(0, () -> {
+                    Actions.runBlocking(
+                            new SequentialAction(
+                                    intakeArm.IntakePickup(),
+                                    new SleepAction(0.2),
+                                    intakeArm.IntakeTransfer(),
+                                    new SleepAction(0.2),
+                                    horizontalSlides.HorizontalRetract(),
+                                    new SleepAction(0.1),
+                                    scoringArm.WholeArmTransfer(),
+                                    intakeArm.ClawOpen(),
+                                    new ParallelAction(
+                                            verticalSlides.LiftUpToClip(),
+                                            scoringArm.ArmScoreClip()
+                                    )
+                            )
+                    );
+                })
                 .waitSeconds(0.5)
                 .strafeToLinearHeading(new Vector2d(scoreX, scoreY), Math.toRadians(-90))
+                .afterTime( 0.5, () -> {
+                    Actions.runBlocking(
+                            new ParallelAction(
+                                    scoringArm.StowWholeArm(),
+                                    verticalSlides.Retract(),
+                                    horizontalSlides.HorizontalExtend(),
+                                    intakeArm.IntakeHover()
+                            )
+                    );
+                })
                 .waitSeconds(1)
                 .strafeToLinearHeading(new Vector2d(pickupX, pickupY), Math.toRadians(-45))
+                .afterTime(0, () -> {
+                    Actions.runBlocking(
+                            new SequentialAction(
+                                    intakeArm.IntakePickup(),
+                                    new SleepAction(0.2),
+                                    intakeArm.IntakeTransfer(),
+                                    new SleepAction(0.2),
+                                    horizontalSlides.HorizontalRetract(),
+                                    new SleepAction(0.1),
+                                    scoringArm.WholeArmTransfer(),
+                                    intakeArm.ClawOpen(),
+                                    new ParallelAction(
+                                            verticalSlides.LiftUpToClip(),
+                                            scoringArm.ArmScoreClip()
+                                    )
+                            )
+                    );
+                })
                 .waitSeconds(0.5)
                 .strafeToLinearHeading(new Vector2d(scoreX, scoreY), Math.toRadians(-90))
+                .afterTime( 0.5, () -> {
+                    Actions.runBlocking(
+                            new ParallelAction(
+                                    scoringArm.StowWholeArm(),
+                                    verticalSlides.Retract(),
+                                    horizontalSlides.HorizontalExtend(),
+                                    intakeArm.IntakeHover()
+                            )
+                    );
+                })
                 .waitSeconds(1)
                 .strafeToLinearHeading(new Vector2d(pickupX, pickupY), Math.toRadians(-45))
+                .afterTime(0, () -> {
+                    Actions.runBlocking(
+                            new SequentialAction(
+                                    intakeArm.IntakePickup(),
+                                    new SleepAction(0.2),
+                                    intakeArm.IntakeTransfer(),
+                                    new SleepAction(0.2),
+                                    horizontalSlides.HorizontalRetract(),
+                                    new SleepAction(0.1),
+                                    scoringArm.WholeArmTransfer(),
+                                    intakeArm.ClawOpen(),
+                                    new ParallelAction(
+                                            verticalSlides.LiftUpToClip(),
+                                            scoringArm.ArmScoreClip()
+                                    )
+                            )
+                    );
+                })
                 .waitSeconds(0.5)
                 .strafeToLinearHeading(new Vector2d(scoreX, scoreY), Math.toRadians(-90))
+                .afterTime( 0.5, () -> {
+                    Actions.runBlocking(
+                            new ParallelAction(
+                                    scoringArm.StowWholeArm(),
+                                    verticalSlides.Retract()
+                            )
+                    );
+                })
                 .waitSeconds(1)
                 .strafeToLinearHeading(new Vector2d(parkX, parkY), Math.toRadians(90))
                 ;
