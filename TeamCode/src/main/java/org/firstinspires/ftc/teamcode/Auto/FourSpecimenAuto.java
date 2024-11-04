@@ -27,7 +27,7 @@ public class FourSpecimenAuto extends LinearOpMode {
     public static double startX = 19;
     public static double startY = -63.5;
     public static double startHeading = Math.toRadians(-90);
-    public static double scorePreloadX = 5;
+    public static double scorePreloadX = 9;
     public static double scorePreloadY = -34;
     public static double coord1X = 30;
     public static double coord1Y = -34;
@@ -41,8 +41,12 @@ public class FourSpecimenAuto extends LinearOpMode {
     public static double zone2Y = -50;
     public static double pickupX = 24;
     public static double pickupY = -48;
-    public static double scoreX = 9;
+    public static double scoreX = 7;
     public static double scoreY = -34;
+    public static double score2X = 5;
+    public static double score2Y = -34;
+    public static double score3X = 3;
+    public static double score3Y = -34;
     public static double parkX = 40;
     public static double parkY = -60;
 
@@ -141,7 +145,7 @@ public class FourSpecimenAuto extends LinearOpMode {
                     );
                 })
                 .waitSeconds(0.5)
-                .strafeToLinearHeading(new Vector2d(scoreX, scoreY), Math.toRadians(-90))
+                .strafeToLinearHeading(new Vector2d(score2X, score2Y), Math.toRadians(-90))
                 .afterTime( 0.5, () -> {
                     Actions.runBlocking(
                             new ParallelAction(
@@ -173,7 +177,7 @@ public class FourSpecimenAuto extends LinearOpMode {
                     );
                 })
                 .waitSeconds(0.5)
-                .strafeToLinearHeading(new Vector2d(scoreX, scoreY), Math.toRadians(-90))
+                .strafeToLinearHeading(new Vector2d(score3X, score3Y), Math.toRadians(-90))
                 .afterTime( 0.5, () -> {
                     Actions.runBlocking(
                             new ParallelAction(
