@@ -157,7 +157,6 @@ public class IntakeArm {
     public static class Arm {
         public Servo arm;
         public boolean isArmTransferring = true;
-        public boolean isArmHovering = false;
         public static double armIntakeHoverPosition = 0.2194;
         public static double armIntakeGrabPosition = 0;
         public static double armTransferPosition = 0.46;
@@ -180,28 +179,16 @@ public class IntakeArm {
         public void setArmTransfer() {
             setArmPosition(armTransferPosition);
             isArmTransferring = true;
-            isArmHovering = false;
         }
 
         public void setArmHover() {
             setArmPosition(armIntakeHoverPosition);
             isArmTransferring = false;
-            isArmHovering = true;
         }
 
         public void setArmGrab() {
             setArmPosition(armIntakeGrabPosition);
             isArmTransferring = false;
-            isArmHovering = false;
-        }
-
-        public void toggleHoverGrab() {
-            if (isArmHovering) {
-                setArmGrab();
-            }
-            else {
-                setArmHover();
-            }
         }
     }
 

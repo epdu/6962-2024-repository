@@ -124,17 +124,15 @@ public class FinalFullRobotActionTeleOp extends OpMode {
 
         ////////////////////////////////////// GAMEPAD 1 CONTROLS /////////////////////////////////////
 
+        // gives gamepad 2 priority and auto retracts intake if gamepad 2 takes over
         if (scoringArm.arm.armPos == ScoringArm.Arm.STATE.TRANSFERRING) {
-            // horizontal slides extend and intake arm hover
-            if (currentGamepad1.right_trigger >= 0.01 && !(previousGamepad1.right_trigger >= 0.01)) {
+            // horizontal slides extend and intake arm grab
+            if (currentGamepad1.right_trigger >= 0.1 && !(previousGamepad1.right_trigger >= 0.1)) {
                 runningActions.add(
                     new SequentialAction(
                         new InstantAction(() -> horizontalSlides.extendHalfway()),
                         new SleepAction(0.1),
-                        new ParallelAction(
-                            new InstantAction(() -> intakeArm.arm.setArmHover()),
-                            new InstantAction(() -> intakeArm.wrist.setWristIntake())
-                        ),
+                        new InstantAction(() -> intakeArm.arm.setArmGrab()),
                         new SleepAction(0.2),
                         new InstantAction(() -> intakeArm.claw.openClaw())
                     )
@@ -145,8 +143,11 @@ public class FinalFullRobotActionTeleOp extends OpMode {
                 runningActions.add(
                     new SequentialAction(
                         new InstantAction(() -> intakeArm.claw.closeClaw()),
-                        new InstantAction(() -> intakeArm.wrist.setWristTransfer()),
-                        new InstantAction(() -> intakeArm.arm.setArmTransfer()),
+                        new SleepAction(0.15),
+                        new ParallelAction(
+                            new InstantAction(() -> intakeArm.wrist.setWristTransfer()),
+                            new InstantAction(() -> intakeArm.arm.setArmTransfer())
+                        ),
                         new SleepAction(0.2),
                         new InstantAction(() -> horizontalSlides.retract())
                     )
@@ -165,17 +166,7 @@ public class FinalFullRobotActionTeleOp extends OpMode {
             );
         }
 
-        // auto prep intake arm for transfer (vincent proofing in case let go of both, but press right trigger immediately after)
-        if (horizontalSlides.slidesMostlyRetracted && !currentGamepad1.right_bumper && !(currentGamepad1.right_trigger >= 0.1)) {
-            runningActions.add(
-                    new ParallelAction(
-                            new InstantAction(() -> intakeArm.claw.closeClaw()),
-                            new InstantAction(() -> intakeArm.arm.setArmTransfer()),
-                            new InstantAction(() -> intakeArm.wrist.setWristTransfer())
-                    )
-            );
-        }
-
+        // retract if something goes wrong, might be unnecessary now though
         if (currentGamepad1.a && !previousGamepad1.a) {
             runningActions.add(
                     new SequentialAction(
@@ -188,34 +179,9 @@ public class FinalFullRobotActionTeleOp extends OpMode {
             );
         }
 
-
         // intake wrist rotate
         if      (currentGamepad1.dpad_right)  { intakeArm.wrist.incrementalWristRotateActual(-1); }
         else if (currentGamepad1.dpad_left) { intakeArm.wrist.incrementalWristRotateActual(1); }
-
-        // intake claw toggle
-        if (currentGamepad1.right_trigger > 0.1) {
-            if (currentGamepad1.right_bumper && !previousGamepad1.right_bumper) {
-                runningActions.add(
-                        new SequentialAction(
-                                new InstantAction(() -> intakeArm.claw.openClaw()),
-                                new InstantAction(() -> intakeArm.wrist.setFlipIntake()),
-                                new SleepAction(!intakeArm.claw.isClawOpen ? 0.5 : 0.1),
-                                new InstantAction(() -> intakeArm.arm.setArmGrab())
-                        )
-                );
-            }
-            else if (!currentGamepad1.right_bumper && previousGamepad1.right_bumper) {
-                runningActions.add(
-                        new SequentialAction(
-                                new InstantAction(() -> intakeArm.claw.closeClaw()),
-                                new SleepAction(0.5),
-                                new InstantAction(() -> intakeArm.arm.setArmHover()),
-                                new InstantAction(() -> intakeArm.wrist.setWristIntake())
-                        )
-                );
-            }
-        }
 
         // intake claw open (for emergencies)
         if (currentGamepad1.left_bumper && !previousGamepad1.left_bumper) {
@@ -303,7 +269,7 @@ public class FinalFullRobotActionTeleOp extends OpMode {
             ));
         }
 
-        // deposit clip
+        // deposit clip (might be unnecessary once new arm position to score clip without slides)
         if (currentGamepad2.dpad_left && !previousGamepad2.dpad_left) {
             runningActions.add(
                     new SequentialAction(
