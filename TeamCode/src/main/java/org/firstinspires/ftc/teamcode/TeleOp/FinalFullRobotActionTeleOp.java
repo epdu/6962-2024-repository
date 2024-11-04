@@ -105,6 +105,10 @@ public class FinalFullRobotActionTeleOp extends OpMode {
         // gamepad1: left-trigger > 0.5 - fastmode
         mecanum.operateFieldCentricVincent();
 
+        if (currentGamepad1.y && !previousGamepad1.y) {
+            mecanum.resetNavx();
+        }
+
         // manual control in case auto messes up, else only PID
         if (currentGamepad2.right_trigger > 0.1 && currentGamepad2.left_trigger > 0.1) {
             verticalSlides.operateFix();
