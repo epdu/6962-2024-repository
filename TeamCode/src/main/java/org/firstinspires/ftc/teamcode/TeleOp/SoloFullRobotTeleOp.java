@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-@TeleOp(name="FINAL Full Robot TeleOp", group="Active TeleOps")
+@TeleOp(name="Solo Full Robot TeleOp", group="Active TeleOps")
 public class SoloFullRobotTeleOp extends OpMode {
     // Action stuff
     private FtcDashboard dash = FtcDashboard.getInstance();
@@ -181,28 +181,25 @@ public class SoloFullRobotTeleOp extends OpMode {
         if (currentGamepad1.b && !previousGamepad1.b) {
             runningActions.add(
                     new SequentialAction(
-                            new SequentialAction( // possibly unneeded
-                                    // both arms prep
-                                    new ParallelAction(
-                                            new InstantAction(() -> scoringArm.wrist.setWristTransfer()),
-                                            new InstantAction(() -> scoringArm.arm.setArmTransfer()),
-                                            new InstantAction(() -> intakeArm.wrist.setWristTransfer()),
-                                            new InstantAction(() -> intakeArm.arm.setArmTransfer()),
-                                            new InstantAction(() -> scoringArm.claw.openClaw())
-                                    ),
+                        // both arms prep
+                        new ParallelAction(
+                            new InstantAction(() -> scoringArm.wrist.setWristTransfer()),
+                            new InstantAction(() -> scoringArm.arm.setArmTransfer()),
+                            new InstantAction(() -> intakeArm.wrist.setWristTransfer()),
+                            new InstantAction(() -> intakeArm.arm.setArmTransfer()),
+                            new InstantAction(() -> scoringArm.claw.openClaw())
+                        ),
 
-                                    // acutally transfer
-                                    new InstantAction(() -> scoringArm.claw.closeClaw()),
-                                    new SleepAction(0.08),
-                                    new InstantAction(() -> intakeArm.claw.openClaw())
-                            ),
-                            new InstantAction(() -> scoringArm.claw.closeClaw()),
-                            new InstantAction(() -> verticalSlides.raiseToHighBucket()),
-                            new InstantAction(() -> scoringArm.wrist.setWristScoringBucket()),
-                            new SleepAction(0.6),
-                            new ParallelAction(
-                                    new InstantAction(() -> scoringArm.arm.setArmScoreBucket())
-                            )
+                        // acutally transfer
+                        new InstantAction(() -> scoringArm.claw.closeClaw()),
+                        new SleepAction(0.08),
+                        new InstantAction(() -> intakeArm.claw.openClaw()),
+
+                        // lift up to high bucket
+                        new InstantAction(() -> verticalSlides.raiseToHighBucket()),
+                        new InstantAction(() -> scoringArm.wrist.setWristScoringBucket()),
+                        new SleepAction(0.6),
+                        new InstantAction(() -> scoringArm.arm.setArmScoreBucket())
                     )
             );
         }

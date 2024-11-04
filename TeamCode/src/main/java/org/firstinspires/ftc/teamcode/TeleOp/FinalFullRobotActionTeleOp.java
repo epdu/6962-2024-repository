@@ -230,9 +230,7 @@ public class FinalFullRobotActionTeleOp extends OpMode {
                     new InstantAction(() -> verticalSlides.raiseToHighBucket()),
                     new InstantAction(() -> scoringArm.wrist.setWristScoringBucket()),
                     new SleepAction(0.6),
-                    new ParallelAction(
-                        new InstantAction(() -> scoringArm.arm.setArmScoreBucket())
-                    )
+                    new InstantAction(() -> scoringArm.arm.setArmScoreBucket())
                 )
             );
         }
