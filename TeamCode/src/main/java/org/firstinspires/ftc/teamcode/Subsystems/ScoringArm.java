@@ -114,8 +114,8 @@ public class ScoringArm {
     public static class Claw {
         public Servo claw;
         public boolean isClawOpen = true;
-        public static double clawClosedPosition = 0.7233;
-        public static double clawOpenPosition = 0.4644;
+        public static double clawClosedPosition = 0.7328;
+        public static double clawOpenPosition = 0.4317;
         public static double clawIncrement = 0.001;
 
         public Claw() {}
@@ -163,13 +163,11 @@ public class ScoringArm {
             GRABBING_CLIP
         }
         public Arm.STATE armPos = STATE.TRANSFERRING;
-        public static double armScoringPosition = 0.46;
-        public static double armScoringClipPosition = 0.43;
-        public static double armTransferPosition = 1;
-        public static double armGrabClipWallPosition = 0;
-        public static double armGrabClipFloorPosition = 0;
-        public static double armGrabClipFloorHoverPosition = 0;
-        public static double armInitPosition = 0.4956;
+        public static double armScoringPosition = 0.415;
+        public static double armScoringClipPosition = 0.2089;
+        public static double armTransferPosition = 0.5978;
+        public static double armGrabClipWallPosition = 0.1578;
+        public static double armInitPosition = 0.3994;
         public static double armStowPosition = 0.6183;
         public static double armIncrement = 0.001;
 
@@ -225,10 +223,10 @@ public class ScoringArm {
     public static class Wrist {
         public Servo wrist;
         public boolean isWristTransferring = true;
-        public static double wristTransferPosition = 0.0844;
-        public static double wristScoreBucketPosition = 0.2156;
-        public static double wristScoreClipPosition = 0.645;
-        public static double wristGrabClipWallPosition = 0.1794;
+        public static double wristTransferPosition = 0.1339;
+        public static double wristScoreBucketPosition = 0.9328;
+        public static double wristScoreClipPosition = 0.5789;
+        public static double wristGrabClipWallPosition = 0.8483;
         public static double wristGrabClipFloorPosition = 0;
         public static double wristGrabClipFloorHoverPosition = 0;
         public static double wristIncrement = 0.001;
