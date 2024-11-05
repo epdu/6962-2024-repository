@@ -148,10 +148,10 @@ public class FinalFullRobotActionTeleOp extends OpMode {
                     new SequentialAction(
                         new InstantAction(() -> intakeArm.claw.closeClaw()),
                         new SleepAction(0.15),
-                        new ParallelAction(
-                            new InstantAction(() -> intakeArm.wrist.setWristTransfer()),
-                            new InstantAction(() -> intakeArm.arm.setArmTransfer())
-                        ),
+                        new InstantAction(() -> intakeArm.arm.setArmTransfer()),
+                        new SleepAction(0.05), // possibly unnecessary
+                        new InstantAction(() -> intakeArm.wrist.setWristTransfer()),
+                        new InstantAction(() -> intakeArm.arm.setArmTransfer()),
                         new SleepAction(0.2),
                         new InstantAction(() -> horizontalSlides.retract())
                     )
