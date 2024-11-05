@@ -27,9 +27,9 @@ public class HorizontalSlides {
      */
     public static double joystickScalar = 1;
     public static double slideScalar = 1;
-    public static double Kp = 0.004;
+    public static double Kp = 0.006;
     public static double Ki = 0;
-    public static double Kd = 0;
+    public static double Kd = 0.000001;
     public static double Kg = 0; // gravity constant, tune till the slide holds itself in place
     public static double upperLimit = 650;
     public static double lowerLimit = -2;
@@ -207,16 +207,7 @@ public class HorizontalSlides {
         timer.reset();
 
         // calculates output and returns
-        double output = (Kp * error) + (Ki * integralSum) + (Kd * derivative) + Kg;
-
-        // deadband-esque behavior to avoid returning super small decimal values
-        if (Math.abs(output) < 0.1) {
-            output = 0;
-        } else if (isRetracting && Math.abs(output) <= 0.3) {
-            output = (output > 0 ? 1 : -1) * 0.3;
-        } else if (Math.abs(output) >= 1) {
-            output = (output > 0 ? 1 : -1);
-        }
+        double output = (((Kp * error) + (Ki * integralSum) + (Kd * derivative)) >= 0 ? 1 : -1) * Math.sqrt(Math.abs((Kp * error) + (Ki * integralSum) + (Kd * derivative))) + Kg;
 
         return output;
     }

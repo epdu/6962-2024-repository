@@ -33,16 +33,16 @@ public class VerticalSlides
     public static double Ki = 0;
     public static double Kd = 0;
     public static double Kg = 0; // gravity constant, tune till the slide holds itself in place
-    public static int upperLimit = 1500;
+    public static int upperLimit = 4000;
     public static int lowerLimit = -2;
     public static int retractedThreshold = 5;
 
-    public static int highBucketPos = 1300;
+    public static int highBucketPos = 3700;
 //    public static int lowBucketPos = 600;
     public static int retractedPos = 0;
     public static int pickupClipPos = 0;
-    public static int prepClipPos = 555;
-    public static int scoreClipPos = 220;
+    public static int prepClipPos = 1250;
+    public static int scoreClipPos = 600;
 
     //declaring variables for later modification
     private volatile double slidePower;
@@ -69,8 +69,8 @@ public class VerticalSlides
         leftSlideMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         rightSlideMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
 
-//        leftSlideMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-        rightSlideMotor.setDirection(DcMotorEx.Direction.REVERSE);
+        leftSlideMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+//        rightSlideMotor.setDirection(DcMotorEx.Direction.REVERSE);
 
         leftSlideMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         rightSlideMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
@@ -152,9 +152,15 @@ public class VerticalSlides
                 target = lowerLimit;
             }
         }
+        else {
+            PIDPowerR = PIDControl(target, rightSlideMotor);
+            leftSlideMotor.setPower(PIDPowerR);
+            rightSlideMotor.setPower(PIDPowerR);
+        }
 
         opmode.telemetry.addData("Vertical Encoder Position:", rightSlideMotor.getCurrentPosition());
         opmode.telemetry.addData("Vertical Slide Target:", target);
+        opmode.telemetry.addData("PID Power:", PIDPowerR);
         opmode.telemetry.addData("Vertical Slide Power:", slidePower);
     }
 

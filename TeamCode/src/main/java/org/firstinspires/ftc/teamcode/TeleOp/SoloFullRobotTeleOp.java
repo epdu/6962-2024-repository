@@ -180,6 +180,17 @@ public class SoloFullRobotTeleOp extends OpMode {
             );
         }
 
+        // slam score clip
+        if (currentGamepad1.a && !previousGamepad1.a) {
+            runningActions.add(
+                    new SequentialAction(
+                            new InstantAction(() -> verticalSlides.slamToScoreClip()),
+                            new SleepAction(0.2),
+                            new InstantAction(() -> scoringArm.claw.openClaw())
+                    ));
+        }
+
+
         // macro prep high bucket scoring
         if (currentGamepad1.b && !previousGamepad1.b) {
             runningActions.add(
