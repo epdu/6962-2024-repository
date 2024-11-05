@@ -112,8 +112,8 @@ public class ScoringArm {
     public static class Claw {
         public Servo claw;
         public boolean isClawOpen = true;
-        public static double clawClosedPosition = 0.7389;
-        public static double clawOpenPosition = 0.5011;
+        public static double clawClosedPosition = 0.7233;
+        public static double clawOpenPosition = 0.4644;
         public static double clawIncrement = 0.001;
 
         public Claw() {}
@@ -163,7 +163,7 @@ public class ScoringArm {
         public Arm.STATE armPos = STATE.TRANSFERRING;
         public static double armScoringPosition = 0.46;
         public static double armScoringClipPosition = 0.43;
-        public static double armTransferPosition = 0.7622;
+        public static double armTransferPosition = 1;
         public static double armGrabClipWallPosition = 0;
         public static double armGrabClipFloorPosition = 0;
         public static double armGrabClipFloorHoverPosition = 0;
