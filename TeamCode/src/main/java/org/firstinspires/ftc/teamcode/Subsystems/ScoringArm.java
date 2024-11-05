@@ -56,8 +56,10 @@ public class ScoringArm {
 
         if (opmode.gamepad2.dpad_up) {
             arm.incrementalArm(-1);
+            wrist.incremental(1);
         } else if (opmode.gamepad2.dpad_down) {
             arm.incrementalArm(1);
+            wrist.incremental(-1);
         }
 
         if (opmode.gamepad2.y) {wrist.setWristTransfer();}
