@@ -137,7 +137,7 @@ public class FinalFullRobotActionTeleOp extends OpMode {
                         new InstantAction(() -> horizontalSlides.extendHalfway()),
                         new SleepAction(0.15),
                         new InstantAction(() -> intakeArm.wrist.setFlipIntake()),
-                        new InstantAction(() -> intakeArm.arm.setArmGrab()),
+                        new InstantAction(() -> intakeArm.arm.setArmHover()),
                         new SleepAction(0.2),
                         new InstantAction(() -> intakeArm.claw.openClaw())
                     )
@@ -147,8 +147,10 @@ public class FinalFullRobotActionTeleOp extends OpMode {
             else if (currentGamepad1.right_trigger < 0.1 && !(previousGamepad1.right_trigger < 0.1)) {
                 runningActions.add(
                     new SequentialAction(
-                        new InstantAction(() -> intakeArm.claw.closeClaw()),
+                        new InstantAction(() -> intakeArm.arm.setArmGrab()),
                         new SleepAction(0.15),
+                        new InstantAction(() -> intakeArm.claw.closeClaw()),
+                        new SleepAction(0.1),
                         new InstantAction(() -> intakeArm.arm.setArmTransfer()),
                         new SleepAction(0.05), // possibly unnecessary
                         new InstantAction(() -> intakeArm.wrist.setWristTransfer()),

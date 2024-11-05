@@ -157,7 +157,7 @@ public class IntakeArm {
     public static class Arm {
         public Servo arm;
         public boolean isArmTransferring = true;
-        public static double armIntakeHoverPosition = 0.2194;
+        public static double armIntakeHoverPosition = 0.1;
         public static double armIntakeGrabPosition = 0;
         public static double armTransferPosition = 0.46;
         public static double armIncrement = 0.001;
