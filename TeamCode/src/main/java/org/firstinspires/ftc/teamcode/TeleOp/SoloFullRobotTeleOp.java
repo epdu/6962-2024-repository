@@ -105,7 +105,7 @@ public class SoloFullRobotTeleOp extends OpMode {
         mecanum.operateFieldCentricVincent();
 
         // gyro reset
-        if (currentGamepad1.dpad_up && !previousGamepad1.dpad_up) { mecanum.resetNavx(); }
+        if (currentGamepad1.left_stick_button && !previousGamepad1.left_stick_button) { mecanum.resetNavx(); }
 
         // manual control in case auto messes up, else only PID
         if (currentGamepad2.right_trigger > 0.1 && currentGamepad2.left_trigger > 0.1) { verticalSlides.operateFix(); }
@@ -218,6 +218,11 @@ public class SoloFullRobotTeleOp extends OpMode {
                 )
             );
         }
+
+        ////////////////////////////////////// GAMEPAD 2 CONTROLS /////////////////////////////////////
+        /// all backup fixing stuff
+        // none rn?
+
 
         // loop time
         dashboardTelemetry.addData("elapsed time (loop time)", elapsedtime.milliseconds());

@@ -190,7 +190,7 @@ public class FinalFullRobotActionTeleOp extends OpMode {
         // intake claw open (for emergencies)
         if (currentGamepad1.left_bumper && !previousGamepad1.left_bumper) {
             runningActions.add(
-                    new InstantAction(() -> intakeArm.claw.openClaw())
+                    new InstantAction(() -> intakeArm.claw.toggleClaw())
             );
         }
 
@@ -272,14 +272,14 @@ public class FinalFullRobotActionTeleOp extends OpMode {
         }
 
         // deposit clip (might be unnecessary once new arm position to score clip without slides)
-        if (currentGamepad2.dpad_left && !previousGamepad2.dpad_left) {
-            runningActions.add(
-                    new SequentialAction(
-                        new InstantAction(() -> verticalSlides.slamToScoreClip()),
-                        new SleepAction(0.2),
-                        new InstantAction(() -> scoringArm.claw.openClaw())
-                    ));
-        }
+//        if (currentGamepad2.dpad_left && !previousGamepad2.dpad_left) {
+//            runningActions.add(
+//                    new SequentialAction(
+//                        new InstantAction(() -> verticalSlides.slamToScoreClip()),
+//                        new SleepAction(0.2),
+//                        new InstantAction(() -> scoringArm.claw.openClaw())
+//                    ));
+//        }
 
         // auto transfer
         if (currentGamepad2.b && !previousGamepad2.b) {
