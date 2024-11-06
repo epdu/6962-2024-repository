@@ -139,7 +139,7 @@ public class NewVerticalSlides {
 //    }
 //
 //    public Action SlamScoreClip() {
-//        return new RunToPosition(scoreClipPos);
+//        return new RunToPosition(slamClipPos);
 //    }
 //
 //    public Action Retract() {

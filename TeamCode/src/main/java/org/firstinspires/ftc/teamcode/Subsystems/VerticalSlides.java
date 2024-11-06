@@ -2,18 +2,13 @@ package org.firstinspires.ftc.teamcode.Subsystems;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.hardware.VoltageSensor;
-import com.qualcomm.robotcore.robot.Robot;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import androidx.annotation.NonNull;
 
-import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 import org.firstinspires.ftc.teamcode.Util.RobotHardware;
 
 @Config
@@ -33,16 +28,21 @@ public class VerticalSlides
     public static double Ki = 0;
     public static double Kd = 0;
     public static double Kg = 0; // gravity constant, tune till the slide holds itself in place
-    public static int upperLimit = 4000;
+    public static int upperLimit = 4000; // this is for 435s
+//    public static int upperLimit = 1500; // this is for 1150s
+
     public static int lowerLimit = -2;
     public static int retractedThreshold = 5;
 
-    public static int highBucketPos = 3700;
+    public static int highBucketPos = 3700; // this is for 435s
+//    public static int highBucketPos = 1300; // this is for 1150s
 //    public static int lowBucketPos = 600;
     public static int retractedPos = 0;
     public static int pickupClipPos = 0;
-    public static int prepClipPos = 1250;
-    public static int scoreClipPos = 600;
+    public static int prepClipPos = 1250; // this is for 435s
+//    public static int prepClipPos = 555; // this is for 1150s
+    public static int slamClipPos = 600; // this is for 435s
+//    public static int slamClipPos = 600; // this is for 1150s
 
     //declaring variables for later modification
     private volatile double slidePower;
@@ -247,7 +247,7 @@ public class VerticalSlides
     public void raiseToPickupClip() { moveToPosition(pickupClipPos);}
     public void raiseToPrepClip() { moveToPosition(prepClipPos);}
     public void retract() { moveToPosition(retractedPos); }
-    public void slamToScoreClip() { moveToPosition(scoreClipPos);}
+    public void slamToScoreClip() { moveToPosition(slamClipPos);}
 
     public int telemetryLeftMotorPos() {
         return leftSlideMotor.getCurrentPosition();
@@ -283,7 +283,7 @@ public class VerticalSlides
                 initialized = true;
             }
 
-            if (Math.abs(error) > 20) {
+            if (Math.abs(error) > 25) {
                 return true;
             } else {
                 leftSlideMotor.setPower(0.1);
@@ -298,7 +298,7 @@ public class VerticalSlides
     }
 
     public Action SlamScoreClip() {
-        return new RunToPosition(scoreClipPos);
+        return new RunToPosition(slamClipPos);
     }
 
     public Action Retract() {
@@ -328,7 +328,7 @@ public class VerticalSlides
             leftSlideMotor.setPower(PIDPowerR);
             rightSlideMotor.setPower(PIDPowerR);
 
-            if (Math.abs(rtpTarget - rightSlideMotor.getCurrentPosition()) > 20) {
+            if (Math.abs(rtpTarget - rightSlideMotor.getCurrentPosition()) > 30) {
                 return true;
             } else {
                 leftSlideMotor.setPower(0);
