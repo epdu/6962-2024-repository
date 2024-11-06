@@ -52,7 +52,7 @@ public class ScoringArmTeleOp extends OpMode {
      */
     @Override
     public void loop() {
-        scoringArm.operateTest();
+        scoringArm.operateIncremental();
         // Gamepad 2:
         // Left Bumper - incremental open claw
         // Right Bumper - incremental close claw
