@@ -169,6 +169,7 @@ public class SoloFullRobotTeleOp extends OpMode {
         if (currentGamepad1.y && !previousGamepad1.y) {
             runningActions.add(
                     new SequentialAction(
+                        new InstantAction(() -> intakeArm.claw.openClaw()),
                         new InstantAction(() -> scoringArm.claw.closeClaw()),
                         new SleepAction(0.1),
                         new ParallelAction(

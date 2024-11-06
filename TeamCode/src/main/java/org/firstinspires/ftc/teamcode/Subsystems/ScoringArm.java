@@ -19,10 +19,6 @@ public class ScoringArm {
     // Main ScoringArm Class that creates instances of the subsystems
     OpMode opmode;
     public Claw claw = new Claw();
-    private FtcDashboard dash = FtcDashboard.getInstance();
-
-    private Telemetry dashboardTelemetry = dash.getTelemetry();
-
     public Arm arm = new Arm();
     public Wrist wrist = new Wrist();
     private final RobotHardware rHardware = new RobotHardware();
@@ -104,9 +100,6 @@ public class ScoringArm {
         opmode.telemetry.addData("Scoring Arm Pos: ", arm.arm.getPosition());
         opmode.telemetry.addData("Scoring Wrist Pos: ", wrist.wrist.getPosition());
         opmode.telemetry.addData("Scoring Claw Pos: ", claw.claw.getPosition());
-        dashboardTelemetry.addData("Scoring Arm Pos: ", arm.arm.getPosition());
-        dashboardTelemetry.addData("Scoring Wrist Pos: ", wrist.wrist.getPosition());
-        dashboardTelemetry.update();
         opmode.telemetry.update();
     }
 
@@ -163,7 +156,7 @@ public class ScoringArm {
             GRABBING_CLIP
         }
         public Arm.STATE armPos = STATE.TRANSFERRING;
-        public static double armScoringPosition = 0.415;
+        public static double armScoringPosition = 0.32;
         public static double armScoringClipPosition = 0.3411;
         public static double armTransferPosition = 0.4961;
         public static double armGrabClipWallPosition = 0.1578;
