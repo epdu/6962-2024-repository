@@ -118,7 +118,7 @@ public class IntakeArm {
         public Servo claw;
         public boolean isClawOpen = true;
         public static double clawClosedPosition = 0.4828;
-        public static double clawOpenPosition = 0.2567;
+        public static double clawOpenPosition = 0.0339;
         public static double clawIncrement = 0.001;
 
         public Claw() {}
@@ -202,7 +202,7 @@ public class IntakeArm {
         public static double wristRotateIntakePerpendicularPosition = 0.1972;
         public static double wristFlipIntakePosition = 0.96;
         public static double wristTestIncrement = 0.001;
-        public static double wristActualIncrement = 0.2;
+        public static double wristActualIncrement = 0.1;
 
         public Wrist() {}
 
@@ -287,7 +287,6 @@ public class IntakeArm {
         @Override
         public boolean run(@NonNull TelemetryPacket packet) {
             wrist.setWristTransfer();
-            new SleepAction(0.4);
             arm.setArmTransfer();
             return false;
         }

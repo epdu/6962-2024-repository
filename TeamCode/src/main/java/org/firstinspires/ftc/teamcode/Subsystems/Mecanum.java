@@ -21,7 +21,7 @@ public class Mecanum {
     private MecanumDrive drive;
 
     // constants
-    private final double slowModeFactor = 0.3;
+    private final double slowModeFactor = 0.5;
 
     private boolean slowModeBool = false;
 

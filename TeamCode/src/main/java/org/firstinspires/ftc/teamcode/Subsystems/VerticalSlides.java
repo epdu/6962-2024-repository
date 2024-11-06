@@ -286,8 +286,8 @@ public class VerticalSlides
             if (Math.abs(error) > 20) {
                 return true;
             } else {
-                leftSlideMotor.setPower(0.25);
-                rightSlideMotor.setPower(0.25);
+                leftSlideMotor.setPower(0.1);
+                rightSlideMotor.setPower(0.1);
                 return false;
             }
         }

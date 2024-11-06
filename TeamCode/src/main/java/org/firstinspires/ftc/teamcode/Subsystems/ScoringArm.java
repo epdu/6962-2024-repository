@@ -158,7 +158,7 @@ public class ScoringArm {
         public Arm.STATE armPos = STATE.TRANSFERRING;
         public static double armScoringPosition = 0.32;
         public static double armScoringClipPosition = 0.3411;
-        public static double armTransferPosition = 0.4961;
+        public static double armTransferPosition = 0.4722;
         public static double armGrabClipWallPosition = 0.1578;
         public static double armInitPosition = 0.3994;
         public static double armStowPosition = 0.6183;
@@ -216,7 +216,7 @@ public class ScoringArm {
     public static class Wrist {
         public Servo wrist;
         public boolean isWristTransferring = true;
-        public static double wristTransferPosition = 0.0556;
+        public static double wristTransferPosition = 0.0744;
         public static double wristScoreBucketPosition = 0.9328;
         public static double wristScoreClipPosition = 0.8872;
         public static double wristGrabClipWallPosition = 0.8483;
@@ -290,7 +290,6 @@ public class ScoringArm {
         public boolean run(@NonNull TelemetryPacket packet) {
             arm.setArmTransfer();
             wrist.setWristTransfer();
-            new SleepAction(0.2);
             claw.closeClaw();
             return false;
         }
@@ -346,15 +345,16 @@ public class ScoringArm {
     }
     public Action ArmInitPosition() {return new ArmInitPosition();}
 
-    public class ArmStow implements Action {
+    public class StowArmClose implements Action {
         @Override
         public boolean run(@NonNull TelemetryPacket packet) {
             wrist.setWristTransfer();
-            arm.setArmStow();
+            arm.setArmTransfer();
+            claw.closeClaw();
             return false;
         }
     }
-    public Action ArmStow() {return new ArmStow();}
+    public Action StowArmClose() {return new StowArmClose();}
 
     // math util functions
     public boolean isClose(double a, double b) {
