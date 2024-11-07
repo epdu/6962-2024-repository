@@ -36,8 +36,8 @@ public class VerticalSlides
 //    public static int lowBucketPos = 600;
     public static int retractedPos = 0;
     public static int pickupClipPos = 0;
-    public static int prepClipPos = 575; // this is for 1150s
-    public static int slamClipPos = 620; // this is for 1150s
+    public static int prepClipPos = 480; // this is for 1150s
+    public static int slamClipPos = 400; // this is for 1150s
 
     //declaring variables for later modification
     private volatile double slidePower;

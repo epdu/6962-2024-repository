@@ -27,10 +27,10 @@ public class FourSpecimenAuto extends LinearOpMode {
     public static double startX = 17;
     public static double startY = -63.5;
     public static double startHeading = Math.toRadians(-90);
-    public static double scorePreloadX = 9;
-    public static double scorePreloadY = -33;
+    public static double scorePreloadX = 5;
+    public static double scorePreloadY = -34;
     public static double coord1X = 30;
-    public static double coord1Y = -34;
+    public static double coord1Y = -35;
     public static double push1X = 47;
     public static double push1Y = -13;
     public static double zone1X = 47;
@@ -39,13 +39,13 @@ public class FourSpecimenAuto extends LinearOpMode {
     public static double push2Y = -13;
     public static double zone2X = 57;
     public static double zone2Y = -54;
-    public static double pickupX = 25;
+    public static double pickupX = 27;
     public static double pickupY = -49;
-    public static double scoreX = 7;
+    public static double scoreX = 3;
     public static double scoreY = -36;
-    public static double score2X = 5;
+    public static double score2X = 1;
     public static double score2Y = -36;
-    public static double score3X = 3;
+    public static double score3X = -1;
     public static double score3Y = -36;
     public static double parkX = 45;
     public static double parkY = -60;
@@ -102,12 +102,15 @@ public class FourSpecimenAuto extends LinearOpMode {
                 .afterTime(0, () -> {
                     Actions.runBlocking(
                             new SequentialAction(
+                                    horizontalSlides.HorizontalRetract(),
+                                    new SleepAction(0.5),
+                                    horizontalSlides.HorizontalExtend(),
                                     intakeArm.IntakePickup(),
                                     new SleepAction(0.2),
                                     intakeArm.IntakeTransfer(),
-                                    new SleepAction(0.1),
+                                    new SleepAction(0.2),
                                     horizontalSlides.HorizontalRetract(),
-                                    new SleepAction(0.1),
+                                    new SleepAction(0.2),
                                     scoringArm.WholeArmTransfer(),
                                     intakeArm.ClawOpen(),
                                     intakeArm.IntakeHover(),
@@ -135,12 +138,15 @@ public class FourSpecimenAuto extends LinearOpMode {
                 .afterTime(0, () -> {
                     Actions.runBlocking(
                             new SequentialAction(
+                                    horizontalSlides.HorizontalRetract(),
+                                    new SleepAction(0.5),
+                                    horizontalSlides.HorizontalExtend(),
                                     intakeArm.IntakePickup(),
                                     new SleepAction(0.2),
                                     intakeArm.IntakeTransfer(),
-                                    new SleepAction(0.1),
+                                    new SleepAction(0.2),
                                     horizontalSlides.HorizontalRetract(),
-                                    new SleepAction(0.1),
+                                    new SleepAction(0.2),
                                     scoringArm.WholeArmTransfer(),
                                     intakeArm.ClawOpen(),
                                     intakeArm.IntakeHover(),
@@ -168,12 +174,15 @@ public class FourSpecimenAuto extends LinearOpMode {
                 .afterTime(0, () -> {
                     Actions.runBlocking(
                             new SequentialAction(
+                                    horizontalSlides.HorizontalRetract(),
+                                    new SleepAction(0.5),
+                                    horizontalSlides.HorizontalExtend(),
                                     intakeArm.IntakePickup(),
                                     new SleepAction(0.2),
                                     intakeArm.IntakeTransfer(),
                                     new SleepAction(0.2),
                                     horizontalSlides.HorizontalRetract(),
-                                    new SleepAction(0.1),
+                                    new SleepAction(0.2),
                                     scoringArm.WholeArmTransfer(),
                                     intakeArm.ClawOpen(),
                                     intakeArm.IntakeHover(),

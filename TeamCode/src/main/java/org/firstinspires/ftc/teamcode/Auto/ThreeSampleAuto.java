@@ -26,15 +26,15 @@ public class ThreeSampleAuto extends LinearOpMode{
     public static double startY = -63.5;
     public static double startHeading = Math.toRadians(-90);
     public static double scorePreloadX = 0;
-    public static double scorePreloadY = -41;
+    public static double scorePreloadY = -35;
     public static double intake1X = -51;
-    public static double intake1Y = -50;
-    public static double scoreBucketX = -57;
-    public static double scoreBucketY = -57;
+    public static double intake1Y = -46;
+    public static double scoreBucketX = -58;
+    public static double scoreBucketY = -56;
     public static double intake2X = -60;
-    public static double intake2Y = -50;
-    public static double intake3X = -46;
-    public static double intake3Y = -25;
+    public static double intake2Y = -46;
+    public static double intake3X = -47;
+    public static double intake3Y = -24;
     public static double parkX = -30;
     public static double parkY = -18;
 
@@ -194,7 +194,7 @@ public class ThreeSampleAuto extends LinearOpMode{
                     Actions.runBlocking(
                             new SequentialAction(
                                     verticalSlides.Retract(),
-                                    scoringArm.ArmInitPosition(),
+                                    scoringArm.StowArmClose(),
                                     intakeArm.IntakeTransfer(),
                                     horizontalSlides.HorizontalRetract()
                             )
