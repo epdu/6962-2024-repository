@@ -23,26 +23,21 @@ public class VerticalSlides
     /** all constants need to be tuned*/
     public static double joystickScalar = 1;
     public static double slideScalar = 1;
-    public static double KpUp = 0.01;
-    public static double KpDown = 0.006;
+    public static double Kp = 0.012;
     public static double Ki = 0;
     public static double Kd = 0;
     public static double Kg = 0; // gravity constant, tune till the slide holds itself in place
-    public static int upperLimit = 4000; // this is for 435s
-//    public static int upperLimit = 1500; // this is for 1150s
+    public static int upperLimit = 1500; // this is for 1150s
 
     public static int lowerLimit = -2;
     public static int retractedThreshold = 5;
 
-    public static int highBucketPos = 3700; // this is for 435s
-//    public static int highBucketPos = 1300; // this is for 1150s
+    public static int highBucketPos = 1430; // this is for 1150s
 //    public static int lowBucketPos = 600;
     public static int retractedPos = 0;
     public static int pickupClipPos = 0;
-    public static int prepClipPos = 1250; // this is for 435s
-//    public static int prepClipPos = 555; // this is for 1150s
-    public static int slamClipPos = 600; // this is for 435s
-//    public static int slamClipPos = 600; // this is for 1150s
+    public static int prepClipPos = 575; // this is for 1150s
+    public static int slamClipPos = 620; // this is for 1150s
 
     //declaring variables for later modification
     private volatile double slidePower;
@@ -232,7 +227,7 @@ public class VerticalSlides
         timer.reset();
 
         // calculates output and returns
-        double output = ((movingDown ? KpDown : KpUp) * error) + (Ki * integralSum) + (Kd * derivative) + Kg;
+        double output = (Kp * error) + (Ki * integralSum) + (Kd * derivative) + Kg;
 
         return output;
     }

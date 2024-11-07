@@ -105,7 +105,7 @@ public class FinalFullRobotActionTeleOp extends OpMode {
         // gamepad1: left-trigger > 0.5 - fastmode
         mecanum.operateFieldCentricVincent();
 
-        if (currentGamepad1.y && !previousGamepad1.y) {
+        if (currentGamepad1.left_stick_button && !previousGamepad1.left_stick_button) {
             mecanum.resetNavx();
         }
 
@@ -138,7 +138,7 @@ public class FinalFullRobotActionTeleOp extends OpMode {
                         new SleepAction(0.15),
                         new InstantAction(() -> intakeArm.wrist.setFlipIntake()),
                         new InstantAction(() -> intakeArm.arm.setArmHover()),
-                        new SleepAction(0.2),
+                        new SleepAction(0.25),
                         new InstantAction(() -> intakeArm.claw.openClaw())
                     )
                 );
