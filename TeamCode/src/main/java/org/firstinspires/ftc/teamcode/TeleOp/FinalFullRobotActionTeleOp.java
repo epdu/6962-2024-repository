@@ -148,13 +148,11 @@ public class FinalFullRobotActionTeleOp extends OpMode {
                 runningActions.add(
                     new SequentialAction(
                         new InstantAction(() -> intakeArm.arm.setArmGrab()),
-                        new SleepAction(0.2),
+                        new SleepAction(0.3),
                         new InstantAction(() -> intakeArm.claw.closeClaw()),
                         new SleepAction(0.1),
                         new InstantAction(() -> intakeArm.arm.setArmTransfer()),
-                        new SleepAction(0.05), // possibly unnecessary
                         new InstantAction(() -> intakeArm.wrist.setWristTransfer()),
-                        new InstantAction(() -> intakeArm.arm.setArmTransfer()),
                         new SleepAction(0.3),
                         new InstantAction(() -> horizontalSlides.retract())
                     )
@@ -229,7 +227,6 @@ public class FinalFullRobotActionTeleOp extends OpMode {
         if (currentGamepad2.x && !previousGamepad2.x) {
             runningActions.add(
                 new SequentialAction(
-                    new InstantAction(() -> scoringArm.claw.closeClaw()),
                     new InstantAction(() -> verticalSlides.raiseToHighBucket()),
                     new InstantAction(() -> scoringArm.wrist.setWristScoringBucket()),
                     new SleepAction(0.6),
@@ -293,7 +290,6 @@ public class FinalFullRobotActionTeleOp extends OpMode {
                             new InstantAction(() -> scoringArm.wrist.setWristTransfer()),
                             new InstantAction(() -> scoringArm.arm.setArmTransfer()),
                             new InstantAction(() -> intakeArm.wrist.setWristTransfer()),
-                            new SleepAction(0.1),
                             new InstantAction(() -> intakeArm.arm.setArmTransfer()),
                             new InstantAction(() -> scoringArm.claw.openClaw())
                         ),
