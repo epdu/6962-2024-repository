@@ -76,30 +76,25 @@ public class FourSampleAuto extends LinearOpMode{
                 //first intake
                 .afterTime( 0, () -> {
                     Actions.runBlocking(
-                            new ParallelAction(
-                                    verticalSlides.Retract(),
-                                    scoringArm.StowWholeArm(),
-                                    new SequentialAction(
-                                            intakeArm.IntakePickup(),
-                                            new SleepAction(0.5),
-                                            intakeArm.IntakeTransfer(),
-                                            new SleepAction(0.2),
-                                            horizontalSlides.HorizontalRetract(),
-                                            new SleepAction(0.5),
-                                            scoringArm.WholeArmTransfer(),
-                                            intakeArm.ClawOpen(),
-                                            new ParallelAction(
-                                                    verticalSlides.LiftUpToHighBucket(),
-                                                    scoringArm.ArmScoreBucket()
-                                            )
+                            new SequentialAction(
+                                    intakeArm.IntakePickup(),
+                                    new SleepAction(0.5),
+                                    intakeArm.IntakeTransfer(),
+                                    new SleepAction(0.2),
+                                    horizontalSlides.HorizontalRetract(),
+                                    new SleepAction(0.1),
+                                    scoringArm.WholeArmTransfer(),
+                                    intakeArm.ClawOpen(),
+                                    new ParallelAction(
+                                            verticalSlides.LiftUpToHighBucket(),
+                                            scoringArm.ArmScoreBucket()
                                     )
                             )
-
                     );
                 })
                 .waitSeconds(1)
                 .strafeToLinearHeading(new Vector2d(scoreBucketX, scoreBucketY), Math.toRadians(45))
-                //second bucket
+                //first bucket
                 .afterTime( 0.2, () -> {
                     Actions.runBlocking(
                             new ParallelAction(
@@ -127,8 +122,8 @@ public class FourSampleAuto extends LinearOpMode{
                                             scoringArm.WholeArmTransfer(),
                                             intakeArm.ClawOpen(),
                                             new ParallelAction(
-                                                verticalSlides.LiftUpToHighBucket(),
-                                                scoringArm.ArmScoreBucket()
+                                                    verticalSlides.LiftUpToHighBucket(),
+                                                    scoringArm.ArmScoreBucket()
                                             )
                                     )
                             )
@@ -137,7 +132,7 @@ public class FourSampleAuto extends LinearOpMode{
                 })
                 .waitSeconds(1)
                 .strafeToLinearHeading(new Vector2d(scoreBucketX, scoreBucketY), Math.toRadians(45))
-                //third bucket
+                //second bucket
                 .afterTime( 0.2, () -> {
                     Actions.runBlocking(
                             new ParallelAction(
@@ -175,7 +170,7 @@ public class FourSampleAuto extends LinearOpMode{
                 })
                 .waitSeconds(1)
                 .strafeToLinearHeading(new Vector2d(scoreBucketX, scoreBucketY), Math.toRadians(45))
-                //fourth bucket
+                //third bucket
                 .afterTime( 0.2, () -> {
                     Actions.runBlocking(
                             new SequentialAction(
@@ -188,11 +183,14 @@ public class FourSampleAuto extends LinearOpMode{
                     Actions.runBlocking(
                             new SequentialAction(
                                     verticalSlides.Retract(),
-                                    scoringArm.StowWholeArm()
+                                    scoringArm.StowArmClose(),
+                                    intakeArm.IntakeTransfer(),
+                                    horizontalSlides.HorizontalRetract()
                             )
                     );
                 })
-                .strafeToLinearHeading(new Vector2d(parkX, parkY), Math.toRadians(90));
+                .strafeToLinearHeading(new Vector2d(parkX, parkY), Math.toRadians(90))
+                ;
 
         while (!isStarted() && !opModeIsActive()) {
             intakeArm.initialize(this);

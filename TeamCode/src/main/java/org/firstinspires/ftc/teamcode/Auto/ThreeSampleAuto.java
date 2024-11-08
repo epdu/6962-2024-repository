@@ -24,12 +24,12 @@ public class ThreeSampleAuto extends LinearOpMode{
 
     public static double startX = -8;
     public static double startY = -63.5;
-    public static double startHeading = Math.toRadians(-90);
+    public static double startHeading = Math.toRadians(-88);
     public static double scorePreloadX = 0;
     public static double scorePreloadY = -35;
     public static double intake1X = -51;
     public static double intake1Y = -46;
-    public static double scoreBucketX = -58;
+    public static double scoreBucketX = -59;
     public static double scoreBucketY = -56;
     public static double intake2X = -60;
     public static double intake2Y = -46;
