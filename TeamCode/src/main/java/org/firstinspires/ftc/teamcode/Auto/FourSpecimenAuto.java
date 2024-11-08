@@ -74,7 +74,7 @@ public class FourSpecimenAuto extends LinearOpMode {
                     );
                 })
                 .strafeToConstantHeading(new Vector2d(scorePreloadX, scorePreloadY))
-                .afterTime( 0.5, () -> {
+                .afterTime( 0, () -> {
                     Actions.runBlocking(
                             new SequentialAction(
                                     verticalSlides.SlamScoreClip(),
@@ -98,19 +98,16 @@ public class FourSpecimenAuto extends LinearOpMode {
                             )
                     );
                 })
-                .strafeToLinearHeading(new Vector2d(pickupX, pickupY), Math.toRadians(-45))
+                .strafeToConstantHeading(new Vector2d(pickupX, pickupY))
                 .afterTime(0, () -> {
                     Actions.runBlocking(
                             new SequentialAction(
-                                    horizontalSlides.HorizontalRetract(),
-                                    new SleepAction(0.5),
-                                    horizontalSlides.HorizontalExtend(),
                                     intakeArm.IntakePickup(),
-                                    new SleepAction(0.2),
+                                    new SleepAction(0.5),
                                     intakeArm.IntakeTransfer(),
                                     new SleepAction(0.2),
                                     horizontalSlides.HorizontalRetract(),
-                                    new SleepAction(0.2),
+                                    new SleepAction(0.5),
                                     scoringArm.WholeArmTransfer(),
                                     intakeArm.ClawOpen(),
                                     intakeArm.IntakeHover(),
@@ -122,8 +119,8 @@ public class FourSpecimenAuto extends LinearOpMode {
                     );
                 })
                 .waitSeconds(0.5)
-                .strafeToLinearHeading(new Vector2d(scoreX, scoreY), Math.toRadians(-90))
-                .afterTime( 0.5, () -> {
+                .strafeToConstantHeading(new Vector2d(scoreX, scoreY))
+                .afterTime( 0, () -> {
                     Actions.runBlocking(
                             new SequentialAction(
                                     verticalSlides.SlamScoreClip(),
@@ -133,20 +130,17 @@ public class FourSpecimenAuto extends LinearOpMode {
                             )
                     );
                 })
-                .waitSeconds(1)
-                .strafeToLinearHeading(new Vector2d(pickupX, pickupY), Math.toRadians(-45))
+                .waitSeconds(0.5)
+                .strafeToConstantHeading(new Vector2d(pickupX, pickupY))
                 .afterTime(0, () -> {
                     Actions.runBlocking(
                             new SequentialAction(
-                                    horizontalSlides.HorizontalRetract(),
-                                    new SleepAction(0.5),
-                                    horizontalSlides.HorizontalExtend(),
                                     intakeArm.IntakePickup(),
-                                    new SleepAction(0.2),
+                                    new SleepAction(0.5),
                                     intakeArm.IntakeTransfer(),
                                     new SleepAction(0.2),
                                     horizontalSlides.HorizontalRetract(),
-                                    new SleepAction(0.2),
+                                    new SleepAction(0.5),
                                     scoringArm.WholeArmTransfer(),
                                     intakeArm.ClawOpen(),
                                     intakeArm.IntakeHover(),
@@ -158,8 +152,8 @@ public class FourSpecimenAuto extends LinearOpMode {
                     );
                 })
                 .waitSeconds(0.5)
-                .strafeToLinearHeading(new Vector2d(score2X, score2Y), Math.toRadians(-90))
-                .afterTime( 0.5, () -> {
+                .strafeToConstantHeading(new Vector2d(score2X, score2Y))
+                .afterTime( 0, () -> {
                     Actions.runBlocking(
                             new SequentialAction(
                                     verticalSlides.SlamScoreClip(),
@@ -169,20 +163,17 @@ public class FourSpecimenAuto extends LinearOpMode {
                             )
                     );
                 })
-                .waitSeconds(1)
+                .waitSeconds(0.5)
                 .strafeToLinearHeading(new Vector2d(pickupX, pickupY), Math.toRadians(-45))
                 .afterTime(0, () -> {
                     Actions.runBlocking(
                             new SequentialAction(
-                                    horizontalSlides.HorizontalRetract(),
-                                    new SleepAction(0.5),
-                                    horizontalSlides.HorizontalExtend(),
                                     intakeArm.IntakePickup(),
-                                    new SleepAction(0.2),
+                                    new SleepAction(0.5),
                                     intakeArm.IntakeTransfer(),
                                     new SleepAction(0.2),
                                     horizontalSlides.HorizontalRetract(),
-                                    new SleepAction(0.2),
+                                    new SleepAction(0.5),
                                     scoringArm.WholeArmTransfer(),
                                     intakeArm.ClawOpen(),
                                     intakeArm.IntakeHover(),
@@ -194,8 +185,8 @@ public class FourSpecimenAuto extends LinearOpMode {
                     );
                 })
                 .waitSeconds(0.5)
-                .strafeToLinearHeading(new Vector2d(score3X, score3Y), Math.toRadians(-90))
-                .afterTime( 0.5, () -> {
+                .strafeToConstantHeading(new Vector2d(score3X, score3Y))
+                .afterTime( 0, () -> {
                     Actions.runBlocking(
                             new SequentialAction(
                                     verticalSlides.SlamScoreClip(),
@@ -204,8 +195,8 @@ public class FourSpecimenAuto extends LinearOpMode {
                             )
                     );
                 })
-                .waitSeconds(1)
-                .strafeToLinearHeading(new Vector2d(parkX, parkY), Math.toRadians(90))
+                .waitSeconds(0.5)
+                .strafeToConstantHeading(new Vector2d(parkX, parkY))
                 ;
 
         while (!isStarted() && !opModeIsActive()){
