@@ -8,13 +8,14 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.util.ElapsedTime;
+
 import org.firstinspires.ftc.teamcode.Util.RobotHardware;
 
-public class HangSubsystem {
+public class Hang {
     private final RobotHardware rHardware = new RobotHardware();
     private CRServo hangServoL, hangServoR;
     private DcMotorEx slideMotor;
+    private OpMode opmode;
 
     private static final double CR_SERVO_POWER = 1.0;
     private static final double CR_SERVO_REVERSE_POWER = -1.0;
@@ -27,16 +28,23 @@ public class HangSubsystem {
     private boolean deployed = false; // this is for starting the hang (stage 1 hang)
     private boolean stageTwoActivated = false; // this is for the stage 2 part of the hang
 
-    public HangSubsystem() {}
+    public Hang() {}
     public void initialize(OpMode opmode) {
         rHardware.init(opmode.hardwareMap);
-        hangServoL = rHardware.hangServoL;
-        hangServoR = rHardware.hangServoR;
+        this.opmode = opmode;
+        this.hangServoL = rHardware.hangServoL;
+        this.hangServoR = rHardware.hangServoR;
+        this.slideMotor = rHardware.hSlideMotor;
+
+
 //        hangServoL.setDirection(DcMotorSimple.Direction.REVERSE);
         hangServoR.setDirection(DcMotorSimple.Direction.REVERSE);
-        slideMotor = rHardware.hSlideMotor;
-        stopServos();
-//        slideMotor.setPower(0);
+
+    }
+
+    public void operateTest() {
+        hangServoL.setPower(-opmode.gamepad2.left_stick_y);
+        hangServoR.setPower(-opmode.gamepad2.left_stick_y);
     }
 
 // hang sequence as an action

@@ -5,20 +5,20 @@ import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Action;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import org.firstinspires.ftc.teamcode.Subsystems.HangSubsystem;
+import org.firstinspires.ftc.teamcode.Subsystems.Hang;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@TeleOp(name="HangSubsystem Test", group="Active TeleOps")
-public class HangSubsystemTeleOp extends OpMode {
-    private final HangSubsystem hangSubsystem = new HangSubsystem();
+@TeleOp(name="Only Hang Test", group="Active TeleOps")
+public class HangTeleOp extends OpMode {
+    private final Hang hang = new Hang();
     private FtcDashboard dash = FtcDashboard.getInstance();
     private List<Action> runningActions = new ArrayList<>();
 
     @Override
     public void init() {
-        hangSubsystem.initialize(this);
+        hang.initialize(this);
         telemetry.addLine("Press Y to deploy, D-Pad Left to activate stage two.");
         telemetry.update();
     }
@@ -39,12 +39,14 @@ public class HangSubsystemTeleOp extends OpMode {
 
         dash.sendTelemetryPacket(packet);
 
-        if (gamepad1.y && !hangSubsystem.isDeployed()) {
-            runningActions.add(hangSubsystem.getHangSequence());
+        hang.operateTest();
+
+        if (gamepad1.y && !hang.isDeployed()) {
+            runningActions.add(hang.getHangSequence());
         }
 
-        if (gamepad1.dpad_left && hangSubsystem.isDeployed() && !hangSubsystem.isStageTwoActivated()) {
-            runningActions.add(hangSubsystem.getHangSequenceTwo());
+        if (gamepad1.dpad_left && hang.isDeployed() && !hang.isStageTwoActivated()) {
+            runningActions.add(hang.getHangSequenceTwo());
         }
     }
     @Override
