@@ -23,7 +23,8 @@ public class VerticalSlides
     /** all constants need to be tuned*/
     public static double joystickScalar = 1;
     public static double slideScalar = 1;
-    public static double Kp = 0.012;
+    public static double KpUp = 0.01;
+    public static double KpDown = 0.007;
     public static double Ki = 0;
     public static double Kd = 0;
     public static double Kg = 0; // gravity constant, tune till the slide holds itself in place
@@ -64,8 +65,8 @@ public class VerticalSlides
         leftSlideMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         rightSlideMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
 
-        leftSlideMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-//        rightSlideMotor.setDirection(DcMotorEx.Direction.REVERSE);
+//        leftSlideMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        rightSlideMotor.setDirection(DcMotorEx.Direction.REVERSE);
 
         leftSlideMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         rightSlideMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
@@ -227,7 +228,7 @@ public class VerticalSlides
         timer.reset();
 
         // calculates output and returns
-        double output = (Kp * error) + (Ki * integralSum) + (Kd * derivative) + Kg;
+        double output = 0.6 * (((error >= 0 ? KpUp : KpDown) * error) + (Ki * integralSum) + (Kd * derivative) + Kg);
 
         return output;
     }

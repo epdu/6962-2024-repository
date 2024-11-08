@@ -297,7 +297,7 @@ public class FinalFullRobotActionTeleOp extends OpMode {
                         // acutally transfer
 //                            new InstantAction(() -> )
                         new InstantAction(() -> scoringArm.claw.closeClaw()),
-                        new SleepAction(0.1),
+                        new SleepAction(0.125),
                         new InstantAction(() -> intakeArm.claw.openClaw())
                     ));
         }
