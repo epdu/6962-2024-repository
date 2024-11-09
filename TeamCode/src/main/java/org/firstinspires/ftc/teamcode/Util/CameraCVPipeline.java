@@ -50,12 +50,15 @@ public class CameraCVPipeline extends OpenCvPipeline {
         Mat hierarchy = new Mat();
         Imgproc.findContours(yellowMask, contours, hierarchy, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE);
 
+
         // Find the largest yellow contour (blob)
         MatOfPoint largestContour = findLargestContour(contours);
 
         if (largestContour != null) {
             // Draw a red outline around the largest detected object
             Imgproc.drawContours(input, contours, contours.indexOf(largestContour), new Scalar(255, 0, 0), 2);
+
+
             // Calculate the width of the bounding box
             double width = calculateWidth(largestContour);
 
@@ -64,7 +67,10 @@ public class CameraCVPipeline extends OpenCvPipeline {
             Imgproc.putText(input, widthLabel, new Point(cX + 10, cY + 20), Imgproc.FONT_HERSHEY_SIMPLEX, 0.5, new Scalar(0, 255, 0), 2);
             //Display the Distance
             String distanceLabel = "Distance: " + String.format("%.2f", getDistance(width)) + " inches";
+//            String angleLabel = "Angle: " + String.format("%.2f", getAngleTarget(width)) + "degrees";
             Imgproc.putText(input, distanceLabel, new Point(cX + 10, cY + 60), Imgproc.FONT_HERSHEY_SIMPLEX, 0.5, new Scalar(0, 255, 0), 2);
+//            Imgproc.putText(input, angleLabel, new Point(cX + 10, cY + 60), Imgproc.FONT_HERSHEY_SIMPLEX, 0.5, new Scalar(0, 255, 0), 2);
+
             // Calculate the centroid of the largest contour
             Moments moments = Imgproc.moments(largestContour);
             cX = moments.get_m10() / moments.get_m00();
@@ -82,13 +88,15 @@ public class CameraCVPipeline extends OpenCvPipeline {
 
     private Mat preprocessFrame(Mat frame) {
         Mat hsvFrame = new Mat();
-        Imgproc.cvtColor(frame, hsvFrame, Imgproc.COLOR_BGR2HSV);
+        Imgproc.cvtColor(frame, hsvFrame, Imgproc.COLOR_BGR2GRAY);
 
         Scalar lowerYellow = new Scalar(100, 100, 100);
         Scalar upperYellow = new Scalar(180, 255, 255);
 
 
         Mat yellowMask = new Mat();
+
+
         Core.inRange(hsvFrame, lowerYellow, upperYellow, yellowMask);
 
         Mat kernel = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(5, 5));
@@ -101,7 +109,6 @@ public class CameraCVPipeline extends OpenCvPipeline {
     private MatOfPoint findLargestContour(List<MatOfPoint> contours) {
         double maxArea = 0;
         MatOfPoint largestContour = null;
-
         for (MatOfPoint contour : contours) {
             double area = Imgproc.contourArea(contour);
             if (area > maxArea) {
@@ -118,10 +125,10 @@ public class CameraCVPipeline extends OpenCvPipeline {
     }
 
 //}
-    private static double getAngleTarget(double objMidpoint){
-        double midpoint = -((objMidpoint - (CAMERA_WIDTH/2))*FOV)/CAMERA_WIDTH;
-        return midpoint;
-    }
+//    private static double getAngleTarget(double objMidpoint){
+//        double midpoint = -((objMidpoint - (CAMERA_WIDTH/2))*FOV)/CAMERA_WIDTH;
+//        return midpoint;
+//    }
     private static double getDistance(double width){
         double distance = (objectWidthInRealWorldUnits * focalLength) / width;
         return distance;
