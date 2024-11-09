@@ -14,6 +14,7 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.Subsystems.Hang;
 import org.firstinspires.ftc.teamcode.Subsystems.HorizontalSlides;
 import org.firstinspires.ftc.teamcode.Subsystems.IntakeArm;
 import org.firstinspires.ftc.teamcode.Subsystems.Mecanum;
@@ -45,7 +46,7 @@ public class FinalFullRobotActionTeleOp extends OpMode {
     private VerticalSlides verticalSlides     = new VerticalSlides();
     private IntakeArm intakeArm               = new IntakeArm();
     private ScoringArm scoringArm             = new ScoringArm();
-
+    private Hang hang                         = new Hang();
     private boolean onRedAlliance = true;
 
     @Override
@@ -56,6 +57,7 @@ public class FinalFullRobotActionTeleOp extends OpMode {
         intakeArm.initialize(this);
         verticalSlides.initialize(this);
         scoringArm.initialize(this);
+        hang.initialize(this);
         allHubs = hardwareMap.getAll(LynxModule.class);
         // apparently optimizes reading from hardware (ex: getCurrentPosition) and makes runtime a bit faster
         for (LynxModule hub : allHubs) { hub.setBulkCachingMode(LynxModule.BulkCachingMode.MANUAL); }
@@ -187,6 +189,19 @@ public class FinalFullRobotActionTeleOp extends OpMode {
         // intake wrist rotate
         if      (currentGamepad1.dpad_right)  { intakeArm.wrist.incrementalWristRotateActual(-1); }
         else if (currentGamepad1.dpad_left) { intakeArm.wrist.incrementalWristRotateActual(1); }
+
+        //hang activation / reverse --NOT TESTED--
+        if (currentGamepad1.dpad_up && !previousGamepad1.dpad_up) {
+            runningActions.add(
+                    new InstantAction(() -> hang.getHangSequence())
+            );
+        }
+
+        if (currentGamepad1.dpad_down && !previousGamepad1.dpad_down) {
+            runningActions.add(
+                    new InstantAction(() -> hang.reverseHangSequence())
+            );
+        }
 
         // intake claw open (for emergencies)
         if (currentGamepad1.left_bumper && !previousGamepad1.left_bumper) {

@@ -75,6 +75,15 @@ public class Hang {
         );
     }
 
+    public Action reverseHangSequence() {
+        this.deployed = false;
+        return new SequentialAction(
+                // step 1: Deploy (run servos forward)
+                new InstantAction(() -> reverseServos(CR_SERVO_POWER)),
+                new SleepAction(SERVO_RUN_TIME),
+                new InstantAction(this::stopServos)
+        );
+    }
     // Helper methods to control servos and slide motor
     private void runServos(double power) {
         hangServoR.setPower(power);
@@ -84,6 +93,11 @@ public class Hang {
     private void stopServos() {
         hangServoR.setPower(0);
         hangServoL.setPower(0);
+    }
+
+    private void reverseServos(double power) {
+        hangServoR.setPower(-power);
+        hangServoL.setPower(-power);
     }
     public boolean isDeployed() {
         return deployed;
