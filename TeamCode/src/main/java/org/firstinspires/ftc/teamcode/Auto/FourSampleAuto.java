@@ -41,11 +41,11 @@ public class FourSampleAuto extends LinearOpMode{
     public static double parkX = -30;
     public static double parkY = -18;
 
-    public ElapsedTime timer = new ElapsedTime();
+//    public ElapsedTime timer = new ElapsedTime();
 
     @Override
     public void runOpMode() {
-        timer.reset();
+//        timer.reset();
         Pose2d startPose = new Pose2d(startX, startY, startHeading);
         MecanumDrive drive = new MecanumDrive(hardwareMap, startPose);
 //        CustomTimer timer = new CustomTimer();
@@ -201,10 +201,14 @@ public class FourSampleAuto extends LinearOpMode{
                 .strafeToLinearHeading(new Vector2d(parkX, parkY), Math.toRadians(90));
 
         TrajectoryActionBuilder traj2 = drive.actionBuilder(startPose)
+                .waitSeconds(29)
                 .afterTime(0, () -> {
                     Actions.runBlocking(
                             new SequentialAction(
-                                    timeout.Timeout()
+                                    verticalSlides.Retract(),
+                                    scoringArm.StowArmClose(),
+                                    intakeArm.IntakeTransfer(),
+                                    horizontalSlides.HorizontalRetract()
                             )
                     );
                 });
@@ -237,8 +241,8 @@ public class FourSampleAuto extends LinearOpMode{
 
         Actions.runBlocking(
                 new ParallelAction(
-                        fourSampleTrajectory
-//                        daniel
+                        fourSampleTrajectory,
+                        daniel
 
                 )
         );
