@@ -1,27 +1,29 @@
 package org.firstinspires.ftc.teamcode.Util;
 
-import com.acmerobotics.dashboard.FtcDashboard;
-import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
-import com.qualcomm.hardware.bosch.BNO055IMU;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.util.ElapsedTime;
+import android.graphics.Bitmap;
+import android.graphics.Color;
 
-import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+import com.qualcomm.hardware.bosch.BNO055IMU;
+
+import org.firstinspires.ftc.robotcore.external.function.Consumer;
+import org.firstinspires.ftc.robotcore.external.function.Continuation;
+import org.firstinspires.ftc.robotcore.external.stream.CameraStreamSource;
+import org.opencv.android.Utils;
 import org.opencv.core.*;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.imgproc.Moments;
 import org.openftc.easyopencv.OpenCvCamera;
-import org.openftc.easyopencv.OpenCvCameraFactory;
-import org.openftc.easyopencv.OpenCvCameraRotation;
+
+import java.util.concurrent.atomic.AtomicReference;
+
 import org.openftc.easyopencv.OpenCvPipeline;
 
 import java.util.ArrayList;
 import java.util.List;
-public class CameraCVPipeline extends OpenCvPipeline {
+import java.util.function.Supplier;
+
+public class CameraCvPipeline extends OpenCvPipeline implements CameraStreamSource {
+
     BNO055IMU imu;
     double cX = 0;
     double cY = 0;
@@ -29,6 +31,12 @@ public class CameraCVPipeline extends OpenCvPipeline {
 
     private OpenCvCamera controlHubCam;  // Use OpenCvCamera class from FTC SDK
     /** MAKE SURE TO CHANGE THE FOV AND THE RESOLUTIONS ACCORDINGLY **/
+
+    /**
+     * AutoTune: Automatically tunes the color ranges at a competition to
+     * ensure selection accuracy.
+     */
+    public static int COLOR_AUTOTUNE_MODE = 0;
     static final int CAMERA_WIDTH = 640; // width  of wanted camera resolution
     final int CAMERA_HEIGHT = 360; // height of wanted camera resolution
     static final double FOV = 40;
@@ -36,19 +44,68 @@ public class CameraCVPipeline extends OpenCvPipeline {
     // Calculate the distance using the formula
     static final double objectWidthInRealWorldUnits = 3.75;  // Replace with the actual width of the object in real-world units
     static final double focalLength = 728;
+    private final AtomicReference<Bitmap> lastFrame = new AtomicReference<>(Bitmap.createBitmap(1, 1, Bitmap.Config.RGB_565));
 
-//    public void initialize(OpenCvCamera webcam) {
-//
-//    }
+    private ColorDetect detectionType = ColorDetect.BLUE;
+    private Supplier<Double> currentWristPosition = () -> 0.0;
+
+    private double targetWristPosition = 0.0;
+
+    public double getTargetWristPosition() {
+        return targetWristPosition;
+    }
+
+    public void supplyCurrentWristPosition(Supplier<Double> currentWristPosition) {
+        this.currentWristPosition = currentWristPosition;
+    }
+
+    public void setDetectionType(ColorDetect sampleType) {
+        this.detectionType = sampleType;
+    }
+
+    public void initialize(int width, int height, OpenCvCamera webcam) {
+        lastFrame.set(Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565));
+    }
+    private Scalar detectedColorRangeMin = new Scalar(0, 0, 0);
+    private Scalar detectedColorRangeMax = new Scalar(255, 255, 255);
+
+    // Method to automatically determine the color range based on the detected sample
+    private void calculateColorRange(Mat input, Rect boundingBox) {
+        // Crop the image to the bounding box area
+        Mat croppedSample = new Mat(input, boundingBox);
+
+        // Convert the cropped sample to the HSV color space
+        Mat hsvSample = new Mat();
+        Imgproc.cvtColor(croppedSample, hsvSample, Imgproc.COLOR_RGB2HSV);
+
+        // Calculate the average color in the cropped area
+        Scalar averageColor = Core.mean(hsvSample);
+
+        // Set the detected color range based on the average color
+        detectedColorRangeMin = new Scalar(
+                Math.max(averageColor.val[0] - 10, 0),
+                Math.max(averageColor.val[1] - 50, 0),
+                Math.max(averageColor.val[2] - 50, 0)
+        );
+        detectedColorRangeMax = new Scalar(
+                Math.min(averageColor.val[0] + 10, 180),
+                Math.min(averageColor.val[1] + 50, 255),
+                Math.min(averageColor.val[2] + 50, 255)
+        );
+
+        // Release the cropped sample and HSV Mat
+        croppedSample.release();
+        hsvSample.release();
+    }
     @Override
     public Mat processFrame(Mat input) {
         // Preprocess the frame to detect yellow regions
-        Mat yellowMask = preprocessFrame(input);
+        Mat colourMask = preprocessFrame(input);
 
         // Find contours of the detected yellow regions
         List<MatOfPoint> contours = new ArrayList<>();
         Mat hierarchy = new Mat();
-        Imgproc.findContours(yellowMask, contours, hierarchy, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE);
+        Imgproc.findContours(colourMask, contours, hierarchy, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE);
 
 
         // Find the largest yellow contour (blob)
@@ -58,23 +115,28 @@ public class CameraCVPipeline extends OpenCvPipeline {
             // Draw a red outline around the largest detected object
             Imgproc.drawContours(input, contours, contours.indexOf(largestContour), new Scalar(255, 0, 0), 2);
 
-
             // Calculate the width of the bounding box
             double width = calculateWidth(largestContour);
+            double rotationAngle = getRotationAngle(largestContour);
+
+            // Calculate the centroid of the largest contour
+            Moments moments = Imgproc.moments(largestContour);
+            cX = moments.get_m10() / moments.get_m00();
+            cY = moments.get_m01() / moments.get_m00();
 
             // Display the width next to the label
             String widthLabel = "Width: " + (int) width + " pixels";
+            String rotationLabel = "Angle to rotate: " + (int) rotationAngle + "degrees";
             Imgproc.putText(input, widthLabel, new Point(cX + 10, cY + 20), Imgproc.FONT_HERSHEY_SIMPLEX, 0.5, new Scalar(0, 255, 0), 2);
+            Imgproc.putText(input, rotationLabel, new Point(cX + 10, cY + 20), Imgproc.FONT_HERSHEY_SIMPLEX, 0.5, new Scalar(0, 255, 0), 2);
             //Display the Distance
             String distanceLabel = "Distance: " + String.format("%.2f", getDistance(width)) + " inches";
 //            String angleLabel = "Angle: " + String.format("%.2f", getAngleTarget(width)) + "degrees";
             Imgproc.putText(input, distanceLabel, new Point(cX + 10, cY + 60), Imgproc.FONT_HERSHEY_SIMPLEX, 0.5, new Scalar(0, 255, 0), 2);
 //            Imgproc.putText(input, angleLabel, new Point(cX + 10, cY + 60), Imgproc.FONT_HERSHEY_SIMPLEX, 0.5, new Scalar(0, 255, 0), 2);
 
-            // Calculate the centroid of the largest contour
-            Moments moments = Imgproc.moments(largestContour);
-            cX = moments.get_m10() / moments.get_m00();
-            cY = moments.get_m01() / moments.get_m00();
+
+
 
             // Draw a dot at the centroid
             String label = "(" + (int) cX + ", " + (int) cY + ")";
@@ -82,28 +144,28 @@ public class CameraCVPipeline extends OpenCvPipeline {
             Imgproc.circle(input, new Point(cX, cY), 5, new Scalar(0, 255, 0), -1);
 
         }
+        Bitmap bitmap = Bitmap.createBitmap(input.width(), input.height(), Bitmap.Config.RGB_565);
+        Utils.matToBitmap(COLOR_AUTOTUNE_MODE == 1 ? input : colourMask, bitmap);
+
+        // Update the last frame
+        lastFrame.set(bitmap);
 
         return input;
     }
 
     private Mat preprocessFrame(Mat frame) {
         Mat hsvFrame = new Mat();
-        Imgproc.cvtColor(frame, hsvFrame, Imgproc.COLOR_BGR2GRAY);
+        Imgproc.cvtColor(frame, hsvFrame, Imgproc.COLOR_RGB2HSV);
 
-        Scalar lowerYellow = new Scalar(100, 100, 100);
-        Scalar upperYellow = new Scalar(180, 255, 255);
+        Mat colorMask = new Mat();
 
-
-        Mat yellowMask = new Mat();
-
-
-        Core.inRange(hsvFrame, lowerYellow, upperYellow, yellowMask);
-
-        Mat kernel = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(5, 5));
-        Imgproc.morphologyEx(yellowMask, yellowMask, Imgproc.MORPH_OPEN, kernel);
-        Imgproc.morphologyEx(yellowMask, yellowMask, Imgproc.MORPH_CLOSE, kernel);
-
-        return yellowMask;
+        Core.inRange(
+                hsvFrame,
+                detectionType.getColorRangeMinimum(),
+                detectionType.getColorRangeMaximum(),
+                colorMask
+        );
+        return colorMask;
     }
 
     private MatOfPoint findLargestContour(List<MatOfPoint> contours) {
@@ -124,6 +186,29 @@ public class CameraCVPipeline extends OpenCvPipeline {
         return boundingRect.width;
     }
 
+    private double getRotationAngle(MatOfPoint contour) {
+
+        // Convert contour to MatOfPoint2f for the minAreaRect function
+        MatOfPoint2f contour2f = new MatOfPoint2f(contour.toArray());
+
+        // Get the minimum area bounding rectangle for the contour
+        RotatedRect rotRect = Imgproc.minAreaRect(contour2f);
+
+        // Get the angle of the bounding rectangle
+        double angle = rotRect.angle;
+
+        // If width < height, the object is closer to vertical and the angle needs to be adjusted to correct to vertical orientation
+        if (rotRect.size.width > rotRect.size.height) {
+            angle += 90.0;
+        }
+
+        // Normalize the angle to [-90, 90] to get the smallest rotation required
+        if (angle > 90) {
+            angle -= 180.0;
+        }
+
+        return angle;
+    }
 //}
 //    private static double getAngleTarget(double objMidpoint){
 //        double midpoint = -((objMidpoint - (CAMERA_WIDTH/2))*FOV)/CAMERA_WIDTH;
@@ -153,5 +238,13 @@ public class CameraCVPipeline extends OpenCvPipeline {
         return radians;
     }
 
+
+    @Override
+    public void getFrameBitmap(Continuation<? extends Consumer<Bitmap>> continuation) {
+        continuation.dispatch(bitmapConsumer -> {
+            // Pass the last frame (Bitmap) to the consumer
+            bitmapConsumer.accept(lastFrame.get());
+        });
+    }
 
 }

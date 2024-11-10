@@ -1,16 +1,13 @@
 package org.firstinspires.ftc.teamcode.Subsystems;
 
 
-import android.graphics.Bitmap;
-
+import com.acmerobotics.dashboard.FtcDashboard;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.robotcore.external.stream.CameraStreamSource;
-import org.firstinspires.ftc.teamcode.Util.CameraCVPipeline;
-import org.firstinspires.ftc.teamcode.Util.CameraCVPipeline;
+import org.firstinspires.ftc.teamcode.Util.CameraCvPipeline;
+import org.firstinspires.ftc.teamcode.Util.OpenCvPipelin;
+import org.firstinspires.ftc.teamcode.Util.ColorDetect;
 import org.firstinspires.ftc.teamcode.Util.RobotHardware;
-import org.firstinspires.ftc.vision.VisionProcessor;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
@@ -21,25 +18,21 @@ public class CameraPortal {
     private int  cameraMonitorViewID;
     private OpenCvCamera webcam1;
 
-    private CameraCVPipeline pipeLine = new CameraCVPipeline();
+    private CameraCvPipeline pipeLine = new CameraCvPipeline();
 
     private final RobotHardware rHardware = new RobotHardware();
 
     public ColorDetect cameraColor = ColorDetect.YELLOW;
 
 
-    public enum ColorDetect {
-        RED,
-        BLUE,
-        YELLOW
-    }
+
 
     public void init(OpMode opmode) {
         rHardware.init(opmode.hardwareMap);
         cameraMonitorViewID = rHardware.cameraMonitorViewId;
         webcam1 = OpenCvCameraFactory.getInstance().createWebcam(rHardware.webcam, cameraMonitorViewID);
 
-//        pipeLine.initialize(webcam1);
+        pipeLine.initialize(640, 480, webcam1);
 
         webcam1.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
         {
@@ -50,6 +43,11 @@ public class CameraPortal {
                 webcam1.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
 //                TODO: Create Pipeline
                 webcam1.setPipeline(pipeLine);
+                FtcDashboard.getInstance().startCameraStream(
+                        pipeLine,
+                        30.0
+                );
+
             }
             @Override
             public void onError(int errorCode) {opmode.telemetry.addLine("womp womp");}
@@ -62,18 +60,18 @@ public class CameraPortal {
         if (opmode.gamepad1.a) {
             webcam1.stopStreaming();
         }
-        if (opmode.gamepad1.b) {
-            switch (cameraColor) {
-                case RED:
-                    cameraColor = cameraColor.BLUE;
-                    break;
-                case BLUE:
-                    cameraColor = cameraColor.YELLOW;
-                    break;
-                default:
-                    cameraColor = cameraColor.RED;
-            }
-        }
+//        if (opmode.gamepad1.b) {
+//            switch (cameraColor) {
+//                case RED:
+//                    cameraColor = cameraColor.BLUE;
+//                    break;
+//                case BLUE:
+//                    cameraColor = cameraColor.YELLOW;
+//                    break;
+//                default:
+//                    cameraColor = cameraColor.RED;
+//            }
+//        }
         opmode.telemetry.addData("Frame Count", webcam1.getFrameCount());
         opmode.telemetry.addData("FPS", String.format("%.2f", webcam1.getFps()));
         opmode.telemetry.addData("Total frame time ms", webcam1.getTotalFrameTimeMs());
