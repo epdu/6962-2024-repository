@@ -159,7 +159,7 @@ public class ScoringArm {
         public static double armScoringPosition = 0.3;
         public static double armScoringClipPosition = 0.3411;
         public static double armTransferPosition = 0.4722;
-        public static double armGrabClipWallPosition = 0.1578;
+        public static double armGrabClipWallPosition = 0.0206;
         public static double armInitPosition = 0.3994;
         public static double armStowPosition = 0.6183;
         public static double armIncrement = 0.001;
@@ -219,7 +219,7 @@ public class ScoringArm {
         public static double wristTransferPosition = 0.0744;
         public static double wristScoreBucketPosition = 0.9328;
         public static double wristScoreClipPosition = 0.8872;
-        public static double wristGrabClipWallPosition = 0.8483;
+        public static double wristGrabClipWallPosition = 0.8;
         public static double wristGrabClipFloorPosition = 0;
         public static double wristGrabClipFloorHoverPosition = 0;
         public static double wristIncrement = 0.001;

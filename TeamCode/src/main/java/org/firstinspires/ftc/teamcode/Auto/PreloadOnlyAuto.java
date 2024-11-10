@@ -25,7 +25,7 @@ public class PreloadOnlyAuto extends LinearOpMode{
     public static double startY = -63.75;
     public static double startHeading = Math.toRadians(-90);
     public static double scorePreloadX = 0;
-    public static double scorePreloadY = -37;
+    public static double scorePreloadY = -35;
     public static double scorePreload2X = -6;
     public static double scorePreload2Y = -39;
     public static double prepPickupX = 64;
@@ -45,6 +45,7 @@ public class PreloadOnlyAuto extends LinearOpMode{
         ScoringArm scoringArm = new ScoringArm();
 
         TrajectoryActionBuilder move1 = drive.actionBuilder(startPose)
+                .waitSeconds(10)
                 .afterTime(0, () -> {
                     Actions.runBlocking(
                             new ParallelAction(

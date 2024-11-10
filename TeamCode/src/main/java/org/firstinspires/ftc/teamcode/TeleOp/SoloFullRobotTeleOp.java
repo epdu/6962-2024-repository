@@ -108,7 +108,7 @@ public class SoloFullRobotTeleOp extends OpMode {
         mecanum.operateFieldCentricVincent();
 
         // gyro reset
-        if (currentGamepad1.left_stick_button && !previousGamepad1.left_stick_button) { mecanum.resetNavx(); }
+        if (currentGamepad2.y && !previousGamepad2.y) { mecanum.resetNavx(); }
 
         // manual control in case auto messes up, else only PID
         if (currentGamepad2.right_trigger > 0.1 && currentGamepad2.left_trigger > 0.1) { verticalSlides.operateFix(); }
@@ -190,7 +190,10 @@ public class SoloFullRobotTeleOp extends OpMode {
                     new SequentialAction(
                             new InstantAction(() -> verticalSlides.slamToScoreClip()),
                             new SleepAction(0.2),
-                            new InstantAction(() -> scoringArm.claw.openClaw())
+                            new InstantAction(() -> scoringArm.claw.openClaw()),
+                            new InstantAction(() -> verticalSlides.retract()),
+                            new InstantAction(() -> scoringArm.arm.setArmTransfer()),
+                            new InstantAction(() -> scoringArm.wrist.setWristTransfer())
                     ));
         }
 
@@ -238,17 +241,17 @@ public class SoloFullRobotTeleOp extends OpMode {
         }
 
         //hang activation / reverse --NOT TESTED--
-        if (currentGamepad1.dpad_up && !previousGamepad1.dpad_up) {
-            runningActions.add(
-                    new InstantAction(() -> hang.getHangSequence())
-            );
-        }
-
-        if (currentGamepad1.dpad_down && !previousGamepad1.dpad_down) {
-            runningActions.add(
-                    new InstantAction(() -> hang.reverseHangSequence())
-            );
-        }
+//        if (currentGamepad1.dpad_up && !previousGamepad1.dpad_up) {
+//            runningActions.add(
+//                    new InstantAction(() -> hang.getHangSequence())
+//            );
+//        }
+//
+//        if (currentGamepad1.dpad_down && !previousGamepad1.dpad_down) {
+//            runningActions.add(
+//                    new InstantAction(() -> hang.reverseHangSequence())
+//            );
+//        }
 
         ////////////////////////////////////// GAMEPAD 2 CONTROLS /////////////////////////////////////
         /// all backup fixing stuff

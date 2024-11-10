@@ -61,15 +61,12 @@ public class FourSpecimenAuto extends LinearOpMode {
         HorizontalSlides horizontalSlides = new HorizontalSlides();
 
         TrajectoryActionBuilder traj = drive.actionBuilder(startPose)
-                .afterTime(0.5, () -> {
+                .afterTime(0, () -> {
                     Actions.runBlocking(
-                            new SequentialAction(
-                                    intakeArm.IntakeHover(),
-                                    new ParallelAction(
-                                            verticalSlides.LiftUpToClip(),
-                                            scoringArm.ArmScoreClip(),
-                                            horizontalSlides.HorizontalRetract()
-                                    )
+                            new ParallelAction(
+                                    verticalSlides.LiftUpToClip(),
+                                    scoringArm.ArmScoreClip(),
+                                    horizontalSlides.HorizontalRetract()
                             )
                     );
                 })
