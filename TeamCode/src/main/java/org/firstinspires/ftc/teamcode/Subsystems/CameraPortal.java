@@ -4,21 +4,20 @@ package org.firstinspires.ftc.teamcode.Subsystems;
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
-import org.firstinspires.ftc.teamcode.Util.CameraCvPipeline;
-import org.firstinspires.ftc.teamcode.Util.OpenCvPipelin;
+import org.firstinspires.ftc.teamcode.Util.CameraCVPipeline;
+//import org.firstinspires.ftc.teamcode.Util.OpenCvPipeline;
 import org.firstinspires.ftc.teamcode.Util.ColorDetect;
 import org.firstinspires.ftc.teamcode.Util.RobotHardware;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
-import org.openftc.easyopencv.OpenCvPipeline;
 
 public class CameraPortal {
     private OpMode opmode;
     private int  cameraMonitorViewID;
     private OpenCvCamera webcam1;
 
-    private CameraCvPipeline pipeLine = new CameraCvPipeline();
+    private CameraCVPipeline pipeLine = new CameraCVPipeline();
 
     private final RobotHardware rHardware = new RobotHardware();
 

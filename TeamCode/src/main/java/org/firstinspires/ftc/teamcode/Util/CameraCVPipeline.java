@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.Util;
 
 import android.graphics.Bitmap;
-import android.graphics.Color;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 
@@ -22,12 +21,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 
-public class CameraCvPipeline extends OpenCvPipeline implements CameraStreamSource {
+public class CameraCVPipeline extends OpenCvPipeline implements CameraStreamSource {
 
     BNO055IMU imu;
     double cX = 0;
     double cY = 0;
     double width = 0;
+
+    public CameraCVPipeline() {}
 
     private OpenCvCamera controlHubCam;  // Use OpenCvCamera class from FTC SDK
     /** MAKE SURE TO CHANGE THE FOV AND THE RESOLUTIONS ACCORDINGLY **/
