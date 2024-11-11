@@ -48,6 +48,7 @@ public class RobotHardware {
 
     public GamepadEx gamepad1, gamepad2;
     public CRServo hangServoL = null, hangServoR = null;
+    public CRServo l3LinkageServo = null;
 
     public void init(@NonNull HardwareMap hardwareMap) {
         this.hMap = hardwareMap;
