@@ -63,10 +63,6 @@ public class FourSpecimenTestAuto extends LinearOpMode {
         MecanumDrive drive = new MecanumDrive(hardwareMap, startPose);
         SubsystemCommands subsystems = new SubsystemCommands();
 
-        VerticalSlides verticalSlides = new VerticalSlides();
-        ScoringArm scoringArm = new ScoringArm();
-        HorizontalSlides horizontalSlides = new HorizontalSlides();
-
         TrajectoryActionBuilder scorePreload = drive.actionBuilder(startPose)
                 .strafeToConstantHeading(new Vector2d(scorePreloadX, scorePreloadY));
 
@@ -93,13 +89,11 @@ public class FourSpecimenTestAuto extends LinearOpMode {
                 .strafeToConstantHeading(new Vector2d(parkX, parkY));
 
         while (!isStarted() && !opModeIsActive()){
-            verticalSlides.initialize(this);
-            horizontalSlides.initialize(this);
-            scoringArm.initialize(this);
+            subsystems.initialize(this);
 
-//            Actions.runBlocking(
-////                    subsystems.INITIALIZE
-//            );
+            Actions.runBlocking(
+                    subsystems.INITIALIZE()
+            );
         }
 
         waitForStart();
@@ -116,28 +110,28 @@ public class FourSpecimenTestAuto extends LinearOpMode {
 
         Actions.runBlocking(
                 new SequentialAction(
-                            subsystems.PREP_CLIP,
+                            subsystems.PREP_CLIP(),
                         SCORE_PRELOAD,
-                            subsystems.SCORE_CLIP,
+                            subsystems.SCORE_CLIP(),
                         PUSH,
                         PICKUP1,
-                            subsystems.PICKUP_CLIP,
+                            subsystems.PICKUP_CLIP(),
                         ACTUAL_PICKUP,
-                            subsystems.PREP_CLIP,
+                            subsystems.PREP_CLIP(),
                         SCORE,
-                            subsystems.SCORE_CLIP,
+                            subsystems.SCORE_CLIP(),
                         PICKUP2,
-                            subsystems.PICKUP_CLIP,
+                            subsystems.PICKUP_CLIP(),
                         ACTUAL_PICKUP,
-                            subsystems.PREP_CLIP,
+                            subsystems.PREP_CLIP(),
                         SCORE,
-                            subsystems.SCORE_CLIP,
+                            subsystems.SCORE_CLIP(),
                         PICKUP2,
-                            subsystems.PICKUP_CLIP,
+                            subsystems.PICKUP_CLIP(),
                         ACTUAL_PICKUP,
-                            subsystems.PREP_CLIP,
+                            subsystems.PREP_CLIP(),
                         SCORE,
-                            subsystems.SCORE_CLIP,
+                            subsystems.SCORE_CLIP(),
                         PARK
                 )
         );
