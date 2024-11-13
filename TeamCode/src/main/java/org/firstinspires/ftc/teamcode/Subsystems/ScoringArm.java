@@ -160,7 +160,7 @@ public class ScoringArm {
         public static double armScoringClipPosition = 0.3411;
         public static double armTransferPosition = 0.4722;
         public static double armGrabClipWallPosition = 0.0206;
-        public static double armInitPosition = 0.3994;
+        public static double armInitPosition = 0.4;
         public static double armStowPosition = 0.6183;
         public static double armIncrement = 0.001;
 
@@ -340,6 +340,8 @@ public class ScoringArm {
         @Override
         public boolean run(@NonNull TelemetryPacket packet) {
             arm.setArmInitPosition();
+            wrist.setWristTransfer();
+            claw.closeClaw();
             return false;
         }
     }

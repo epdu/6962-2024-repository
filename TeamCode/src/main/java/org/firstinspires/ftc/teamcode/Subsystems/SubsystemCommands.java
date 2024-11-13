@@ -4,6 +4,7 @@ import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.ParallelAction;
 import com.acmerobotics.roadrunner.SequentialAction;
 import com.acmerobotics.roadrunner.SleepAction;
+import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.teamcode.Util.RobotHardware;
@@ -39,6 +40,7 @@ public class SubsystemCommands {
                     new SleepAction(0.5),
                     scoringArm.WholeArmTransfer(),
                     intakeArm.ClawOpen(),
+                    intakeArm.IntakeHover(),
                     new ParallelAction(
                             verticalSlides.LiftUpToHighBucket(),
                             scoringArm.ArmScoreBucket()
@@ -70,6 +72,18 @@ public class SubsystemCommands {
     public Action INITIALIZE =
             new ParallelAction(
                     intakeArm.IntakeTransfer(),
-                    scoringArm.StowArmClose()
+                    scoringArm.ArmInitPosition()
+            );
+    public Action PREP_CLIP =
+            new ParallelAction(
+                    verticalSlides.LiftUpToClip(),
+                    scoringArm.ArmScoreClip(),
+                    horizontalSlides.HorizontalRetract()
+            );
+    public Action SCORE_CLIP =
+            new SequentialAction(
+                    verticalSlides.SlamScoreClip(),
+                    scoringArm.StowWholeArm(),
+                    verticalSlides.Retract()
             );
 }

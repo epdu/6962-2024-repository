@@ -196,13 +196,13 @@ public class IntakeArm {
     public static class Wrist {
         public Servo wristRotate, wristFlip;
         public boolean isWristTransferring = true;
-        public static double wristRotateTransferPosition = 0.5056;
-        public static double wristFlipTransferPosition = 0.3994;
+        public static double wristRotateTransferPosition = 0.7567;
+        public static double wristFlipTransferPosition = 0.4211;
         public static double wristRotateDefaultIntakePosition = 0.5378;
         public static double wristRotateIntakePerpendicularPosition = 1;
         public static double wristFlipIntakePosition = 0.96;
         public static double wristTestIncrement = 0.001;
-        public static double wristActualIncrement = 0.02;
+        public static double wristActualIncrement = 0.01;
 
         public Wrist() {}
 
@@ -274,7 +274,7 @@ public class IntakeArm {
         @Override
         public boolean run(@NonNull TelemetryPacket packet) {
             arm.setArmGrab();
-            new SleepAction(0.2);
+            new SleepAction(0.4);
             claw.closeClaw();
             return false;
         }

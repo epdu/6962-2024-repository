@@ -24,6 +24,10 @@ import java.util.function.Supplier;
 public class CameraCVPipeline extends OpenCvPipeline implements CameraStreamSource {
 
     BNO055IMU imu;
+
+    public static double TURN_FACTOR = 0.001;
+
+    public static double TURN_FACTOR_D_GAIN = -0.0001;
     double cX = 0;
     double cY = 0;
     double width = 0;
@@ -41,6 +45,10 @@ public class CameraCVPipeline extends OpenCvPipeline implements CameraStreamSour
     static final int CAMERA_WIDTH = 640; // width  of wanted camera resolution
     final int CAMERA_HEIGHT = 360; // height of wanted camera resolution
     static final double FOV = 40;
+
+    private double previousRotationAngle = 0.0;
+
+    private double guidanceRotationAngle = 0.0;
 
     // Calculate the distance using the formula
     static final double objectWidthInRealWorldUnits = 3.75;  // Replace with the actual width of the object in real-world units
@@ -153,7 +161,7 @@ public class CameraCVPipeline extends OpenCvPipeline implements CameraStreamSour
 
         return input;
     }
-
+    //applies color mask
     private Mat preprocessFrame(Mat frame) {
         Mat hsvFrame = new Mat();
         Imgproc.cvtColor(frame, hsvFrame, Imgproc.COLOR_RGB2HSV);
@@ -168,7 +176,7 @@ public class CameraCVPipeline extends OpenCvPipeline implements CameraStreamSour
         );
         return colorMask;
     }
-
+    //selects closest sample
     private MatOfPoint findLargestContour(List<MatOfPoint> contours) {
         double maxArea = 0;
         MatOfPoint largestContour = null;
@@ -187,6 +195,7 @@ public class CameraCVPipeline extends OpenCvPipeline implements CameraStreamSour
         return boundingRect.width;
     }
 
+    //returns angular orientation of the detected sample
     private double getRotationAngle(MatOfPoint contour) {
 
         // Convert contour to MatOfPoint2f for the minAreaRect function
@@ -210,11 +219,35 @@ public class CameraCVPipeline extends OpenCvPipeline implements CameraStreamSour
 
         return angle;
     }
-//}
+   private double calculateServoPosition(double current, double rotationAngle) {
+        // Calculate the derivative (change) in rotation angle
+        double derivative = rotationAngle - previousRotationAngle;
+
+        // Store the current angle for the next calculation
+        previousRotationAngle = rotationAngle;
+
+        // Calculate the servo adjustment based on the P and D terms
+        double servoAdjustment = (rotationAngle * TURN_FACTOR) + (derivative * TURN_FACTOR_D_GAIN);
+
+        // Apply the adjustment to the current servo position
+        double newServoPosition = current + servoAdjustment;
+
+        // Ensure the servo position stays within valid bounds [0, 1]
+        if (newServoPosition > 0.7) {
+            newServoPosition = 1.0;
+        } else if (newServoPosition < 0.0) {
+            newServoPosition = 0.0;
+        }
+
+        return newServoPosition;
+    }
+    //returns the angle theta with respect to the midpoint of the camera focus
 //    private static double getAngleTarget(double objMidpoint){
 //        double midpoint = -((objMidpoint - (CAMERA_WIDTH/2))*FOV)/CAMERA_WIDTH;
 //        return midpoint;
 //    }
+
+    //returns distance from sample to camera
     private static double getDistance(double width){
         double distance = (objectWidthInRealWorldUnits * focalLength) / width;
         return distance;
