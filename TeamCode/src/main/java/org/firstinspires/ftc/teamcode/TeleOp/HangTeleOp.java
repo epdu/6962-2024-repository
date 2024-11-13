@@ -25,21 +25,19 @@ public class HangTeleOp extends OpMode {
 
     @Override
     public void loop() {
-
         TelemetryPacket packet = new TelemetryPacket();
         List<Action> newActions = new ArrayList<>();
 
         for (Action action : runningActions) {
             action.preview(packet.fieldOverlay());
-            if (action.run(packet)) { // actually running actions
-                newActions.add(action); // if failed (run() returns true), try again
+            if (!action.run(packet)) { // Run each action; if incomplete, keep it in the list
+                newActions.add(action);
             }
         }
-        runningActions = newActions;
+        runningActions = newActions; // Update runningActions to keep only incomplete actions
 
         dash.sendTelemetryPacket(packet);
-
-        hang.operateTest();
+        hang.operateTest(); // Manually control hang for testing purposes..
 
         if (gamepad1.y && !hang.isDeployed()) {
             runningActions.add(hang.getHangSequence());
@@ -50,5 +48,7 @@ public class HangTeleOp extends OpMode {
         }
     }
     @Override
-    public void stop() {}
+    public void stop() {
+        runningActions.clear();
+    }
 }
