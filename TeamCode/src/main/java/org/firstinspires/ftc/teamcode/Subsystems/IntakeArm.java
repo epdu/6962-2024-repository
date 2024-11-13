@@ -274,7 +274,7 @@ public class IntakeArm {
         @Override
         public boolean run(@NonNull TelemetryPacket packet) {
             arm.setArmGrab();
-            new SleepAction(0.2);
+            new SleepAction(0.4);
             claw.closeClaw();
             return false;
         }
