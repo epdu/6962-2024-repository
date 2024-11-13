@@ -69,13 +69,13 @@ public class FourSampleTestAuto extends LinearOpMode{
                 .strafeToLinearHeading(new Vector2d(parkX, parkY), Math.toRadians(90));
 
         while (!isStarted() && !opModeIsActive()) {
-            subsystems.initialize(this);
+//            subsystems.initialize(this);
 
             telemetry.addLine("Initialized Test 0+4 Auto");
             telemetry.update();
-            Actions.runBlocking(
-                    subsystems.INITIALIZE
-            );
+//            Actions.runBlocking(
+////                    subsystems.INITIALIZE
+//            );
         }
 
         waitForStart();
@@ -94,29 +94,29 @@ public class FourSampleTestAuto extends LinearOpMode{
 
         Actions.runBlocking(
                 new SequentialAction(
-                            subsystems.RETRACT_ALL,
+//                            subsystems.RETRACT_ALL,
                         SCORE_PRELOAD,
                             subsystems.LIFT_BUCKET,
                             subsystems.SCORE_BUCKET,
                             subsystems.RETRACT_VERTICAL,
                         INTAKE1,
-                            subsystems.EXTEND_INTAKE,
-                            subsystems.INTAKE_AND_TRANSFER,
+//                            subsystems.EXTEND_INTAKE,
+//                            subsystems.INTAKE_AND_TRANSFER,
                         SCORE1,
                             subsystems.SCORE_BUCKET,
                             subsystems.RETRACT_VERTICAL,
                         INTAKE2,
-                            subsystems.EXTEND_INTAKE,
-                            subsystems.INTAKE_AND_TRANSFER,
+//                            subsytems.EXTEND_INTAKE,
+//                            subsystems.INTAKE_AND_TRANSFER,
                         SCORE2,
                             subsystems.SCORE_BUCKET,
                             subsystems.RETRACT_VERTICAL,
                         INTAKE3,
-                            subsystems.EXTEND_INTAKE,
-                            subsystems.INTAKE_AND_TRANSFER,
+//                            subsystems.EXTEND_INTAKE,
+//                            subsystems.INTAKE_AND_TRANSFER,
                         SCORE3,
                             subsystems.SCORE_BUCKET,
-                            subsystems.RETRACT_ALL,
+//                            subsystems.RETRACT_ALL,
                         PARK
                 )
         );

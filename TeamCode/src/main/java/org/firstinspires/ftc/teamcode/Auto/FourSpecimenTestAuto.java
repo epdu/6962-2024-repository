@@ -14,13 +14,17 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.Roadrunner.MecanumDrive;
+import org.firstinspires.ftc.teamcode.Subsystems.HorizontalSlides;
+import org.firstinspires.ftc.teamcode.Subsystems.IntakeArm;
+import org.firstinspires.ftc.teamcode.Subsystems.ScoringArm;
 import org.firstinspires.ftc.teamcode.Subsystems.SubsystemCommands;
+import org.firstinspires.ftc.teamcode.Subsystems.VerticalSlides;
 
 @Config
 @Autonomous(name = "4+0 Test", group = "Autonomous", preselectTeleOp = "Solo Full Robot TeleOp")
 public class FourSpecimenTestAuto extends LinearOpMode {
 
-    public static double startX = 17;
+    public static double startX = 8;
     public static double startY = -63.5;
     public static double startHeading = Math.toRadians(-90);
     public static double scorePreloadX = 5;
@@ -35,8 +39,10 @@ public class FourSpecimenTestAuto extends LinearOpMode {
     public static double push2Y = -13;
     public static double zone2X = 57;
     public static double zone2Y = -54;
-    public static double pickupX = 27;
-    public static double pickupY = -49;
+    public static double prepPickupX = 48;
+    public static double prepPickupY = -49;
+    public static double pickupX = 48;
+    public static double pickupY = -56;
     public static double scoreX = 3;
     public static double scoreY = -36;
     public static double score2X = 1;
@@ -48,13 +54,18 @@ public class FourSpecimenTestAuto extends LinearOpMode {
     Pose2d startPose = new Pose2d(startX, startY, startHeading);
     Pose2d preloadPose = new Pose2d(scorePreloadX, scorePreloadY, Math.toRadians(-90));
     Pose2d pushPose = new Pose2d(zone2X, zone2Y, Math.toRadians(-90));
-    Pose2d pickupPose = new Pose2d(pickupX, pickupY, Math.toRadians(-90));
+    Pose2d prepPickupPose = new Pose2d(prepPickupX, prepPickupY, Math.toRadians(90));
+    Pose2d pickupPose = new Pose2d(pickupX, pickupY, Math.toRadians(90));
     Pose2d scorePose = new Pose2d(scoreX, scoreY, Math.toRadians(-90));
 
     @Override
     public void runOpMode() {
         MecanumDrive drive = new MecanumDrive(hardwareMap, startPose);
         SubsystemCommands subsystems = new SubsystemCommands();
+
+        VerticalSlides verticalSlides = new VerticalSlides();
+        ScoringArm scoringArm = new ScoringArm();
+        HorizontalSlides horizontalSlides = new HorizontalSlides();
 
         TrajectoryActionBuilder scorePreload = drive.actionBuilder(startPose)
                 .strafeToConstantHeading(new Vector2d(scorePreloadX, scorePreloadY));
@@ -67,23 +78,28 @@ public class FourSpecimenTestAuto extends LinearOpMode {
                 .strafeToConstantHeading(new Vector2d(zone2X, zone2Y));
 
         TrajectoryActionBuilder pickup1 = drive.actionBuilder(pushPose)
+                .strafeToLinearHeading(new Vector2d(prepPickupX, prepPickupY), Math.toRadians(90));
+
+        TrajectoryActionBuilder actualPickup = drive.actionBuilder(prepPickupPose)
                 .strafeToConstantHeading(new Vector2d(pickupX, pickupY));
 
         TrajectoryActionBuilder score = drive.actionBuilder(pickupPose)
-                .strafeToConstantHeading(new Vector2d(scoreX, scoreY));
+                .strafeToLinearHeading(new Vector2d(scoreX, scoreY), Math.toRadians(-90));
 
-        TrajectoryActionBuilder pickup2 = drive.actionBuilder(scorePose)
-                .strafeToConstantHeading(new Vector2d(pickupX, pickupY));
+        TrajectoryActionBuilder prepPickup2 = drive.actionBuilder(scorePose)
+                .strafeToLinearHeading(new Vector2d(prepPickupX, prepPickupY), Math.toRadians(90));
 
         TrajectoryActionBuilder park = drive.actionBuilder(scorePose)
                 .strafeToConstantHeading(new Vector2d(parkX, parkY));
 
         while (!isStarted() && !opModeIsActive()){
-            subsystems.initialize(this);
+            verticalSlides.initialize(this);
+            horizontalSlides.initialize(this);
+            scoringArm.initialize(this);
 
-            Actions.runBlocking(
-                    subsystems.INITIALIZE
-            );
+//            Actions.runBlocking(
+////                    subsystems.INITIALIZE
+//            );
         }
 
         waitForStart();
@@ -93,8 +109,9 @@ public class FourSpecimenTestAuto extends LinearOpMode {
         Action SCORE_PRELOAD = scorePreload.build();
         Action PUSH = push.build();
         Action PICKUP1 = pickup1.build();
+        Action ACTUAL_PICKUP = actualPickup.build();
         Action SCORE = score.build();
-        Action PICKUP2 = pickup2.build();
+        Action PICKUP2 = prepPickup2.build();
         Action PARK = park.build();
 
         Actions.runBlocking(
@@ -104,20 +121,20 @@ public class FourSpecimenTestAuto extends LinearOpMode {
                             subsystems.SCORE_CLIP,
                         PUSH,
                         PICKUP1,
-                            subsystems.EXTEND_INTAKE,
-                            subsystems.INTAKE_AND_TRANSFER,
+                            subsystems.PICKUP_CLIP,
+                        ACTUAL_PICKUP,
                             subsystems.PREP_CLIP,
                         SCORE,
                             subsystems.SCORE_CLIP,
                         PICKUP2,
-                            subsystems.EXTEND_INTAKE,
-                            subsystems.INTAKE_AND_TRANSFER,
+                            subsystems.PICKUP_CLIP,
+                        ACTUAL_PICKUP,
                             subsystems.PREP_CLIP,
                         SCORE,
-                        subsystems.SCORE_CLIP,
+                            subsystems.SCORE_CLIP,
                         PICKUP2,
-                            subsystems.EXTEND_INTAKE,
-                            subsystems.INTAKE_AND_TRANSFER,
+                            subsystems.PICKUP_CLIP,
+                        ACTUAL_PICKUP,
                             subsystems.PREP_CLIP,
                         SCORE,
                             subsystems.SCORE_CLIP,
