@@ -16,9 +16,9 @@ import org.firstinspires.ftc.teamcode.Util.RobotHardware;
 public class Hang {
     private final RobotHardware rHardware = new RobotHardware();
     private CRServo hangServoL, hangServoR;
-    private DcMotorEx slideMotor;
+    private DcMotorEx vRslideMotor, vLslideMotor;
     private OpMode opmode;
-    private NavxManager navxManager; // New instance for NavxManager
+    private NavxManager navxManager;
 
     private static final double CR_SERVO_POWER = 1.0;
     private static final double CR_SERVO_REVERSE_POWER = -1.0;
@@ -38,8 +38,9 @@ public class Hang {
         this.opmode = opmode;
         this.hangServoL = rHardware.hangServoL;
         this.hangServoR = rHardware.hangServoR;
-        this.slideMotor = rHardware.hSlideMotor;
-        this.navxManager = new NavxManager(rHardware.navx); // Initialize NavxManager
+        this.vRslideMotor = rHardware.vRslideMotor;
+        this.vLslideMotor = rHardware.vLslideMotor;
+        this.navxManager = new NavxManager(rHardware.navx);
 
         hangServoR.setDirection(DcMotorSimple.Direction.REVERSE);
     }
@@ -67,7 +68,6 @@ public class Hang {
                         new Action() {
                             @Override
                             public boolean run(TelemetryPacket packet) {
-                                // Continuously check if the target pitch is reached
                                 if (navxManager.getPitch() <= TARGET_PITCH) {
                                     stopServos(); // Stop servos when the target pitch is achieved
                                     return true; // Action complete
@@ -79,13 +79,14 @@ public class Hang {
 
                 // Second action: Extend and retract slides
                 new SequentialAction(
-                        new InstantAction(() -> slideMotor.setPower(SLIDE_POWER)),
+                        // Extend slides
+                        new InstantAction(() -> setVerticalSlidePower(SLIDE_POWER)),
                         new SleepAction(SLIDE_EXTENSION_TIME),
 
                         // Retract slides
-                        new InstantAction(() -> slideMotor.setPower(SLIDE_RETRACTION_POWER)),
+                        new InstantAction(() -> setVerticalSlidePower(SLIDE_RETRACTION_POWER)),
                         new SleepAction(SLIDE_RETRACTION_TIME),
-                        new InstantAction(() -> slideMotor.setPower(0))
+                        new InstantAction(() -> setVerticalSlidePower(0))
                 )
         );
     }
@@ -93,7 +94,6 @@ public class Hang {
     public Action reverseHangSequence() {
         this.deployed = false;
         return new SequentialAction(
-                // step 1: Deploy (run servos forward)
                 new InstantAction(() -> reverseServos(CR_SERVO_POWER)),
                 new SleepAction(SERVO_RUN_TIME),
                 new InstantAction(this::stopServos)
@@ -114,9 +114,17 @@ public class Hang {
         hangServoR.setPower(-power);
         hangServoL.setPower(-power);
     }
+
+    // set power for both vertical slide motors
+    private void setVerticalSlidePower(double power) {
+        vRslideMotor.setPower(power);
+        vLslideMotor.setPower(power);
+    }
+
     public boolean isDeployed() {
         return deployed;
     }
+
     public boolean isStageTwoActivated() {
         return stageTwoActivated;
     }

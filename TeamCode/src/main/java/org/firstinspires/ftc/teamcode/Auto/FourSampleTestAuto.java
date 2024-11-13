@@ -13,15 +13,21 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.Roadrunner.MecanumDrive;
+import org.firstinspires.ftc.teamcode.Subsystems.HorizontalSlides;
+import org.firstinspires.ftc.teamcode.Subsystems.IntakeArm;
+import org.firstinspires.ftc.teamcode.Subsystems.ScoringArm;
+import org.firstinspires.ftc.teamcode.Subsystems.VerticalSlides;
 import org.firstinspires.ftc.teamcode.Subsystems.SubsystemCommands;
 
 @Config
-@Autonomous(name = "0+4 Test", group = "Autonomous", preselectTeleOp = "Solo Full Robot TeleOp")
+@Autonomous(name = "0+4 Test Auto", group = "Autonomous", preselectTeleOp = "Solo Full Robot TeleOp")
 public class FourSampleTestAuto extends LinearOpMode{
 
     public static double startX = -40;
     public static double startY = -63.5;
     public static double startHeading = Math.toRadians(90);
+    public static double scorePreloadX = 0;
+    public static double scorePreloadY = -41;
     public static double intake1X = -48;
     public static double intake1Y = -49;
     public static double scoreBucketX = -58;
@@ -32,14 +38,10 @@ public class FourSampleTestAuto extends LinearOpMode{
     public static double intake3Y = -26;
     public static double parkX = -30;
     public static double parkY = -18;
-    Pose2d startPose = new Pose2d(startX, startY, startHeading);
-    Pose2d bucketPose = new Pose2d(scoreBucketX, scoreBucketY, Math.toRadians(45));
-    Pose2d intake1Pose = new Pose2d(intake1X, intake1Y, Math.toRadians(90));
-    Pose2d intake2Pose = new Pose2d(intake2X, intake2Y, Math.toRadians(90));
-    Pose2d intake3Pose = new Pose2d(intake3X, intake3Y, Math.toRadians(180));
 
     @Override
     public void runOpMode() {
+        Pose2d startPose = new Pose2d(startX, startY, startHeading);
         MecanumDrive drive = new MecanumDrive(hardwareMap, startPose);
         SubsystemCommands subsystems = new SubsystemCommands();
 
@@ -47,25 +49,25 @@ public class FourSampleTestAuto extends LinearOpMode{
         TrajectoryActionBuilder scorePreload = drive.actionBuilder(startPose)
                 .strafeToLinearHeading(new Vector2d(scoreBucketX, scoreBucketY), Math.toRadians(45));
 
-        TrajectoryActionBuilder intake1 = drive.actionBuilder(bucketPose)
+        TrajectoryActionBuilder intake1 = drive.actionBuilder(new Pose2d(scoreBucketX, scoreBucketY, Math.toRadians(45)))
                 .strafeToLinearHeading(new Vector2d(intake1X, intake1Y), Math.toRadians(90));
 
-        TrajectoryActionBuilder score1 = drive.actionBuilder(intake1Pose)
+        TrajectoryActionBuilder score1 = drive.actionBuilder(new Pose2d(intake1X, intake1Y, Math.toRadians(90)))
                 .strafeToLinearHeading(new Vector2d(scoreBucketX, scoreBucketY), Math.toRadians(45));
 
-        TrajectoryActionBuilder intake2 = drive.actionBuilder(bucketPose)
+        TrajectoryActionBuilder intake2 = drive.actionBuilder(new Pose2d(scoreBucketX, scoreBucketY, Math.toRadians(45)))
                 .strafeToLinearHeading(new Vector2d(intake2X, intake2Y), Math.toRadians(90));
 
-        TrajectoryActionBuilder score2 = drive.actionBuilder(intake2Pose)
+        TrajectoryActionBuilder score2 = drive.actionBuilder(new Pose2d(intake2X, intake2Y, Math.toRadians(90)))
                 .strafeToLinearHeading(new Vector2d(scoreBucketX, scoreBucketY), Math.toRadians(45));
 
-        TrajectoryActionBuilder intake3 = drive.actionBuilder(bucketPose)
+        TrajectoryActionBuilder intake3 = drive.actionBuilder(new Pose2d(scoreBucketX, scoreBucketY, Math.toRadians(45)))
                 .strafeToLinearHeading(new Vector2d(intake3X, intake3Y), Math.toRadians(180));
 
-        TrajectoryActionBuilder score3 = drive.actionBuilder(intake3Pose)
+        TrajectoryActionBuilder score3 = drive.actionBuilder(new Pose2d(intake3X, intake3Y, Math.toRadians(180)))
                 .strafeToLinearHeading(new Vector2d(scoreBucketX, scoreBucketY), Math.toRadians(45));
 
-        TrajectoryActionBuilder park = drive.actionBuilder(bucketPose)
+        TrajectoryActionBuilder park = drive.actionBuilder(new Pose2d(scoreBucketX, scoreBucketY, Math.toRadians(45)))
                 .strafeToLinearHeading(new Vector2d(parkX, parkY), Math.toRadians(90));
 
         while (!isStarted() && !opModeIsActive()) {
