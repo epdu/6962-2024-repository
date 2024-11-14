@@ -76,7 +76,7 @@ public class FourSampleTestAuto extends LinearOpMode{
             telemetry.addLine("Initialized Test 0+4 Auto");
             telemetry.update();
             Actions.runBlocking(
-                    subsystems.INITIALIZE
+                    subsystems.INITIALIZE()
             );
         }
 

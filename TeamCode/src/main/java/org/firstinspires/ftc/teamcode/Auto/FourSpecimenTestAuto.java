@@ -63,6 +63,11 @@ public class FourSpecimenTestAuto extends LinearOpMode {
         MecanumDrive drive = new MecanumDrive(hardwareMap, startPose);
         SubsystemCommands subsystems = new SubsystemCommands();
 
+        VerticalSlides verticalSlides = new VerticalSlides();
+        ScoringArm scoringArm = new ScoringArm();
+        IntakeArm intakeArm = new IntakeArm();
+        HorizontalSlides horizontalSlides = new HorizontalSlides();
+
         TrajectoryActionBuilder scorePreload = drive.actionBuilder(startPose)
                 .strafeToConstantHeading(new Vector2d(scorePreloadX, scorePreloadY));
 
@@ -88,8 +93,17 @@ public class FourSpecimenTestAuto extends LinearOpMode {
         TrajectoryActionBuilder park = drive.actionBuilder(scorePose)
                 .strafeToConstantHeading(new Vector2d(parkX, parkY));
 
+        Action parkTest = score.fresh()
+                .strafeToConstantHeading(new Vector2d(parkX, parkY))
+                .build();
+
         while (!isStarted() && !opModeIsActive()){
-            subsystems.initialize(this);
+            verticalSlides.initialize(this);
+            horizontalSlides.initialize(this);
+            scoringArm.initialize(this);
+            intakeArm.initialize(this);
+
+//            subsystems.initialize(this);
 
             Actions.runBlocking(
                     subsystems.INITIALIZE()
@@ -133,6 +147,7 @@ public class FourSpecimenTestAuto extends LinearOpMode {
                         SCORE,
                             subsystems.SCORE_CLIP(),
                         PARK
+                        //parkTest
                 )
         );
     }
