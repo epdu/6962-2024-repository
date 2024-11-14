@@ -19,7 +19,7 @@ public class HangTeleOp extends OpMode {
     @Override
     public void init() {
         hang.initialize(this);
-        telemetry.addLine("Press Y to deploy, D-Pad Left to activate stage two.");
+        telemetry.addLine("Use Gamepad 2 Left Joystick for manual control.");
         telemetry.update();
     }
 
@@ -37,9 +37,16 @@ public class HangTeleOp extends OpMode {
         runningActions = newActions; // Update runningActions to keep only incomplete actions
 
         dash.sendTelemetryPacket(packet);
-        hang.operateTest(); // Manually control hang for testing purposes..
 
-        if (gamepad1.y && !hang.isDeployed()) {
+        // Manual control for CR servos using Gamepad 2 Left Joystick
+        if (gamepad2.left_stick_y > 0.1 || gamepad2.left_stick_y < -0.1) { // check for joystick movement in either direction
+            hang.runServos(gamepad2.left_stick_y); // will run at different amount of power depending on how far the joystick is moved
+        } else {
+            hang.stopServos(); // stop servos when joystick is unmoved
+        }
+
+        // Automated sequences
+        if (gamepad1.y && !hang.isDeployed()) { // Trigger sequence if gamepad1 Y is pressed and hang is not deployed
             runningActions.add(hang.getHangSequence());
         }
 

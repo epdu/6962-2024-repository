@@ -100,17 +100,17 @@ public class Hang {
         );
     }
     // Helper methods to control servos and slide motor
-    private void runServos(double power) {
+    public void runServos(double power) {
         hangServoR.setPower(power);
         hangServoL.setPower(power);
     }
 
-    private void stopServos() {
+    public void stopServos() {
         hangServoR.setPower(0);
         hangServoL.setPower(0);
     }
 
-    private void reverseServos(double power) {
+    public void reverseServos(double power) {
         hangServoR.setPower(-power);
         hangServoL.setPower(-power);
     }
