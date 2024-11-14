@@ -14,7 +14,7 @@ import org.firstinspires.ftc.teamcode.Util.RobotHardware;
 
 public class SubsystemCommands {
     OpMode opmode;
-    RobotHardware rHardware;
+    RobotHardware rHardware = new RobotHardware();
     VerticalSlides verticalSlides = new VerticalSlides();
     HorizontalSlides horizontalSlides = new HorizontalSlides();
     ScoringArm scoringArm = new ScoringArm();
@@ -33,43 +33,47 @@ public class SubsystemCommands {
         intakeArm.initialize(opmode);
     }
 
-    public class intake_and_transfer implements Action {
-        @Override
-        public boolean run(@NonNull TelemetryPacket packet) {
-            new SequentialAction(
-                    intakeArm.IntakePickup(),
-                    new SleepAction(0.5),
-                    intakeArm.IntakeTransfer(),
-                    new SleepAction(0.2),
-                    horizontalSlides.HorizontalRetract(),
-                    new SleepAction(0.5),
-                    scoringArm.WholeArmTransfer(),
-                    intakeArm.ClawOpen(),
-                    new ParallelAction(
-                            verticalSlides.LiftUpToHighBucket(),
-                            scoringArm.ArmScoreBucket()
-                    )
-            );
-            return false;
-        }
-    }
-    public Action INTAKE_AND_TRANSFER() {
-        return new intake_and_transfer();
-    }
-
-    public class extend_intake implements Action {
-        @Override
-        public boolean run(@NonNull TelemetryPacket packet) {
-            new ParallelAction(
-                    intakeArm.IntakeHover(),
-                    horizontalSlides.HorizontalExtend()
-            );
-            return false;
-        }
-    }
-    public Action EXTEND_INTAKE() {
-        return new extend_intake();
-    }
+//    public class intake_and_transfer implements Action {
+//        @Override
+//        public boolean run(@NonNull TelemetryPacket packet) {
+//            Actions.runBlocking(
+//                new SequentialAction(
+//                        intakeArm.IntakePickup(),
+//                        new SleepAction(0.5),
+//                        intakeArm.IntakeTransfer(),
+//                        new SleepAction(0.2),
+//                        horizontalSlides.HorizontalRetract(),
+//                        new SleepAction(0.5),
+//                        scoringArm.WholeArmTransfer(),
+//                        intakeArm.ClawOpen(),
+//                        new ParallelAction(
+//                                verticalSlides.LiftUpToHighBucket(),
+//                                scoringArm.ArmScoreBucket()
+//                        )
+//                )
+//            );
+//            return false;
+//        }
+//    }
+//    public Action INTAKE_AND_TRANSFER() {
+//        return new intake_and_transfer();
+//    }
+//
+//    public class extend_intake implements Action {
+//        @Override
+//        public boolean run(@NonNull TelemetryPacket packet) {
+//            Actions.runBlocking(
+//                new ParallelAction(
+//                        intakeArm.IntakeHover(),
+//                        horizontalSlides.HorizontalExtend()
+//                )
+//            );
+//            return false;
+//        }
+//    }
+//    public Action EXTEND_INTAKE() {
+//        return new extend_intake();
+//    }
 
     public class score_bucket implements Action {
         @Override

@@ -45,6 +45,11 @@ public class FourSampleTestAuto extends LinearOpMode{
         MecanumDrive drive = new MecanumDrive(hardwareMap, startPose);
         SubsystemCommands subsystems = new SubsystemCommands();
 
+        VerticalSlides verticalSlides = new VerticalSlides();
+        HorizontalSlides horizontalSlides = new HorizontalSlides();
+        ScoringArm scoringArm = new ScoringArm();
+        IntakeArm intakeArm = new IntakeArm();
+
         //defining movement trajectories
         TrajectoryActionBuilder scorePreload = drive.actionBuilder(startPose)
                 .strafeToLinearHeading(new Vector2d(scoreBucketX, scoreBucketY), Math.toRadians(45));
@@ -70,13 +75,70 @@ public class FourSampleTestAuto extends LinearOpMode{
         TrajectoryActionBuilder park = drive.actionBuilder(new Pose2d(scoreBucketX, scoreBucketY, Math.toRadians(45)))
                 .strafeToLinearHeading(new Vector2d(parkX, parkY), Math.toRadians(90));
 
+        Action EXTEND_INTAKE =
+                new ParallelAction(
+                        intakeArm.IntakeHover(),
+                        horizontalSlides.HorizontalExtend()
+                );
+
+        Action INTAKE_AND_TRANSFER =
+                new SequentialAction(
+                        intakeArm.IntakePickup(),
+                        new SleepAction(0.5),
+                        intakeArm.IntakeTransfer(),
+                        new SleepAction(0.2),
+                        horizontalSlides.HorizontalRetract(),
+                        new SleepAction(0.5),
+                        scoringArm.WholeArmTransfer(),
+                        intakeArm.ClawOpen(),
+                        new ParallelAction(
+                                verticalSlides.LiftUpToHighBucket(),
+                                scoringArm.ArmScoreBucket()
+                        )
+                );
+
+        Action SCORE_BUCKET =
+                new ParallelAction(
+                        scoringArm.DropBucket()
+                );
+
+        Action LIFT_BUCKET =
+                new ParallelAction(
+                    verticalSlides.LiftUpToHighBucket(),
+                    scoringArm.ArmScoreBucket()
+        );
+
+        Action RETRACT_VERTICAL =
+                new ParallelAction(
+                        scoringArm.StowWholeArm(),
+                        verticalSlides.Retract()
+                );
+
+        Action RETRACT_ALL =
+                new ParallelAction(
+                        verticalSlides.Retract(),
+                        horizontalSlides.HorizontalRetract(),
+                        scoringArm.StowArmClose(),
+                        intakeArm.IntakeTransfer()
+                );
+
+        Action INITIALIZE =
+                new ParallelAction(
+                        intakeArm.IntakeTransfer(),
+                        scoringArm.ArmInitPosition()
+                );
+
         while (!isStarted() && !opModeIsActive()) {
-            subsystems.initialize(this);
+            verticalSlides.initialize(this);
+            horizontalSlides.initialize(this);
+            scoringArm.initialize(this);
+            intakeArm.initialize(this);
+//            subsystems.initialize(this);
 
             telemetry.addLine("Initialized Test 0+4 Auto");
             telemetry.update();
             Actions.runBlocking(
-                    subsystems.INITIALIZE()
+                    INITIALIZE
             );
         }
 
@@ -96,29 +158,28 @@ public class FourSampleTestAuto extends LinearOpMode{
 
         Actions.runBlocking(
                 new SequentialAction(
-                            subsystems.RETRACT_ALL(),
-                            SCORE_PRELOAD,
-                            subsystems.LIFT_BUCKET(),
-                            subsystems.SCORE_BUCKET(),
-                            subsystems.RETRACT_VERTICAL(),
+                        SCORE_PRELOAD,
+                        LIFT_BUCKET,
+                        SCORE_BUCKET,
+                        RETRACT_VERTICAL,
                         INTAKE1,
-                            subsystems.EXTEND_INTAKE(),
-                            subsystems.INTAKE_AND_TRANSFER(),
+                        EXTEND_INTAKE,
+                        INTAKE_AND_TRANSFER,
                         SCORE1,
-                            subsystems.SCORE_BUCKET(),
-                            subsystems.RETRACT_VERTICAL(),
+                        SCORE_BUCKET,
+                        RETRACT_VERTICAL,
                         INTAKE2,
-                            subsystems.EXTEND_INTAKE(),
-                            subsystems.INTAKE_AND_TRANSFER(),
+                        EXTEND_INTAKE,
+                        INTAKE_AND_TRANSFER,
                         SCORE2,
-                            subsystems.SCORE_BUCKET(),
-                            subsystems.RETRACT_VERTICAL(),
+                        SCORE_BUCKET,
+                        RETRACT_VERTICAL,
                         INTAKE3,
-                            subsystems.EXTEND_INTAKE(),
-                            subsystems.INTAKE_AND_TRANSFER(),
+                        EXTEND_INTAKE,
+                        INTAKE_AND_TRANSFER,
                         SCORE3,
-                            subsystems.SCORE_BUCKET(),
-                            subsystems.RETRACT_ALL(),
+                        SCORE_BUCKET,
+                        RETRACT_ALL,
                         PARK
                 )
         );
