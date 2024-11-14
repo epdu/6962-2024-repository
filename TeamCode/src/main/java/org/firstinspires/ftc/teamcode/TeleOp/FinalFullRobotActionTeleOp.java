@@ -287,7 +287,7 @@ public class FinalFullRobotActionTeleOp extends OpMode {
         }
 
         // deposit clip (might be unnecessary once new arm position to score clip without slides)
-        if (currentGamepad2.a && !previousGamepad2.a) {
+        if (currentGamepad2.dpad_left && !previousGamepad2.dpad_left) {
             runningActions.add(
                     new SequentialAction(
                         new InstantAction(() -> verticalSlides.slamToScoreClip()),
