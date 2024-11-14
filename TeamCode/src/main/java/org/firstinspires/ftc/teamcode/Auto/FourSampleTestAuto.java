@@ -34,8 +34,8 @@ public class FourSampleTestAuto extends LinearOpMode{
     public static double scoreBucketY = -56;
     public static double intake2X = -58.5;
     public static double intake2Y = -49;
-    public static double intake3X = -46.5;
-    public static double intake3Y = -26;
+    public static double intake3X = -68;
+    public static double intake3Y = -49;
     public static double parkX = -30;
     public static double parkY = -18;
 
@@ -67,7 +67,7 @@ public class FourSampleTestAuto extends LinearOpMode{
                 .strafeToLinearHeading(new Vector2d(scoreBucketX, scoreBucketY), Math.toRadians(45));
 
         TrajectoryActionBuilder intake3 = drive.actionBuilder(new Pose2d(scoreBucketX, scoreBucketY, Math.toRadians(45)))
-                .strafeToLinearHeading(new Vector2d(intake3X, intake3Y), Math.toRadians(180));
+                .strafeToLinearHeading(new Vector2d(intake3X, intake3Y), Math.toRadians(90));
 
         TrajectoryActionBuilder score3 = drive.actionBuilder(new Pose2d(intake3X, intake3Y, Math.toRadians(180)))
                 .strafeToLinearHeading(new Vector2d(scoreBucketX, scoreBucketY), Math.toRadians(45));
@@ -98,8 +98,10 @@ public class FourSampleTestAuto extends LinearOpMode{
                 );
 
         Action SCORE_BUCKET =
-                new ParallelAction(
-                        scoringArm.DropBucket()
+                new SequentialAction(
+                        scoringArm.DropBucket(),
+                        verticalSlides.Retract(),
+                        scoringArm.StowWholeArm()
                 );
 
         Action LIFT_BUCKET =
@@ -158,28 +160,28 @@ public class FourSampleTestAuto extends LinearOpMode{
 
         Actions.runBlocking(
                 new SequentialAction(
+                            LIFT_BUCKET,
                         SCORE_PRELOAD,
-                        LIFT_BUCKET,
-                        SCORE_BUCKET,
-                        RETRACT_VERTICAL,
+                            SCORE_BUCKET,
+//                            RETRACT_VERTICAL,
                         INTAKE1,
-                        EXTEND_INTAKE,
-                        INTAKE_AND_TRANSFER,
+                            EXTEND_INTAKE,
+                            INTAKE_AND_TRANSFER,
                         SCORE1,
-                        SCORE_BUCKET,
-                        RETRACT_VERTICAL,
+                            SCORE_BUCKET,
+//                            RETRACT_VERTICAL,
                         INTAKE2,
-                        EXTEND_INTAKE,
-                        INTAKE_AND_TRANSFER,
+                            EXTEND_INTAKE,
+                            INTAKE_AND_TRANSFER,
                         SCORE2,
-                        SCORE_BUCKET,
-                        RETRACT_VERTICAL,
+                            SCORE_BUCKET,
+//                            RETRACT_VERTICAL,
                         INTAKE3,
-                        EXTEND_INTAKE,
-                        INTAKE_AND_TRANSFER,
+                            EXTEND_INTAKE,
+                            INTAKE_AND_TRANSFER,
                         SCORE3,
-                        SCORE_BUCKET,
-                        RETRACT_ALL,
+                            SCORE_BUCKET,
+//                            RETRACT_ALL,
                         PARK
                 )
         );
