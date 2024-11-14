@@ -80,6 +80,8 @@ public class FourSampleTestAuto extends LinearOpMode{
                         intakeArm.IntakeHover(),
                         horizontalSlides.HorizontalExtend()
                 );
+        Action EXTEND_INTAKE2 = EXTEND_INTAKE;
+        Action EXTEND_INTAKE3 = EXTEND_INTAKE;
 
         Action INTAKE_AND_TRANSFER =
                 new SequentialAction(
@@ -96,6 +98,8 @@ public class FourSampleTestAuto extends LinearOpMode{
                                 scoringArm.ArmScoreBucket()
                         )
                 );
+        Action INTAKE_AND_TRANSFER2 = INTAKE_AND_TRANSFER;
+        Action INTAKE_AND_TRANSFER3 = INTAKE_AND_TRANSFER;
 
         Action SCORE_BUCKET =
                 new SequentialAction(
@@ -103,19 +107,16 @@ public class FourSampleTestAuto extends LinearOpMode{
                         verticalSlides.Retract(),
                         scoringArm.StowWholeArm()
                 );
+        Action SCORE_BUCKET2 = SCORE_BUCKET;
+        Action SCORE_BUCKET3 = SCORE_BUCKET;
+        Action SCORE_BUCKET4 = SCORE_BUCKET;
 
         Action LIFT_BUCKET =
                 new ParallelAction(
                     verticalSlides.LiftUpToHighBucket(),
                     scoringArm.ArmScoreBucket()
         );
-
-        Action RETRACT_VERTICAL =
-                new ParallelAction(
-                        scoringArm.StowWholeArm(),
-                        verticalSlides.Retract()
-                );
-
+        
         Action RETRACT_ALL =
                 new ParallelAction(
                         verticalSlides.Retract(),
@@ -129,6 +130,7 @@ public class FourSampleTestAuto extends LinearOpMode{
                         intakeArm.IntakeTransfer(),
                         scoringArm.ArmInitPosition()
                 );
+
 
         while (!isStarted() && !opModeIsActive()) {
             verticalSlides.initialize(this);
@@ -163,25 +165,22 @@ public class FourSampleTestAuto extends LinearOpMode{
                             LIFT_BUCKET,
                         SCORE_PRELOAD,
                             SCORE_BUCKET,
-//                            RETRACT_VERTICAL,
                         INTAKE1,
                             EXTEND_INTAKE,
                             INTAKE_AND_TRANSFER,
                         SCORE1,
-                            SCORE_BUCKET,
-//                            RETRACT_VERTICAL,
+                            SCORE_BUCKET2,
                         INTAKE2,
-                            EXTEND_INTAKE,
-                            INTAKE_AND_TRANSFER,
+                            EXTEND_INTAKE2,
+                            INTAKE_AND_TRANSFER2,
                         SCORE2,
-                            SCORE_BUCKET,
-//                            RETRACT_VERTICAL,
+                            SCORE_BUCKET3,
                         INTAKE3,
-                            EXTEND_INTAKE,
-                            INTAKE_AND_TRANSFER,
+                            EXTEND_INTAKE3,
+                            INTAKE_AND_TRANSFER3,
                         SCORE3,
-                            SCORE_BUCKET,
-//                            RETRACT_ALL,
+                            SCORE_BUCKET4,
+                            RETRACT_ALL,
                         PARK
                 )
         );
