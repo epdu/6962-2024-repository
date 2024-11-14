@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.TeleOp;
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Action;
+import com.acmerobotics.roadrunner.SleepAction;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.Subsystems.l3Linkage;
@@ -31,7 +32,7 @@ public class l3LinkageTeleOP extends OpMode{
             if (action.run(packet)) { // actually running actions
                 newActions.add(action); // if failed (run() returns true), try again
             }
-        }
+        } 
         runningActions = newActions;
 
         dash.sendTelemetryPacket(packet);
@@ -40,11 +41,7 @@ public class l3LinkageTeleOP extends OpMode{
 
         if (gamepad2.x) {
             runningActions.add(l3Linkage.l3LinkServo());
-            try {
-                wait(1);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
+            new SleepAction(1);
             runningActions.add(l3Linkage.l3LinkDrive());
             runningActions.add(l3Linkage.l3LinkVSlides());
         }
