@@ -38,7 +38,7 @@ public class VerticalSlides
     public static int retractedPos = 0;
     public static int pickupClipPos = 0;
     public static int prepClipPos = 480; // this is for 1150s
-    public static int slamClipPos = 300; // this is for 1150s
+    public static int slamClipPos = 230; // this is for 1150s
 
     //declaring variables for later modification
     private volatile double slidePower;
@@ -228,7 +228,7 @@ public class VerticalSlides
         timer.reset();
 
         // calculates output and returns
-        double output = 0.6 * (((error >= 0 ? KpUp : KpDown) * error) + (Ki * integralSum) + (Kd * derivative) + Kg);
+        double output = 0.7 * (((error >= 0 ? KpUp : KpDown) * error) + (Ki * integralSum) + (Kd * derivative) + Kg);
 
         return output;
     }
