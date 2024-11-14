@@ -17,7 +17,7 @@ import org.firstinspires.ftc.teamcode.Roadrunner.MecanumDrive;
 import org.firstinspires.ftc.teamcode.Subsystems.HorizontalSlides;
 import org.firstinspires.ftc.teamcode.Subsystems.IntakeArm;
 import org.firstinspires.ftc.teamcode.Subsystems.ScoringArm;
-import org.firstinspires.ftc.teamcode.Subsystems.SubsystemCommands;
+//import org.firstinspires.ftc.teamcode.Subsystems.SubsystemCommands;
 import org.firstinspires.ftc.teamcode.Subsystems.VerticalSlides;
 
 @Config
@@ -61,7 +61,7 @@ public class FourSpecimenTestAuto extends LinearOpMode {
     @Override
     public void runOpMode() {
         MecanumDrive drive = new MecanumDrive(hardwareMap, startPose);
-        SubsystemCommands subsystems = new SubsystemCommands();
+//        SubsystemCommands subsystems = new SubsystemCommands();
 
         VerticalSlides verticalSlides = new VerticalSlides();
         ScoringArm scoringArm = new ScoringArm();
@@ -97,6 +97,39 @@ public class FourSpecimenTestAuto extends LinearOpMode {
                 .strafeToConstantHeading(new Vector2d(parkX, parkY))
                 .build();
 
+        Action PREP_CLIP =
+                new ParallelAction(
+                        scoringArm.ArmScoreClip(),
+                        verticalSlides.LiftUpToClip(),
+                        horizontalSlides.HorizontalRetract()
+                );
+        Action PREP_CLIP2 = PREP_CLIP;
+        Action PREP_CLIP3 = PREP_CLIP;
+        Action PREP_CLIP4 = PREP_CLIP;
+
+        Action SCORE_CLIP =
+                new SequentialAction(
+                        verticalSlides.SlamScoreClip(),
+                        scoringArm.StowWholeArm(),
+                        verticalSlides.Retract()
+                );
+        Action SCORE_CLIP2 = SCORE_CLIP;
+        Action SCORE_CLIP3 = SCORE_CLIP;
+        Action SCORE_CLIP4 = SCORE_CLIP;
+
+        Action PICKUP_CLIP =
+                new SequentialAction(
+                        scoringArm.ArmGrabClip()
+                );
+        Action PICKUP_CLIP2 = PICKUP_CLIP;
+        Action PICKUP_CLIP3 = PICKUP_CLIP;
+
+        Action INITIALIZE =
+                new ParallelAction(
+                        intakeArm.IntakeTransfer(),
+                        scoringArm.ArmInitPosition()
+                );
+
         while (!isStarted() && !opModeIsActive()){
             verticalSlides.initialize(this);
             horizontalSlides.initialize(this);
@@ -106,7 +139,7 @@ public class FourSpecimenTestAuto extends LinearOpMode {
 //            subsystems.initialize(this);
 
             Actions.runBlocking(
-                    subsystems.INITIALIZE()
+                    INITIALIZE
             );
         }
 
@@ -124,28 +157,28 @@ public class FourSpecimenTestAuto extends LinearOpMode {
 
         Actions.runBlocking(
                 new SequentialAction(
-                            subsystems.PREP_CLIP(),
+                            PREP_CLIP,
                         SCORE_PRELOAD,
-                            subsystems.SCORE_CLIP(),
+                            SCORE_CLIP,
                         PUSH,
                         PICKUP1,
-                            subsystems.PICKUP_CLIP(),
+                            PICKUP_CLIP,
                         ACTUAL_PICKUP,
-                            subsystems.PREP_CLIP(),
+                            PREP_CLIP2,
                         SCORE,
-                            subsystems.SCORE_CLIP(),
+                            SCORE_CLIP2,
                         PICKUP2,
-                            subsystems.PICKUP_CLIP(),
+                            PICKUP_CLIP2,
                         ACTUAL_PICKUP,
-                            subsystems.PREP_CLIP(),
+                            PREP_CLIP3,
                         SCORE,
-                            subsystems.SCORE_CLIP(),
+                            SCORE_CLIP3,
                         PICKUP2,
-                            subsystems.PICKUP_CLIP(),
+                            PICKUP_CLIP3,
                         ACTUAL_PICKUP,
-                            subsystems.PREP_CLIP(),
+                            PREP_CLIP4,
                         SCORE,
-                            subsystems.SCORE_CLIP(),
+                            SCORE_CLIP4,
                         PARK
                         //parkTest
                 )

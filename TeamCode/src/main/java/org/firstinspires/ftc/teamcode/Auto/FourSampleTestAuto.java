@@ -17,7 +17,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.HorizontalSlides;
 import org.firstinspires.ftc.teamcode.Subsystems.IntakeArm;
 import org.firstinspires.ftc.teamcode.Subsystems.ScoringArm;
 import org.firstinspires.ftc.teamcode.Subsystems.VerticalSlides;
-import org.firstinspires.ftc.teamcode.Subsystems.SubsystemCommands;
+//import org.firstinspires.ftc.teamcode.Subsystems.SubsystemCommands;
 
 @Config
 @Autonomous(name = "0+4 Test Auto", group = "Autonomous", preselectTeleOp = "Solo Full Robot TeleOp")
@@ -43,7 +43,7 @@ public class FourSampleTestAuto extends LinearOpMode{
     public void runOpMode() {
         Pose2d startPose = new Pose2d(startX, startY, startHeading);
         MecanumDrive drive = new MecanumDrive(hardwareMap, startPose);
-        SubsystemCommands subsystems = new SubsystemCommands();
+//        SubsystemCommands subsystems = new SubsystemCommands();
 
         VerticalSlides verticalSlides = new VerticalSlides();
         HorizontalSlides horizontalSlides = new HorizontalSlides();
@@ -116,7 +116,7 @@ public class FourSampleTestAuto extends LinearOpMode{
                     verticalSlides.LiftUpToHighBucket(),
                     scoringArm.ArmScoreBucket()
         );
-        
+
         Action RETRACT_ALL =
                 new ParallelAction(
                         verticalSlides.Retract(),
