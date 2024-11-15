@@ -257,6 +257,12 @@ public class SoloFullRobotTeleOp extends OpMode {
         /// all backup fixing stuff
         // none rn?
 
+        if (gamepad2.left_stick_y > 0.1 || gamepad2.left_stick_y < -0.1) {
+            hang.runServos(gamepad2.left_stick_y);
+        } else {
+            hang.stopServos();
+        }
+
 
         // loop time
         dashboardTelemetry.addData("elapsed time (loop time)", elapsedtime.milliseconds());

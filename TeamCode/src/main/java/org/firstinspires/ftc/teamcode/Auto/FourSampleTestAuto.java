@@ -29,12 +29,12 @@ public class FourSampleTestAuto extends LinearOpMode{
     public static double scorePreloadX = 0;
     public static double scorePreloadY = -41;
     public static double intake1X = -48;
-    public static double intake1Y = -49;
+    public static double intake1Y = -48;
     public static double scoreBucketX = -58;
     public static double scoreBucketY = -56;
-    public static double intake2X = -58.5;
+    public static double intake2X = -59;
     public static double intake2Y = -49;
-    public static double intake3X = -46.5;
+    public static double intake3X = -47;
     public static double intake3Y = -26;
     public static double parkX = -30;
     public static double parkY = -18;
@@ -94,7 +94,7 @@ public class FourSampleTestAuto extends LinearOpMode{
                         intakeArm.IntakePickup(),
                         new SleepAction(0.5),
                         intakeArm.IntakeClose(),
-                        new SleepAction(0.5),
+                        new SleepAction(0.2),
                         intakeArm.IntakeTransfer(),
                         new SleepAction(0.2),
                         horizontalSlides.HorizontalRetract(),
@@ -110,7 +110,7 @@ public class FourSampleTestAuto extends LinearOpMode{
                 intakeArm.IntakePickup(),
                 new SleepAction(0.5),
                 intakeArm.IntakeClose(),
-                new SleepAction(0.5),
+                new SleepAction(0.2),
                 intakeArm.IntakeTransfer(),
                 new SleepAction(0.2),
                 horizontalSlides.HorizontalRetract(),
@@ -126,7 +126,7 @@ public class FourSampleTestAuto extends LinearOpMode{
                 intakeArm.IntakePickup(),
                 new SleepAction(0.5),
                 intakeArm.IntakeClose(),
-                new SleepAction(0.5),
+                new SleepAction(0.2),
                 intakeArm.IntakeTransfer(),
                 new SleepAction(0.2),
                 horizontalSlides.HorizontalRetract(),
@@ -234,8 +234,8 @@ public class FourSampleTestAuto extends LinearOpMode{
                             INTAKE_AND_TRANSFER3,
                         SCORE3,
                             SCORE_BUCKET4,
-                            RETRACT_ALL,
-                        PARK
+                        PARK,
+                            RETRACT_ALL
                 )
         );
     }

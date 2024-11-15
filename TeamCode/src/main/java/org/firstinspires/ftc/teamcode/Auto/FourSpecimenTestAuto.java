@@ -27,7 +27,7 @@ public class FourSpecimenTestAuto extends LinearOpMode {
     public static double startX = 8;
     public static double startY = -63.5;
     public static double startHeading = Math.toRadians(-90);
-    public static double scorePreloadX = 5;
+    public static double scorePreloadX = -3;
     public static double scorePreloadY = -34;
     public static double coord1X = 30;
     public static double coord1Y = -35;
@@ -42,13 +42,13 @@ public class FourSpecimenTestAuto extends LinearOpMode {
     public static double prepPickupX = 48;
     public static double prepPickupY = -49;
     public static double pickupX = 48;
-    public static double pickupY = -56;
-    public static double scoreX = 3;
+    public static double pickupY = -60;
+    public static double scoreX = 0;
     public static double scoreY = -36;
-    public static double score2X = 1;
+    public static double score2X = 3;
     public static double score2Y = -36;
-    public static double score3X = -1;
-    public static double score3Y = -36;
+    public static double score3X = 6;
+    public static double score3Y = -34;
     public static double parkX = 45;
     public static double parkY = -60;
     Pose2d startPose = new Pose2d(startX, startY, startHeading);
@@ -78,24 +78,35 @@ public class FourSpecimenTestAuto extends LinearOpMode {
                 .splineToConstantHeading(new Vector2d(push2X, push2Y), Math.toRadians(0))
                 .strafeToConstantHeading(new Vector2d(zone2X, zone2Y));
 
-        TrajectoryActionBuilder pickup1 = drive.actionBuilder(pushPose)
+        TrajectoryActionBuilder prepPickup1 = drive.actionBuilder(pushPose)
                 .strafeToLinearHeading(new Vector2d(prepPickupX, prepPickupY), Math.toRadians(90));
-
-        TrajectoryActionBuilder actualPickup = drive.actionBuilder(prepPickupPose)
-                .strafeToConstantHeading(new Vector2d(pickupX, pickupY));
-
-        TrajectoryActionBuilder score = drive.actionBuilder(pickupPose)
-                .strafeToLinearHeading(new Vector2d(scoreX, scoreY), Math.toRadians(-90));
 
         TrajectoryActionBuilder prepPickup2 = drive.actionBuilder(scorePose)
                 .strafeToLinearHeading(new Vector2d(prepPickupX, prepPickupY), Math.toRadians(90));
 
+        TrajectoryActionBuilder prepPickup3 = drive.actionBuilder(scorePose)
+                .strafeToLinearHeading(new Vector2d(prepPickupX, prepPickupY), Math.toRadians(90));
+
+        TrajectoryActionBuilder actualPickup1 = drive.actionBuilder(prepPickupPose)
+                .strafeToConstantHeading(new Vector2d(pickupX, pickupY));
+
+        TrajectoryActionBuilder actualPickup2 = drive.actionBuilder(prepPickupPose)
+                .strafeToConstantHeading(new Vector2d(pickupX, pickupY));
+
+        TrajectoryActionBuilder actualPickup3 = drive.actionBuilder(prepPickupPose)
+                .strafeToConstantHeading(new Vector2d(pickupX, pickupY));
+
+        TrajectoryActionBuilder score1 = drive.actionBuilder(pickupPose)
+                .strafeToLinearHeading(new Vector2d(scoreX, scoreY), Math.toRadians(-90));
+
+        TrajectoryActionBuilder score2 = drive.actionBuilder(pickupPose)
+                .strafeToLinearHeading(new Vector2d(score2X, score2Y), Math.toRadians(-90));
+
+        TrajectoryActionBuilder score3 = drive.actionBuilder(pickupPose)
+                .strafeToLinearHeading(new Vector2d(score3X, score3Y), Math.toRadians(-90));
+
         TrajectoryActionBuilder park = drive.actionBuilder(scorePose)
                 .strafeToConstantHeading(new Vector2d(parkX, parkY));
-
-        Action parkTest = score.fresh()
-                .strafeToConstantHeading(new Vector2d(parkX, parkY))
-                .build();
 
         Action PREP_CLIP =
                 new ParallelAction(
@@ -138,7 +149,8 @@ public class FourSpecimenTestAuto extends LinearOpMode {
         Action SCORE_CLIP4 = new SequentialAction(
                 verticalSlides.SlamScoreClip(),
                 scoringArm.StowWholeArm(),
-                verticalSlides.Retract()
+                verticalSlides.Retract(),
+                horizontalSlides.HorizontalRetract()
         );
 
         Action PICKUP_CLIP =
@@ -156,6 +168,14 @@ public class FourSpecimenTestAuto extends LinearOpMode {
                 new ParallelAction(
                         intakeArm.IntakeTransfer(),
                         scoringArm.ArmInitPosition()
+                );
+
+        Action RETRACT_ALL =
+                new ParallelAction(
+                        verticalSlides.Retract(),
+                        horizontalSlides.HorizontalRetract(),
+                        scoringArm.StowArmClose(),
+                        intakeArm.IntakeTransfer()
                 );
 
         while (!isStarted() && !opModeIsActive()){
@@ -177,10 +197,15 @@ public class FourSpecimenTestAuto extends LinearOpMode {
 
         Action SCORE_PRELOAD = scorePreload.build();
         Action PUSH = push.build();
-        Action PICKUP1 = pickup1.build();
-        Action ACTUAL_PICKUP = actualPickup.build();
-        Action SCORE = score.build();
+        Action PICKUP1 = prepPickup1.build();
         Action PICKUP2 = prepPickup2.build();
+        Action PICKUP3 = prepPickup3.build();
+        Action ACTUAL_PICKUP = actualPickup1.build();
+        Action ACTUAL_PICKUP2 = actualPickup2.build();
+        Action ACTUAL_PICKUP3 = actualPickup3.build();
+        Action SCORE1 = score1.build();
+        Action SCORE2 = score2.build();
+        Action SCORE3 = score3.build();
         Action PARK = park.build();
 
         Actions.runBlocking(
@@ -193,22 +218,20 @@ public class FourSpecimenTestAuto extends LinearOpMode {
                             PICKUP_CLIP,
                         ACTUAL_PICKUP,
                             PREP_CLIP2,
-                        SCORE,
+                        SCORE1,
                             SCORE_CLIP2,
                         PICKUP2,
                             PICKUP_CLIP2,
-                        ACTUAL_PICKUP,
+                        ACTUAL_PICKUP2,
                             PREP_CLIP3,
-                        SCORE,
+                        SCORE2,
                             SCORE_CLIP3,
-                        PICKUP2,
+                        PICKUP3,
                             PICKUP_CLIP3,
-                        ACTUAL_PICKUP,
+                        ACTUAL_PICKUP3,
                             PREP_CLIP4,
-                        SCORE,
-                            SCORE_CLIP4,
-                        PARK
-                        //parkTest
+                        SCORE3,
+                            SCORE_CLIP4
                 )
         );
     }
