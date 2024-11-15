@@ -23,7 +23,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.VerticalSlides;
 @Autonomous(name = "0+4 Test Auto", group = "Autonomous", preselectTeleOp = "Solo Full Robot TeleOp")
 public class FourSampleTestAuto extends LinearOpMode{
 
-    public static double startX = -40;
+    public static double startX = -39;
     public static double startY = -63.5;
     public static double startHeading = Math.toRadians(90);
     public static double scorePreloadX = 0;
@@ -34,8 +34,8 @@ public class FourSampleTestAuto extends LinearOpMode{
     public static double scoreBucketY = -56;
     public static double intake2X = -58.5;
     public static double intake2Y = -49;
-    public static double intake3X = -68;
-    public static double intake3Y = -49;
+    public static double intake3X = -46.5;
+    public static double intake3Y = -26;
     public static double parkX = -30;
     public static double parkY = -18;
 
@@ -67,25 +67,33 @@ public class FourSampleTestAuto extends LinearOpMode{
                 .strafeToLinearHeading(new Vector2d(scoreBucketX, scoreBucketY), Math.toRadians(45));
 
         TrajectoryActionBuilder intake3 = drive.actionBuilder(new Pose2d(scoreBucketX, scoreBucketY, Math.toRadians(45)))
-                .strafeToLinearHeading(new Vector2d(intake3X, intake3Y), Math.toRadians(90));
+                .strafeToLinearHeading(new Vector2d(intake3X, intake3Y), Math.toRadians(180));
 
         TrajectoryActionBuilder score3 = drive.actionBuilder(new Pose2d(intake3X, intake3Y, Math.toRadians(180)))
                 .strafeToLinearHeading(new Vector2d(scoreBucketX, scoreBucketY), Math.toRadians(45));
 
         TrajectoryActionBuilder park = drive.actionBuilder(new Pose2d(scoreBucketX, scoreBucketY, Math.toRadians(45)))
-                .strafeToLinearHeading(new Vector2d(parkX, parkY), Math.toRadians(90));
+                .turn(Math.toRadians(45));
 
         Action EXTEND_INTAKE =
                 new ParallelAction(
                         intakeArm.IntakeHover(),
                         horizontalSlides.HorizontalExtend()
                 );
-        Action EXTEND_INTAKE2 = EXTEND_INTAKE;
-        Action EXTEND_INTAKE3 = EXTEND_INTAKE;
+        Action EXTEND_INTAKE2 = new ParallelAction(
+                intakeArm.IntakeHover(),
+                horizontalSlides.HorizontalExtend()
+        );
+        Action EXTEND_INTAKE3 = new ParallelAction(
+                intakeArm.IntakeHoverPerpendicular(),
+                horizontalSlides.HorizontalExtend()
+        );
 
         Action INTAKE_AND_TRANSFER =
                 new SequentialAction(
                         intakeArm.IntakePickup(),
+                        new SleepAction(0.5),
+                        intakeArm.IntakeClose(),
                         new SleepAction(0.5),
                         intakeArm.IntakeTransfer(),
                         new SleepAction(0.2),
@@ -98,18 +106,64 @@ public class FourSampleTestAuto extends LinearOpMode{
                                 scoringArm.ArmScoreBucket()
                         )
                 );
-        Action INTAKE_AND_TRANSFER2 = INTAKE_AND_TRANSFER;
-        Action INTAKE_AND_TRANSFER3 = INTAKE_AND_TRANSFER;
+        Action INTAKE_AND_TRANSFER2 = new SequentialAction(
+                intakeArm.IntakePickup(),
+                new SleepAction(0.5),
+                intakeArm.IntakeClose(),
+                new SleepAction(0.5),
+                intakeArm.IntakeTransfer(),
+                new SleepAction(0.2),
+                horizontalSlides.HorizontalRetract(),
+                new SleepAction(0.5),
+                scoringArm.WholeArmTransfer(),
+                intakeArm.ClawOpen(),
+                new ParallelAction(
+                        verticalSlides.LiftUpToHighBucket(),
+                        scoringArm.ArmScoreBucket()
+                )
+        );
+        Action INTAKE_AND_TRANSFER3 = new SequentialAction(
+                intakeArm.IntakePickup(),
+                new SleepAction(0.5),
+                intakeArm.IntakeClose(),
+                new SleepAction(0.5),
+                intakeArm.IntakeTransfer(),
+                new SleepAction(0.2),
+                horizontalSlides.HorizontalRetract(),
+                new SleepAction(0.5),
+                scoringArm.WholeArmTransfer(),
+                intakeArm.ClawOpen(),
+                new ParallelAction(
+                        verticalSlides.LiftUpToHighBucket(),
+                        scoringArm.ArmScoreBucket()
+                )
+        );
 
         Action SCORE_BUCKET =
                 new SequentialAction(
                         scoringArm.DropBucket(),
-                        verticalSlides.Retract(),
-                        scoringArm.StowWholeArm()
+                        new SleepAction(0.2),
+                        scoringArm.StowWholeArm(),
+                        verticalSlides.Retract()
                 );
-        Action SCORE_BUCKET2 = SCORE_BUCKET;
-        Action SCORE_BUCKET3 = SCORE_BUCKET;
-        Action SCORE_BUCKET4 = SCORE_BUCKET;
+        Action SCORE_BUCKET2 = new SequentialAction(
+                scoringArm.DropBucket(),
+                new SleepAction(0.2),
+                scoringArm.StowWholeArm(),
+                verticalSlides.Retract()
+        );
+        Action SCORE_BUCKET3 = new SequentialAction(
+                scoringArm.DropBucket(),
+                new SleepAction(0.2),
+                scoringArm.StowWholeArm(),
+                verticalSlides.Retract()
+        );
+        Action SCORE_BUCKET4 = new SequentialAction(
+                scoringArm.DropBucket(),
+                new SleepAction(0.2),
+                scoringArm.StowWholeArm(),
+                verticalSlides.Retract()
+        );
 
         Action LIFT_BUCKET =
                 new ParallelAction(

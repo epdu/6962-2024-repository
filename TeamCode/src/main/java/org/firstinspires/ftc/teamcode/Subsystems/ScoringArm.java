@@ -340,6 +340,8 @@ public class ScoringArm {
         @Override
         public boolean run(@NonNull TelemetryPacket packet) {
             arm.setArmInitPosition();
+            wrist.setWristTransfer();
+            claw.closeClaw();
             return false;
         }
     }

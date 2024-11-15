@@ -103,9 +103,21 @@ public class FourSpecimenTestAuto extends LinearOpMode {
                         verticalSlides.LiftUpToClip(),
                         horizontalSlides.HorizontalRetract()
                 );
-        Action PREP_CLIP2 = PREP_CLIP;
-        Action PREP_CLIP3 = PREP_CLIP;
-        Action PREP_CLIP4 = PREP_CLIP;
+        Action PREP_CLIP2 = new ParallelAction(
+                scoringArm.ArmScoreClip(),
+                verticalSlides.LiftUpToClip(),
+                horizontalSlides.HorizontalRetract()
+        );
+        Action PREP_CLIP3 = new ParallelAction(
+                scoringArm.ArmScoreClip(),
+                verticalSlides.LiftUpToClip(),
+                horizontalSlides.HorizontalRetract()
+        );
+        Action PREP_CLIP4 = new ParallelAction(
+                scoringArm.ArmScoreClip(),
+                verticalSlides.LiftUpToClip(),
+                horizontalSlides.HorizontalRetract()
+        );
 
         Action SCORE_CLIP =
                 new SequentialAction(
@@ -113,16 +125,32 @@ public class FourSpecimenTestAuto extends LinearOpMode {
                         scoringArm.StowWholeArm(),
                         verticalSlides.Retract()
                 );
-        Action SCORE_CLIP2 = SCORE_CLIP;
-        Action SCORE_CLIP3 = SCORE_CLIP;
-        Action SCORE_CLIP4 = SCORE_CLIP;
+        Action SCORE_CLIP2 = new SequentialAction(
+                verticalSlides.SlamScoreClip(),
+                scoringArm.StowWholeArm(),
+                verticalSlides.Retract()
+        );
+        Action SCORE_CLIP3 = new SequentialAction(
+                verticalSlides.SlamScoreClip(),
+                scoringArm.StowWholeArm(),
+                verticalSlides.Retract()
+        );
+        Action SCORE_CLIP4 = new SequentialAction(
+                verticalSlides.SlamScoreClip(),
+                scoringArm.StowWholeArm(),
+                verticalSlides.Retract()
+        );
 
         Action PICKUP_CLIP =
                 new SequentialAction(
                         scoringArm.ArmGrabClip()
                 );
-        Action PICKUP_CLIP2 = PICKUP_CLIP;
-        Action PICKUP_CLIP3 = PICKUP_CLIP;
+        Action PICKUP_CLIP2 = new SequentialAction(
+                scoringArm.ArmGrabClip()
+        );
+        Action PICKUP_CLIP3 = new SequentialAction(
+                scoringArm.ArmGrabClip()
+        );
 
         Action INITIALIZE =
                 new ParallelAction(
