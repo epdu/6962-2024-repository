@@ -274,8 +274,8 @@ public class VerticalSlides
             int error = rtpTarget - rightSlideMotor.getCurrentPosition();
             if (!initialized) {
                 int sign = (error >= 0 ? 1 : -1);
-                leftSlideMotor.setPower(sign * 0.9);
-                rightSlideMotor.setPower(sign * 0.9);
+                leftSlideMotor.setPower(sign * 0.7);
+                rightSlideMotor.setPower(sign * 0.7);
                 initialized = true;
             }
 
