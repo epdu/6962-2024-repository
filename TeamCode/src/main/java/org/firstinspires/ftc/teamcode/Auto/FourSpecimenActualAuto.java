@@ -16,25 +16,26 @@ import org.firstinspires.ftc.teamcode.Roadrunner.MecanumDrive;
 import org.firstinspires.ftc.teamcode.Subsystems.HorizontalSlides;
 import org.firstinspires.ftc.teamcode.Subsystems.IntakeArm;
 import org.firstinspires.ftc.teamcode.Subsystems.ScoringArm;
+//import org.firstinspires.ftc.teamcode.Subsystems.SubsystemCommands;
 import org.firstinspires.ftc.teamcode.Subsystems.VerticalSlides;
 
 @Config
-@Autonomous(name = "4+0 Auto USE THIS ONE", group = "Good Autonomous", preselectTeleOp = "Solo Full Robot TeleOp")
-public class FourSpecimenTestAuto extends LinearOpMode {
+@Autonomous(name = "4+0 Old Auto DON'T USE THIS ONE", group = "Good Autonomous", preselectTeleOp = "Solo Full Robot TeleOp")
+public class FourSpecimenActualAuto extends LinearOpMode {
 
     public static double startX = 8;
     public static double startY = -63.5;
     public static double startHeading = Math.toRadians(-90);
     public static double scorePreloadX = -3;
-    public static double scorePreloadY = -35;
+    public static double scorePreloadY = -34;
     public static double coord1X = 30;
     public static double coord1Y = -35;
     public static double push1X = 47;
-    public static double push1Y = -15;
+    public static double push1Y = -13;
     public static double zone1X = 47;
     public static double zone1Y = -52;
-    public static double push2X = 55;
-    public static double push2Y = -15;
+    public static double push2X = 57;
+    public static double push2Y = -13;
     public static double zone2X = 57;
     public static double zone2Y = -54;
     public static double prepPickupX = 48;
@@ -42,9 +43,9 @@ public class FourSpecimenTestAuto extends LinearOpMode {
     public static double pickupX = 48;
     public static double pickupY = -60;
     public static double scoreX = 0;
-    public static double scoreY = -35;
+    public static double scoreY = -36;
     public static double score2X = 3;
-    public static double score2Y = -35;
+    public static double score2Y = -36;
     public static double score3X = 6;
     public static double score3Y = -34;
     public static double parkX = 45;
@@ -208,37 +209,28 @@ public class FourSpecimenTestAuto extends LinearOpMode {
 
         Actions.runBlocking(
                 new SequentialAction(
-                        new ParallelAction(
                             PREP_CLIP,
-                            SCORE_PRELOAD
-                        ),
+                        SCORE_PRELOAD,
                             SCORE_CLIP,
                         PUSH,
-                        new ParallelAction(
-                            PICKUP1,
-                            PICKUP_CLIP
-                        ),
+                        PICKUP1,
+                            PICKUP_CLIP,
                         ACTUAL_PICKUP,
                             PREP_CLIP2,
                         SCORE1,
                             SCORE_CLIP2,
-                        new ParallelAction(
-                            PICKUP2,
-                            PICKUP_CLIP2
-                        ),
+                        PICKUP2,
+                            PICKUP_CLIP2,
                         ACTUAL_PICKUP2,
                             PREP_CLIP3,
                         SCORE2,
                             SCORE_CLIP3,
-                        new ParallelAction(
-                            PICKUP3,
-                            PICKUP_CLIP3
-                        ),
+                        PICKUP3,
+                            PICKUP_CLIP3,
                         ACTUAL_PICKUP3,
                             PREP_CLIP4,
                         SCORE3,
-                            SCORE_CLIP4,
-                        PARK
+                            SCORE_CLIP4
                 )
         );
     }
