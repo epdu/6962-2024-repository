@@ -37,7 +37,7 @@ public class CameraCVPipeline extends OpenCvPipeline implements CameraStreamSour
      * AutoTune: Automatically tunes the color ranges at a competition to
      * ensure selection accuracy.
      */
-    public static double TURN_FACTOR = 0.001;
+    public static double TURN_FACTOR = 0.01;
     public static double TURN_FACTOR_D_GAIN = -0.0001;
     public static int COLOR_AUTOTUNE_MODE = 0;
     static final int CAMERA_WIDTH = 640; // width  of wanted camera resolution
@@ -138,7 +138,7 @@ public class CameraCVPipeline extends OpenCvPipeline implements CameraStreamSour
 //            String angleLabel = "Angle: " + String.format("%.2f", getAngleTarget(width)) + "degrees";
 //            Imgproc.putText(input, distanceLabel, new Point(cX + 10, cY + 60), Imgproc.FONT_HERSHEY_SIMPLEX, 0.5, new Scalar(0, 255, 0), 2);
 //            Imgproc.putText(input, angleLabel, new Point(cX + 10, cY + 60), Imgproc.FONT_HERSHEY_SIMPLEX, 0.5, new Scalar(0, 255, 0), 2);
-            String servoRotLabel = "Servo Rotation: " + String.format("%.2f", calculateServoPosition(0.0,getRotationAngle(largestContour))) + " degrees";
+            String servoRotLabel = "Servo Rotation: " + String.format("%.2f", calculateServoPosition(0.5,getRotationAngle(largestContour))) + " degrees";
 //            String angleLabel = "Angle: " + String.format("%.2f", getAngleTarget(width)) + "degrees";
             Imgproc.putText(input, servoRotLabel, new Point(cX + 10, cY + 60), Imgproc.FONT_HERSHEY_SIMPLEX, 0.5, new Scalar(0, 255, 0), 2);
 
@@ -220,7 +220,7 @@ public class CameraCVPipeline extends OpenCvPipeline implements CameraStreamSour
         double derivative = rotationAngle - previousRotationAngle;
 
         // Store the current angle for the next calculation
-        previousRotationAngle = rotationAngle;
+//        previousRotationAngle = rotationAngle;
 
         // Calculate the servo adjustment based on the P and D terms
         double servoAdjustment = (rotationAngle * TURN_FACTOR) + (derivative * TURN_FACTOR_D_GAIN);
@@ -229,12 +229,13 @@ public class CameraCVPipeline extends OpenCvPipeline implements CameraStreamSour
         double newServoPosition = current + servoAdjustment;
 
         // Ensure the servo position stays within valid bounds [0, 1]
-        if (newServoPosition > 0.7) {
+        if (newServoPosition > 0.9) {
             newServoPosition = 1.0;
         } else if (newServoPosition < 0.0) {
             newServoPosition = 0.0;
         }
 
+        targetWristPosition = newServoPosition;
         return newServoPosition;
 
     }

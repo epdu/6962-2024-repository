@@ -2,6 +2,10 @@ package org.firstinspires.ftc.teamcode.Subsystems;
 
 
 import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.roadrunner.Action;
+import com.acmerobotics.roadrunner.InstantAction;
+import com.acmerobotics.roadrunner.SequentialAction;
+import com.acmerobotics.roadrunner.SleepAction;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.teamcode.Util.CameraCVPipeline;
@@ -79,7 +83,16 @@ public class CameraPortal {
         opmode.telemetry.addData("Theoretical max FPS", webcam1.getCurrentPipelineMaxFps());
         opmode.telemetry.update();
     }
+//    public Action getServoRotation() {
+//        new InstantAction(() -> ())
+//    }
+
+    public double getRotation() {
+        return pipeLine.getTargetWristPosition();
+    }
 }
+
+
 
 
 
