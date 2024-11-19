@@ -172,8 +172,9 @@ public class SoloFullRobotTeleOp extends OpMode {
                             new InstantAction(() -> intakeArm.arm.setArmGrab()),
                             new SleepAction(0.15),
                             new InstantAction(() -> intakeArm.claw.closeClaw()),
-                            new SleepAction(0.3),
+                            new SleepAction(0.1),
                             new InstantAction(() -> intakeArm.wrist.setWristTransfer()),
+                            new SleepAction(0.15),
                             new InstantAction(() -> horizontalSlides.retract()),
                             new SleepAction(0.3), // might need to be longer
                             new InstantAction(() -> intakeArm.arm.setArmTransfer())
