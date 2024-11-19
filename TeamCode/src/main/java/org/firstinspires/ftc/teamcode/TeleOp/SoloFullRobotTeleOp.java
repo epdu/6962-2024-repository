@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-@TeleOp(name="Solo Full Robot TeleOp", group="Active TeleOps")
+@TeleOp(name="A Solo Full Robot TeleOp", group="Active TeleOps")
 public class SoloFullRobotTeleOp extends OpMode {
     // Action stuff
     private FtcDashboard dash = FtcDashboard.getInstance();
@@ -139,7 +139,7 @@ public class SoloFullRobotTeleOp extends OpMode {
                 runningActions.add(
                         new SequentialAction(
                                 new InstantAction(() -> intakeArm.arm.setArmGrab()),
-                                new SleepAction(0.2),
+                                new SleepAction(0.15),
                                 new InstantAction(() -> intakeArm.claw.closeClaw()),
                                 new SleepAction(0.1),
                                 new InstantAction(() -> intakeArm.arm.setArmTransfer()),
@@ -151,6 +151,35 @@ public class SoloFullRobotTeleOp extends OpMode {
                         )
                 );
             }
+
+        // horizontal slides extend, intake arm grab, open intake claw
+        if (currentGamepad1.left_trigger >= 0.1 && !(previousGamepad1.left_trigger >= 0.1)) {
+            runningActions.add(
+                    new SequentialAction(
+                            new InstantAction(() -> intakeArm.arm.setArmHover()),
+                            new InstantAction(() -> intakeArm.wrist.setFlipIntake()),
+                            new SleepAction(0.3), // might need to be longer
+                            new InstantAction(() -> horizontalSlides.extendHalfway()),
+                            new SleepAction(0.2), //potentially uneccessary
+                            new InstantAction(() -> intakeArm.claw.openClaw())
+                    )
+            );
+        }
+        // intake claw close, then horizontal slides retract and intake arm transfer
+        else if (currentGamepad1.left_trigger < 0.1 && !(previousGamepad1.left_trigger < 0.1)) {
+            runningActions.add(
+                    new SequentialAction(
+                            new InstantAction(() -> intakeArm.arm.setArmGrab()),
+                            new SleepAction(0.15),
+                            new InstantAction(() -> intakeArm.claw.closeClaw()),
+                            new SleepAction(0.1),
+                            new InstantAction(() -> intakeArm.wrist.setWristTransfer()),
+                            new InstantAction(() -> horizontalSlides.retract()),
+                            new SleepAction(0.3), // might need to be longer
+                            new InstantAction(() -> intakeArm.arm.setArmTransfer())
+                    )
+            );
+        }
 
         // intake wrist rotate
         if      (currentGamepad1.right_trigger >= 0.1 && currentGamepad1.dpad_right)  { intakeArm.wrist.incrementalWristRotateActual(-1); }
