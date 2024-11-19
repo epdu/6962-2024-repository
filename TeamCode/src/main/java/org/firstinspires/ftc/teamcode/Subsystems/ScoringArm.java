@@ -160,6 +160,7 @@ public class ScoringArm {
         public static double armScoringClipPosition = 0.3411;
         public static double armTransferPosition = 0.486;
         public static double armGrabClipWallPosition = 0.0678;
+        public static double armDropClipFloorPosition = 0;
         public static double armInitPosition = 0.3994;
         public static double armStowPosition = 0.6183;
         public static double armIncrement = 0.001;
@@ -207,6 +208,8 @@ public class ScoringArm {
             setArmPosition(armStowPosition);
         }
 
+        public void setArmDropClipFloor() {setArmPosition(armDropClipFloorPosition);}
+
         public double telemetryArmPos() {
             return arm.getPosition();
         }
@@ -220,7 +223,7 @@ public class ScoringArm {
         public static double wristScoreBucketPosition = 0.9328;
         public static double wristScoreClipPosition = 0.8872;
         public static double wristGrabClipWallPosition = 0.8483;
-        public static double wristGrabClipFloorPosition = 0;
+        public static double wristDropClipFloorPosition = 0;
         public static double wristGrabClipFloorHoverPosition = 0;
         public static double wristIncrement = 0.001;
 
@@ -251,6 +254,8 @@ public class ScoringArm {
             wrist.setPosition(wristGrabClipWallPosition);
             isWristTransferring = false;
         }
+
+        public void setWristDropClipFloor() {wrist.setPosition(wristDropClipFloorPosition);}
 
         // Incremental wrist turn (servos rotate in opposite directions)
         public void incremental(int sign) {
@@ -357,6 +362,16 @@ public class ScoringArm {
         }
     }
     public Action StowArmClose() {return new StowArmClose();}
+
+    public class ArmDropFloor implements Action {
+        @Override
+        public boolean run(@NonNull TelemetryPacket packet) {
+            wrist.setWristDropClipFloor();
+            arm.setArmDropClipFloor();
+            return false;
+        }
+    }
+    public Action ArmDropFloor() {return new ArmDropFloor();}
 
     // math util functions
     public boolean isClose(double a, double b) {
