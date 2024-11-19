@@ -19,8 +19,8 @@ import org.firstinspires.ftc.teamcode.Subsystems.ScoringArm;
 import org.firstinspires.ftc.teamcode.Subsystems.VerticalSlides;
 
 @Config
-@Autonomous(name = "4+0 Auto USE THIS ONE", group = "Good Autonomous", preselectTeleOp = "Solo Full Robot TeleOp")
-public class FourSpecimenTestAuto extends LinearOpMode {
+@Autonomous(name = "4+0 Auto", group = "1 Autonomous", preselectTeleOp = "A Solo Full Robot TeleOp")
+public class FourSpecimenGoodAuto extends LinearOpMode {
 
     public static double startX = 8;
     public static double startY = -63.5;
