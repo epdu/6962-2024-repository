@@ -77,11 +77,8 @@ public class RobotHardware {
         hangServoL = hMap.get(CRServo.class, "hangServoL");
         hangServoR = hMap.get(CRServo.class, "hangServoR");
 
-//        webcam = hMap.get(WebcamName.class, "Webcam 1");
-//        cameraMonitorViewId = hMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hMap.appContext.getPackageName());
-
-//        webcam = hMap.get(WebcamName.class, "Webcam 1");
-//        cameraMonitorViewId = hMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hMap.appContext.getPackageName());
+        webcam = hMap.get(WebcamName.class, "Webcam 1");
+        cameraMonitorViewId = hMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hMap.appContext.getPackageName());
 
     }
 }

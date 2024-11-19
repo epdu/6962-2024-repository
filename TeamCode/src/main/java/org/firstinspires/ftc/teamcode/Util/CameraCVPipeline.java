@@ -131,14 +131,14 @@ public class CameraCVPipeline extends OpenCvPipeline implements CameraStreamSour
             // Display the width next to the label
             String widthLabel = "Width: " + (int) width + " pixels";
             String rotationLabel = "Angle to rotate: " + (int) rotationAngle + "degrees";
-            Imgproc.putText(input, widthLabel, new Point(cX + 10, cY + 20), Imgproc.FONT_HERSHEY_SIMPLEX, 0.5, new Scalar(0, 255, 0), 2);
-            Imgproc.putText(input, rotationLabel, new Point(cX + 10, cY + 20), Imgproc.FONT_HERSHEY_SIMPLEX, 0.5, new Scalar(0, 255, 0), 2);
+//            Imgproc.putText(input, widthLabel, new Point(cX + 10, cY + 20), Imgproc.FONT_HERSHEY_SIMPLEX, 0.5, new Scalar(0, 255, 0), 2);
+//            Imgproc.putText(input, rotationLabel, new Point(cX + 10, cY + 20), Imgproc.FONT_HERSHEY_SIMPLEX, 0.5, new Scalar(0, 255, 0), 2);
             //Display the Distance
             String distanceLabel = "Distance: " + String.format("%.2f", getDistance(width)) + " inches";
 //            String angleLabel = "Angle: " + String.format("%.2f", getAngleTarget(width)) + "degrees";
-            Imgproc.putText(input, distanceLabel, new Point(cX + 10, cY + 60), Imgproc.FONT_HERSHEY_SIMPLEX, 0.5, new Scalar(0, 255, 0), 2);
+//            Imgproc.putText(input, distanceLabel, new Point(cX + 10, cY + 60), Imgproc.FONT_HERSHEY_SIMPLEX, 0.5, new Scalar(0, 255, 0), 2);
 //            Imgproc.putText(input, angleLabel, new Point(cX + 10, cY + 60), Imgproc.FONT_HERSHEY_SIMPLEX, 0.5, new Scalar(0, 255, 0), 2);
-            String servoRotLabel = "Distance: " + String.format("%.2f", calculateServoPosition(0.0,getRotationAngle(largestContour))) + " degrees";
+            String servoRotLabel = "Servo Rotation: " + String.format("%.2f", calculateServoPosition(0.0,getRotationAngle(largestContour))) + " degrees";
 //            String angleLabel = "Angle: " + String.format("%.2f", getAngleTarget(width)) + "degrees";
             Imgproc.putText(input, servoRotLabel, new Point(cX + 10, cY + 60), Imgproc.FONT_HERSHEY_SIMPLEX, 0.5, new Scalar(0, 255, 0), 2);
 
