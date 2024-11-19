@@ -59,7 +59,6 @@ public class FourSpecimenGoodAuto extends LinearOpMode {
     @Override
     public void runOpMode() {
         MecanumDrive drive = new MecanumDrive(hardwareMap, startPose);
-//        SubsystemCommands subsystems = new SubsystemCommands();
 
         VerticalSlides verticalSlides = new VerticalSlides();
         ScoringArm scoringArm = new ScoringArm();
