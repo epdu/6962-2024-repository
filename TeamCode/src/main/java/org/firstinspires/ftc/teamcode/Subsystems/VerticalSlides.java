@@ -228,7 +228,7 @@ public class VerticalSlides
         timer.reset();
 
         // calculates output and returns
-        double output = 0.7 * (((error >= 0 ? KpUp : KpDown) * error) + (Ki * integralSum) + (Kd * derivative) + Kg);
+        double output = ((error >= 0 ? KpUp : KpDown) * error) + (Ki * integralSum) + (Kd * derivative) + Kg;
 
         return output;
     }
