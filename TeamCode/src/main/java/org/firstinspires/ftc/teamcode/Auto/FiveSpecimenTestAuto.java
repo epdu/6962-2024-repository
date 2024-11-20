@@ -28,12 +28,12 @@ public class FiveSpecimenTestAuto extends LinearOpMode {
     public static double startHeading = Math.toRadians(-90);
     public static double scorePreloadX = -3;
     public static double scorePreloadY = -35;
-    public static double field1X = 0;
-    public static double field1Y = 0;
-    public static double field2X = 0;
-    public static double field2Y = 0;
-    public static double field3X = 0;
-    public static double field3Y = 0;
+    public static double field1X = 48;
+    public static double field1Y = -48;
+    public static double field2X = 59;
+    public static double field2Y = -49;
+    public static double field3X = 59;
+    public static double field3Y = -45;
     public static double prepPickupX = 48;
     public static double prepPickupY = -49;
     public static double pickupX = 48;
@@ -134,10 +134,6 @@ public class FiveSpecimenTestAuto extends LinearOpMode {
 
         Action INTAKE_FLOOR2 =
                 new SequentialAction(
-                        new ParallelAction(
-                                intakeArm.IntakeHover(),
-                                horizontalSlides.HorizontalExtend()
-                        ),
                         intakeArm.IntakePickup(),
                         new SleepAction(0.5),
                         intakeArm.IntakeClose(),
@@ -149,10 +145,6 @@ public class FiveSpecimenTestAuto extends LinearOpMode {
 
         Action INTAKE_FLOOR3 =
                 new SequentialAction(
-                        new ParallelAction(
-                                intakeArm.IntakeHover(),
-                                horizontalSlides.HorizontalExtend()
-                        ),
                         intakeArm.IntakePickup(),
                         new SleepAction(0.5),
                         intakeArm.IntakeClose(),
@@ -163,30 +155,42 @@ public class FiveSpecimenTestAuto extends LinearOpMode {
                 );
 
         Action TRANSFER_AND_DROP1 =
-                new SequentialAction(
-                        scoringArm.WholeArmTransfer(),
-                        intakeArm.ClawOpen(),
-                        scoringArm.ArmDropFloor(),
-                        scoringArm.DropBucket(),
-                        scoringArm.StowWholeArm()
+                new ParallelAction(
+                        new SequentialAction(
+                                scoringArm.WholeArmTransfer(),
+                                intakeArm.ClawOpen(),
+                                scoringArm.ArmDropFloor(),
+                                scoringArm.DropBucket(),
+                                scoringArm.StowWholeArm()
+                        ),
+                        intakeArm.IntakeHover(),
+                        horizontalSlides.HorizontalExtend()
                 );
 
         Action TRANSFER_AND_DROP2 =
-                new SequentialAction(
-                        scoringArm.WholeArmTransfer(),
-                        intakeArm.ClawOpen(),
-                        scoringArm.ArmDropFloor(),
-                        scoringArm.DropBucket(),
-                        scoringArm.StowWholeArm()
+                new ParallelAction(
+                        new SequentialAction(
+                                scoringArm.WholeArmTransfer(),
+                                intakeArm.ClawOpen(),
+                                scoringArm.ArmDropFloor(),
+                                scoringArm.DropBucket(),
+                                scoringArm.StowWholeArm()
+                        ),
+                        intakeArm.IntakeHover(),
+                        horizontalSlides.HorizontalExtend()
                 );
 
         Action TRANSFER_AND_DROP3 =
-                new SequentialAction(
-                        scoringArm.WholeArmTransfer(),
-                        intakeArm.ClawOpen(),
-                        scoringArm.ArmDropFloor(),
-                        scoringArm.DropBucket(),
-                        scoringArm.StowWholeArm()
+                new ParallelAction(
+                        new SequentialAction(
+                                scoringArm.WholeArmTransfer(),
+                                intakeArm.ClawOpen(),
+                                scoringArm.ArmDropFloor(),
+                                scoringArm.DropBucket(),
+                                scoringArm.StowWholeArm()
+                        ),
+                        intakeArm.IntakeHover(),
+                        horizontalSlides.HorizontalExtend()
                 );
 
         Action PREP_CLIP =
@@ -263,14 +267,6 @@ public class FiveSpecimenTestAuto extends LinearOpMode {
                 new ParallelAction(
                         intakeArm.IntakeTransfer(),
                         scoringArm.ArmInitPosition()
-                );
-
-        Action RETRACT_ALL =
-                new ParallelAction(
-                        verticalSlides.Retract(),
-                        horizontalSlides.HorizontalRetract(),
-                        scoringArm.StowArmClose(),
-                        intakeArm.IntakeTransfer()
                 );
 
         while (!isStarted() && !opModeIsActive()){

@@ -223,7 +223,7 @@ public class ScoringArm {
         public static double wristScoreBucketPosition = 0.9328;
         public static double wristScoreClipPosition = 0.8872;
         public static double wristGrabClipWallPosition = 0.8483;
-        public static double wristDropClipFloorPosition = 0;
+        public static double wristDropClipFloorPosition = 1;
         public static double wristGrabClipFloorHoverPosition = 0;
         public static double wristIncrement = 0.001;
 
