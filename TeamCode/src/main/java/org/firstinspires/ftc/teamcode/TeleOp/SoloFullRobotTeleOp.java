@@ -244,7 +244,7 @@ public class SoloFullRobotTeleOp extends OpMode {
                             new InstantAction(() -> scoringArm.claw.openClaw())
                         ),
 
-                        // acutally transfer
+                        // actually transfer
                         new InstantAction(() -> scoringArm.claw.closeClaw()),
                         new SleepAction(0.08),
                         new InstantAction(() -> intakeArm.claw.openClaw()),
@@ -252,7 +252,7 @@ public class SoloFullRobotTeleOp extends OpMode {
                         // lift up to high bucket
                         new InstantAction(() -> verticalSlides.raiseToHighBucket()),
                         new InstantAction(() -> scoringArm.wrist.setWristScoringBucket()),
-                        new SleepAction(0.6),
+                        new SleepAction(1),
                         new InstantAction(() -> scoringArm.arm.setArmScoreBucket())
                     )
             );
@@ -270,6 +270,33 @@ public class SoloFullRobotTeleOp extends OpMode {
                     ),
                     new InstantAction(() -> verticalSlides.retract())
                 )
+            );
+        }
+
+        if (currentGamepad2.x && !previousGamepad2.x) {
+            runningActions.add(
+                    new SequentialAction(
+                            new InstantAction(() -> scoringArm.claw.closeClaw()),
+                            new SleepAction(0.08),
+                            new InstantAction(() -> intakeArm.claw.openClaw()),
+                            new ParallelAction(
+                                    new InstantAction(() -> scoringArm.wrist.setWristGrabClip()),
+                                    new InstantAction(() -> scoringArm.arm.setArmGrabClip())
+                            )
+                    )
+            );
+        }
+
+        if (currentGamepad2.left_bumper && !previousGamepad2.left_bumper) {
+            runningActions.add(
+                    new SequentialAction(
+                            new InstantAction(() -> scoringArm.claw.openClaw()),
+                            new SleepAction(0.3),
+                            new ParallelAction(
+                                    new InstantAction(() -> scoringArm.wrist.setWristTransfer()),
+                                    new InstantAction(() -> scoringArm.arm.setArmTransfer())
+                            )
+                    )
             );
         }
 

@@ -363,15 +363,18 @@ public class ScoringArm {
     }
     public Action StowArmClose() {return new StowArmClose();}
 
-    public class ArmDropFloor implements Action {
+    public class ArmDropClip implements Action {
         @Override
         public boolean run(@NonNull TelemetryPacket packet) {
-            wrist.setWristDropClipFloor();
-            arm.setArmDropClipFloor();
+            arm.setArmGrabClip();
+            wrist.setWristGrabClip();
+            claw.closeClaw();
             return false;
         }
     }
-    public Action ArmDropFloor() {return new ArmDropFloor();}
+    public Action ArmDropClip() {
+        return new ArmDropClip();
+    }
 
     // math util functions
     public boolean isClose(double a, double b) {

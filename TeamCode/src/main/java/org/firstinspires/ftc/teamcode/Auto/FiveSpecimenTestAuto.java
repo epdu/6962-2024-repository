@@ -29,10 +29,10 @@ public class FiveSpecimenTestAuto extends LinearOpMode {
     public static double scorePreloadX = -3;
     public static double scorePreloadY = -35;
     public static double field1X = 48;
-    public static double field1Y = -48;
+    public static double field1Y = -45;
     public static double field2X = 59;
-    public static double field2Y = -49;
-    public static double field3X = 59;
+    public static double field2Y = -45;
+    public static double field3X = 54;
     public static double field3Y = -45;
     public static double prepPickupX = 48;
     public static double prepPickupY = -49;
@@ -159,7 +159,7 @@ public class FiveSpecimenTestAuto extends LinearOpMode {
                         new SequentialAction(
                                 scoringArm.WholeArmTransfer(),
                                 intakeArm.ClawOpen(),
-                                scoringArm.ArmDropFloor(),
+                                scoringArm.ArmDropClip(),
                                 scoringArm.DropBucket(),
                                 scoringArm.StowWholeArm()
                         ),
@@ -172,7 +172,7 @@ public class FiveSpecimenTestAuto extends LinearOpMode {
                         new SequentialAction(
                                 scoringArm.WholeArmTransfer(),
                                 intakeArm.ClawOpen(),
-                                scoringArm.ArmDropFloor(),
+                                scoringArm.ArmDropClip(),
                                 scoringArm.DropBucket(),
                                 scoringArm.StowWholeArm()
                         ),
@@ -185,7 +185,7 @@ public class FiveSpecimenTestAuto extends LinearOpMode {
                         new SequentialAction(
                                 scoringArm.WholeArmTransfer(),
                                 intakeArm.ClawOpen(),
-                                scoringArm.ArmDropFloor(),
+                                scoringArm.ArmDropClip(),
                                 scoringArm.DropBucket(),
                                 scoringArm.StowWholeArm()
                         ),
