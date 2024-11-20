@@ -16,6 +16,7 @@ import org.openftc.easyopencv.OpenCvCamera;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.openftc.easyopencv.OpenCvPipeline;
+import org.openftc.easyopencv.OpenCvWebcam;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,8 +31,7 @@ public class CameraCVPipeline extends OpenCvPipeline implements CameraStreamSour
 
     public CameraCVPipeline() {}
 
-    private OpenCvCamera controlHubCam;  // Use OpenCvCamera class from FTC SDK
-    /** MAKE SURE TO CHANGE THE FOV AND THE RESOLUTIONS ACCORDINGLY **/
+    private RobotHardware rHardware = new RobotHardware();  /** MAKE SURE TO CHANGE THE FOV AND THE RESOLUTIONS ACCORDINGLY **/
 
     /**
      * AutoTune: Automatically tunes the color ranges at a competition to
@@ -67,8 +67,8 @@ public class CameraCVPipeline extends OpenCvPipeline implements CameraStreamSour
         this.detectionType = sampleType;
     }
 
-    public void initialize(int width, int height, OpenCvCamera webcam) {
-        lastFrame.set(Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565));
+    public void initialize() {
+        lastFrame.set(Bitmap.createBitmap(680, 480, Bitmap.Config.RGB_565));
     }
     private Scalar detectedColorRangeMin = new Scalar(0, 0, 0);
     private Scalar detectedColorRangeMax = new Scalar(255, 255, 255);
@@ -138,7 +138,8 @@ public class CameraCVPipeline extends OpenCvPipeline implements CameraStreamSour
 //            String angleLabel = "Angle: " + String.format("%.2f", getAngleTarget(width)) + "degrees";
 //            Imgproc.putText(input, distanceLabel, new Point(cX + 10, cY + 60), Imgproc.FONT_HERSHEY_SIMPLEX, 0.5, new Scalar(0, 255, 0), 2);
 //            Imgproc.putText(input, angleLabel, new Point(cX + 10, cY + 60), Imgproc.FONT_HERSHEY_SIMPLEX, 0.5, new Scalar(0, 255, 0), 2);
-            String servoRotLabel = "Servo Rotation: " + String.format("%.2f", calculateServoPosition(0.5,getRotationAngle(largestContour))) + " degrees";
+            String servoRotLabel = "Servo Rotation: " + String.format("%.2f", calculateServoPosition(0.5,getRotationAngle(largestContour))) + "ticks";
+            targetWristPosition = calculateServoPosition(0.5, getRotationAngle(largestContour));
 //            String angleLabel = "Angle: " + String.format("%.2f", getAngleTarget(width)) + "degrees";
             Imgproc.putText(input, servoRotLabel, new Point(cX + 10, cY + 60), Imgproc.FONT_HERSHEY_SIMPLEX, 0.5, new Scalar(0, 255, 0), 2);
 

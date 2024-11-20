@@ -11,7 +11,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.IntakeArm;
 public class IntakeTeleOp extends OpMode {
     // creating subsystems
     private final IntakeArm intake = new IntakeArm();
-    public CameraPortal cPortal = new CameraPortal();
+//    public CameraPortal cPortal = new CameraPortal();
 
     private final boolean onRedAlliance = true;
 
@@ -21,7 +21,7 @@ public class IntakeTeleOp extends OpMode {
     @Override
     public void init() {
         intake.initialize(this);
-        cPortal.init(this);
+//        cPortal.init(this);
     }
 
     /*
@@ -45,8 +45,8 @@ public class IntakeTeleOp extends OpMode {
     @Override
     public void loop() {
 //        intake.operateTest();
-        intake.operateTest();
-        cPortal.run(this);
+        intake.operateTest(this);
+//        cPortal.run(this);
         // Gamepad 2: tuning
         //
 

@@ -35,7 +35,7 @@ public class CameraPortal {
         cameraMonitorViewID = rHardware.cameraMonitorViewId;
         webcam1 = OpenCvCameraFactory.getInstance().createWebcam(rHardware.webcam, cameraMonitorViewID);
 
-        pipeLine.initialize(640, 480, webcam1);
+        pipeLine.initialize();
 
         webcam1.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
         {
@@ -86,8 +86,7 @@ public class CameraPortal {
 //    public Action getServoRotation() {
 //        new InstantAction(() -> ())
 //    }
-
-    public double getRotation() {
+    public double getServoRotation() {
         return pipeLine.getTargetWristPosition();
     }
 }
