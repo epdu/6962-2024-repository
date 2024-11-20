@@ -26,10 +26,10 @@ public class NewVerticalSlides {
     /** all constants need to be tuned*/
     public static double joystickScalar = 1;
     public static double slideScalar = 1;
-    public static double Kp = 0;
+    public static double Kp = 0.013;
     public static double Ki = 0;
-    public static double Kd = 0;
-    public static double Kg = 0;
+    public static double Kd = 0.0003;
+    public static double Kg = 0.1;
     public static double retractedThreshold = 10;
 
     public static int highBucketPos = 1300;
@@ -42,6 +42,7 @@ public class NewVerticalSlides {
     //declaring variables for later modification
     private volatile double target = 0;
     public volatile boolean verticalSlidesRetracted = true;
+    private volatile double output = 0;
 
     public NewVerticalSlides() {}
 
@@ -57,8 +58,8 @@ public class NewVerticalSlides {
         leftSlideMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         rightSlideMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
 
-        leftSlideMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-//        rightSlideMotor.setDirection(DcMotorEx.Direction.REVERSE);
+//        leftSlideMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        rightSlideMotor.setDirection(DcMotorEx.Direction.REVERSE);
 
         leftSlideMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         rightSlideMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
@@ -69,28 +70,21 @@ public class NewVerticalSlides {
 
     public void operateTest() {
         if (opmode.gamepad1.a) {
-            target = 700;
+            target = highBucketPos;
         } else if (opmode.gamepad1.b) {
             target = 0;
         }
 
-        // this line is possibly redundant
         controller.setPID(Kp, Ki, Kd);
 
         int currentPos = rightSlideMotor.getCurrentPosition();
-        double output = controller.calculate(currentPos, target) + Kg;
+        output = controller.calculate(currentPos, target) + Kg;
 
         leftSlideMotor.setPower(output);
         rightSlideMotor.setPower(output);
 
         // updates boolean
         verticalSlidesRetracted = currentPos < retractedThreshold;
-
-        opmode.telemetry.addData("Right Motor Encoder Pos: ", currentPos);
-        opmode.telemetry.addData("Target: ", target);
-        opmode.telemetry.addData("PID Power R: ", output);
-        opmode.telemetry.addData("Vertical Slides Retracted: ", verticalSlidesRetracted);
-        opmode.telemetry.update();
     }
 
 
@@ -104,6 +98,18 @@ public class NewVerticalSlides {
     public void raiseToPrepClip() { moveToPosition(prepClipPos);}
     public void retract() { moveToPosition(retractedPos); }
     public void slamToScoreClip() { moveToPosition(scoreClipPos);}
+
+    public double telemetryMotorPos() {
+        return rightSlideMotor.getCurrentPosition();
+    }
+
+    public double telemetryTarget() {
+        return target;
+    }
+
+    public double telemetryOutput() {
+        return output;
+    }
 
 //    // Action class stuff
 //    public class RunToPosition implements Action {
