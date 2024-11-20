@@ -29,7 +29,7 @@ public class IntakeArm {
     public Wrist wrist = new Wrist();
     private final RobotHardware rHardware = new RobotHardware();
 
-//    private static CameraPortal cPortal = new CameraPortal();
+    private static CameraPortal cPortal = new CameraPortal();
     private static CameraCVPipeline pipeline = new CameraCVPipeline();
 
     // constructor
@@ -44,7 +44,7 @@ public class IntakeArm {
         arm.initialize(rHardware);
         wrist.initialize(rHardware);
         pipeline.initialize();
-//        cPortal.init(opmode);
+        cPortal.init(opmode);
     }
 
     // Operates the claw for Vincent configuration
@@ -54,7 +54,7 @@ public class IntakeArm {
 
     // Operates the test mode for controlling the claw, arm, and wrist
     public void operateTest(OpMode opmode) {
-//        cPortal.run(opmode);
+        cPortal.run(opmode);
 
         // gamepad 2, all incrementals to find servo values first try
         if (opmode.gamepad2.left_bumper) { claw.incrementalClaw(-1); }
@@ -68,13 +68,15 @@ public class IntakeArm {
 
         if (opmode.gamepad2.y) {wrist.setWristIntake();}
         if (opmode.gamepad2.x) {wrist.setWristTransfer();}
-//        if (opmode.gamepad2.a) {wrist.setWristCamera();}
+        if (opmode.gamepad2.a) {wrist.setWristCamera();}
         // Adding telemetry data for debugging
         opmode.telemetry.addData("Arm Pos: ", arm.arm.getPosition());
         opmode.telemetry.addData("Flip Wrist Pos: ", wrist.wristFlip.getPosition());
         opmode.telemetry.addData("Rotate Wrist Pos: ", wrist.wristRotate.getPosition());
         opmode.telemetry.addData("Claw Pos: ", claw.claw.getPosition());
-//        opmode.telemetry.addData("Camera Servo Rotation: ", cPortal.getServoRotation());
+        opmode.telemetry.addData("Camera Servo Rotation: ", cPortal.getServoRotation());
+        dashboardTelemetry.addData("Camera Servo Rotation: ", cPortal.getServoRotation());
+        dashboardTelemetry.update();
         opmode.telemetry.update();
     }
 
@@ -245,9 +247,9 @@ public class IntakeArm {
             isWristTransferring = false;
         }
 
-//        public void setWristCamera() {
-//            wristRotate.setPosition(cPortal.getServoRotation());
-//        }
+        public void setWristCamera() {
+            wristRotate.setPosition(cPortal.getServoRotation());
+        }
 
         public void incrementalWristRotateTest(int sign) {
             wristRotate.setPosition(wristRotate.getPosition() + sign * wristTestIncrement);
