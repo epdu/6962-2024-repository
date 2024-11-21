@@ -324,6 +324,18 @@ public class IntakeArm {
         return new IntakeTransfer();
     }
 
+    public class ClawCamera implements Action {
+        @Override
+        public boolean run(@NonNull TelemetryPacket packet) {
+            wrist.setWristCamera();
+            return false;
+        }
+    }
+
+    public Action ClawCamera() {
+        return new ClawCamera();
+    }
+
     public class ClawOpen implements Action {
         @Override
         public boolean run(@NonNull TelemetryPacket packet) {
