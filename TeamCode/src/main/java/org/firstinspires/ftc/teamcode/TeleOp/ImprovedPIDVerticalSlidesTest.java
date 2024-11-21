@@ -31,7 +31,6 @@ public class ImprovedPIDVerticalSlidesTest extends OpMode {
         dashboardTelemetry.addData("Right Motor Encoder Pos: ", verticalSlides.telemetryMotorPos());
         dashboardTelemetry.addData("Target: ", verticalSlides.telemetryTarget());
         dashboardTelemetry.addData("PID Power R: ", verticalSlides.telemetryOutput());
-        dashboardTelemetry.addData("Retracted Bool: ", verticalSlides.verticalSlidesRetracted);
         dashboardTelemetry.update();
     }
 }

@@ -9,6 +9,7 @@ import com.acmerobotics.roadrunner.SleepAction;
 import com.arcrobotics.ftclib.hardware.motors.MotorEx;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Gamepad;
@@ -19,7 +20,7 @@ public class l3Linkage {
     private final RobotHardware rHardware = new RobotHardware();
     private CRServo l3LinkageServo;
     private OpMode opmode;
-    private MotorEx backRight, frontRight;
+    private DcMotorEx backLeft;
     private DcMotorEx leftSlideMotor, rightSlideMotor;
     private static final double ServoPower = 1.0;
     private static final double ReverseSlidePower = -1.0;
@@ -33,21 +34,32 @@ public class l3Linkage {
         rHardware.init(opmode.hardwareMap);
         this.opmode = opmode;
         this.l3LinkageServo = rHardware.l3LinkageServo;
-        this.backRight = rHardware.rightBackMotor;
-        this.frontRight = rHardware.rightFrontMotor;
+        this.backLeft = rHardware.DcLeftBackMotor;
         this.leftSlideMotor = rHardware.vLslideMotor;
         this.rightSlideMotor = rHardware.vRslideMotor;
 
-        leftSlideMotor.setDirection(DcMotorSimple.Direction.REVERSE); // or rightSlideMotor
+        leftSlideMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+        rightSlideMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+
+//        leftSlideMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        rightSlideMotor.setDirection(DcMotorEx.Direction.REVERSE);
+        backLeft.setDirection(DcMotorEx.Direction.REVERSE);
+
+        leftSlideMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+        rightSlideMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+
+        leftSlideMotor.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
+        rightSlideMotor.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
+        backLeft.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
     }
+
     public void operateTest() {
-        l3LinkageServo.setPower(opmode.gamepad2.left_stick_x); //change if need, or i can redo code if it needs to be a button/boolean
-        leftSlideMotor.setPower(opmode.gamepad2.left_stick_x);
-        rightSlideMotor.setPower(opmode.gamepad2.left_stick_x);
-        backRight.setVelocity(opmode.gamepad2.left_stick_x); // i dont think this is right
-        backRight.setVelocity(opmode.gamepad2.left_stick_x);
+        backLeft.setPower(-opmode.gamepad2.left_stick_y); //change if need, or i can redo code if it needs to be a button/boolean
+        leftSlideMotor.setPower(-opmode.gamepad2.left_stick_y);
+        rightSlideMotor.setPower(-opmode.gamepad2.left_stick_y);
 
-
+        leftSlideMotor.setPower(-opmode.gamepad2.right_stick_y);
+        rightSlideMotor.setPower(-opmode.gamepad2.right_stick_y);
     }
 
     private void vSlides() {
@@ -59,12 +71,10 @@ public class l3Linkage {
         rightSlideMotor.setPower(0);
     }
     private void RightMotors(){
-        backRight.setVelocity(DriveMotorPower);
-        frontRight.setVelocity(DriveMotorPower);
+        backLeft.setPower(DriveMotorPower);
     }
     private void RightMotors0(){
-        backRight.setVelocity(0);
-        frontRight.setVelocity(0);
+        backLeft.setPower(0);
     }
 
     public Action l3LinkServo() {

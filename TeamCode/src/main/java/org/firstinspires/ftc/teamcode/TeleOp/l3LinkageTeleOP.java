@@ -39,14 +39,12 @@ public class l3LinkageTeleOP extends OpMode{
 
         l3Linkage.operateTest();
 
-        if (gamepad2.x) {
-            runningActions.add(l3Linkage.l3LinkServo());
-            new SleepAction(1);
-            runningActions.add(l3Linkage.l3LinkDrive());
-            runningActions.add(l3Linkage.l3LinkVSlides());
-        }
-
-
+//        if (gamepad2.x) {
+//            runningActions.add(l3Linkage.l3LinkServo());
+//            new SleepAction(1);
+//            runningActions.add(l3Linkage.l3LinkDrive());
+//            runningActions.add(l3Linkage.l3LinkVSlides());
+//        }
     }
     @Override
     public void stop() {}

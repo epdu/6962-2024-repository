@@ -29,7 +29,7 @@ public class IntakeArm {
     public Wrist wrist = new Wrist();
     private final RobotHardware rHardware = new RobotHardware();
 
-    private static CameraPortal cPortal = new CameraPortal();
+    public static CameraPortal cPortal = new CameraPortal();
     private static CameraCVPipeline pipeline = new CameraCVPipeline();
 
     // constructor

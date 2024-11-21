@@ -29,6 +29,7 @@ public class RobotHardware {
     public MotorEx rightBackMotor = null;
 
     // vertical slides
+    public DcMotorEx DcLeftBackMotor = null;
     public DcMotorEx vRslideMotor = null;
     public DcMotorEx vLslideMotor = null;
 
@@ -58,6 +59,8 @@ public class RobotHardware {
         rightFrontMotor = new MotorEx(hMap, "Fr");
         leftBackMotor = new MotorEx(hMap, "Bl/Le");
         rightBackMotor = new MotorEx(hMap, "Br/Fe");
+
+        DcLeftBackMotor = hMap.get(DcMotorEx.class, "Bl/Le");
 
         cArmServo = hMap.get(Servo.class, "cArmServo");
         cWristServo = hMap.get(Servo.class, "cWristServo");

@@ -7,6 +7,7 @@ import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Action;
 import com.arcrobotics.ftclib.controller.PIDController;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -31,9 +32,10 @@ public class NewVerticalSlides {
     public static double Kd = 0.0003;
     public static double Kg = 0.1;
     public static double retractedThreshold = 10;
+    public static int upperLimit = 1600; // this is for 1150s
+    public static int lowerLimit = -2;
 
     public static int highBucketPos = 1300;
-    //    public static int lowBucketPos = 600;
     public static int retractedPos = 0;
     public static int pickupClipPos = 0;
     public static int prepClipPos = 555;
@@ -41,13 +43,12 @@ public class NewVerticalSlides {
 
     //declaring variables for later modification
     private volatile double target = 0;
-    public volatile boolean verticalSlidesRetracted = true;
+    private volatile double slidePower;
     private volatile double output = 0;
 
     public NewVerticalSlides() {}
 
     public void initialize(OpMode opmode) {
-        // TODO: assign motor names, then reverse the correct motor
         this.opmode = opmode;
         rHardware.init(opmode.hardwareMap);
 
@@ -68,28 +69,74 @@ public class NewVerticalSlides {
         rightSlideMotor.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
     }
 
-    public void operateTest() {
-        if (opmode.gamepad1.a) {
-            target = highBucketPos;
-        } else if (opmode.gamepad1.b) {
-            target = 0;
-        }
+    public void autonomousInitialize(OpMode opmode) {
+        // TODO: assign motor names, then reverse the correct motor
+        this.opmode = opmode;
+        rHardware.init(opmode.hardwareMap);
 
-        controller.setPID(Kp, Ki, Kd);
+        leftSlideMotor = rHardware.vLslideMotor;
+        rightSlideMotor = rHardware.vRslideMotor;
 
+        controller = new PIDController(Kp, Ki, Kd);
+        leftSlideMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+        rightSlideMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+
+//        leftSlideMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        rightSlideMotor.setDirection(DcMotorEx.Direction.REVERSE);
+
+        leftSlideMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+        rightSlideMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+
+        leftSlideMotor.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+        rightSlideMotor.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+    }
+
+    public void operateVincent() {
         int currentPos = rightSlideMotor.getCurrentPosition();
         output = controller.calculate(currentPos, target) + Kg;
 
         leftSlideMotor.setPower(output);
         rightSlideMotor.setPower(output);
-
-        // updates boolean
-        verticalSlidesRetracted = currentPos < retractedThreshold;
     }
 
+    public void operateTest() {
+        if (opmode.gamepad2.y) {
+            target = highBucketPos;
+        } else if (opmode.gamepad2.a) {
+            target = retractedPos;
+        }
 
-    // for use in auto or preset button during teleop
-    /** untested and not especially confident in it, so please be cautious when testing */
+        slidePower = -1 * opmode.gamepad2.right_stick_y;
+        if (Math.abs(slidePower) > 0.05) {
+            // if position positive, then can move freely
+            if (rightSlideMotor.getCurrentPosition() > lowerLimit) {
+                leftSlideMotor.setPower(slidePower * slideScalar);
+                rightSlideMotor.setPower(slidePower * slideScalar);
+                target = rightSlideMotor.getCurrentPosition();
+            }
+            // if position negative, but want to move positive, then can move
+            else if (leftSlideMotor.getCurrentPosition() <= lowerLimit && slidePower > 0) {
+                leftSlideMotor.setPower(slidePower * slideScalar);
+                rightSlideMotor.setPower(slidePower * slideScalar);
+                target = rightSlideMotor.getCurrentPosition();
+            }
+
+            // if out of range, sets target to back in range
+            if (rightSlideMotor.getCurrentPosition() > upperLimit) {
+                target = upperLimit;
+            } else if (rightSlideMotor.getCurrentPosition() < lowerLimit) {
+                target = lowerLimit;
+            }
+
+        } else {
+            int currentPos = rightSlideMotor.getCurrentPosition();
+            output = controller.calculate(currentPos, target) + Kg;
+
+            leftSlideMotor.setPower(output);
+            rightSlideMotor.setPower(output);
+        }
+    }
+
     public void moveToPosition(int targetPos) {
         target = targetPos;
     }
@@ -111,82 +158,5 @@ public class NewVerticalSlides {
         return output;
     }
 
-//    // Action class stuff
-//    public class RunToPosition implements Action {
-//        private boolean initialized = false;
-//        private int rtpTarget = 0;
-//
-//        public RunToPosition(int targetPos) {
-//            rtpTarget = targetPos;
-//        }
-//
-//        @Override
-//        public boolean run(@NonNull TelemetryPacket packet) {
-//            int error = rtpTarget - rightSlideMotor.getCurrentPosition();
-//            if (!initialized) {
-//                int sign = (error >= 0 ? 1 : -1);
-//                leftSlideMotor.setPower(sign * 0.8);
-//                rightSlideMotor.setPower(sign * 0.8);
-//                initialized = true;
-//            }
-//
-//            if (Math.abs(error) > 20) {
-//                return true;
-//            } else {
-//                leftSlideMotor.setPower(0);
-//                rightSlideMotor.setPower(0);
-//                return false;
-//            }
-//        }
-//    }
-//
-//    public Action LiftUpToClip() {
-//        return new RunToPosition(prepClipPos);
-//    }
-//
-//    public Action SlamScoreClip() {
-//        return new RunToPosition(slamClipPos);
-//    }
-//
-//    public Action Retract() {
-//        return new RunToPosition(retractedPos);
-//    }
-//
-//    public Action LiftUpToHighBucket() {
-//        return new RunToPosition(highBucketPos);
-//    }
-//
-//    public class RTP implements Action {
-//        private boolean initialized = false;
-//        private int rtpTarget = 0;
-//
-//        public RTP(int targetPos) {
-//            rtpTarget = targetPos;
-//        }
-//
-//        @Override
-//        public boolean run(@NonNull TelemetryPacket packet) {
-//            if (!initialized) {
-//                rtpTarget = prepClipPos;
-//                initialized = true;
-//            }
-//
-//            PIDPowerR = PIDControl(rtpTarget, rightSlideMotor);
-//            leftSlideMotor.setPower(PIDPowerR);
-//            rightSlideMotor.setPower(PIDPowerR);
-//
-//            if (Math.abs(rtpTarget - rightSlideMotor.getCurrentPosition()) > 20) {
-//                return true;
-//            } else {
-//                leftSlideMotor.setPower(0);
-//                rightSlideMotor.setPower(0);
-//                return false;
-//            }
-//        }
-//    }
-//
-//    public Action RTP() {
-//        return new RTP(200);
-//    }
 }
 

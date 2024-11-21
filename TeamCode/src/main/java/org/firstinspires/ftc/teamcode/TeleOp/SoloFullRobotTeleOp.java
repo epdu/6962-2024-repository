@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.TeleOp;
 
+import android.graphics.Camera;
+
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Action;
@@ -14,6 +16,7 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.Subsystems.CameraPortal;
 import org.firstinspires.ftc.teamcode.Subsystems.Hang;
 import org.firstinspires.ftc.teamcode.Subsystems.HorizontalSlides;
 import org.firstinspires.ftc.teamcode.Subsystems.IntakeArm;
@@ -47,6 +50,7 @@ public class SoloFullRobotTeleOp extends OpMode {
     private IntakeArm intakeArm               = new IntakeArm();
     private ScoringArm scoringArm             = new ScoringArm();
     private Hang hang                         = new Hang();
+//    private CameraPortal cameraPortal         = new CameraPortal();
 
     private boolean onRedAlliance = true;
 
@@ -59,6 +63,8 @@ public class SoloFullRobotTeleOp extends OpMode {
         verticalSlides.initialize(this);
         scoringArm.initialize(this);
         hang.initialize(this);
+//        intakeArm.cPortal.init(this);
+//        cameraPortal.init(this);
         allHubs = hardwareMap.getAll(LynxModule.class);
         // apparently optimizes reading from hardware (ex: getCurrentPosition) and makes runtime a bit faster
         for (LynxModule hub : allHubs) { hub.setBulkCachingMode(LynxModule.BulkCachingMode.MANUAL); }
@@ -92,6 +98,7 @@ public class SoloFullRobotTeleOp extends OpMode {
 
         TelemetryPacket packet = new TelemetryPacket();
         List<Action> newActions = new ArrayList<>();
+        intakeArm.cPortal.run(this);
 
         for (Action action : runningActions) {
             action.preview(packet.fieldOverlay());
