@@ -1,6 +1,10 @@
 package org.firstinspires.ftc.teamcode.Subsystems;
 
 
+import static org.firstinspires.ftc.teamcode.Util.ColorDetect.BLUE;
+import static org.firstinspires.ftc.teamcode.Util.ColorDetect.RED;
+import static org.firstinspires.ftc.teamcode.Util.ColorDetect.YELLOW;
+
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.InstantAction;
@@ -25,7 +29,7 @@ public class CameraPortal {
 
     private final RobotHardware rHardware = new RobotHardware();
 
-    public ColorDetect cameraColor = ColorDetect.YELLOW;
+    public ColorDetect cameraColor = YELLOW;
 
 
 
@@ -58,23 +62,22 @@ public class CameraPortal {
     }
 
     public void run(OpMode opmode) {
-
-
+        
         if (opmode.gamepad1.a) {
             webcam1.stopStreaming();
+        } else if (opmode.gamepad1.b) {
+            switch (cameraColor) {
+                case RED:
+                    pipeLine.setDetectionType(BLUE);
+                    break;
+                case BLUE:
+                    pipeLine.setDetectionType(YELLOW);
+                    break;
+                default:
+                    pipeLine.setDetectionType(RED);
+            }
         }
-//        if (opmode.gamepad1.b) {
-//            switch (cameraColor) {
-//                case RED:
-//                    cameraColor = cameraColor.BLUE;
-//                    break;
-//                case BLUE:
-//                    cameraColor = cameraColor.YELLOW;
-//                    break;
-//                default:
-//                    cameraColor = cameraColor.RED;
-//            }
-//        }
+
         opmode.telemetry.addData("Frame Count", webcam1.getFrameCount());
         opmode.telemetry.addData("FPS", String.format("%.2f", webcam1.getFps()));
         opmode.telemetry.addData("Total frame time ms", webcam1.getTotalFrameTimeMs());
