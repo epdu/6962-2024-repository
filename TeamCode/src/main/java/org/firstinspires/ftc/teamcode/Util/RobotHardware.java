@@ -54,11 +54,11 @@ public class RobotHardware {
     public void init(@NonNull HardwareMap hardwareMap) {
         this.hMap = hardwareMap;
 
-        navx = hMap.get(NavxMicroNavigationSensor.class, "navx");
-        leftFrontMotor = new MotorEx(hMap, "Fl/Re");
-        rightFrontMotor = new MotorEx(hMap, "Fr");
-        leftBackMotor = new MotorEx(hMap, "Bl/Le");
-        rightBackMotor = new MotorEx(hMap, "Br/Fe");
+        navx = hMap.get(NavxMicroNavigationSensor.class, "navx"); //CHUB Bus 2
+        leftFrontMotor = new MotorEx(hMap, "Fl/Re"); //CHUB 1
+        rightFrontMotor = new MotorEx(hMap, "Fr"); //CHUB 2
+        leftBackMotor = new MotorEx(hMap, "Bl/Le"); //CHUB 0
+        rightBackMotor = new MotorEx(hMap, "Br/Fe"); //CHUB 3
 
         DcLeftBackMotor = hMap.get(DcMotorEx.class, "Bl/Le");
 
@@ -66,19 +66,24 @@ public class RobotHardware {
         cWristServo = hMap.get(Servo.class, "cWristServo");
         cClawServo = hMap.get(Servo.class, "cClawServo");
 
-        iArmServo = hMap.get(Servo.class, "iArmServo");
-        iWristServoR = hMap.get(Servo.class, "iWristServoR");
-        iWristServoF = hMap.get(Servo.class, "iWristServoF");
-        iClawServo = hMap.get(Servo.class, "iClawServo");
-
-        hSlideMotor = hMap.get(DcMotorEx.class , "hSlide");
-
-        vRslideMotor = hMap.get(DcMotorEx.class, "vRslide");
-        vLslideMotor = hMap.get(DcMotorEx.class, "vLslide");
+        cArmServo = hMap.get(Servo.class, "cArmServo"); //CHUB
+        cWristServo = hMap.get(Servo.class, "cWristServo"); //CHUB
+        cClawServo = hMap.get(Servo.class, "cClawServo"); //CHUB
 
 
-        hangServoL = hMap.get(CRServo.class, "hangServoL");
-        hangServoR = hMap.get(CRServo.class, "hangServoR");
+        iArmServo = hMap.get(Servo.class, "iArmServo"); //EHUB 1
+        iWristServoR = hMap.get(Servo.class, "iWristServoR"); //EHUB 3
+        iWristServoF = hMap.get(Servo.class, "iWristServoF"); //EHUB 2
+        iClawServo = hMap.get(Servo.class, "iClawServo"); //EHUB 4
+
+        hSlideMotor = hMap.get(DcMotorEx.class , "hSlide"); //EHUB 0
+
+        vRslideMotor = hMap.get(DcMotorEx.class, "vRslide"); //EHUB 1
+        vLslideMotor = hMap.get(DcMotorEx.class, "vLslide"); //EHUB 2
+
+
+        hangServoL = hMap.get(CRServo.class, "hangServoL"); //EHUB 0
+        hangServoR = hMap.get(CRServo.class, "hangServoR"); //CHUB
 
         webcam = hMap.get(WebcamName.class, "Webcam 1");
         cameraMonitorViewId = hMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hMap.appContext.getPackageName());
