@@ -38,7 +38,7 @@ public class CameraCVPipeline extends OpenCvPipeline implements CameraStreamSour
      * ensure selection accuracy.
      */
     public static double TURN_FACTOR = 0.01;
-    public static double TURN_FACTOR_D_GAIN = -0.0001;
+    public static double TURN_FACTOR_D_GAIN = -0.01;
     public static int COLOR_AUTOTUNE_MODE = 0;
     static final int CAMERA_WIDTH = 640; // width  of wanted camera resolution
     final int CAMERA_HEIGHT = 360; // height of wanted camera resolution
@@ -54,9 +54,14 @@ public class CameraCVPipeline extends OpenCvPipeline implements CameraStreamSour
     private double previousRotationAngle = 0.0;
 
     private double targetWristPosition = 0.0;
+    private double sampleAngle = 0.0;
 
     public double getTargetWristPosition() {
         return targetWristPosition;
+    }
+
+    public double getSampleAngle() {
+        return sampleAngle;
     }
 
     public void supplyCurrentWristPosition(Supplier<Double> currentWristPosition) {
@@ -132,14 +137,15 @@ public class CameraCVPipeline extends OpenCvPipeline implements CameraStreamSour
             String widthLabel = "Width: " + (int) width + " pixels";
             String rotationLabel = "Angle to rotate: " + (int) rotationAngle + "degrees";
 //            Imgproc.putText(input, widthLabel, new Point(cX + 10, cY + 20), Imgproc.FONT_HERSHEY_SIMPLEX, 0.5, new Scalar(0, 255, 0), 2);
-//            Imgproc.putText(input, rotationLabel, new Point(cX + 10, cY + 20), Imgproc.FONT_HERSHEY_SIMPLEX, 0.5, new Scalar(0, 255, 0), 2);
+            Imgproc.putText(input, rotationLabel, new Point(cX + 10, cY + 20), Imgproc.FONT_HERSHEY_SIMPLEX, 0.5, new Scalar(0, 255, 0), 2);
             //Display the Distance
             String distanceLabel = "Distance: " + String.format("%.2f", getDistance(width)) + " inches";
 //            String angleLabel = "Angle: " + String.format("%.2f", getAngleTarget(width)) + "degrees";
 //            Imgproc.putText(input, distanceLabel, new Point(cX + 10, cY + 60), Imgproc.FONT_HERSHEY_SIMPLEX, 0.5, new Scalar(0, 255, 0), 2);
 //            Imgproc.putText(input, angleLabel, new Point(cX + 10, cY + 60), Imgproc.FONT_HERSHEY_SIMPLEX, 0.5, new Scalar(0, 255, 0), 2);
-            String servoRotLabel = "Servo Rotation: " + String.format("%.2f", calculateServoPosition(0.5,getRotationAngle(largestContour))) + "ticks";
+            String servoRotLabel = "Servo Rotation: " + String.format("%.2f", calculateServoPosition(0,getRotationAngle(largestContour))) + "ticks";
             targetWristPosition = calculateServoPosition(0.5, getRotationAngle(largestContour));
+            sampleAngle = getRotationAngle(largestContour);
 //            String angleLabel = "Angle: " + String.format("%.2f", getAngleTarget(width)) + "degrees";
             Imgproc.putText(input, servoRotLabel, new Point(cX + 10, cY + 60), Imgproc.FONT_HERSHEY_SIMPLEX, 0.5, new Scalar(0, 255, 0), 2);
 
@@ -218,26 +224,30 @@ public class CameraCVPipeline extends OpenCvPipeline implements CameraStreamSour
     }
     private double calculateServoPosition(double current, double rotationAngle) {
         // Calculate the derivative (change) in rotation angle
-        double derivative = rotationAngle - previousRotationAngle;
+//        double derivative = rotationAngle - previousRotationAngle;
+
+//        double derivative = rotationAngle < 0 ? rotationAngle + previousRotationAngle : rotationAngle - previousRotationAngle;
 
         // Store the current angle for the next calculation
 //        previousRotationAngle = rotationAngle;
+        double servoRotationAngle = rotationAngle < 0.0 ? rotationAngle + 90.0 : rotationAngle - 90.0;
 
         // Calculate the servo adjustment based on the P and D terms
-        double servoAdjustment = (rotationAngle * TURN_FACTOR) + (derivative * TURN_FACTOR_D_GAIN);
-
-        // Apply the adjustment to the current servo position
-        double newServoPosition = current + servoAdjustment;
+        double newServoPosition = servoRotationAngle < 0.0 ? -(servoRotationAngle / 180.0) : 0.87 - (servoRotationAngle / 180.0);
+//        double servoAdjustment = (rotationAngle * TURN_FACTOR) + (derivative * TURN_FACTOR_D_GAIN);
+//
+//        // Apply the adjustment to the current servo position
+//        double newServoPosition = current + servoAdjustment;
 
         // Ensure the servo position stays within valid bounds [0, 1]
-        if (newServoPosition > 0.9) {
-            newServoPosition = 1.0;
-        } else if (newServoPosition < 0.0) {
-            newServoPosition = 0.0;
-        }
+//        if (newServoPosition > 1) {
+//            newServoPosition = 1.0;
+//        } else if (newServoPosition < 0.0) {
+//            newServoPosition = 0.0;
+//        }
 
         targetWristPosition = newServoPosition;
-        return newServoPosition;
+        return targetWristPosition;
 
     }
 

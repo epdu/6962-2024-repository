@@ -76,6 +76,7 @@ public class IntakeArm {
         opmode.telemetry.addData("Claw Pos: ", claw.claw.getPosition());
         opmode.telemetry.addData("Camera Servo Rotation: ", cPortal.getServoRotation());
         dashboardTelemetry.addData("Camera Servo Rotation: ", cPortal.getServoRotation());
+        dashboardTelemetry.addData("Sample Angle: ", cPortal.getSampleRotation());
         dashboardTelemetry.update();
         opmode.telemetry.update();
     }

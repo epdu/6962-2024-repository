@@ -89,7 +89,12 @@ public class CameraPortal {
     public double getServoRotation() {
         return pipeLine.getTargetWristPosition();
     }
+
+    public double getSampleRotation() {
+        return pipeLine.getSampleAngle();
+    }
 }
+
 
 
 
