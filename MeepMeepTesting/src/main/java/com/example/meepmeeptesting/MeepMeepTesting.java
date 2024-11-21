@@ -1,59 +1,31 @@
 package com.example.meepmeeptesting;
 
-import java.awt.image.BufferedImage;
-
-
-import com.acmerobotics.roadrunner.geometry.Pose2d;
-import com.acmerobotics.roadrunner.geometry.Vector2d;
+import com.acmerobotics.roadrunner.Pose2d;
 import com.noahbres.meepmeep.MeepMeep;
 import com.noahbres.meepmeep.roadrunner.DefaultBotBuilder;
 import com.noahbres.meepmeep.roadrunner.entity.RoadRunnerBotEntity;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
-
 public class MeepMeepTesting {
     public static void main(String[] args) {
-        MeepMeep meepMeep = new MeepMeep(750);
-
-        Pose2d startPose = new Pose2d(7, -63.75, Math.toRadians(-90));
+        MeepMeep meepMeep = new MeepMeep(800);
 
         RoadRunnerBotEntity myBot = new DefaultBotBuilder(meepMeep)
                 // Set bot constraints: maxVel, maxAccel, maxAngVel, maxAngAccel, track width
-                .setConstraints(45, 45, Math.toRadians(180), Math.toRadians(180), 17)
-                .followTrajectorySequence(drive ->
-                        drive.trajectorySequenceBuilder(startPose)
-                                .lineToConstantHeading(new Vector2d(0, -33))
-                                .waitSeconds(1)
-                                .lineToLinearHeading(new Pose2d(-36, -40, Math.toRadians(180)))
-                                .waitSeconds(1)
-                                .lineToLinearHeading(new Pose2d(-53, -53, Math.toRadians(45)))
-                                .waitSeconds(1)
-                                .lineToLinearHeading(new Pose2d(-60, -56, Math.toRadians(90)))
-                                .waitSeconds(1)
-                                .lineToLinearHeading(new Pose2d(-53, -53, Math.toRadians(45)))
-                                .waitSeconds(1)
-                                .lineToLinearHeading(new Pose2d(-39, -25, Math.toRadians(180)))
-                                .waitSeconds(1)
-                                .lineToLinearHeading(new Pose2d(-53, -53, Math.toRadians(45)))
-                                .waitSeconds(1)
-                                .lineToLinearHeading(new Pose2d(-24, -12, Math.toRadians(180)))
-                                .lineTo(new Vector2d(-12,-12))
-                                .build());
+                .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 15)
+                .build();
 
-//                .setDarkMode(true)
-//                .setBackgroundAlpha(0.95f)
-//                .addEntity(myBot)
-//                .start();
-        BufferedImage img = null;
-        try {
-            img = ImageIO.read(new File("/Users/nwilliams25/Downloads/field-2024-juice-dark.png")); }
-        catch (IOException e) {}
+        myBot.runAction(myBot.getDrive().actionBuilder(new Pose2d(0, 0, 0))
+                .lineToX(30)
+                .turn(Math.toRadians(90))
+                .lineToY(30)
+                .turn(Math.toRadians(90))
+                .lineToX(0)
+                .turn(Math.toRadians(90))
+                .lineToY(0)
+                .turn(Math.toRadians(90))
+                .build());
 
-        meepMeep.setBackground(img)
+        meepMeep.setBackground(MeepMeep.Background.FIELD_INTO_THE_DEEP_JUICE_DARK)
                 .setDarkMode(true)
                 .setBackgroundAlpha(0.95f)
                 .addEntity(myBot)
