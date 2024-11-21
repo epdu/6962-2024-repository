@@ -62,18 +62,14 @@ public class RobotHardware {
 
         DcLeftBackMotor = hMap.get(DcMotorEx.class, "Bl/Le");
 
-        cArmServo = hMap.get(Servo.class, "cArmServo");
-        cWristServo = hMap.get(Servo.class, "cWristServo");
-        cClawServo = hMap.get(Servo.class, "cClawServo");
-
-        cArmServo = hMap.get(Servo.class, "cArmServo"); //CHUB
-        cWristServo = hMap.get(Servo.class, "cWristServo"); //CHUB
-        cClawServo = hMap.get(Servo.class, "cClawServo"); //CHUB
+        cArmServo = hMap.get(Servo.class, "cArmServo"); //CHUB 1
+        cWristServo = hMap.get(Servo.class, "cWristServo"); //CHUB 2
+        cClawServo = hMap.get(Servo.class, "cClawServo"); //CHUB 0
 
 
         iArmServo = hMap.get(Servo.class, "iArmServo"); //EHUB 1
-        iWristServoR = hMap.get(Servo.class, "iWristServoR"); //EHUB 3
-        iWristServoF = hMap.get(Servo.class, "iWristServoF"); //EHUB 2
+        iWristServoR = hMap.get(Servo.class, "iWristServoR"); //EHUB 2
+        iWristServoF = hMap.get(Servo.class, "iWristServoF"); //EHUB 3
         iClawServo = hMap.get(Servo.class, "iClawServo"); //EHUB 4
 
         hSlideMotor = hMap.get(DcMotorEx.class , "hSlide"); //EHUB 0
@@ -83,7 +79,7 @@ public class RobotHardware {
 
 
         hangServoL = hMap.get(CRServo.class, "hangServoL"); //EHUB 0
-        hangServoR = hMap.get(CRServo.class, "hangServoR"); //CHUB
+        hangServoR = hMap.get(CRServo.class, "hangServoR"); //CHUB 3
 
         webcam = hMap.get(WebcamName.class, "Webcam 1");
         cameraMonitorViewId = hMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hMap.appContext.getPackageName());

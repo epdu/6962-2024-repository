@@ -98,7 +98,7 @@ public class SoloFullRobotTeleOp extends OpMode {
 
         TelemetryPacket packet = new TelemetryPacket();
         List<Action> newActions = new ArrayList<>();
-        intakeArm.cPortal.run(this);
+//        intakeArm.cPortal.run(this);
 
         for (Action action : runningActions) {
             action.preview(packet.fieldOverlay());
