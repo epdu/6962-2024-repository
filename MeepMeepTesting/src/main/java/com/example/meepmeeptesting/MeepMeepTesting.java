@@ -15,7 +15,7 @@ public class MeepMeepTesting {
                 .setConstraints(90, 90, Math.toRadians(180), Math.toRadians(180), 15)
                 .build();
 
-        myBot.runAction(myBot.getDrive().actionBuilder(new Pose2d(-7, -63.5, Math.toRadians(-90)))
+        myBot.runAction(myBot.getDrive().actionBuilder(new Pose2d(-9, -63.5, Math.toRadians(-90)))
                         .strafeToConstantHeading(new Vector2d(-5, -34))
                         .waitSeconds(1)
                         .strafeToConstantHeading(new Vector2d(30,-34))
