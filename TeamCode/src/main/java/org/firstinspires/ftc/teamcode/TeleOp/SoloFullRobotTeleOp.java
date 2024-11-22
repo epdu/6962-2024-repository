@@ -259,7 +259,7 @@ public class SoloFullRobotTeleOp extends OpMode {
                         // lift up to high bucket
                         new InstantAction(() -> verticalSlides.raiseToHighBucket()),
                         new InstantAction(() -> scoringArm.wrist.setWristScoringBucket()),
-                        new SleepAction(1),
+                        new SleepAction(0.9),
                         new InstantAction(() -> scoringArm.arm.setArmScoreBucket())
                     )
             );
