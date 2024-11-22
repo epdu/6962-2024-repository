@@ -29,12 +29,12 @@ public class FourSampleTestAuto extends LinearOpMode{
     public static double scorePreloadX = 0;
     public static double scorePreloadY = -41;
     public static double intake1X = -48;
-    public static double intake1Y = -48;
-    public static double scoreBucketX = -58;
-    public static double scoreBucketY = -56;
-    public static double intake2X = -59;
+    public static double intake1Y = -49;
+    public static double scoreBucketX = -55;
+    public static double scoreBucketY = -57;
+    public static double intake2X = -56;
     public static double intake2Y = -49;
-    public static double intake3X = -47;
+    public static double intake3X = -40;
     public static double intake3Y = -26;
     public static double parkX = -30;
     public static double parkY = -18;
@@ -222,18 +222,24 @@ public class FourSampleTestAuto extends LinearOpMode{
                         INTAKE1,
                             EXTEND_INTAKE,
                             INTAKE_AND_TRANSFER,
+                        new ParallelAction(
                         SCORE1,
-                            SCORE_BUCKET2,
+                            SCORE_BUCKET2
+                        ),
                         INTAKE2,
                             EXTEND_INTAKE2,
                             INTAKE_AND_TRANSFER2,
+                        new ParallelAction(
                         SCORE2,
-                            SCORE_BUCKET3,
+                            SCORE_BUCKET3
+                        ),
                         INTAKE3,
                             EXTEND_INTAKE3,
                             INTAKE_AND_TRANSFER3,
+                        new ParallelAction(
                         SCORE3,
-                            SCORE_BUCKET4,
+                            SCORE_BUCKET4
+                        ),
                         PARK,
                             RETRACT_ALL
                 )

@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.Auto;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.Action;
+import com.acmerobotics.roadrunner.InstantAction;
 import com.acmerobotics.roadrunner.ParallelAction;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.SequentialAction;
@@ -34,10 +35,8 @@ public class FiveSpecimenTestAuto extends LinearOpMode {
     public static double field2Y = -45;
     public static double field3X = 54;
     public static double field3Y = -45;
-    public static double prepPickupX = 48;
-    public static double prepPickupY = -49;
-    public static double pickupX = 48;
-    public static double pickupY = -60;
+    public static double pickupX = 24;
+    public static double pickupY = -48;
     public static double scoreX = 0;
     public static double scoreY = -35;
     public static double score2X = 3;
@@ -53,7 +52,6 @@ public class FiveSpecimenTestAuto extends LinearOpMode {
     Pose2d field1Pose = new Pose2d(field1X, field1Y, Math.toRadians(90));
     Pose2d field2Pose = new Pose2d(field2X, field2Y, Math.toRadians(90));
     Pose2d field3Pose = new Pose2d(field3X, field3Y, Math.toRadians(45));
-    Pose2d prepPickupPose = new Pose2d(prepPickupX, prepPickupY, Math.toRadians(90));
     Pose2d pickupPose = new Pose2d(pickupX, pickupY, Math.toRadians(90));
     Pose2d scorePose = new Pose2d(scoreX, scoreY, Math.toRadians(-90));
 
@@ -78,29 +76,21 @@ public class FiveSpecimenTestAuto extends LinearOpMode {
         TrajectoryActionBuilder field3 = drive.actionBuilder(field2Pose)
                 .strafeToLinearHeading(new Vector2d(field3X, field3Y), Math.toRadians(45));
 
-        TrajectoryActionBuilder prepPickup1 = drive.actionBuilder(field3Pose)
-                .strafeToLinearHeading(new Vector2d(prepPickupX, prepPickupY), Math.toRadians(90));
+        TrajectoryActionBuilder pickup1 = drive.actionBuilder(field3Pose)
+                .strafeToLinearHeading(new Vector2d(pickupX, pickupY), Math.toRadians(-45))
+                .strafeToConstantHeading(new Vector2d(pickupX+2, pickupY-2));
 
-        TrajectoryActionBuilder prepPickup2 = drive.actionBuilder(scorePose)
-                .strafeToLinearHeading(new Vector2d(prepPickupX, prepPickupY), Math.toRadians(90));
+        TrajectoryActionBuilder pickup2 = drive.actionBuilder(scorePose)
+                .strafeToLinearHeading(new Vector2d(pickupX, pickupY), Math.toRadians(-45))
+                .strafeToConstantHeading(new Vector2d(pickupX+2, pickupY-2));
 
-        TrajectoryActionBuilder prepPickup3 = drive.actionBuilder(scorePose)
-                .strafeToLinearHeading(new Vector2d(prepPickupX, prepPickupY), Math.toRadians(90));
+        TrajectoryActionBuilder pickup3 = drive.actionBuilder(scorePose)
+                .strafeToLinearHeading(new Vector2d(pickupX, pickupY), Math.toRadians(-45))
+                .strafeToConstantHeading(new Vector2d(pickupX+2, pickupY-2));
 
-        TrajectoryActionBuilder prepPickup4 = drive.actionBuilder(scorePose)
-                .strafeToLinearHeading(new Vector2d(prepPickupX, prepPickupY), Math.toRadians(90));
-
-        TrajectoryActionBuilder actualPickup1 = drive.actionBuilder(prepPickupPose)
-                .strafeToConstantHeading(new Vector2d(pickupX, pickupY));
-
-        TrajectoryActionBuilder actualPickup2 = drive.actionBuilder(prepPickupPose)
-                .strafeToConstantHeading(new Vector2d(pickupX, pickupY));
-
-        TrajectoryActionBuilder actualPickup3 = drive.actionBuilder(prepPickupPose)
-                .strafeToConstantHeading(new Vector2d(pickupX, pickupY));
-
-        TrajectoryActionBuilder actualPickup4 = drive.actionBuilder(prepPickupPose)
-                .strafeToConstantHeading(new Vector2d(pickupX, pickupY));
+        TrajectoryActionBuilder pickup4 = drive.actionBuilder(scorePose)
+                .strafeToLinearHeading(new Vector2d(pickupX, pickupY), Math.toRadians(-45))
+                .strafeToConstantHeading(new Vector2d(pickupX+2, pickupY-2));
 
         TrajectoryActionBuilder score1 = drive.actionBuilder(pickupPose)
                 .strafeToLinearHeading(new Vector2d(scoreX, scoreY), Math.toRadians(-90));
@@ -288,14 +278,10 @@ public class FiveSpecimenTestAuto extends LinearOpMode {
         Action FIELD1 = field1.build();
         Action FIELD2 = field2.build();
         Action FIELD3 = field3.build();
-        Action PICKUP1 = prepPickup1.build();
-        Action PICKUP2 = prepPickup2.build();
-        Action PICKUP3 = prepPickup3.build();
-        Action PICKUP4 = prepPickup4.build();
-        Action ACTUAL_PICKUP = actualPickup1.build();
-        Action ACTUAL_PICKUP2 = actualPickup2.build();
-        Action ACTUAL_PICKUP3 = actualPickup3.build();
-        Action ACTUAL_PICKUP4 = actualPickup4.build();
+        Action PICKUP1 = pickup1.build();
+        Action PICKUP2 = pickup2.build();
+        Action PICKUP3 = pickup3.build();
+        Action PICKUP4 = pickup4.build();
         Action SCORE1 = score1.build();
         Action SCORE2 = score2.build();
         Action SCORE3 = score3.build();
@@ -321,39 +307,33 @@ public class FiveSpecimenTestAuto extends LinearOpMode {
                                 TRANSFER_AND_DROP2
                         ),
                                 INTAKE_FLOOR3,
+                                TRANSFER_AND_DROP3,
                         new ParallelAction(
-                        PICKUP1,
-                                new SequentialAction(
-                                        TRANSFER_AND_DROP3,
-                                        PICKUP_CLIP
-                                )
+                        PICKUP1
+                                //extend intake
                         ),
-                        ACTUAL_PICKUP,
-                                PREP_CLIP2,
+                                //intake and transfer
                         SCORE1,
                                 SCORE_CLIP2,
                         new ParallelAction(
-                        PICKUP2,
-                                PICKUP_CLIP2
+                        PICKUP2
+                                //extend intake
                         ),
-                        ACTUAL_PICKUP2,
-                                PREP_CLIP3,
+                                //intake and transfer
                         SCORE2,
                                 SCORE_CLIP3,
                         new ParallelAction(
-                        PICKUP3,
-                                PICKUP_CLIP3
+                        PICKUP3
+                                //extend intake
                         ),
-                        ACTUAL_PICKUP3,
-                                PREP_CLIP4,
+                                //intake and transfer
                         SCORE3,
                             SCORE_CLIP4,
                         new ParallelAction(
-                        PICKUP4,
-                                PICKUP_CLIP4
+                        PICKUP4
+                                //extend intake
                         ),
-                        ACTUAL_PICKUP4,
-                                PREP_CLIP5,
+                                //intake and transfer
                         SCORE4,
                                 SCORE_CLIP5,
                         PARK

@@ -43,8 +43,8 @@ public class IntakeArm {
         claw.initialize(rHardware);
         arm.initialize(rHardware);
         wrist.initialize(rHardware);
-        pipeline.initialize();
-        cPortal.init(opmode);
+//        pipeline.initialize();
+//        cPortal.init(opmode);
     }
 
     // Operates the claw for Vincent configuration
@@ -68,7 +68,7 @@ public class IntakeArm {
 
         if (opmode.gamepad2.y) {wrist.setWristIntake();}
         if (opmode.gamepad2.x) {wrist.setWristTransfer();}
-        if (opmode.gamepad2.a) {wrist.setWristCamera();}
+//        if (opmode.gamepad2.a) {wrist.setWristCamera();}
         // Adding telemetry data for debugging
         opmode.telemetry.addData("Arm Pos: ", arm.arm.getPosition());
         opmode.telemetry.addData("Flip Wrist Pos: ", wrist.wristFlip.getPosition());
@@ -248,9 +248,9 @@ public class IntakeArm {
             isWristTransferring = false;
         }
 
-        public void setWristCamera() {
-            wristRotate.setPosition(cPortal.getServoRotation());
-        }
+//        public void setWristCamera() {
+//            wristRotate.setPosition(cPortal.getServoRotation());
+//        }
 
         public void incrementalWristRotateTest(int sign) {
             wristRotate.setPosition(wristRotate.getPosition() + sign * wristTestIncrement);
@@ -324,17 +324,17 @@ public class IntakeArm {
         return new IntakeTransfer();
     }
 
-    public class ClawCamera implements Action {
-        @Override
-        public boolean run(@NonNull TelemetryPacket packet) {
-            wrist.setWristCamera();
-            return false;
-        }
-    }
-
-    public Action ClawCamera() {
-        return new ClawCamera();
-    }
+//    public class ClawCamera implements Action {
+//        @Override
+//        public boolean run(@NonNull TelemetryPacket packet) {
+//            wrist.setWristCamera();
+//            return false;
+//        }
+//    }
+//
+//    public Action ClawCamera() {
+//        return new ClawCamera();
+//    }
 
     public class ClawOpen implements Action {
         @Override

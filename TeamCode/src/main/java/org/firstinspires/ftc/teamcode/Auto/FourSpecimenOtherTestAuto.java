@@ -35,7 +35,7 @@ public class FourSpecimenOtherTestAuto extends LinearOpMode {
     public static double zone1Y = -48;
     public static double push2X = 55;
     public static double push2Y = -15;
-    public static double zone2X = 57;
+    public static double zone2X = 55;
     public static double zone2Y = -52;
     public static double push3X = 60;
     public static double push3Y = -15;

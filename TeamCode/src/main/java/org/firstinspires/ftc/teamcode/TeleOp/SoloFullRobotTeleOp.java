@@ -63,7 +63,7 @@ public class SoloFullRobotTeleOp extends OpMode {
         verticalSlides.initialize(this);
         scoringArm.initialize(this);
         hang.initialize(this);
-//        intakeArm.cPortal.init(this);
+        intakeArm.cPortal.init(this);
 //        cameraPortal.init(this);
         allHubs = hardwareMap.getAll(LynxModule.class);
         // apparently optimizes reading from hardware (ex: getCurrentPosition) and makes runtime a bit faster
@@ -195,7 +195,7 @@ public class SoloFullRobotTeleOp extends OpMode {
         // intake wrist rotate
         if      (currentGamepad1.right_trigger >= 0.1 && currentGamepad1.dpad_right)  { intakeArm.wrist.incrementalWristRotateActual(-1); }
         else if (currentGamepad1.right_trigger >= 0.1 && currentGamepad1.dpad_left) { intakeArm.wrist.incrementalWristRotateActual(1); }
-        else if (currentGamepad1.right_trigger >= 0.1 && currentGamepad1.dpad_down) { intakeArm.wrist.setWristCamera();}
+//        else if (currentGamepad1.right_trigger >= 0.1 && currentGamepad1.dpad_down) { intakeArm.wrist.setWristCamera();}
 
         // macro grab clip
         if (currentGamepad1.x && !previousGamepad1.x) {
@@ -213,9 +213,8 @@ public class SoloFullRobotTeleOp extends OpMode {
         if (currentGamepad1.y && !previousGamepad1.y) {
             runningActions.add(
                     new SequentialAction(
-                        new InstantAction(() -> intakeArm.claw.openClaw()),
                         new InstantAction(() -> scoringArm.claw.closeClaw()),
-                        new SleepAction(0.1),
+                        new SleepAction(0.3),
                         new ParallelAction(
                             new InstantAction(() -> verticalSlides.raiseToPrepClip()),
                             new InstantAction(() -> scoringArm.wrist.setWristScoringClip()),
@@ -288,8 +287,8 @@ public class SoloFullRobotTeleOp extends OpMode {
                             new SleepAction(0.08),
                             new InstantAction(() -> intakeArm.claw.openClaw()),
                             new ParallelAction(
-                                    new InstantAction(() -> scoringArm.wrist.setWristGrabClip()),
-                                    new InstantAction(() -> scoringArm.arm.setArmGrabClip())
+                                    new InstantAction(() -> scoringArm.wrist.setWristScoringBucket()),
+                                    new InstantAction(() -> scoringArm.arm.setArmScoreBucket())
                             )
                     )
             );
