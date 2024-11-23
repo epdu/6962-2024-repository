@@ -131,21 +131,24 @@ public class SoloFullRobotTeleOp extends OpMode {
 
         ////////////////////////////////////// GAMEPAD 1 CONTROLS /////////////////////////////////////
 
-        // horizontal slides extend, intake arm grab, open intake claw
-        if (currentGamepad1.right_trigger >= 0.1 && !(previousGamepad1.right_trigger >= 0.1)) {
-            runningActions.add(
-                    new SequentialAction(
-                            new InstantAction(() -> horizontalSlides.extendHalfway()),
-                            new SleepAction(0.15),
-                            new InstantAction(() -> intakeArm.wrist.setFlipIntake()),
-                            new InstantAction(() -> intakeArm.arm.setArmHover()),
-                            new SleepAction(0.25),
-                            new InstantAction(() -> intakeArm.claw.openClaw())
-                    )
-            );
-        }
-        // intake claw close, then horizontal slides retract and intake arm transfer
-        else if (currentGamepad1.right_trigger < 0.1 && !(previousGamepad1.right_trigger < 0.1)) {
+        // gives scoring priority over intaking
+        if (scoringArm.arm.armPos == ScoringArm.Arm.STATE.TRANSFERRING) {
+
+            // horizontal slides extend 100%, intake arm grab, open intake claw
+            if (currentGamepad1.right_trigger >= 0.1 && !(previousGamepad1.right_trigger >= 0.1) && !currentGamepad1.right_bumper) {
+                runningActions.add(
+                        new SequentialAction(
+                                new InstantAction(() -> horizontalSlides.extend()),
+                                new SleepAction(0.05),
+                                new InstantAction(() -> intakeArm.wrist.setFlipIntake()),
+                                new InstantAction(() -> intakeArm.arm.setArmHover()),
+                                new SleepAction(0.3),
+                                new InstantAction(() -> intakeArm.claw.openClaw())
+                        )
+                );
+            }
+            // grab piece, then retract intake
+            else if (currentGamepad1.right_trigger < 0.1 && !(previousGamepad1.right_trigger < 0.1) && !currentGamepad1.right_bumper) {
                 runningActions.add(
                         new SequentialAction(
                                 new InstantAction(() -> intakeArm.arm.setArmGrab()),
@@ -162,35 +165,45 @@ public class SoloFullRobotTeleOp extends OpMode {
                 );
             }
 
-        // horizontal slides extend, intake arm grab, open intake claw
-        if (currentGamepad1.right_bumper && !previousGamepad1.right_bumper) {
-            runningActions.add(
-                    new SequentialAction(
-                            new InstantAction(() -> intakeArm.arm.setArmHover()),
-                            new InstantAction(() -> intakeArm.wrist.setFlipIntake()),
-                            new SleepAction(0.2), // might need to be longer
-                            new InstantAction(() -> horizontalSlides.extendHalfway()),
-                            new SleepAction(0.2), //potentially uneccessary
-                            new InstantAction(() -> intakeArm.claw.openClaw())
-                    )
-            );
+            // horizontal slides extend 75%, intake arm grab, open intake claw
+            if (currentGamepad1.right_bumper && previousGamepad1.right_bumper && !(currentGamepad1.right_trigger >= 0.1)) {
+                runningActions.add(
+                        new SequentialAction(
+                                new InstantAction(() -> horizontalSlides.extendHalfway()),
+                                new SleepAction(0.05),
+                                new InstantAction(() -> intakeArm.wrist.setFlipIntake()),
+                                new InstantAction(() -> intakeArm.arm.setArmHover()),
+                                new SleepAction(0.25),
+                                new InstantAction(() -> intakeArm.claw.openClaw())
+                        )
+                );
+            }
+            // grab piece, then retract intake
+            else if (currentGamepad1.right_bumper && !previousGamepad1.right_bumper && !(currentGamepad1.right_trigger >= 0.1)) {
+                runningActions.add(
+                        new SequentialAction(
+                                new InstantAction(() -> intakeArm.arm.setArmGrab()),
+                                new SleepAction(0.15),
+                                new InstantAction(() -> intakeArm.claw.closeClaw()),
+                                new SleepAction(0.1),
+                                new InstantAction(() -> intakeArm.arm.setArmTransfer()),
+                                new SleepAction(0.05), // possibly unnecessary
+                                new InstantAction(() -> intakeArm.wrist.setWristTransfer()),
+                                new InstantAction(() -> intakeArm.arm.setArmTransfer()),
+                                new SleepAction(0.3),
+                                new InstantAction(() -> horizontalSlides.retract())
+                        )
+                );
+            }
         }
-        // intake claw close, then horizontal slides retract and intake arm transfer
-        else if (!currentGamepad1.right_bumper && previousGamepad1.right_bumper) {
+        else if (!horizontalSlides.slidesMostlyRetracted) {
             runningActions.add(
-                    new SequentialAction(
-                            new InstantAction(() -> intakeArm.arm.setArmGrab()),
-                            new SleepAction(0.2),
+                    new ParallelAction(
                             new InstantAction(() -> intakeArm.claw.closeClaw()),
-                            new SleepAction(0.1),
-                            new InstantAction(() -> intakeArm.wrist.setWristTransfer()),
-                            new SleepAction(0.2),
-                            new InstantAction(() -> horizontalSlides.retract()),
-                            new InstantAction(() -> scoringArm.arm.setArmInitPosition()),
-                            new SleepAction(0.1),
                             new InstantAction(() -> intakeArm.arm.setArmTransfer()),
-                            new SleepAction(0.3),
-                            new InstantAction(() -> scoringArm.arm.setArmTransfer())
+                            new InstantAction(() -> intakeArm.wrist.setWristTransfer()),
+                            new SleepAction(0.1),
+                            new InstantAction(() -> horizontalSlides.retract())
                     )
             );
         }
@@ -217,7 +230,7 @@ public class SoloFullRobotTeleOp extends OpMode {
             runningActions.add(
                     new SequentialAction(
                         new InstantAction(() -> scoringArm.claw.closeClaw()),
-                        new SleepAction(0.3),
+                        new SleepAction(0.25),
                         new ParallelAction(
                             new InstantAction(() -> verticalSlides.raiseToPrepClip()),
                             new InstantAction(() -> scoringArm.wrist.setWristScoringClip()),
@@ -227,19 +240,25 @@ public class SoloFullRobotTeleOp extends OpMode {
             );
         }
 
-        // slam score clip
+        // slam score clip POSSIBlY DEPRECATED, BUT ONLY DELETE WHEN 100% SURE
+//        if (currentGamepad1.a && !previousGamepad1.a) {
+//            runningActions.add(
+//                    new SequentialAction(
+//                            new InstantAction(() -> verticalSlides.slamToScoreClip()),
+//                            new SleepAction(0.2),
+//                            new InstantAction(() -> scoringArm.claw.openClaw()),
+//                            new InstantAction(() -> verticalSlides.retract()),
+//                            new InstantAction(() -> scoringArm.arm.setArmTransfer()),
+//                            new InstantAction(() -> scoringArm.wrist.setWristTransfer())
+//                    ));
+//        }
+
+        // open claw before backing out from scoring chamber
         if (currentGamepad1.a && !previousGamepad1.a) {
             runningActions.add(
-                    new SequentialAction(
-                            new InstantAction(() -> verticalSlides.slamToScoreClip()),
-                            new SleepAction(0.2),
-                            new InstantAction(() -> scoringArm.claw.openClaw()),
-                            new InstantAction(() -> verticalSlides.retract()),
-                            new InstantAction(() -> scoringArm.arm.setArmTransfer()),
-                            new InstantAction(() -> scoringArm.wrist.setWristTransfer())
-                    ));
+                new InstantAction(() -> scoringArm.claw.openClaw())
+            );
         }
-
 
         // macro prep high bucket scoring
         if (currentGamepad1.b && !previousGamepad1.b) {
@@ -283,33 +302,6 @@ public class SoloFullRobotTeleOp extends OpMode {
             );
         }
 
-        if (currentGamepad2.x && !previousGamepad2.x) {
-            runningActions.add(
-                    new SequentialAction(
-                            new InstantAction(() -> scoringArm.claw.closeClaw()),
-                            new SleepAction(0.08),
-                            new InstantAction(() -> intakeArm.claw.openClaw()),
-                            new ParallelAction(
-                                    new InstantAction(() -> scoringArm.wrist.setWristScoringBucket()),
-                                    new InstantAction(() -> scoringArm.arm.setArmScoreBucket())
-                            )
-                    )
-            );
-        }
-
-        if (currentGamepad2.left_bumper && !previousGamepad2.left_bumper) {
-            runningActions.add(
-                    new SequentialAction(
-                            new InstantAction(() -> scoringArm.claw.openClaw()),
-                            new SleepAction(0.3),
-                            new ParallelAction(
-                                    new InstantAction(() -> scoringArm.wrist.setWristTransfer()),
-                                    new InstantAction(() -> scoringArm.arm.setArmTransfer())
-                            )
-                    )
-            );
-        }
-
         //hang activation / reverse --NOT TESTED--
 //        if (currentGamepad1.dpad_up && !previousGamepad1.dpad_up) {
 //            runningActions.add(
@@ -324,15 +316,42 @@ public class SoloFullRobotTeleOp extends OpMode {
 //        }
 
         ////////////////////////////////////// GAMEPAD 2 CONTROLS /////////////////////////////////////
-        /// all backup fixing stuff
-        // none rn?
 
+        // hang manual control
         if (gamepad2.left_stick_y > 0.1 || gamepad2.left_stick_y < -0.1) {
             hang.runServos(gamepad2.left_stick_y);
         } else {
             hang.stopServos();
         }
 
+        // transfer, then prep to drop spec behind robot
+        if (currentGamepad2.x && !previousGamepad2.x) {
+            runningActions.add(
+                    new SequentialAction(
+                            new InstantAction(() -> scoringArm.claw.closeClaw()),
+                            new SleepAction(0.08),
+                            new InstantAction(() -> intakeArm.claw.openClaw()),
+                            new ParallelAction(
+                                    new InstantAction(() -> scoringArm.wrist.setWristScoringBucket()),
+                                    new InstantAction(() -> scoringArm.arm.setArmScoreBucket())
+                            )
+                    )
+            );
+        }
+
+        // drop spec behind robot and return
+        if (currentGamepad2.left_bumper && !previousGamepad2.left_bumper) {
+            runningActions.add(
+                    new SequentialAction(
+                            new InstantAction(() -> scoringArm.claw.openClaw()),
+                            new SleepAction(0.3),
+                            new ParallelAction(
+                                    new InstantAction(() -> scoringArm.wrist.setWristTransfer()),
+                                    new InstantAction(() -> scoringArm.arm.setArmTransfer())
+                            )
+                    )
+            );
+        }
 
         // loop time
         dashboardTelemetry.addData("elapsed time (loop time)", elapsedtime.milliseconds());

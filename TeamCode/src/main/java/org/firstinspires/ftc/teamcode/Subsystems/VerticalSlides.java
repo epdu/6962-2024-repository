@@ -28,17 +28,18 @@ public class VerticalSlides
     public static double Ki = 0;
     public static double Kd = 0;
     public static double Kg = 0; // gravity constant, tune till the slide holds itself in place
-    public static int upperLimit = 1600; // this is for 1150s
+    public static int upperLimit = 1600;
 
     public static int lowerLimit = -2;
     public static int retractedThreshold = 5;
 
-    public static int highBucketPos = 1500; // this is for 1150s
+    public static int highBucketPos = 1500;
 //    public static int lowBucketPos = 600;
     public static int retractedPos = 0;
     public static int pickupClipPos = 0;
-    public static int prepClipPos = 480; // this is for 1150s
-    public static int slamClipPos = 230; // this is for 1150s
+    public static int prepClipPos = 480;
+//    public static int prepClipPos = 480; OLD POS FOR SLAM SOCRING IN CASE NICK DUMB
+    public static int slamClipPos = 230; // OLD POS FOR SLAM SOCRING IN CASE NICK DUMB
 
     //declaring variables for later modification
     private volatile double slidePower;
