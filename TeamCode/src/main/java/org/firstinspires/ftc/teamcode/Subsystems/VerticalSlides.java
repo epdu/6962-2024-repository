@@ -170,7 +170,7 @@ public class VerticalSlides
             retract();
         }
 
-        slidePower = -1 * opmode.gamepad2.right_stick_y;
+        slidePower = -opmode.gamepad2.right_stick_y;
         if (Math.abs(slidePower) > 0.05)
         {
             // if position positive, then can move freely
@@ -246,9 +246,6 @@ public class VerticalSlides
     public void retract() { moveToPosition(retractedPos); }
     public void slamToScoreClip() { moveToPosition(slamClipPos);}
 
-    public int telemetryLeftMotorPos() {
-        return leftSlideMotor.getCurrentPosition();
-    }
     public int telemetryRightMotorPos() {
         return rightSlideMotor.getCurrentPosition();
     }

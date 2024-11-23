@@ -88,7 +88,7 @@ public class HorizontalSlides {
         slidePower = -opmode.gamepad2.right_stick_y;
 
         if (Math.abs(slidePower) > 0.05) {
-            slideMotor.setPower(slidePower * slideScalar);
+            slideMotor.setPower(slidePower);
         }
 
         if (opmode.gamepad2.right_stick_button) {
@@ -109,12 +109,12 @@ public class HorizontalSlides {
         if (Math.abs(slidePower) > 0.05) {
             // if position positive, then can move freely
             if (slideMotor.getCurrentPosition() > lowerLimit) {
-                slideMotor.setPower(slidePower * slideScalar);
+                slideMotor.setPower(slidePower);
                 target = slideMotor.getCurrentPosition();
             }
             // if position negative, but want to move positive, then can move
             else if (slideMotor.getCurrentPosition() <= lowerLimit && slidePower > 0) {
-                slideMotor.setPower(slidePower * slideScalar);
+                slideMotor.setPower(slidePower);
                 target = slideMotor.getCurrentPosition();
             }
             // if out of range, sets target to back in range

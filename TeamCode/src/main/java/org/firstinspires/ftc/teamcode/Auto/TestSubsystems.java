@@ -14,6 +14,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.Subsystems.HorizontalSlides;
 import org.firstinspires.ftc.teamcode.Subsystems.IntakeArm;
+import org.firstinspires.ftc.teamcode.Subsystems.NewVerticalSlides;
 import org.firstinspires.ftc.teamcode.Subsystems.ScoringArm;
 import org.firstinspires.ftc.teamcode.Subsystems.VerticalSlides;
 
@@ -32,13 +33,16 @@ public class TestSubsystems extends LinearOpMode{
         ScoringArm scoringArm = new ScoringArm();
         IntakeArm intakeArm = new IntakeArm();
         HorizontalSlides horizontalSlides = new HorizontalSlides();
+        NewVerticalSlides newVertSlides = new NewVerticalSlides();
 
         TrajectoryActionBuilder move3 = drive.actionBuilder(startPose)
                 .afterTime(0, () -> {
                     new SequentialAction(
-                        verticalSlides.LiftUpToClip(),
-                        new SleepAction(5),
-                        verticalSlides.Retract()
+                        // Jayden testing new slides stuff for autonomous
+                        newVertSlides.BuiltInRTPExtend(), // my big concern is that slides will not even move
+                        scoringArm.ArmDropClip(), // this is here to test if the arm moves immediately
+                        new SleepAction(3),
+                        newVertSlides.BuiltInRTPRetract()
                     );
                 });
 
@@ -47,6 +51,7 @@ public class TestSubsystems extends LinearOpMode{
             verticalSlides.initialize(this);
             scoringArm.initialize(this);
             horizontalSlides.initialize(this);
+            newVertSlides.autonomousInitialize(this);
 
             Actions.runBlocking(
                     new ParallelAction(

@@ -20,13 +20,12 @@ public class ImprovedPIDVerticalSlidesTest extends OpMode {
 
     @Override
     public void init() {
-        verticalSlides.initialize(this);
+        verticalSlides.teleInitialize(this);
     }
 
     @Override
     public void loop() {
-        // Jayden will find time to tune this properly after first comp
-        verticalSlides.operateTest();
+        verticalSlides.operateTuning();
 
         dashboardTelemetry.addData("Right Motor Encoder Pos: ", verticalSlides.telemetryMotorPos());
         dashboardTelemetry.addData("Target: ", verticalSlides.telemetryTarget());
