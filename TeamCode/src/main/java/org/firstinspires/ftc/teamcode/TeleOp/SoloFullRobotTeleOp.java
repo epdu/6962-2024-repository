@@ -205,43 +205,9 @@ public class SoloFullRobotTeleOp extends OpMode {
             );
         }
 
-        /// under colored bar intake
-//        // horizontal slides extend, intake arm grab, open intake claw
-//        if (currentGamepad1.right_bumper && !previousGamepad1.right_bumper) {
-//            runningActions.add(
-//                    new SequentialAction(
-//                            new InstantAction(() -> intakeArm.arm.setArmHover()),
-//                            new InstantAction(() -> intakeArm.wrist.setFlipIntake()),
-//                            new SleepAction(0.2), // might need to be longer
-//                            new InstantAction(() -> horizontalSlides.extendHalfway()),
-//                            new SleepAction(0.2), //potentially uneccessary
-//                            new InstantAction(() -> intakeArm.claw.openClaw())
-//                    )
-//            );
-//        }
-//        // intake claw close, then horizontal slides retract and intake arm transfer
-//        else if (!currentGamepad1.right_bumper && previousGamepad1.right_bumper) {
-//            runningActions.add(
-//                    new SequentialAction(
-//                            new InstantAction(() -> intakeArm.arm.setArmGrab()),
-//                            new SleepAction(0.2),
-//                            new InstantAction(() -> intakeArm.claw.closeClaw()),
-//                            new SleepAction(0.1),
-//                            new InstantAction(() -> intakeArm.wrist.setWristTransfer()),
-//                            new SleepAction(0.2),
-//                            new InstantAction(() -> horizontalSlides.retract()),
-//                            new InstantAction(() -> scoringArm.arm.setArmInitPosition()),
-//                            new SleepAction(0.5),
-//                            new InstantAction(() -> intakeArm.arm.setArmTransfer()),
-//                            new SleepAction(0.3),
-//                            new InstantAction(() -> scoringArm.arm.setArmTransfer())
-//                    )
-//            );
-//        }
-
         // intake wrist rotate
-        if      (currentGamepad1.right_trigger >= 0.1 && currentGamepad1.dpad_right)  { intakeArm.wrist.incrementalWristRotateActual(-1); }
-        else if (currentGamepad1.right_trigger >= 0.1 && currentGamepad1.dpad_left) { intakeArm.wrist.incrementalWristRotateActual(1); }
+        if      ((currentGamepad1.right_trigger >= 0.1 || currentGamepad1.right_bumper) && currentGamepad1.dpad_right)  { intakeArm.wrist.incrementalWristRotateActual(-1); }
+        else if ((currentGamepad1.right_trigger >= 0.1 || currentGamepad1.right_bumper) && currentGamepad1.dpad_left) { intakeArm.wrist.incrementalWristRotateActual(1); }
 //        else if (currentGamepad1.right_trigger >= 0.1 && currentGamepad1.dpad_down) { intakeArm.wrist.setWristCamera();}
 
         // macro grab clip
