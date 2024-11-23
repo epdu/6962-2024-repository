@@ -45,7 +45,7 @@ public class MeepMeepTesting {
                         .waitSeconds(1)
                         .strafeToLinearHeading(new Vector2d(9, -34), Math.toRadians(-90))
                         .waitSeconds(1)
-                        .strafeToConstantHeading(new Vector2d(40, -60))
+                        .strafeToLinearHeading(new Vector2d(40, -60), Math.toRadians(90))
                         .build());
 
         meepMeep.setBackground(MeepMeep.Background.FIELD_INTO_THE_DEEP_JUICE_DARK)
