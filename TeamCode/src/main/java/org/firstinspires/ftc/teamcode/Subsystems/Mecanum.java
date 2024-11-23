@@ -21,7 +21,7 @@ public class Mecanum {
     private MecanumDrive drive;
 
     // constants
-    private final double slowModeFactor = 0.5;
+    private final double slowModeFactor = 0.35;
 
     private boolean slowModeBool = false;
 
@@ -53,10 +53,11 @@ public class Mecanum {
 
         // driving field centric
         if (opmode.gamepad1.left_trigger > 0.5) {
-            drive.driveFieldCentric(opmode.gamepad1.left_stick_x, -opmode.gamepad1.left_stick_y, opmode.gamepad1.right_stick_x * 0.75, gyroManager.getHeading());
+            // slow mode when
+            drive.driveFieldCentric(opmode.gamepad1.left_stick_x * slowModeFactor, -opmode.gamepad1.left_stick_y * slowModeFactor, (opmode.gamepad1.right_stick_x * 0.75) * slowModeFactor, gyroManager.getHeading());
         }
         else {
-            drive.driveFieldCentric(opmode.gamepad1.left_stick_x * slowModeFactor, -opmode.gamepad1.left_stick_y * slowModeFactor, (opmode.gamepad1.right_stick_x * 0.75) * slowModeFactor, gyroManager.getHeading());
+            drive.driveFieldCentric(opmode.gamepad1.left_stick_x, -opmode.gamepad1.left_stick_y, opmode.gamepad1.right_stick_x * 0.75, gyroManager.getHeading());
         }
 
 //        opmode.telemetry.addData("Test drive motor accel: ", frontRight.getAcceleration());

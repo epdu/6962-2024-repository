@@ -208,11 +208,6 @@ public class SoloFullRobotTeleOp extends OpMode {
             );
         }
 
-        // intake wrist rotate
-        if      (currentGamepad1.right_trigger >= 0.1 && currentGamepad1.dpad_right)  { intakeArm.wrist.incrementalWristRotateActual(-1); }
-        else if (currentGamepad1.right_trigger >= 0.1 && currentGamepad1.dpad_left) { intakeArm.wrist.incrementalWristRotateActual(1); }
-        else if (currentGamepad1.right_trigger >= 0.1 && currentGamepad1.dpad_down) { cPortal.setWristCamera();}
-
         // macro grab clip
         if (currentGamepad1.x && !previousGamepad1.x) {
             runningActions.add(
@@ -302,6 +297,11 @@ public class SoloFullRobotTeleOp extends OpMode {
             );
         }
 
+        // intake wrist rotate
+        if      (currentGamepad1.right_trigger >= 0.1 && currentGamepad1.dpad_right)  { intakeArm.wrist.incrementalWristRotateActual(-1); }
+        else if (currentGamepad1.right_trigger >= 0.1 && currentGamepad1.dpad_left) { intakeArm.wrist.incrementalWristRotateActual(1); }
+        else if (currentGamepad1.right_trigger >= 0.1 && currentGamepad1.dpad_down) { cPortal.setWristCamera();}
+
         //hang activation / reverse --NOT TESTED--
 //        if (currentGamepad1.dpad_up && !previousGamepad1.dpad_up) {
 //            runningActions.add(
@@ -352,6 +352,10 @@ public class SoloFullRobotTeleOp extends OpMode {
                     )
             );
         }
+
+        // intake wrist rotate
+        if      (currentGamepad2.right_trigger >= 0.1)  { intakeArm.wrist.incrementalWristRotateActual(-1); }
+        else if (currentGamepad2.left_trigger >= 0.1) { intakeArm.wrist.incrementalWristRotateActual(1); }
 
         // loop time
         dashboardTelemetry.addData("elapsed time (loop time)", elapsedtime.milliseconds());
