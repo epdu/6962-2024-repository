@@ -5,7 +5,11 @@ import static org.firstinspires.ftc.teamcode.Util.ColorDetect.BLUE;
 import static org.firstinspires.ftc.teamcode.Util.ColorDetect.RED;
 import static org.firstinspires.ftc.teamcode.Util.ColorDetect.YELLOW;
 
+import androidx.annotation.NonNull;
+
 import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
+import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.InstantAction;
 import com.acmerobotics.roadrunner.SequentialAction;
@@ -21,80 +25,80 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 
 public class CameraPortal {
-    private OpMode opmode;
-    private int  cameraMonitorViewID;
-    private OpenCvCamera webcam1;
+    private final CameraCVPipeline pipeLine = new CameraCVPipeline();
 
-    private CameraCVPipeline pipeLine = new CameraCVPipeline();
-
+    private final IntakeArm intake = new IntakeArm();
     private final RobotHardware rHardware = new RobotHardware();
 
-    public ColorDetect cameraColor = YELLOW;
+    private OpenCvCamera webcam1;
 
+    public MultipleTelemetry dashTelemetry;
+    public ColorDetect cameraColor;
 
+    public void initialize(OpMode opMode) {
+        dashTelemetry = new MultipleTelemetry(opMode.telemetry, FtcDashboard.getInstance().getTelemetry());
 
-
-    public void init(OpMode opmode) {
-        rHardware.init(opmode.hardwareMap);
-        cameraMonitorViewID = rHardware.cameraMonitorViewId;
-        webcam1 = OpenCvCameraFactory.getInstance().createWebcam(rHardware.webcam, cameraMonitorViewID);
-
-        pipeLine.initialize();
-
-        webcam1.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
-        {
-            @Override
-            public void onOpened()
-            {
-                // Usually this is where you'll want to start streaming from the camera (see section 4)
-                webcam1.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
-//                TODO: Create Pipeline
-                webcam1.setPipeline(pipeLine);
-                FtcDashboard.getInstance().startCameraStream(
-                        pipeLine,
-                        30.0
-                );
-
-            }
-            @Override
-            public void onError(int errorCode) {opmode.telemetry.addLine("womp womp");}
-        });
+        rHardware.init(opMode.hardwareMap);
+        webcam1 = OpenCvCameraFactory.getInstance().createWebcam(rHardware.webcam, rHardware.cameraMonitorViewId);
+        pipeLine.initialize(opMode, webcam1);
+        pipeLine.setDetectionType(cameraColor);
+        intake.initialize(opMode);
     }
 
-    public void run(OpMode opmode) {
-        
-        if (opmode.gamepad1.a) {
-            webcam1.stopStreaming();
-        } else if (opmode.gamepad1.b) {
+    public void start(OpMode opMode) {
+        if (opMode.gamepad1.b) {
+            //toggle color detection pre init thru cycling w b button
             switch (cameraColor) {
                 case RED:
                     pipeLine.setDetectionType(BLUE);
+                    cameraColor = BLUE;
                     break;
                 case BLUE:
                     pipeLine.setDetectionType(YELLOW);
+                    cameraColor = YELLOW;
                     break;
                 default:
                     pipeLine.setDetectionType(RED);
+                    cameraColor = RED;
             }
         }
-
-        opmode.telemetry.addData("Frame Count", webcam1.getFrameCount());
-        opmode.telemetry.addData("FPS", String.format("%.2f", webcam1.getFps()));
-        opmode.telemetry.addData("Total frame time ms", webcam1.getTotalFrameTimeMs());
-        opmode.telemetry.addData("Pipeline time ms", webcam1.getPipelineTimeMs());
-        opmode.telemetry.addData("Overhead time ms", webcam1.getOverheadTimeMs());
-        opmode.telemetry.addData("Theoretical max FPS", webcam1.getCurrentPipelineMaxFps());
-        opmode.telemetry.update();
     }
-//    public Action getServoRotation() {
-//        new InstantAction(() -> ())
-//    }
+
+    public void run(OpMode opMode) {
+        opMode.telemetry.addData("Frame Count", webcam1.getFrameCount());
+        opMode.telemetry.addData("FPS", String.format("%.2f", webcam1.getFps()));
+        opMode.telemetry.addData("Total frame time ms", webcam1.getTotalFrameTimeMs());
+        opMode.telemetry.addData("Pipeline time ms", webcam1.getPipelineTimeMs());
+        opMode.telemetry.addData("Overhead time ms", webcam1.getOverheadTimeMs());
+        opMode.telemetry.addData("Theoretical max FPS", webcam1.getCurrentPipelineMaxFps());
+        dashTelemetry.update();
+        opMode.telemetry.update();
+    }
+
+    // return servo position vs angle
     public double getServoRotation() {
         return pipeLine.getTargetWristPosition();
     }
 
     public double getSampleRotation() {
         return pipeLine.getSampleAngle();
+    }
+
+    public void setWristCamera() {
+        intake.wrist.setWristCameraAngle(getServoRotation());
+    }
+
+    //camera claw action for auto
+    public class ClawCamera implements Action {
+        @Override
+        public boolean run(@NonNull TelemetryPacket packet) {
+            setWristCamera();
+            return false;
+        }
+    }
+
+    public Action ClawCamera() {
+        return new ClawCamera();
     }
 }
 

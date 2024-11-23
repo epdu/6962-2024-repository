@@ -50,6 +50,8 @@ public class SoloFullRobotTeleOp extends OpMode {
     private IntakeArm intakeArm               = new IntakeArm();
     private ScoringArm scoringArm             = new ScoringArm();
     private Hang hang                         = new Hang();
+
+    private CameraPortal cPortal              = new CameraPortal();
 //    private CameraPortal cameraPortal         = new CameraPortal();
 
     private boolean onRedAlliance = true;
@@ -63,7 +65,7 @@ public class SoloFullRobotTeleOp extends OpMode {
         verticalSlides.initialize(this);
         scoringArm.initialize(this);
         hang.initialize(this);
-        intakeArm.cPortal.init(this);
+        cPortal.initialize(this);
 //        cameraPortal.init(this);
         allHubs = hardwareMap.getAll(LynxModule.class);
         // apparently optimizes reading from hardware (ex: getCurrentPosition) and makes runtime a bit faster
@@ -81,6 +83,7 @@ public class SoloFullRobotTeleOp extends OpMode {
         intakeArm.arm.setArmTransfer();
         intakeArm.wrist.setWristTransfer();
         intakeArm.claw.closeClaw();
+        cPortal.start(this);
     }
 
     @Override
@@ -195,7 +198,7 @@ public class SoloFullRobotTeleOp extends OpMode {
         // intake wrist rotate
         if      (currentGamepad1.right_trigger >= 0.1 && currentGamepad1.dpad_right)  { intakeArm.wrist.incrementalWristRotateActual(-1); }
         else if (currentGamepad1.right_trigger >= 0.1 && currentGamepad1.dpad_left) { intakeArm.wrist.incrementalWristRotateActual(1); }
-//        else if (currentGamepad1.right_trigger >= 0.1 && currentGamepad1.dpad_down) { intakeArm.wrist.setWristCamera();}
+        else if (currentGamepad1.right_trigger >= 0.1 && currentGamepad1.dpad_down) { cPortal.setWristCamera();}
 
         // macro grab clip
         if (currentGamepad1.x && !previousGamepad1.x) {

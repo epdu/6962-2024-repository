@@ -248,10 +248,6 @@ public class IntakeArm {
             isWristTransferring = false;
         }
 
-//        public void setWristCamera() {
-//            wristRotate.setPosition(cPortal.getServoRotation());
-//        }
-
         public void incrementalWristRotateTest(int sign) {
             wristRotate.setPosition(wristRotate.getPosition() + sign * wristTestIncrement);
         }
@@ -264,6 +260,9 @@ public class IntakeArm {
             wristFlip.setPosition(wristFlip.getPosition() + sign * wristTestIncrement);
         }
 
+        public void setWristCameraAngle(double angle) {
+            wristRotate.setPosition(angle);
+        }
 
     }
 
@@ -323,18 +322,6 @@ public class IntakeArm {
     public Action IntakeTransfer() {
         return new IntakeTransfer();
     }
-
-//    public class ClawCamera implements Action {
-//        @Override
-//        public boolean run(@NonNull TelemetryPacket packet) {
-//            wrist.setWristCamera();
-//            return false;
-//        }
-//    }
-//
-//    public Action ClawCamera() {
-//        return new ClawCamera();
-//    }
 
     public class ClawOpen implements Action {
         @Override

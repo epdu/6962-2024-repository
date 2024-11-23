@@ -2,7 +2,10 @@ package org.firstinspires.ftc.teamcode.Util;
 
 import android.graphics.Bitmap;
 
+import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.robotcore.external.function.Consumer;
 import org.firstinspires.ftc.robotcore.external.function.Continuation;
@@ -15,6 +18,8 @@ import org.openftc.easyopencv.OpenCvCamera;
 
 import java.util.concurrent.atomic.AtomicReference;
 
+import org.openftc.easyopencv.OpenCvCameraFactory;
+import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvPipeline;
 import org.openftc.easyopencv.OpenCvWebcam;
 
@@ -49,12 +54,16 @@ public class CameraCVPipeline extends OpenCvPipeline implements CameraStreamSour
     static final double focalLength = 728;
     private final AtomicReference<Bitmap> lastFrame = new AtomicReference<>(Bitmap.createBitmap(1, 1, Bitmap.Config.RGB_565));
 
-    private ColorDetect detectionType = ColorDetect.BLUE;
+    private ColorDetect detectionType;
     private Supplier<Double> currentWristPosition = () -> 0.0;
     private double previousRotationAngle = 0.0;
 
     private double targetWristPosition = 0.0;
     private double sampleAngle = 0.0;
+
+    private int  cameraMonitorViewID;
+    private OpenCvCamera webcam1;
+
 
     public double getTargetWristPosition() {
         return targetWristPosition;
@@ -72,7 +81,25 @@ public class CameraCVPipeline extends OpenCvPipeline implements CameraStreamSour
         this.detectionType = sampleType;
     }
 
-    public void initialize() {
+    public void initialize(OpMode opMode, OpenCvCamera webcam1) {
+        webcam1.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
+        {
+            @Override
+            public void onOpened()
+            {
+                // Usually this is where you'll want to start streaming from the camera (see section 4)
+                webcam1.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
+//                TODO: Create Pipeline
+                webcam1.setPipeline(new CameraCVPipeline());
+                FtcDashboard.getInstance().startCameraStream(
+                        new CameraCVPipeline(),
+                        30.0
+                );
+
+            }
+            @Override
+            public void onError(int errorCode) {opMode.telemetry.addLine("womp womp");}
+        });
         lastFrame.set(Bitmap.createBitmap(680, 480, Bitmap.Config.RGB_565));
     }
     private Scalar detectedColorRangeMin = new Scalar(0, 0, 0);
@@ -287,6 +314,10 @@ public class CameraCVPipeline extends OpenCvPipeline implements CameraStreamSour
             // Pass the last frame (Bitmap) to the consumer
             bitmapConsumer.accept(lastFrame.get());
         });
+    }
+
+    public void closeCamera() {
+        webcam1.stopStreaming();
     }
 
 }

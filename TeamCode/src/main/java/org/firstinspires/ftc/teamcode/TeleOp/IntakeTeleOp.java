@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 //import org.firstinspires.ftc.teamcode.Subsystems.CameraPortal;
+import org.firstinspires.ftc.teamcode.Subsystems.CameraPortal;
 import org.firstinspires.ftc.teamcode.Subsystems.CustomTimer;
 import org.firstinspires.ftc.teamcode.Subsystems.IntakeArm;
 
@@ -11,7 +12,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.IntakeArm;
 public class IntakeTeleOp extends OpMode {
     // creating subsystems
     private final IntakeArm intake = new IntakeArm();
-//    public CameraPortal cPortal = new CameraPortal();
+    private CameraPortal cPortal = new CameraPortal();
 
     private final boolean onRedAlliance = true;
 
@@ -21,7 +22,7 @@ public class IntakeTeleOp extends OpMode {
     @Override
     public void init() {
         intake.initialize(this);
-//        cPortal.init(this);
+        cPortal.initialize(this);
     }
 
     /*
@@ -46,7 +47,7 @@ public class IntakeTeleOp extends OpMode {
     public void loop() {
 //        intake.operateTest();
         intake.operateTest(this);
-//        cPortal.run(this);
+        cPortal.run(this);
         // Gamepad 2: tuning
         //
 
