@@ -156,11 +156,17 @@ public class SoloFullRobotTeleOp extends OpMode {
                                 new InstantAction(() -> intakeArm.claw.closeClaw()),
                                 new SleepAction(0.1),
                                 new InstantAction(() -> intakeArm.arm.setArmTransfer()),
-                                new SleepAction(0.05), // possibly unnecessary
+//                                new SleepAction(0.05), removing this to test, because it seems unnecessary
                                 new InstantAction(() -> intakeArm.wrist.setWristTransfer()),
-                                new InstantAction(() -> intakeArm.arm.setArmTransfer()),
-                                new SleepAction(0.3),
+//                                new SleepAction(0.3), also removing this, because it seems unnecessary
                                 new InstantAction(() -> horizontalSlides.retract())
+
+                                // if it turns out the above timings were useless, we will use the following code
+//                                new ParallelAction(
+//                                        new InstantAction(() -> intakeArm.arm.setArmTransfer()),
+//                                        new InstantAction(() -> intakeArm.wrist.setWristTransfer()),
+//                                        new InstantAction(() -> horizontalSlides.retract())
+//                                )
                         )
                 );
             }
@@ -189,7 +195,6 @@ public class SoloFullRobotTeleOp extends OpMode {
                                 new InstantAction(() -> intakeArm.arm.setArmTransfer()),
                                 new SleepAction(0.05), // possibly unnecessary
                                 new InstantAction(() -> intakeArm.wrist.setWristTransfer()),
-                                new InstantAction(() -> intakeArm.arm.setArmTransfer()),
                                 new SleepAction(0.3),
                                 new InstantAction(() -> horizontalSlides.retract())
                         )
@@ -208,7 +213,7 @@ public class SoloFullRobotTeleOp extends OpMode {
             );
         }
 
-        // macro grab clip
+        // macro prep grab clip
         if (currentGamepad1.x && !previousGamepad1.x) {
             runningActions.add(
                     new ParallelAction(
@@ -220,7 +225,7 @@ public class SoloFullRobotTeleOp extends OpMode {
             );
         }
 
-        // macro prep score clip
+        // macro grab clip and prep score clip
         if (currentGamepad1.y && !previousGamepad1.y) {
             runningActions.add(
                     new SequentialAction(
