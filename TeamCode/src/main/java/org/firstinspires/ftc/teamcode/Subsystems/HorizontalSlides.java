@@ -29,7 +29,7 @@ public class HorizontalSlides {
     public static double slideScalar = 1;
     public static double Kp = 0.006;
     public static double Ki = 0;
-    public static double Kd = 0.000001;
+    public static double Kd = 0.00001;
     public static double Kg = 0; // gravity constant, tune till the slide holds itself in place
     public static double upperLimit = 650;
     public static double lowerLimit = -2;
@@ -59,7 +59,6 @@ public class HorizontalSlides {
     }
 
     public void initialize(OpMode opmode) {
-        // TODO: assign motor names, then reverse the correct motor
         this.opmode = opmode;
         rHardware.init(opmode.hardwareMap);
 

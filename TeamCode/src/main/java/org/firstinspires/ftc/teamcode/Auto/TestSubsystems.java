@@ -14,6 +14,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.Subsystems.HorizontalSlides;
 import org.firstinspires.ftc.teamcode.Subsystems.IntakeArm;
+import org.firstinspires.ftc.teamcode.Subsystems.NewHorizontalSlides;
 import org.firstinspires.ftc.teamcode.Subsystems.NewVerticalSlides;
 import org.firstinspires.ftc.teamcode.Subsystems.ScoringArm;
 import org.firstinspires.ftc.teamcode.Subsystems.VerticalSlides;
@@ -34,6 +35,7 @@ public class TestSubsystems extends LinearOpMode{
         IntakeArm intakeArm = new IntakeArm();
         HorizontalSlides horizontalSlides = new HorizontalSlides();
         NewVerticalSlides newVertSlides = new NewVerticalSlides();
+        NewHorizontalSlides newHoriSlides = new NewHorizontalSlides();
 
         TrajectoryActionBuilder move3 = drive.actionBuilder(startPose)
                 .afterTime(0, () -> {
@@ -42,8 +44,12 @@ public class TestSubsystems extends LinearOpMode{
                         newVertSlides.BuiltInRTPExtend(), // my big concern is that slides will not even move
                         scoringArm.ArmDropClip(), // this is here to test if the arm moves immediately
                         new SleepAction(3),
-                        newVertSlides.BuiltInRTPRetract()
-                    );
+                        newVertSlides.BuiltInRTPRetract(),
+                        new SleepAction(1),
+                        newHoriSlides.BuiltInRTPExtend(),
+                        new SleepAction(3),
+                        newHoriSlides.BuiltInRTPRetract()
+                        );
                 });
 
         while (!isStarted() && !opModeIsActive()) {
