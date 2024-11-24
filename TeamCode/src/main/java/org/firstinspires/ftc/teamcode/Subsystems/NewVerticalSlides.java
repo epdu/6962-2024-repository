@@ -5,6 +5,7 @@ import androidx.annotation.NonNull;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Action;
+import com.acmerobotics.roadrunner.InstantAction;
 import com.arcrobotics.ftclib.controller.PIDController;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -201,7 +202,8 @@ public class NewVerticalSlides {
         return output;
     }
 
-    // Functioning autonomous commands
+
+    // Functioning autonomous implementation 
     public class RunToPosition implements Action {
         private boolean initialized = false;
         private int rtpTarget = 0;
@@ -246,26 +248,5 @@ public class NewVerticalSlides {
         return new RunToPosition(highBucketPos);
     }
 
-    // autonomous action stuff test
-    //  this might not work though
-    public class BuiltInRTP implements Action {
-        private int rtpTarget = 0;
-
-        // constructor so this class can be reused without needing to duplicate
-        public BuiltInRTP(int targetPos) {
-            this.rtpTarget = targetPos;
-        }
-
-        @Override
-        public boolean run(@NonNull TelemetryPacket packet) {
-            leftSlideMotor.setTargetPosition(rtpTarget);
-            rightSlideMotor.setTargetPosition(rtpTarget);
-            return false;
-        }
-    }
-
-    public Action BuiltInRTPExtend() {return new BuiltInRTP(highBucketPos);}
-
-    public Action BuiltInRTPRetract() {return new BuiltInRTP(retractedPos);}
 }
 

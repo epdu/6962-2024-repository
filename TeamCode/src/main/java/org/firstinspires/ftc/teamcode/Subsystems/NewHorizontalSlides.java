@@ -228,25 +228,7 @@ public class NewHorizontalSlides {
     }
 
     // autonomous action stuff test
-    // this might not work though
-    public class BuiltInRTP implements Action {
-        private int rtpTarget = 0;
 
-        // constructor so this class can be reused without needing to duplicate
-        public BuiltInRTP(int targetPos) {
-            this.rtpTarget = targetPos;
-        }
-
-        @Override
-        public boolean run(@NonNull TelemetryPacket packet) {
-            slideMotor.setTargetPosition(rtpTarget);
-            return false;
-        }
-    }
-
-    public Action BuiltInRTPExtend() {return new BuiltInRTP(extendedPos);}
-
-    public Action BuiltInRTPRetract() {return new BuiltInRTP(retractedPos);}
 }
 
 

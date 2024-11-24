@@ -12,6 +12,7 @@ import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
+import org.firstinspires.ftc.teamcode.Subsystems.AutoOnlySlides;
 import org.firstinspires.ftc.teamcode.Subsystems.HorizontalSlides;
 import org.firstinspires.ftc.teamcode.Subsystems.IntakeArm;
 import org.firstinspires.ftc.teamcode.Subsystems.NewHorizontalSlides;
@@ -22,54 +23,49 @@ import org.firstinspires.ftc.teamcode.Subsystems.VerticalSlides;
 import org.firstinspires.ftc.teamcode.Roadrunner.MecanumDrive;
 
 @Config
-@Autonomous(name = "Test Subsystems", group = "Autonomous")
-public class TestSubsystems extends LinearOpMode{
+@Autonomous(name = "Jayden's Slides Testing", group = "Autonomous")
+public class JaydenTestingPlayground extends LinearOpMode{
 
     @Override
     public void runOpMode() {
         Pose2d startPose = new Pose2d(0, 0, 0);
         MecanumDrive drive = new MecanumDrive(hardwareMap, startPose);
 
-        VerticalSlides verticalSlides = new VerticalSlides();
-        ScoringArm scoringArm = new ScoringArm();
-        IntakeArm intakeArm = new IntakeArm();
-        HorizontalSlides horizontalSlides = new HorizontalSlides();
+        AutoOnlySlides vertSlides = new AutoOnlySlides();
+        NewVerticalSlides newVertSlides = new NewVerticalSlides();
 
-        TrajectoryActionBuilder move3 = drive.actionBuilder(startPose)
+        TrajectoryActionBuilder move1 = drive.actionBuilder(startPose)
+                .strafeToConstantHeading(new Vector2d(12, 0))
                 .afterTime(0, () -> {
                     new SequentialAction(
-                            /// put whatever needs to be tested in here
-                        );
-                });
+                            // Jayden testing new slides stuff for autonomous
+                            vertSlides.Extend(),
+                            new SleepAction(3),
+                            vertSlides.Retract()
+
+                            /// uncomment when want to test other implementation
+//                            newVertSlides.AutonomousPIDtest()
+                    );
+                })
+                .strafeToConstantHeading(new Vector2d(0, 0));
 
         while (!isStarted() && !opModeIsActive()) {
-            intakeArm.initialize(this);
-            verticalSlides.initialize(this);
-            scoringArm.initialize(this);
-            horizontalSlides.initialize(this);
+            vertSlides.initialize(this);
 
-            Actions.runBlocking(
-                    new ParallelAction(
-                            horizontalSlides.HorizontalRetract(),
-                            scoringArm.StowWholeArm(),
-                            intakeArm.IntakeTransfer()
-                    )
-            );
         }
 
         waitForStart();
 
         if (isStopRequested()) return;
 
-        Action TestSubsystemTrajectory = move3.build();
+        Action TestSubsystemTrajectory = move1.build();
 
         Actions.runBlocking(
-                new SequentialAction(
-                        TestSubsystemTrajectory
-//                        verticalSlides.LiftUpToClip(),
-//                        new SleepAction(1),
-//                        verticalSlides.Retract()
+                new ParallelAction(
+                        TestSubsystemTrajectory,
+                        vertSlides.Loop() /// comment out when want to test other implementation
                 )
         );
     }
 }
+
