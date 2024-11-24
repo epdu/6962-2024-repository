@@ -120,8 +120,7 @@ public class AutoOnlySlides {
         }
     }
 
-    public Action AutonomousPIDtest() { return new PIDRunToPos(prepClipPos); }
-
+    public Action AutonomousPIDextend() { return new PIDRunToPos(prepClipPos); }
 }
 
 

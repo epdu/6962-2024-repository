@@ -17,7 +17,7 @@ public class NewVerticalSlidesTuning extends OpMode {
 
     @Override
     public void init() {
-        verticalSlides.teleInitialize(this);
+        verticalSlides.initialize(this);
     }
 
     @Override

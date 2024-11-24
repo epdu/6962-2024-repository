@@ -44,7 +44,7 @@ public class NewHorizontalSlides {
 
     public NewHorizontalSlides() {}
 
-    public void teleInitialize(OpMode opmode) {
+    public void initialize(OpMode opmode) {
         this.opmode = opmode;
         rHardware.init(opmode.hardwareMap);
 
@@ -59,21 +59,6 @@ public class NewHorizontalSlides {
         slideMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
 
         slideMotor.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
-    }
-
-    public void autonomousInitialize(OpMode opmode) {
-        this.opmode = opmode;
-        rHardware.init(opmode.hardwareMap);
-
-        slideMotor = rHardware.hSlideMotor;
-
-        slideMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
-
-//        slideMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-
-        slideMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
-
-        slideMotor.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
     }
 
     public void operateVincent() {

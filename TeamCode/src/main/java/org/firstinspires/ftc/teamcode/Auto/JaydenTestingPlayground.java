@@ -43,15 +43,12 @@ public class JaydenTestingPlayground extends LinearOpMode{
                             new SleepAction(3),
                             vertSlides.Retract()
 
-                            /// uncomment when want to test other implementation
-//                            newVertSlides.AutonomousPIDtest()
                     );
                 })
                 .strafeToConstantHeading(new Vector2d(0, 0));
 
         while (!isStarted() && !opModeIsActive()) {
             vertSlides.initialize(this);
-
         }
 
         waitForStart();
@@ -63,7 +60,7 @@ public class JaydenTestingPlayground extends LinearOpMode{
         Actions.runBlocking(
                 new ParallelAction(
                         TestSubsystemTrajectory,
-                        vertSlides.Loop() /// comment out when want to test other implementation
+                        vertSlides.Loop()
                 )
         );
     }
