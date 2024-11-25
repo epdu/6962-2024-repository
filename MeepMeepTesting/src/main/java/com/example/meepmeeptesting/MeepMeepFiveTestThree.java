@@ -6,7 +6,7 @@ import com.noahbres.meepmeep.MeepMeep;
 import com.noahbres.meepmeep.roadrunner.DefaultBotBuilder;
 import com.noahbres.meepmeep.roadrunner.entity.RoadRunnerBotEntity;
 
-public class MeepMeepFiveTestOne {
+public class MeepMeepFiveTestThree {
     public static void main(String[] args) {
         MeepMeep meepMeep = new MeepMeep(700);
 
@@ -24,24 +24,20 @@ public class MeepMeepFiveTestOne {
                         .waitSeconds(0.5)
                         .turnTo(Math.toRadians(67))
                         .waitSeconds(0.5)
-                        .strafeToLinearHeading(new Vector2d(24, -48), Math.toRadians(-45))
-                        .strafeToConstantHeading(new Vector2d(26,-50))
-                        .waitSeconds(0.5)
+                        .strafeToLinearHeading(new Vector2d(36, -53), Math.toRadians(90))
+                        .strafeToConstantHeading(new Vector2d(36,-57))
                         .strafeToLinearHeading(new Vector2d(0, -34), Math.toRadians(-90))
                         .waitSeconds(0.5)
-                        .strafeToLinearHeading(new Vector2d(24, -48), Math.toRadians(-45))
-                        .strafeToConstantHeading(new Vector2d(26,-50))
-                        .waitSeconds(0.5)
+                        .strafeToLinearHeading(new Vector2d(36, -53), Math.toRadians(90))
+                        .strafeToConstantHeading(new Vector2d(36,-57))
                         .strafeToLinearHeading(new Vector2d(3, -34), Math.toRadians(-90))
                         .waitSeconds(0.5)
-                        .strafeToLinearHeading(new Vector2d(24, -48), Math.toRadians(-45))
-                        .strafeToConstantHeading(new Vector2d(26,-50))
-                        .waitSeconds(0.5)
+                        .strafeToLinearHeading(new Vector2d(36, -53), Math.toRadians(90))
+                        .strafeToConstantHeading(new Vector2d(36,-57))
                         .strafeToLinearHeading(new Vector2d(6, -34), Math.toRadians(-90))
                         .waitSeconds(0.5)
-                        .strafeToLinearHeading(new Vector2d(24, -48), Math.toRadians(-45))
-                        .strafeToConstantHeading(new Vector2d(26,-50))
-                        .waitSeconds(0.5)
+                        .strafeToLinearHeading(new Vector2d(36, -53), Math.toRadians(90))
+                        .strafeToConstantHeading(new Vector2d(36,-57))
                         .strafeToLinearHeading(new Vector2d(9, -34), Math.toRadians(-90))
                         .waitSeconds(0.5)
                         .strafeToLinearHeading(new Vector2d(40, -60), Math.toRadians(90))
