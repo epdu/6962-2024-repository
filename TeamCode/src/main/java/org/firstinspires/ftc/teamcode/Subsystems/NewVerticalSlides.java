@@ -26,6 +26,7 @@ public class NewVerticalSlides {
     public static double Ki = 0;
     public static double Kd = 0.0003;
     public static double Kg = 0.1;
+    public static double powerCachingThreshold = 0.005;
     public static double retractedThreshold = 10;
     public static int upperLimit = 1600; // this is for 1150s
     public static int lowerLimit = -2;
@@ -41,6 +42,7 @@ public class NewVerticalSlides {
     private volatile double target = 0;
     private volatile double slidePower;
     private volatile double output = 0;
+    private volatile double previousOutput = 0;
     public volatile boolean slidesRetracted = true;
 
     public NewVerticalSlides() {}
@@ -69,9 +71,16 @@ public class NewVerticalSlides {
     public void operateVincent() {
         int currentPos = rightSlideMotor.getCurrentPosition();
         output = controller.calculate(currentPos, target) + Kg;
+        if (Math.abs(output) >= 1.0) {
+            output = (output >= 0 ? 1 : -1);
+        }
 
-        leftSlideMotor.setPower(output);
-        rightSlideMotor.setPower(output);
+        if (isDifferent(output, previousOutput)) {
+            leftSlideMotor.setPower(output);
+            rightSlideMotor.setPower(output);
+        }
+
+        previousOutput = output;
 
         // updates boolean
         slidesRetracted = currentPos < retractedThreshold;
@@ -101,8 +110,16 @@ public class NewVerticalSlides {
         } else {
             output = controller.calculate(currentPos, target) + Kg;
 
-            leftSlideMotor.setPower(output);
-            rightSlideMotor.setPower(output);
+            // hehe funny syntax
+            output = (Math.abs(output) > 1 ? (output > 0 ? 1 : -1): output);
+
+
+            if (isDifferent(output, previousOutput)) {
+                leftSlideMotor.setPower(output);
+                rightSlideMotor.setPower(output);
+            }
+
+            previousOutput = output;
         }
 
         // updates boolean
@@ -181,6 +198,10 @@ public class NewVerticalSlides {
         return output;
     }
 
+    private boolean isDifferent(double val1, double val2)
+    {
+        return Math.abs(val1 - val2) < powerCachingThreshold;
+    }
 
     // Functioning autonomous implementation
     public class RunToPosition implements Action {
