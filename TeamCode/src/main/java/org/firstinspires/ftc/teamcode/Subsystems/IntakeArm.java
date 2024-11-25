@@ -29,9 +29,6 @@ public class IntakeArm {
     public Wrist wrist = new Wrist();
     private final RobotHardware rHardware = new RobotHardware();
 
-    public static CameraPortal cPortal = new CameraPortal();
-    private static CameraCVPipeline pipeline = new CameraCVPipeline();
-
     // constructor
     public IntakeArm() {}
 
@@ -43,8 +40,6 @@ public class IntakeArm {
         claw.initialize(rHardware);
         arm.initialize(rHardware);
         wrist.initialize(rHardware);
-//        pipeline.initialize();
-//        cPortal.init(opmode);
     }
 
     // Operates the claw for Vincent configuration
@@ -54,7 +49,6 @@ public class IntakeArm {
 
     // Operates the test mode for controlling the claw, arm, and wrist
     public void operateTest(OpMode opmode) {
-        cPortal.run(opmode);
 
         // gamepad 2, all incrementals to find servo values first try
         if (opmode.gamepad2.left_bumper) { claw.incrementalClaw(-1); }
@@ -68,17 +62,14 @@ public class IntakeArm {
 
         if (opmode.gamepad2.y) {wrist.setWristIntake();}
         if (opmode.gamepad2.x) {wrist.setWristTransfer();}
-//        if (opmode.gamepad2.a) {wrist.setWristCamera();}
         // Adding telemetry data for debugging
         opmode.telemetry.addData("Arm Pos: ", arm.arm.getPosition());
         opmode.telemetry.addData("Flip Wrist Pos: ", wrist.wristFlip.getPosition());
         opmode.telemetry.addData("Rotate Wrist Pos: ", wrist.wristRotate.getPosition());
         opmode.telemetry.addData("Claw Pos: ", claw.claw.getPosition());
-        opmode.telemetry.addData("Camera Servo Rotation: ", cPortal.getServoRotation());
-        dashboardTelemetry.addData("Camera Servo Rotation: ", cPortal.getServoRotation());
-        dashboardTelemetry.addData("Sample Angle: ", cPortal.getSampleRotation());
-        dashboardTelemetry.update();
-        opmode.telemetry.update();
+
+//        dashboardTelemetry.update();
+//        opmode.telemetry.update();
     }
 
     public void operateIncremental() {
@@ -123,8 +114,8 @@ public class IntakeArm {
         opmode.telemetry.addData("Claw Pos: ", claw.claw.getPosition());
         dashboardTelemetry.addData("Arm Pos: ", arm.arm.getPosition());
         dashboardTelemetry.addData("Flip Wrist Pos: ", wrist.wristFlip.getPosition());
-        dashboardTelemetry.update();
-        opmode.telemetry.update();
+//        dashboardTelemetry.update();
+//        opmode.telemetry.update();
     }
 
     // Claw Subsystem Class

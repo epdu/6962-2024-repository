@@ -33,7 +33,7 @@ public class CameraPortal {
     private OpenCvCamera webcam1;
 
     public MultipleTelemetry dashTelemetry;
-    public ColorDetect cameraColor;
+    public ColorDetect cameraColor = BLUE;
 
     public void initialize(OpMode opMode) {
         dashTelemetry = new MultipleTelemetry(opMode.telemetry, FtcDashboard.getInstance().getTelemetry());
@@ -65,14 +65,16 @@ public class CameraPortal {
     }
 
     public void run(OpMode opMode) {
+        if (opMode.gamepad2.a) {setWristCamera();}
+
         opMode.telemetry.addData("Frame Count", webcam1.getFrameCount());
         opMode.telemetry.addData("FPS", String.format("%.2f", webcam1.getFps()));
         opMode.telemetry.addData("Total frame time ms", webcam1.getTotalFrameTimeMs());
         opMode.telemetry.addData("Pipeline time ms", webcam1.getPipelineTimeMs());
         opMode.telemetry.addData("Overhead time ms", webcam1.getOverheadTimeMs());
         opMode.telemetry.addData("Theoretical max FPS", webcam1.getCurrentPipelineMaxFps());
-        dashTelemetry.update();
-        opMode.telemetry.update();
+//        dashTelemetry.update();
+//        opMode.telemetry.update();
     }
 
     // return servo position vs angle
