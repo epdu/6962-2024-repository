@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.Util;
 
+import static org.firstinspires.ftc.teamcode.Util.ColorDetect.BLUE;
+
 import android.graphics.Bitmap;
 
 import com.acmerobotics.dashboard.FtcDashboard;
@@ -54,7 +56,7 @@ public class CameraCVPipeline extends OpenCvPipeline implements CameraStreamSour
     static final double focalLength = 728;
     private final AtomicReference<Bitmap> lastFrame = new AtomicReference<>(Bitmap.createBitmap(1, 1, Bitmap.Config.RGB_565));
 
-    private ColorDetect detectionType;
+    private ColorDetect detectionType = BLUE;
     private Supplier<Double> currentWristPosition = () -> 0.0;
     private double previousRotationAngle = 0.0;
 

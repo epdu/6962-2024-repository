@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.TeleOp;
 import android.graphics.Camera;
 
 import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.InstantAction;
@@ -30,9 +31,9 @@ import java.util.List;
 
 @TeleOp(name="A Solo Full Robot TeleOp", group="Active TeleOps")
 public class SoloFullRobotTeleOp extends OpMode {
+
     // Action stuff
     private FtcDashboard dash = FtcDashboard.getInstance();
-    private Telemetry dashboardTelemetry = dash.getTelemetry();
     private List<Action> runningActions = new ArrayList<>();
     private List<LynxModule> allHubs;
 
@@ -50,6 +51,8 @@ public class SoloFullRobotTeleOp extends OpMode {
     private IntakeArm intakeArm               = new IntakeArm();
     private ScoringArm scoringArm             = new ScoringArm();
     private Hang hang                         = new Hang();
+
+    private MultipleTelemetry dashboardTelemetry = new MultipleTelemetry(telemetry, dash.getTelemetry());
 
     private CameraPortal cPortal              = new CameraPortal();
 //    private CameraPortal cameraPortal         = new CameraPortal();
@@ -73,6 +76,11 @@ public class SoloFullRobotTeleOp extends OpMode {
     }
 
     @Override
+    public void init_loop() {
+        cPortal.start(this);
+    }
+
+    @Override
     public void start() {
         elapsedtime.reset();
         // to make sure arms don't spasm when out of pos
@@ -83,7 +91,6 @@ public class SoloFullRobotTeleOp extends OpMode {
         intakeArm.arm.setArmTransfer();
         intakeArm.wrist.setWristTransfer();
         intakeArm.claw.closeClaw();
-        cPortal.start(this);
     }
 
     @Override
@@ -101,7 +108,6 @@ public class SoloFullRobotTeleOp extends OpMode {
 
         TelemetryPacket packet = new TelemetryPacket();
         List<Action> newActions = new ArrayList<>();
-//        intakeArm.cPortal.run(this);
 
         for (Action action : runningActions) {
             action.preview(packet.fieldOverlay());
@@ -116,6 +122,7 @@ public class SoloFullRobotTeleOp extends OpMode {
         // field centric drive
         // gamepad1: left-trigger > 0.5 - fastmode
         mecanum.operateFieldCentricVincent();
+        cPortal.run(this);
 
         // gyro reset
         if (currentGamepad2.y && !previousGamepad2.y) { mecanum.resetNavx(); }
