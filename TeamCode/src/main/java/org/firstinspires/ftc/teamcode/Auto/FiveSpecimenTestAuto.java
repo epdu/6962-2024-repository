@@ -24,36 +24,51 @@ import org.firstinspires.ftc.teamcode.Subsystems.VerticalSlides;
 @Autonomous(name = "5+0 Auto Test", group = "Autonomous", preselectTeleOp = "A Solo Full Robot TeleOp")
 public class FiveSpecimenTestAuto extends LinearOpMode {
 
-    public static double startX = 8;
+    public static double startX = 9;
     public static double startY = -63.5;
     public static double startHeading = Math.toRadians(-90);
-    public static double scorePreloadX = -3;
+    public static double scorePreloadX = 9;
     public static double scorePreloadY = -35;
-    public static double field1X = 48;
-    public static double field1Y = -45;
-    public static double field2X = 59;
-    public static double field2Y = -45;
-    public static double field3X = 54;
-    public static double field3Y = -45;
+    public static double field1X = 25;
+    public static double field1Y = -36;
+    public static double field2X = 35;
+    public static double field2Y = -36;
+    public static double field3X = 45;
+    public static double field3Y = -36;
     public static double pickupX = 24;
     public static double pickupY = -48;
-    public static double scoreX = 0;
+    public static double scoreX = 6;
     public static double scoreY = -35;
     public static double score2X = 3;
     public static double score2Y = -35;
-    public static double score3X = 6;
-    public static double score3Y = -34;
-    public static double score4X = 9;
-    public static double score4Y = -34;
+    public static double score3X = 0;
+    public static double score3Y = -35;
+    public static double score4X = -5;
+    public static double score4Y = -35;
+    public static double intake1X = -47;
+    public static double intake1Y = -48;
+    public static double scoreBucketX = -55;
+    public static double scoreBucketY = -55;
+    public static double intake2X = -58;
+    public static double intake2Y = -48;
     public static double parkX = 45;
     public static double parkY = -60;
     Pose2d startPose = new Pose2d(startX, startY, startHeading);
     Pose2d preloadPose = new Pose2d(scorePreloadX, scorePreloadY, Math.toRadians(-90));
     Pose2d field1Pose = new Pose2d(field1X, field1Y, Math.toRadians(90));
+    Pose2d turn1Pose = new Pose2d(field1X, field1Y, Math.toRadians(-40));
     Pose2d field2Pose = new Pose2d(field2X, field2Y, Math.toRadians(90));
+    Pose2d turn2Pose = new Pose2d(field2X, field2Y, Math.toRadians(-40));
     Pose2d field3Pose = new Pose2d(field3X, field3Y, Math.toRadians(45));
+    Pose2d turn3Pose = new Pose2d(field3X, field3Y, Math.toRadians(-40));
     Pose2d pickupPose = new Pose2d(pickupX, pickupY, Math.toRadians(90));
-    Pose2d scorePose = new Pose2d(scoreX, scoreY, Math.toRadians(-90));
+    Pose2d score1Pose = new Pose2d(scoreX, scoreY, Math.toRadians(-90));
+    Pose2d score2Pose = new Pose2d(score2X, score2Y, Math.toRadians(-90));
+    Pose2d score3Pose = new Pose2d(score3X, score3Y, Math.toRadians(-90));
+    Pose2d score4Pose = new Pose2d(score4X, score4Y, Math.toRadians(-90));
+    Pose2d intake1Pose = new Pose2d(intake1X, intake1Y, Math.toRadians(90));
+    Pose2d intake2Pose = new Pose2d(intake2X, intake2Y, Math.toRadians(90));
+    Pose2d bucketPose = new Pose2d(scoreBucketX, scoreBucketY, Math.toRadians(45));
 
     @Override
     public void runOpMode() {
@@ -68,29 +83,38 @@ public class FiveSpecimenTestAuto extends LinearOpMode {
                 .strafeToConstantHeading(new Vector2d(scorePreloadX, scorePreloadY));
 
         TrajectoryActionBuilder field1 = drive.actionBuilder(preloadPose)
-                .splineToLinearHeading(new Pose2d(field1X, field1Y, Math.toRadians(90)), Math.toRadians(0));
+                .splineToLinearHeading(new Pose2d(field1X, field1Y, Math.toRadians(40)), Math.toRadians(0));
 
-        TrajectoryActionBuilder field2 = drive.actionBuilder(field1Pose)
-                .strafeToConstantHeading(new Vector2d(field2X, field2Y));
+        TrajectoryActionBuilder turn1 = drive.actionBuilder(field1Pose)
+                .turnTo(Math.toRadians(-40));
 
-        TrajectoryActionBuilder field3 = drive.actionBuilder(field2Pose)
-                .strafeToLinearHeading(new Vector2d(field3X, field3Y), Math.toRadians(45));
+        TrajectoryActionBuilder field2 = drive.actionBuilder(turn1Pose)
+                .strafeToLinearHeading(new Vector2d(field2X, field2Y), Math.toRadians(40));
 
-        TrajectoryActionBuilder pickup1 = drive.actionBuilder(field3Pose)
-                .strafeToLinearHeading(new Vector2d(pickupX, pickupY), Math.toRadians(-45))
-                .strafeToConstantHeading(new Vector2d(pickupX+2, pickupY-2));
+        TrajectoryActionBuilder turn2 = drive.actionBuilder(field2Pose)
+                .turnTo(Math.toRadians(-40));
 
-        TrajectoryActionBuilder pickup2 = drive.actionBuilder(scorePose)
-                .strafeToLinearHeading(new Vector2d(pickupX, pickupY), Math.toRadians(-45))
-                .strafeToConstantHeading(new Vector2d(pickupX+2, pickupY-2));
+        TrajectoryActionBuilder field3 = drive.actionBuilder(turn2Pose)
+                .strafeToLinearHeading(new Vector2d(field3X, field3Y), Math.toRadians(40));
 
-        TrajectoryActionBuilder pickup3 = drive.actionBuilder(scorePose)
-                .strafeToLinearHeading(new Vector2d(pickupX, pickupY), Math.toRadians(-45))
-                .strafeToConstantHeading(new Vector2d(pickupX+2, pickupY-2));
+        TrajectoryActionBuilder turn3 = drive.actionBuilder(field3Pose)
+                .turnTo(Math.toRadians(-40));
 
-        TrajectoryActionBuilder pickup4 = drive.actionBuilder(scorePose)
-                .strafeToLinearHeading(new Vector2d(pickupX, pickupY), Math.toRadians(-45))
-                .strafeToConstantHeading(new Vector2d(pickupX+2, pickupY-2));
+        TrajectoryActionBuilder pickup1 = drive.actionBuilder(turn3Pose)
+                .strafeToLinearHeading(new Vector2d(pickupX, pickupY), Math.toRadians(-45));
+//                .strafeToConstantHeading(new Vector2d(pickupX+2, pickupY-2));
+
+        TrajectoryActionBuilder pickup2 = drive.actionBuilder(score1Pose)
+                .strafeToLinearHeading(new Vector2d(pickupX, pickupY), Math.toRadians(-45));
+//                .strafeToConstantHeading(new Vector2d(pickupX+2, pickupY-2));
+
+        TrajectoryActionBuilder pickup3 = drive.actionBuilder(score2Pose)
+                .strafeToLinearHeading(new Vector2d(pickupX, pickupY), Math.toRadians(-45));
+//                .strafeToConstantHeading(new Vector2d(pickupX+2, pickupY-2));
+
+        TrajectoryActionBuilder pickup4 = drive.actionBuilder(score3Pose)
+                .strafeToLinearHeading(new Vector2d(pickupX, pickupY), Math.toRadians(-45));
+//                .strafeToConstantHeading(new Vector2d(pickupX+2, pickupY-2));
 
         TrajectoryActionBuilder score1 = drive.actionBuilder(pickupPose)
                 .strafeToLinearHeading(new Vector2d(scoreX, scoreY), Math.toRadians(-90));
@@ -104,154 +128,276 @@ public class FiveSpecimenTestAuto extends LinearOpMode {
         TrajectoryActionBuilder score4 = drive.actionBuilder(pickupPose)
                 .strafeToLinearHeading(new Vector2d(score4X, score4Y), Math.toRadians(-90));
 
-        TrajectoryActionBuilder park = drive.actionBuilder(scorePose)
-                .strafeToConstantHeading(new Vector2d(parkX, parkY));
+        TrajectoryActionBuilder intake1 = drive.actionBuilder(score4Pose)
+                .strafeToLinearHeading(new Vector2d(intake1X, intake1Y), Math.toRadians(90.1));
 
-        Action INTAKE_FLOOR1 =
-                new SequentialAction(
-                        new ParallelAction(
-                                intakeArm.IntakeHover(),
-                                horizontalSlides.HorizontalExtend()
-                        ),
-                        intakeArm.IntakePickup(),
-                        new SleepAction(0.5),
-                        intakeArm.IntakeClose(),
-                        new SleepAction(0.2),
-                        intakeArm.IntakeTransfer(),
-                        new SleepAction(0.2),
-                        horizontalSlides.HorizontalRetract()
-                );
+        TrajectoryActionBuilder scoreBucket1 = drive.actionBuilder(intake1Pose)
+                .strafeToLinearHeading(new Vector2d(scoreBucketX, scoreBucketY), Math.toRadians(45));
 
-        Action INTAKE_FLOOR2 =
-                new SequentialAction(
-                        intakeArm.IntakePickup(),
-                        new SleepAction(0.5),
-                        intakeArm.IntakeClose(),
-                        new SleepAction(0.2),
-                        intakeArm.IntakeTransfer(),
-                        new SleepAction(0.2),
-                        horizontalSlides.HorizontalRetract()
-                );
+        TrajectoryActionBuilder intake2 = drive.actionBuilder(bucketPose)
+                .strafeToLinearHeading(new Vector2d(intake2X, intake2Y), Math.toRadians(90));
 
-        Action INTAKE_FLOOR3 =
-                new SequentialAction(
-                        intakeArm.IntakePickup(),
-                        new SleepAction(0.5),
-                        intakeArm.IntakeClose(),
-                        new SleepAction(0.2),
-                        intakeArm.IntakeTransfer(),
-                        new SleepAction(0.2),
-                        horizontalSlides.HorizontalRetract()
-                );
+        TrajectoryActionBuilder scoreBucket2 = drive.actionBuilder(intake2Pose)
+                .strafeToLinearHeading(new Vector2d(scoreBucketX, scoreBucketY), Math.toRadians(45));
 
-        Action TRANSFER_AND_DROP1 =
-                new ParallelAction(
-                        new SequentialAction(
-                                scoringArm.WholeArmTransfer(),
-                                intakeArm.ClawOpen(),
-                                scoringArm.ArmDropClip(),
-                                scoringArm.DropBucket(),
-                                scoringArm.StowWholeArm()
-                        ),
-                        intakeArm.IntakeHover(),
-                        horizontalSlides.HorizontalExtend()
-                );
+        TrajectoryActionBuilder turn = drive.actionBuilder(bucketPose)
+                .turnTo(Math.toRadians(90));
 
-        Action TRANSFER_AND_DROP2 =
-                new ParallelAction(
-                        new SequentialAction(
-                                scoringArm.WholeArmTransfer(),
-                                intakeArm.ClawOpen(),
-                                scoringArm.ArmDropClip(),
-                                scoringArm.DropBucket(),
-                                scoringArm.StowWholeArm()
-                        ),
-                        intakeArm.IntakeHover(),
-                        horizontalSlides.HorizontalExtend()
-                );
-
-        Action TRANSFER_AND_DROP3 =
-                new ParallelAction(
-                        new SequentialAction(
-                                scoringArm.WholeArmTransfer(),
-                                intakeArm.ClawOpen(),
-                                scoringArm.ArmDropClip(),
-                                scoringArm.DropBucket(),
-                                scoringArm.StowWholeArm()
-                        ),
-                        intakeArm.IntakeHover(),
-                        horizontalSlides.HorizontalExtend()
-                );
+//        TrajectoryActionBuilder park = drive.actionBuilder(scorePose)
+//                .strafeToConstantHeading(new Vector2d(parkX, parkY));
 
         Action PREP_CLIP =
                 new ParallelAction(
-                        scoringArm.ArmScoreClip(),
                         verticalSlides.LiftUpToClip(),
+                        scoringArm.ArmScoreClip()
+                );
+
+        Action SCORE_PRELOAD =
+                new ParallelAction(
+                        scoringArm.DropBucket()
+                );
+
+        Action EXTEND_HORIZONTAL1 =
+                new ParallelAction(
+                        verticalSlides.Retract(),
+                        scoringArm.StowWholeArm(),
+                        horizontalSlides.HorizontalExtend(),
+                        intakeArm.IntakeHoverPerpendicular()
+                );
+
+        Action DROP_INTAKE1 =
+                new ParallelAction(
+                        intakeArm.IntakeDrop()
+                );
+
+        Action RAISE_INTAKE1 =
+                new ParallelAction(
+                        intakeArm.IntakeHoverPerpendicular()
+                );
+
+        Action DROP_INTAKE2 =
+                new ParallelAction(
+                        intakeArm.IntakeDrop()
+                );
+
+        Action RAISE_INTAKE2 =
+                new ParallelAction(
+                        intakeArm.IntakeHoverPerpendicular()
+                );
+
+        Action DROP_INTAKE3 =
+                new ParallelAction(
+                        intakeArm.IntakeDrop()
+                );
+
+        Action RETRACT_INTAKE3 =
+                new ParallelAction(
+                        horizontalSlides.HorizontalRetract(),
+                        intakeArm.IntakeTransfer()
+                );
+
+        Action PICKUP1 =
+                new SequentialAction(
+                        new ParallelAction(
+                                horizontalSlides.HorizontalExtend(),
+                                intakeArm.IntakeHover()
+                        ),
+                        intakeArm.IntakePickup(),
+                        new SleepAction(0.15),
+                        intakeArm.IntakeClose(),
+                        new SleepAction(0.1),
+                        new ParallelAction(
+                                horizontalSlides.HorizontalRetract(),
+                                intakeArm.IntakeTransfer()
+                        )
+                );
+
+        Action TRANSFER_AND_EXTEND1 =
+                new SequentialAction(
+                        scoringArm.WholeArmTransfer(),
+                        intakeArm.ClawOpen(),
+                        intakeArm.IntakeHover(),
+                        new ParallelAction(
+                                verticalSlides.LiftUpToClip(),
+                                scoringArm.ArmScoreClip()
+                        )
+                );
+
+        Action SCORE_CLIP1 =
+                new ParallelAction(
+                        scoringArm.DropBucket()
+                );
+
+        Action EXTEND_INTAKE2 =
+                new ParallelAction(
+                        verticalSlides.Retract(),
+                        scoringArm.StowWholeArm(),
+                        horizontalSlides.HorizontalExtend()
+                );
+
+        Action PICKUP2 =
+                new SequentialAction(
+                        intakeArm.IntakePickup(),
+                        new SleepAction(0.15),
+                        intakeArm.IntakeClose(),
+                        new SleepAction(0.1),
+                        new ParallelAction(
+                                horizontalSlides.HorizontalRetract(),
+                                intakeArm.IntakeTransfer()
+                        )
+                );
+
+        Action TRANSFER_AND_EXTEND2 =
+                new SequentialAction(
+                        scoringArm.WholeArmTransfer(),
+                        intakeArm.ClawOpen(),
+                        intakeArm.IntakeHover(),
+                        new ParallelAction(
+                                verticalSlides.LiftUpToClip(),
+                                scoringArm.ArmScoreClip()
+                        )
+                );
+
+        Action SCORE_CLIP2 =
+                new ParallelAction(
+                        scoringArm.DropBucket()
+                );
+
+        Action EXTEND_INTAKE3 =
+                new ParallelAction(
+                        verticalSlides.Retract(),
+                        scoringArm.StowWholeArm(),
+                        horizontalSlides.HorizontalExtend()
+                );
+
+        Action PICKUP3 =
+                new SequentialAction(
+                        intakeArm.IntakePickup(),
+                        new SleepAction(0.15),
+                        intakeArm.IntakeClose(),
+                        new SleepAction(0.1),
+                        new ParallelAction(
+                                horizontalSlides.HorizontalRetract(),
+                                intakeArm.IntakeTransfer()
+                        )
+                );
+
+        Action TRANSFER_AND_EXTEND3 =
+                new SequentialAction(
+                        scoringArm.WholeArmTransfer(),
+                        intakeArm.ClawOpen(),
+                        intakeArm.IntakeHover(),
+                        new ParallelAction(
+                                verticalSlides.LiftUpToClip(),
+                                scoringArm.ArmScoreClip()
+                        )
+                );
+
+        Action SCORE_CLIP3 =
+                new ParallelAction(
+                        scoringArm.DropBucket()
+                );
+
+        Action EXTEND_INTAKE4 =
+                new ParallelAction(
+                        verticalSlides.Retract(),
+                        scoringArm.StowWholeArm(),
+                        horizontalSlides.HorizontalExtend()
+                );
+
+        Action PICKUP4 =
+                new SequentialAction(
+                        intakeArm.IntakePickup(),
+                        new SleepAction(0.15),
+                        intakeArm.IntakeClose(),
+                        new SleepAction(0.1),
+                        new ParallelAction(
+                                horizontalSlides.HorizontalRetract(),
+                                intakeArm.IntakeTransfer()
+                        )
+                );
+
+        Action TRANSFER_AND_EXTEND4 =
+                new SequentialAction(
+                        scoringArm.WholeArmTransfer(),
+                        intakeArm.ClawOpen(),
+                        intakeArm.IntakeHover(),
+                        new ParallelAction(
+                                verticalSlides.LiftUpToClip(),
+                                scoringArm.ArmScoreClip()
+                        ),
+                        intakeArm.IntakeTransfer()
+                );
+
+        Action SCORE_CLIP4 =
+                new ParallelAction(
+                        scoringArm.DropBucket()
+                );
+
+        Action EXTEND_INTAKE5 =
+                new ParallelAction(
+                        verticalSlides.Retract(),
+                        scoringArm.StowWholeArm(),
+                        horizontalSlides.HorizontalExtend(),
+                        intakeArm.IntakeHover()
+                );
+
+        Action INTAKE_SAMPLE1 =
+                new SequentialAction(
+                        intakeArm.IntakePickup(),
+                        new SleepAction(0.15),
+                        intakeArm.IntakeClose(),
+                        new SleepAction(0.1),
+                        intakeArm.IntakeTransfer(),
+//                        new SleepAction(0.2),
+                        horizontalSlides.HorizontalRetract(),
+                        scoringArm.WholeArmTransfer(),
+                        intakeArm.ClawOpen()
+                );
+
+        Action EXTEND_SAMPLE1 =
+                new ParallelAction(
+                        verticalSlides.LiftUpToHighBucket(),
+                        scoringArm.ArmScoreBucket()
+                );
+
+        Action SCORE_BUCKET1 =
+                scoringArm.DropBucket();
+
+        Action RETRACT_SAMPLE1 =
+                new ParallelAction(
+                        verticalSlides.Retract(),
+                        scoringArm.StowWholeArm()
+                );
+
+        Action INTAKE_SAMPLE2 =
+                new SequentialAction(
+                        intakeArm.IntakePickup(),
+                        new SleepAction(0.15),
+                        intakeArm.IntakeClose(),
+                        new SleepAction(0.1),
+                        intakeArm.IntakeTransfer(),
+//                        new SleepAction(0.2),
+                        horizontalSlides.HorizontalRetract(),
+                        scoringArm.WholeArmTransfer(),
+                        intakeArm.ClawOpen()
+                );
+
+        Action EXTEND_SAMPLE2 =
+                new ParallelAction(
+                        verticalSlides.LiftUpToHighBucket(),
+                        scoringArm.ArmScoreBucket()
+                );
+
+        Action SCORE_BUCKET2 =
+                scoringArm.DropBucket();
+
+        Action RETRACT_SAMPLE2 =
+                new ParallelAction(
+                        verticalSlides.Retract(),
+                        scoringArm.StowWholeArm(),
                         horizontalSlides.HorizontalRetract()
                 );
-        Action PREP_CLIP2 = new ParallelAction(
-                scoringArm.ArmScoreClip(),
-                verticalSlides.LiftUpToClip(),
-                horizontalSlides.HorizontalRetract()
-        );
-        Action PREP_CLIP3 = new ParallelAction(
-                scoringArm.ArmScoreClip(),
-                verticalSlides.LiftUpToClip(),
-                horizontalSlides.HorizontalRetract()
-        );
-        Action PREP_CLIP4 = new ParallelAction(
-                scoringArm.ArmScoreClip(),
-                verticalSlides.LiftUpToClip(),
-                horizontalSlides.HorizontalRetract()
-        );
-        Action PREP_CLIP5 = new ParallelAction(
-                scoringArm.ArmScoreClip(),
-                verticalSlides.LiftUpToClip(),
-                horizontalSlides.HorizontalRetract()
-        );
-
-        Action SCORE_CLIP =
-                new SequentialAction(
-                        verticalSlides.SlamScoreClip(),
-                        scoringArm.StowWholeArm(),
-                        verticalSlides.Retract()
-                );
-        Action SCORE_CLIP2 = new SequentialAction(
-                verticalSlides.SlamScoreClip(),
-                scoringArm.StowWholeArm(),
-                verticalSlides.Retract()
-        );
-        Action SCORE_CLIP3 = new SequentialAction(
-                verticalSlides.SlamScoreClip(),
-                scoringArm.StowWholeArm(),
-                verticalSlides.Retract()
-        );
-        Action SCORE_CLIP4 = new SequentialAction(
-                verticalSlides.SlamScoreClip(),
-                scoringArm.StowWholeArm(),
-                verticalSlides.Retract(),
-                horizontalSlides.HorizontalRetract()
-        );
-        Action SCORE_CLIP5 = new SequentialAction(
-                verticalSlides.SlamScoreClip(),
-                scoringArm.StowWholeArm(),
-                verticalSlides.Retract(),
-                horizontalSlides.HorizontalRetract()
-        );
-
-        Action PICKUP_CLIP =
-                new SequentialAction(
-                        scoringArm.ArmGrabClip()
-                );
-        Action PICKUP_CLIP2 = new SequentialAction(
-                scoringArm.ArmGrabClip()
-        );
-        Action PICKUP_CLIP3 = new SequentialAction(
-                scoringArm.ArmGrabClip()
-        );
-        Action PICKUP_CLIP4 = new SequentialAction(
-                scoringArm.ArmGrabClip()
-        );
 
         Action INITIALIZE =
                 new ParallelAction(
@@ -274,69 +420,127 @@ public class FiveSpecimenTestAuto extends LinearOpMode {
 
         if (isStopRequested()) return;
 
-        Action SCORE_PRELOAD = scorePreload.build();
-        Action FIELD1 = field1.build();
-        Action FIELD2 = field2.build();
-        Action FIELD3 = field3.build();
-        Action PICKUP1 = pickup1.build();
-        Action PICKUP2 = pickup2.build();
-        Action PICKUP3 = pickup3.build();
-        Action PICKUP4 = pickup4.build();
-        Action SCORE1 = score1.build();
-        Action SCORE2 = score2.build();
-        Action SCORE3 = score3.build();
-        Action SCORE4 = score4.build();
-        Action PARK = park.build();
+        Action DRIVE_SCORE_PRELOAD = scorePreload.build();
+        Action DRIVE_FIELD1 = field1.build();
+        Action DRIVE_TURN1 = turn1.build();
+        Action DRIVE_FIELD2 = field2.build();
+        Action DRIVE_TURN2 = turn1.build();
+        Action DRIVE_FIELD3 = field3.build();
+        Action DRIVE_TURN3 = turn1.build();
+        Action DRIVE_PICKUP1 = pickup1.build();
+        Action DRIVE_PICKUP2 = pickup2.build();
+        Action DRIVE_PICKUP3 = pickup3.build();
+        Action DRIVE_PICKUP4 = pickup4.build();
+        Action DRIVE_SCORE1 = score1.build();
+        Action DRIVE_SCORE2 = score2.build();
+        Action DRIVE_SCORE3 = score3.build();
+        Action DRIVE_SCORE4 = score4.build();
+        Action DRIVE_INTAKE1 = intake1.build();
+        Action DRIVE_SCORE_BUCKET1 = scoreBucket1.build();
+        Action DRIVE_INTAKE2 = intake2.build();
+        Action DRIVE_SCORE_BUCKET2 = scoreBucket2.build();
+        Action DRIVE_PARK = turn.build();
 
         Actions.runBlocking(
                 new SequentialAction(
                         new ParallelAction(
-                                PREP_CLIP,
-                        SCORE_PRELOAD
+                        PREP_CLIP,
+                        DRIVE_SCORE_PRELOAD
                         ),
-                                SCORE_CLIP,
-                        FIELD1,
-                                INTAKE_FLOOR1,
+                        SCORE_PRELOAD,
                         new ParallelAction(
-                        FIELD2,
-                                TRANSFER_AND_DROP1
+                                DRIVE_FIELD1,
+                                new SleepAction(0.5),
+                                EXTEND_HORIZONTAL1
                         ),
-                                INTAKE_FLOOR2,
                         new ParallelAction(
-                        FIELD3,
-                                TRANSFER_AND_DROP2
+                                DROP_INTAKE1,
+                                DRIVE_TURN1
                         ),
-                                INTAKE_FLOOR3,
-                                TRANSFER_AND_DROP3,
                         new ParallelAction(
-                        PICKUP1
-                                //extend intake
+                                RAISE_INTAKE1,
+                                DRIVE_FIELD2
                         ),
-                                //intake and transfer
-                        SCORE1,
-                                SCORE_CLIP2,
                         new ParallelAction(
-                        PICKUP2
-                                //extend intake
+                                DROP_INTAKE2,
+                                DRIVE_TURN2
                         ),
-                                //intake and transfer
-                        SCORE2,
-                                SCORE_CLIP3,
                         new ParallelAction(
-                        PICKUP3
-                                //extend intake
+                                RAISE_INTAKE2,
+                                DRIVE_FIELD3
                         ),
-                                //intake and transfer
-                        SCORE3,
-                            SCORE_CLIP4,
                         new ParallelAction(
-                        PICKUP4
-                                //extend intake
+                                DROP_INTAKE3,
+                                DRIVE_TURN3
                         ),
-                                //intake and transfer
-                        SCORE4,
-                                SCORE_CLIP5,
-                        PARK
+                        new ParallelAction(
+                                RETRACT_INTAKE3,
+                                DRIVE_PICKUP1
+                        ),
+                        PICKUP1,
+                        new ParallelAction(
+                                TRANSFER_AND_EXTEND1,
+                                DRIVE_SCORE1
+                        ),
+                        SCORE_CLIP1,
+                        new ParallelAction(
+                                DRIVE_PICKUP2,
+                                new SleepAction(0.5),
+                                EXTEND_INTAKE2
+                        ),
+                        PICKUP2,
+                        new ParallelAction(
+                                TRANSFER_AND_EXTEND2,
+                                DRIVE_SCORE2
+                        ),
+                        SCORE_CLIP2,
+                        new ParallelAction(
+                                DRIVE_PICKUP3,
+                                new SleepAction(0.5),
+                                EXTEND_INTAKE3
+                        ),
+                        PICKUP3,
+                        new ParallelAction(
+                                TRANSFER_AND_EXTEND3,
+                                DRIVE_SCORE3
+                        ),
+                        SCORE_CLIP3,
+                        new ParallelAction(
+                                DRIVE_PICKUP4,
+                                new SleepAction(0.5),
+                                EXTEND_INTAKE4
+                        ),
+                        PICKUP4,
+                        new ParallelAction(
+                                TRANSFER_AND_EXTEND4,
+                                DRIVE_SCORE4
+                        ),
+                        SCORE_CLIP4,
+                        new ParallelAction(
+                                DRIVE_INTAKE1,
+                                new SleepAction(0.5),
+                                EXTEND_INTAKE5
+                        ),
+                        INTAKE_SAMPLE1,
+                        new ParallelAction(
+                                DRIVE_SCORE_BUCKET1,
+                                EXTEND_SAMPLE1
+                        ),
+                        SCORE_BUCKET1,
+                        new ParallelAction(
+                                DRIVE_INTAKE2,
+                                RETRACT_SAMPLE1
+                        ),
+                        INTAKE_SAMPLE2,
+                        new ParallelAction(
+                                DRIVE_SCORE_BUCKET2,
+                                EXTEND_SAMPLE2
+                        ),
+                        SCORE_BUCKET2,
+                        new ParallelAction(
+                                DRIVE_PARK,
+                                RETRACT_SAMPLE2
+                        )
                 )
         );
     }

@@ -339,4 +339,17 @@ public class IntakeArm {
     public Action IntakeHoverPerpendicular() {
         return new IntakeHoverPerpendicular();
     }
+
+    public class IntakeDrop implements Action {
+        @Override
+        public boolean run(@NonNull TelemetryPacket packet) {
+            arm.setArmGrab();
+            return false;
+        }
+    }
+
+    public Action IntakeDrop() {
+        return new IntakeDrop();
+    }
 }
+
