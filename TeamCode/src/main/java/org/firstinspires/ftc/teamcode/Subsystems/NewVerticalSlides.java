@@ -200,7 +200,7 @@ public class NewVerticalSlides {
 
     private boolean isDifferent(double val1, double val2)
     {
-        return Math.abs(val1 - val2) < powerCachingThreshold;
+        return Math.abs(val1 - val2) > powerCachingThreshold;
     }
 
     // Functioning autonomous implementation
