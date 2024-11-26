@@ -24,26 +24,26 @@ import org.firstinspires.ftc.teamcode.Subsystems.VerticalSlides;
 public class FiveSpecimenTestAuto extends LinearOpMode {
 
     public static double startX = 9;
-    public static double startY = -63.5;
+    public static double startY = -62.5;
     public static double startHeading = Math.toRadians(-90);
     public static double scorePreloadX = 9;
-    public static double scorePreloadY = -35;
-    public static double field1X = 25;
+    public static double scorePreloadY = -34;
+    public static double field1X = 27;
     public static double field1Y = -36;
-    public static double field2X = 35;
+    public static double field2X = 37;
     public static double field2Y = -36;
-    public static double field3X = 45;
+    public static double field3X = 46;
     public static double field3Y = -36;
     public static double pickupX = 24;
     public static double pickupY = -48;
-    public static double scoreX = 6;
-    public static double scoreY = -35;
-    public static double score2X = 3;
-    public static double score2Y = -35;
-    public static double score3X = 0;
-    public static double score3Y = -35;
-    public static double score4X = -5;
-    public static double score4Y = -35;
+    public static double scoreX = 1;
+    public static double scoreY = -34;
+    public static double score2X = -2;
+    public static double score2Y = -34;
+    public static double score3X = -5;
+    public static double score3Y = -34;
+    public static double score4X = -10;
+    public static double score4Y = -34;
     public static double intake1X = -47;
     public static double intake1Y = -48;
     public static double scoreBucketX = -55;
@@ -52,13 +52,13 @@ public class FiveSpecimenTestAuto extends LinearOpMode {
     public static double intake2Y = -48;
     Pose2d startPose = new Pose2d(startX, startY, startHeading);
     Pose2d preloadPose = new Pose2d(scorePreloadX, scorePreloadY, Math.toRadians(-90));
-    Pose2d field1Pose = new Pose2d(field1X, field1Y, Math.toRadians(90));
+    Pose2d field1Pose = new Pose2d(field1X, field1Y, Math.toRadians(30));
     Pose2d turn1Pose = new Pose2d(field1X, field1Y, Math.toRadians(-40));
-    Pose2d field2Pose = new Pose2d(field2X, field2Y, Math.toRadians(90));
+    Pose2d field2Pose = new Pose2d(field2X, field2Y, Math.toRadians(30));
     Pose2d turn2Pose = new Pose2d(field2X, field2Y, Math.toRadians(-40));
-    Pose2d field3Pose = new Pose2d(field3X, field3Y, Math.toRadians(45));
+    Pose2d field3Pose = new Pose2d(field3X, field3Y, Math.toRadians(30));
     Pose2d turn3Pose = new Pose2d(field3X, field3Y, Math.toRadians(-40));
-    Pose2d pickupPose = new Pose2d(pickupX, pickupY, Math.toRadians(90));
+    Pose2d pickupPose = new Pose2d(pickupX, pickupY, Math.toRadians(-45));
     Pose2d score1Pose = new Pose2d(scoreX, scoreY, Math.toRadians(-90));
     Pose2d score2Pose = new Pose2d(score2X, score2Y, Math.toRadians(-90));
     Pose2d score3Pose = new Pose2d(score3X, score3Y, Math.toRadians(-90));
@@ -80,38 +80,38 @@ public class FiveSpecimenTestAuto extends LinearOpMode {
                 .strafeToConstantHeading(new Vector2d(scorePreloadX, scorePreloadY));
 
         TrajectoryActionBuilder field1 = drive.actionBuilder(preloadPose)
-                .splineToLinearHeading(new Pose2d(field1X, field1Y, Math.toRadians(40)), Math.toRadians(0));
+                .splineToLinearHeading(new Pose2d(field1X, field1Y, Math.toRadians(30)), Math.toRadians(0));
 
         TrajectoryActionBuilder turn1 = drive.actionBuilder(field1Pose)
                 .turnTo(Math.toRadians(-40));
 
         TrajectoryActionBuilder field2 = drive.actionBuilder(turn1Pose)
-                .strafeToLinearHeading(new Vector2d(field2X, field2Y), Math.toRadians(40));
+                .strafeToLinearHeading(new Vector2d(field2X, field2Y), Math.toRadians(30));
 
         TrajectoryActionBuilder turn2 = drive.actionBuilder(field2Pose)
                 .turnTo(Math.toRadians(-40));
 
         TrajectoryActionBuilder field3 = drive.actionBuilder(turn2Pose)
-                .strafeToLinearHeading(new Vector2d(field3X, field3Y), Math.toRadians(40));
+                .strafeToLinearHeading(new Vector2d(field3X, field3Y), Math.toRadians(30));
 
         TrajectoryActionBuilder turn3 = drive.actionBuilder(field3Pose)
                 .turnTo(Math.toRadians(-40));
 
         TrajectoryActionBuilder pickup1 = drive.actionBuilder(turn3Pose)
-                .strafeToLinearHeading(new Vector2d(pickupX, pickupY), Math.toRadians(-45));
-//                .strafeToConstantHeading(new Vector2d(pickupX+2, pickupY-2));
+                .strafeToLinearHeading(new Vector2d(pickupX, pickupY), Math.toRadians(-45))
+                .strafeToConstantHeading(new Vector2d(pickupX+2, pickupY-2));
 
         TrajectoryActionBuilder pickup2 = drive.actionBuilder(score1Pose)
-                .strafeToLinearHeading(new Vector2d(pickupX, pickupY), Math.toRadians(-45));
-//                .strafeToConstantHeading(new Vector2d(pickupX+2, pickupY-2));
+                .strafeToLinearHeading(new Vector2d(pickupX, pickupY), Math.toRadians(-45))
+                .strafeToConstantHeading(new Vector2d(pickupX+2, pickupY-2));
 
         TrajectoryActionBuilder pickup3 = drive.actionBuilder(score2Pose)
-                .strafeToLinearHeading(new Vector2d(pickupX, pickupY), Math.toRadians(-45));
-//                .strafeToConstantHeading(new Vector2d(pickupX+2, pickupY-2));
+                .strafeToLinearHeading(new Vector2d(pickupX, pickupY), Math.toRadians(-45))
+                .strafeToConstantHeading(new Vector2d(pickupX+2, pickupY-2));
 
         TrajectoryActionBuilder pickup4 = drive.actionBuilder(score3Pose)
-                .strafeToLinearHeading(new Vector2d(pickupX, pickupY), Math.toRadians(-45));
-//                .strafeToConstantHeading(new Vector2d(pickupX+2, pickupY-2));
+                .strafeToLinearHeading(new Vector2d(pickupX, pickupY), Math.toRadians(-45))
+                .strafeToConstantHeading(new Vector2d(pickupX+2, pickupY-2));
 
         TrajectoryActionBuilder score1 = drive.actionBuilder(pickupPose)
                 .strafeToLinearHeading(new Vector2d(scoreX, scoreY), Math.toRadians(-90));
@@ -147,8 +147,11 @@ public class FiveSpecimenTestAuto extends LinearOpMode {
                 );
 
         Action SCORE_PRELOAD =
-                new ParallelAction(
-                        scoringArm.DropBucket()
+                new SequentialAction(
+                        verticalSlides.SlamScoreClip(),
+                        scoringArm.StowWholeArm(),
+                        verticalSlides.Retract(),
+                        horizontalSlides.HorizontalRetract()
                 );
 
         Action EXTEND_HORIZONTAL1 =
@@ -218,8 +221,11 @@ public class FiveSpecimenTestAuto extends LinearOpMode {
                 );
 
         Action SCORE_CLIP1 =
-                new ParallelAction(
-                        scoringArm.DropBucket()
+                new SequentialAction(
+                        verticalSlides.SlamScoreClip(),
+                        scoringArm.StowWholeArm(),
+                        verticalSlides.Retract(),
+                        horizontalSlides.HorizontalRetract()
                 );
 
         Action EXTEND_INTAKE2 =
@@ -253,8 +259,11 @@ public class FiveSpecimenTestAuto extends LinearOpMode {
                 );
 
         Action SCORE_CLIP2 =
-                new ParallelAction(
-                        scoringArm.DropBucket()
+                new SequentialAction(
+                        verticalSlides.SlamScoreClip(),
+                        scoringArm.StowWholeArm(),
+                        verticalSlides.Retract(),
+                        horizontalSlides.HorizontalRetract()
                 );
 
         Action EXTEND_INTAKE3 =
@@ -288,8 +297,11 @@ public class FiveSpecimenTestAuto extends LinearOpMode {
                 );
 
         Action SCORE_CLIP3 =
-                new ParallelAction(
-                        scoringArm.DropBucket()
+                new SequentialAction(
+                        verticalSlides.SlamScoreClip(),
+                        scoringArm.StowWholeArm(),
+                        verticalSlides.Retract(),
+                        horizontalSlides.HorizontalRetract()
                 );
 
         Action EXTEND_INTAKE4 =
@@ -324,8 +336,11 @@ public class FiveSpecimenTestAuto extends LinearOpMode {
                 );
 
         Action SCORE_CLIP4 =
-                new ParallelAction(
-                        scoringArm.DropBucket()
+                new SequentialAction(
+                        verticalSlides.SlamScoreClip(),
+                        scoringArm.StowWholeArm(),
+                        verticalSlides.Retract(),
+                        horizontalSlides.HorizontalRetract()
                 );
 
         Action EXTEND_INTAKE5 =
@@ -472,6 +487,7 @@ public class FiveSpecimenTestAuto extends LinearOpMode {
                                 DRIVE_PICKUP1
                         ),
                         PICKUP1,
+                        new SleepAction(0.5),
                         new ParallelAction(
                                 TRANSFER_AND_EXTEND1,
                                 DRIVE_SCORE1
@@ -479,10 +495,10 @@ public class FiveSpecimenTestAuto extends LinearOpMode {
                         SCORE_CLIP1,
                         new ParallelAction(
                                 DRIVE_PICKUP2,
-                                new SleepAction(0.5),
                                 EXTEND_INTAKE2
                         ),
                         PICKUP2,
+                        new SleepAction(0.5),
                         new ParallelAction(
                                 TRANSFER_AND_EXTEND2,
                                 DRIVE_SCORE2
@@ -490,10 +506,10 @@ public class FiveSpecimenTestAuto extends LinearOpMode {
                         SCORE_CLIP2,
                         new ParallelAction(
                                 DRIVE_PICKUP3,
-                                new SleepAction(0.5),
                                 EXTEND_INTAKE3
                         ),
                         PICKUP3,
+                        new SleepAction(0.5),
                         new ParallelAction(
                                 TRANSFER_AND_EXTEND3,
                                 DRIVE_SCORE3
@@ -501,40 +517,40 @@ public class FiveSpecimenTestAuto extends LinearOpMode {
                         SCORE_CLIP3,
                         new ParallelAction(
                                 DRIVE_PICKUP4,
-                                new SleepAction(0.5),
                                 EXTEND_INTAKE4
                         ),
                         PICKUP4,
+                        new SleepAction(0.5),
                         new ParallelAction(
                                 TRANSFER_AND_EXTEND4,
                                 DRIVE_SCORE4
                         ),
-                        SCORE_CLIP4,
-                        new ParallelAction(
-                                DRIVE_INTAKE1,
-                                new SleepAction(0.5),
-                                EXTEND_INTAKE5
-                        ),
-                        INTAKE_SAMPLE1,
-                        new ParallelAction(
-                                DRIVE_SCORE_BUCKET1,
-                                EXTEND_SAMPLE1
-                        ),
-                        SCORE_BUCKET1,
-                        new ParallelAction(
-                                DRIVE_INTAKE2,
-                                RETRACT_SAMPLE1
-                        ),
-                        INTAKE_SAMPLE2,
-                        new ParallelAction(
-                                DRIVE_SCORE_BUCKET2,
-                                EXTEND_SAMPLE2
-                        ),
-                        SCORE_BUCKET2,
-                        new ParallelAction(
-                                DRIVE_PARK,
-                                RETRACT_SAMPLE2
-                        )
+                        SCORE_CLIP4
+//                        new ParallelAction(
+//                                DRIVE_INTAKE1,
+//                                new SleepAction(0.5),
+//                                EXTEND_INTAKE5
+//                        ),
+//                        INTAKE_SAMPLE1,
+//                        new ParallelAction(
+//                                DRIVE_SCORE_BUCKET1,
+//                                EXTEND_SAMPLE1
+//                        ),
+//                        SCORE_BUCKET1,
+//                        new ParallelAction(
+//                                DRIVE_INTAKE2,
+//                                RETRACT_SAMPLE1
+//                        ),
+//                        INTAKE_SAMPLE2,
+//                        new ParallelAction(
+//                                DRIVE_SCORE_BUCKET2,
+//                                EXTEND_SAMPLE2
+//                        ),
+//                        SCORE_BUCKET2,
+//                        new ParallelAction(
+//                                DRIVE_PARK,
+//                                RETRACT_SAMPLE2
+//                        )
                 )
         );
     }
