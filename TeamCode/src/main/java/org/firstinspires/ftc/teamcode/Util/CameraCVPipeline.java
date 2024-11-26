@@ -75,10 +75,6 @@ public class CameraCVPipeline extends OpenCvPipeline implements CameraStreamSour
         return sampleAngle;
     }
 
-    public void supplyCurrentWristPosition(Supplier<Double> currentWristPosition) {
-        this.currentWristPosition = currentWristPosition;
-    }
-
     public void setDetectionType(ColorDetect sampleType) {
         this.detectionType = sampleType;
     }
@@ -95,7 +91,7 @@ public class CameraCVPipeline extends OpenCvPipeline implements CameraStreamSour
                 webcam1.setPipeline(new CameraCVPipeline());
                 FtcDashboard.getInstance().startCameraStream(
                         new CameraCVPipeline(),
-                        30.0
+                        60.0
                 );
 
             }

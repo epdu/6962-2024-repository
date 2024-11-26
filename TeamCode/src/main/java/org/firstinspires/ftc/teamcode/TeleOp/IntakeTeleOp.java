@@ -48,7 +48,9 @@ public class IntakeTeleOp extends OpMode {
 //        intake.operateTest();
         intake.operateTest(this);
         cPortal.run(this);
-        cPortal.start(this);
+        if (gamepad1.b) {
+            cPortal.changeColor();
+        }
         // Gamepad 2: tuning
         //
 

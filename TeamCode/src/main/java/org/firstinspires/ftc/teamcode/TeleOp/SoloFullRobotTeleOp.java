@@ -31,7 +31,7 @@ import java.util.List;
 
 @TeleOp(name="A Solo Full Robot TeleOp", group="Active TeleOps")
 public class SoloFullRobotTeleOp extends OpMode {
-
+    private OpMode opmode;
     // Action stuff
     private FtcDashboard dash = FtcDashboard.getInstance();
     private List<Action> runningActions = new ArrayList<>();
@@ -69,7 +69,6 @@ public class SoloFullRobotTeleOp extends OpMode {
         scoringArm.initialize(this);
         hang.initialize(this);
         cPortal.initialize(this);
-//        cameraPortal.init(this);
         allHubs = hardwareMap.getAll(LynxModule.class);
         // apparently optimizes reading from hardware (ex: getCurrentPosition) and makes runtime a bit faster
         for (LynxModule hub : allHubs) { hub.setBulkCachingMode(LynxModule.BulkCachingMode.MANUAL); }
@@ -77,7 +76,9 @@ public class SoloFullRobotTeleOp extends OpMode {
 
     @Override
     public void init_loop() {
-        cPortal.start(this);
+        if (currentGamepad1.b) {
+            cPortal.changeColor();
+        }
     }
 
     @Override
