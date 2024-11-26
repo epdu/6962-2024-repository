@@ -87,9 +87,25 @@ public class AutoOnlySlides {
         return new PIDUpdate();
     }
 
-    public Action Extend() { return new InstantAction(() -> target = 500); }
+    public class ExtendClass implements Action {
+        @Override
+        public boolean run(@NonNull TelemetryPacket packet) {
+            target = 500;
+            return false;
+        }
+    }
 
-    public Action Retract() { return new InstantAction(() -> target = 0); }
+    public class RetractClass implements Action {
+        @Override
+        public boolean run(@NonNull TelemetryPacket packet) {
+            target = 0;
+            return false;
+        }
+    }
+
+    public Action Extend() { return new ExtendClass(); }
+
+    public Action Retract() { return new RetractClass(); }
 
     // non-constantly running impelmentation
     // this might work, or it might not

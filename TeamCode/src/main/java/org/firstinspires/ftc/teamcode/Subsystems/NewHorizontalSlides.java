@@ -21,18 +21,18 @@ public class NewHorizontalSlides {
     private DcMotorEx slideMotor;
 
     // constants
-    public static double Kp = 0.006;
+    public static double Kp = 0.005;
     public static double Ki = 0;
     public static double Kd = 0.00001;
     public static double Kg = 0;
-    public static int upperLimit = 650; // this is for 1150s
+    public static int upperLimit = 900; // this is for 1150s
     public static int lowerLimit = -2;
     public static double retractedThreshold = 10;
     public static double mostlyRetractedThreshold = 60;
 
     // encoder positions
-    public static int extendedPos = 600;
-    public static int halfExtendedPos = 450;
+    public static int extendedPos = 800;
+    public static int halfExtendedPos = 500;
     public static int retractedPos = 0;
 
     //declaring variables for later modification

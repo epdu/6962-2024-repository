@@ -165,7 +165,7 @@ public class SoloFullRobotTeleOp extends OpMode {
                                 new InstantAction(() -> intakeArm.arm.setArmTransfer()),
 //                                new SleepAction(0.05), removing this to test, because it seems unnecessary
                                 new InstantAction(() -> intakeArm.wrist.setWristTransfer()),
-//                                new SleepAction(0.3), also removing this, because it seems unnecessary
+                                new SleepAction(0.2),
                                 new InstantAction(() -> horizontalSlides.retract())
 
                                 // if it turns out the above timings were useless, we will use the following code
@@ -179,7 +179,7 @@ public class SoloFullRobotTeleOp extends OpMode {
             }
 
             // horizontal slides extend 75%, intake arm grab, open intake claw
-            if (currentGamepad1.right_bumper && previousGamepad1.right_bumper && !(currentGamepad1.right_trigger >= 0.1)) {
+            if (currentGamepad1.right_bumper && !previousGamepad1.right_bumper && !(currentGamepad1.right_trigger >= 0.1)) {
                 runningActions.add(
                         new SequentialAction(
                                 new InstantAction(() -> horizontalSlides.extendHalfway()),
@@ -192,7 +192,7 @@ public class SoloFullRobotTeleOp extends OpMode {
                 );
             }
             // grab piece, then retract intake
-            else if (currentGamepad1.right_bumper && !previousGamepad1.right_bumper && !(currentGamepad1.right_trigger >= 0.1)) {
+            else if (!currentGamepad1.right_bumper && previousGamepad1.right_bumper && !(currentGamepad1.right_trigger >= 0.1)) {
                 runningActions.add(
                         new SequentialAction(
                                 new InstantAction(() -> intakeArm.arm.setArmGrab()),
@@ -202,7 +202,7 @@ public class SoloFullRobotTeleOp extends OpMode {
                                 new InstantAction(() -> intakeArm.arm.setArmTransfer()),
                                 new SleepAction(0.05), // possibly unnecessary
                                 new InstantAction(() -> intakeArm.wrist.setWristTransfer()),
-                                new SleepAction(0.3),
+                                new SleepAction(0.2),
                                 new InstantAction(() -> horizontalSlides.retract())
                         )
                 );
