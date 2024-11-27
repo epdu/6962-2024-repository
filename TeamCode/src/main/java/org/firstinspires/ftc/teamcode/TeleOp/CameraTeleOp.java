@@ -16,7 +16,6 @@ public class CameraTeleOp extends OpMode {
     @Override
     public void init() {
         cPortal.initialize(this);
-
     }
 
     @Override

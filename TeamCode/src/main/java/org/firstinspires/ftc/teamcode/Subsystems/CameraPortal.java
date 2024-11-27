@@ -14,11 +14,11 @@ import com.acmerobotics.roadrunner.Action;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.teamcode.Util.CameraCVPipeline;
-//import org.firstinspires.ftc.teamcode.Util.OpenCvPipeline;
 import org.firstinspires.ftc.teamcode.Util.ColorDetect;
 import org.firstinspires.ftc.teamcode.Util.RobotHardware;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
+import org.openftc.easyopencv.OpenCvCameraRotation;
 
 public class CameraPortal {
     private final CameraCVPipeline pipeLine = new CameraCVPipeline();
@@ -35,9 +35,28 @@ public class CameraPortal {
         dashTelemetry = new MultipleTelemetry(opMode.telemetry, FtcDashboard.getInstance().getTelemetry());
 
         rHardware.init(opMode.hardwareMap);
-        webcam1 = OpenCvCameraFactory.getInstance().createWebcam(rHardware.webcam, rHardware.cameraMonitorViewId);
-        pipeLine.initialize(opMode, webcam1);
-        pipeLine.setDetectionType(cameraColor);
+
+        pipeLine.initialize();
+
+        webcam1.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
+        {
+            @Override
+            public void onOpened()
+            {
+                // Usually this is where you'll want to start streaming from the camera (see section 4)
+                webcam1.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
+//                TODO: Create Pipeline
+                webcam1.setPipeline(pipeLine);
+                FtcDashboard.getInstance().startCameraStream(
+                        pipeLine,
+                        30.0
+                );
+
+            }
+            @Override
+            public void onError(int errorCode) {opMode.telemetry.addLine("womp womp");}
+        });
+//        pipeLine.setDetectionType(cameraColor);
         intake.initialize(opMode);
     }
 
@@ -81,7 +100,7 @@ public class CameraPortal {
         opMode.telemetry.addData("Pipeline time ms", webcam1.getPipelineTimeMs());
         opMode.telemetry.addData("Overhead time ms", webcam1.getOverheadTimeMs());
         opMode.telemetry.addData("Theoretical max FPS", webcam1.getCurrentPipelineMaxFps());
-//        dashTelemetry.update();
+        dashTelemetry.update();
 //        opMode.telemetry.update();
     }
 
