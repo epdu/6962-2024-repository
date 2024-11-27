@@ -79,25 +79,7 @@ public class CameraCVPipeline extends OpenCvPipeline implements CameraStreamSour
         this.detectionType = sampleType;
     }
 
-    public void initialize(OpMode opMode, OpenCvCamera webcam1) {
-        webcam1.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
-        {
-            @Override
-            public void onOpened()
-            {
-                // Usually this is where you'll want to start streaming from the camera (see section 4)
-                webcam1.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
-//                TODO: Create Pipeline
-                webcam1.setPipeline(new CameraCVPipeline());
-                FtcDashboard.getInstance().startCameraStream(
-                        new CameraCVPipeline(),
-                        60.0
-                );
-
-            }
-            @Override
-            public void onError(int errorCode) {opMode.telemetry.addLine("womp womp");}
-        });
+    public void initialize() {
         lastFrame.set(Bitmap.createBitmap(680, 480, Bitmap.Config.RGB_565));
     }
     private Scalar detectedColorRangeMin = new Scalar(0, 0, 0);
