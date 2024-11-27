@@ -38,7 +38,7 @@ public class AutoOnlySlides {
     public static int slamClipPos = 220;
 
     //declaring variables for later modification
-    private volatile double target = 0;
+    public volatile double target = 0;
     private volatile double slidePower;
     private volatile double output = 0;
     public volatile boolean slidesRetracted = true;
@@ -69,12 +69,20 @@ public class AutoOnlySlides {
 
     // Autonomous PID implementation
     public class PIDUpdate implements Action {
+        double PIDTarget = target;
+
+        public PIDUpdate() {
+            controller.setPID(Kp, Ki, Kd);
+        }
 
         // THIS LOOP WILL NEVER END, lets see what happens
         @Override
         public boolean run(@NonNull TelemetryPacket packet) {
+            controller.setPID(Kp, Ki, Kd);
             int currentPos = rightSlideMotor.getCurrentPosition();
-            output = controller.calculate(currentPos, target) + Kg;
+            output = controller.calculate(currentPos, PIDTarget) + Kg;
+            packet.put("output", output);
+            packet.put("target", PIDTarget);
 
             leftSlideMotor.setPower(output);
             rightSlideMotor.setPower(output);
@@ -116,6 +124,7 @@ public class AutoOnlySlides {
         public PIDRunToPos(int targetPos) {
             rtpTarget = targetPos;
         }
+
 
         @Override
         public boolean run(@NonNull TelemetryPacket packet) {

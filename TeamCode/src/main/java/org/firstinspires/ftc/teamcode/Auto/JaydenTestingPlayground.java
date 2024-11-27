@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.Auto;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.Action;
+import com.acmerobotics.roadrunner.InstantAction;
 import com.acmerobotics.roadrunner.ParallelAction;
 import com.acmerobotics.roadrunner.SleepAction;
 import com.acmerobotics.roadrunner.Pose2d;
@@ -35,17 +36,27 @@ public class JaydenTestingPlayground extends LinearOpMode{
         NewVerticalSlides newVertSlides = new NewVerticalSlides();
 
         TrajectoryActionBuilder move1 = drive.actionBuilder(startPose)
-                .strafeToConstantHeading(new Vector2d(12, 0))
-                .afterTime(0, () -> {
-                    new SequentialAction(
-                            // Jayden testing new slides stuff for autonomous
-                            vertSlides.Extend(),
-                            new SleepAction(3),
-                            vertSlides.Retract()
-
-                    );
-                })
+                .strafeToConstantHeading(new Vector2d(12, 0));
+//                .afterTime(0, () -> {
+//                    Actions.runBlocking(
+//                            new SequentialAction(
+//                                    // Jayden testing new slides stuff for autonomous
+//                                    vertSlides.Extend(),
+//                                    new SleepAction(3),
+//                                    vertSlides.Retract()
+//
+//                            )
+//                    );
+//                })
+        TrajectoryActionBuilder move2 = drive.actionBuilder(startPose)
                 .strafeToConstantHeading(new Vector2d(0, 0));
+
+        Action EXTEND_AND_RETRACT =
+                new SequentialAction(
+                        new InstantAction(() -> vertSlides.target = 500),
+                        new SleepAction(3),
+                        new InstantAction(() -> vertSlides.target = 0)
+                );
 
         while (!isStarted() && !opModeIsActive()) {
             vertSlides.initialize(this);
@@ -55,11 +66,16 @@ public class JaydenTestingPlayground extends LinearOpMode{
 
         if (isStopRequested()) return;
 
-        Action TestSubsystemTrajectory = move1.build();
+        Action Traj1 = move1.build();
+        Action Traj2 = move2.build();
 
         Actions.runBlocking(
                 new ParallelAction(
-                        TestSubsystemTrajectory,
+                        new SequentialAction(
+                                Traj1,
+                                EXTEND_AND_RETRACT,
+                                Traj2
+                        ),
                         vertSlides.Loop()
                 )
         );
