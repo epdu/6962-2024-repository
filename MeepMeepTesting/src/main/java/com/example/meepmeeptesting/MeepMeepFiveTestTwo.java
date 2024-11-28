@@ -13,11 +13,11 @@ public class MeepMeepFiveTestTwo {
 
         RoadRunnerBotEntity myBot = new DefaultBotBuilder(meepMeep)
                 // Set bot constraints: maxVel, maxAccel, maxAngVel, maxAngAccel, track width
-                .setConstraints(80, 80, Math.toRadians(180), Math.toRadians(180), 15)
+                .setConstraints(80, 80, Math.toRadians(10), Math.toRadians(10), 15)
                 .build();
 
         RoadRunnerBotEntity secondBot = new DefaultBotBuilder(meepMeep)
-                .setConstraints(80, 80, Math.toRadians(180), Math.toRadians(180), 18)
+                .setConstraints(80, 80, Math.toRadians(360), Math.toRadians(180), 18)
                 .setColorScheme(new ColorSchemeBlueDark())
                 .build();
 

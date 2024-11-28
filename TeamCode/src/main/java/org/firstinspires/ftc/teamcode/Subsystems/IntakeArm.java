@@ -122,7 +122,7 @@ public class IntakeArm {
     public static class Claw {
         public Servo claw;
         public boolean isClawOpen = true;
-        public static double clawClosedPosition = 0.4828;
+        public static double clawClosedPosition = 0.51;
         public static double clawOpenPosition = 0.0339;
         public static double clawIncrement = 0.001;
 

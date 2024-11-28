@@ -127,7 +127,7 @@ public class ThrowingStuffTeleOp extends OpMode {
                             new InstantAction(() -> intakeArm.wrist.setFlipIntake()),
                             new SleepAction(0),
                             new InstantAction(() -> intakeArm.arm.setArmHover()),
-                            new SleepAction(0.05),
+                            new SleepAction(0.04),
                             new InstantAction(() -> intakeArm.claw.openClaw())
                     )
             );

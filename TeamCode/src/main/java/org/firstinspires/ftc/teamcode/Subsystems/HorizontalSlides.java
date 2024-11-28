@@ -36,7 +36,7 @@ public class HorizontalSlides {
     public static double retractedThreshold = 10;
     public static double mostlyRetractedThreshold = 60;
 
-    public static int extendedPos = 700;
+    public static int extendedPos = 670;
     public static int halfExtendedPos = 500;
     public static int retractedPos = 0;
 
@@ -270,6 +270,8 @@ public class HorizontalSlides {
     public Action HorizontalExtend() {
         return new RunToPosition(halfExtendedPos);
     }
+
+    public Action HorizontalFullExtend() {return new RunToPosition(extendedPos);}
 
     public Action HorizontalRetract() {
         return new RunToPosition(retractedPos);

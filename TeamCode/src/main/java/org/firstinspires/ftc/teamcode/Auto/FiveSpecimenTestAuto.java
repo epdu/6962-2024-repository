@@ -52,11 +52,11 @@ public class FiveSpecimenTestAuto extends LinearOpMode {
     public static double intake2Y = -48;
     Pose2d startPose = new Pose2d(startX, startY, startHeading);
     Pose2d preloadPose = new Pose2d(scorePreloadX, scorePreloadY, Math.toRadians(-90));
-    Pose2d field1Pose = new Pose2d(field1X, field1Y, Math.toRadians(30));
+    Pose2d field1Pose = new Pose2d(field1X, field1Y, Math.toRadians(10));
     Pose2d turn1Pose = new Pose2d(field1X, field1Y, Math.toRadians(-40));
-    Pose2d field2Pose = new Pose2d(field2X, field2Y, Math.toRadians(30));
+    Pose2d field2Pose = new Pose2d(field2X, field2Y, Math.toRadians(10));
     Pose2d turn2Pose = new Pose2d(field2X, field2Y, Math.toRadians(-40));
-    Pose2d field3Pose = new Pose2d(field3X, field3Y, Math.toRadians(30));
+    Pose2d field3Pose = new Pose2d(field3X, field3Y, Math.toRadians(10));
     Pose2d turn3Pose = new Pose2d(field3X, field3Y, Math.toRadians(-40));
     Pose2d pickupPose = new Pose2d(pickupX, pickupY, Math.toRadians(-45));
     Pose2d score1Pose = new Pose2d(scoreX, scoreY, Math.toRadians(-90));
@@ -80,19 +80,19 @@ public class FiveSpecimenTestAuto extends LinearOpMode {
                 .strafeToConstantHeading(new Vector2d(scorePreloadX, scorePreloadY));
 
         TrajectoryActionBuilder field1 = drive.actionBuilder(preloadPose)
-                .splineToLinearHeading(new Pose2d(field1X, field1Y, Math.toRadians(30)), Math.toRadians(0));
+                .splineToLinearHeading(new Pose2d(field1X, field1Y, Math.toRadians(10)), Math.toRadians(0));
 
         TrajectoryActionBuilder turn1 = drive.actionBuilder(field1Pose)
                 .turnTo(Math.toRadians(-40));
 
         TrajectoryActionBuilder field2 = drive.actionBuilder(turn1Pose)
-                .strafeToLinearHeading(new Vector2d(field2X, field2Y), Math.toRadians(30));
+                .strafeToLinearHeading(new Vector2d(field2X, field2Y), Math.toRadians(10));
 
         TrajectoryActionBuilder turn2 = drive.actionBuilder(field2Pose)
                 .turnTo(Math.toRadians(-40));
 
         TrajectoryActionBuilder field3 = drive.actionBuilder(turn2Pose)
-                .strafeToLinearHeading(new Vector2d(field3X, field3Y), Math.toRadians(30));
+                .strafeToLinearHeading(new Vector2d(field3X, field3Y), Math.toRadians(10));
 
         TrajectoryActionBuilder turn3 = drive.actionBuilder(field3Pose)
                 .turnTo(Math.toRadians(-40));
@@ -163,34 +163,46 @@ public class FiveSpecimenTestAuto extends LinearOpMode {
                 );
 
         Action DROP_INTAKE1 =
-                new ParallelAction(
-                        intakeArm.IntakeDrop()
+                new SequentialAction(
+                        intakeArm.IntakePickup(),
+                        new SleepAction(0.2),
+                        intakeArm.IntakeClose()
                 );
 
         Action RAISE_INTAKE1 =
                 new ParallelAction(
+                        intakeArm.ClawOpen(),
                         intakeArm.IntakeHoverPerpendicular()
                 );
 
         Action DROP_INTAKE2 =
-                new ParallelAction(
-                        intakeArm.IntakeDrop()
+                new SequentialAction(
+                        intakeArm.IntakePickup(),
+                        new SleepAction(0.2),
+                        intakeArm.IntakeClose()
                 );
 
         Action RAISE_INTAKE2 =
                 new ParallelAction(
+                        intakeArm.ClawOpen(),
                         intakeArm.IntakeHoverPerpendicular()
                 );
 
         Action DROP_INTAKE3 =
-                new ParallelAction(
-                        intakeArm.IntakeDrop()
+                new SequentialAction(
+                        intakeArm.IntakePickup(),
+                        new SleepAction(0.2),
+                        intakeArm.IntakeClose()
                 );
 
         Action RETRACT_INTAKE3 =
-                new ParallelAction(
-                        horizontalSlides.HorizontalRetract(),
-                        intakeArm.IntakeTransfer()
+                new SequentialAction(
+                        new ParallelAction(
+                                intakeArm.ClawOpen(),
+                                intakeArm.IntakeHoverPerpendicular()
+                        ),
+                horizontalSlides.HorizontalRetract(),
+                intakeArm.IntakeTransfer()
                 );
 
         Action PICKUP1 =
@@ -200,7 +212,7 @@ public class FiveSpecimenTestAuto extends LinearOpMode {
                                 intakeArm.IntakeHover()
                         ),
                         intakeArm.IntakePickup(),
-                        new SleepAction(0.15),
+                        new SleepAction(0.5),
                         intakeArm.IntakeClose(),
                         new SleepAction(0.1),
                         new ParallelAction(
@@ -238,7 +250,7 @@ public class FiveSpecimenTestAuto extends LinearOpMode {
         Action PICKUP2 =
                 new SequentialAction(
                         intakeArm.IntakePickup(),
-                        new SleepAction(0.15),
+                        new SleepAction(0.5),
                         intakeArm.IntakeClose(),
                         new SleepAction(0.1),
                         new ParallelAction(
@@ -276,7 +288,7 @@ public class FiveSpecimenTestAuto extends LinearOpMode {
         Action PICKUP3 =
                 new SequentialAction(
                         intakeArm.IntakePickup(),
-                        new SleepAction(0.15),
+                        new SleepAction(0.5),
                         intakeArm.IntakeClose(),
                         new SleepAction(0.1),
                         new ParallelAction(
@@ -314,7 +326,7 @@ public class FiveSpecimenTestAuto extends LinearOpMode {
         Action PICKUP4 =
                 new SequentialAction(
                         intakeArm.IntakePickup(),
-                        new SleepAction(0.15),
+                        new SleepAction(0.5),
                         intakeArm.IntakeClose(),
                         new SleepAction(0.1),
                         new ParallelAction(
@@ -354,7 +366,7 @@ public class FiveSpecimenTestAuto extends LinearOpMode {
         Action INTAKE_SAMPLE1 =
                 new SequentialAction(
                         intakeArm.IntakePickup(),
-                        new SleepAction(0.15),
+                        new SleepAction(0.5),
                         intakeArm.IntakeClose(),
                         new SleepAction(0.1),
                         intakeArm.IntakeTransfer(),
@@ -382,7 +394,7 @@ public class FiveSpecimenTestAuto extends LinearOpMode {
         Action INTAKE_SAMPLE2 =
                 new SequentialAction(
                         intakeArm.IntakePickup(),
-                        new SleepAction(0.15),
+                        new SleepAction(0.5),
                         intakeArm.IntakeClose(),
                         new SleepAction(0.1),
                         intakeArm.IntakeTransfer(),
@@ -462,30 +474,18 @@ public class FiveSpecimenTestAuto extends LinearOpMode {
                                 new SleepAction(0.5),
                                 EXTEND_HORIZONTAL1
                         ),
-                        new ParallelAction(
-                                DROP_INTAKE1,
-                                DRIVE_TURN1
-                        ),
-                        new ParallelAction(
-                                RAISE_INTAKE1,
-                                DRIVE_FIELD2
-                        ),
-                        new ParallelAction(
-                                DROP_INTAKE2,
-                                DRIVE_TURN2
-                        ),
-                        new ParallelAction(
-                                RAISE_INTAKE2,
-                                DRIVE_FIELD3
-                        ),
-                        new ParallelAction(
-                                DROP_INTAKE3,
-                                DRIVE_TURN3
-                        ),
-                        new ParallelAction(
-                                RETRACT_INTAKE3,
-                                DRIVE_PICKUP1
-                        ),
+                        DROP_INTAKE1,
+                        DRIVE_TURN1,
+                        RAISE_INTAKE1,
+                        DRIVE_FIELD2,
+                        DROP_INTAKE2,
+                        DRIVE_TURN2,
+                        RAISE_INTAKE2,
+                        DRIVE_FIELD3,
+                        DROP_INTAKE3,
+                        DRIVE_TURN3,
+                        RETRACT_INTAKE3,
+                        DRIVE_PICKUP1,
                         PICKUP1,
                         new SleepAction(0.5),
                         new ParallelAction(
