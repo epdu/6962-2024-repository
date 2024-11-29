@@ -20,8 +20,8 @@ import org.firstinspires.ftc.teamcode.Subsystems.VerticalSlides;
 //import org.firstinspires.ftc.teamcode.Subsystems.SubsystemCommands;
 
 @Config
-@Autonomous(name = "0+4 Test Auto", group = "Autonomous", preselectTeleOp = "Solo Full Robot TeleOp")
-public class FourSampleTestAuto extends LinearOpMode{
+@Autonomous(name = "0+4 Test Auto", group = "1 Autonomous", preselectTeleOp = "A Solo Full Robot TeleOp")
+public class QualsAuto extends LinearOpMode{
 
     public static double startX = -39;
     public static double startY = -63.5;
@@ -67,7 +67,8 @@ public class FourSampleTestAuto extends LinearOpMode{
                 .strafeToLinearHeading(new Vector2d(scoreBucketX, scoreBucketY), Math.toRadians(45));
 
         TrajectoryActionBuilder intake1 = drive.actionBuilder(new Pose2d(scoreBucketX, scoreBucketY, Math.toRadians(45)))
-                .strafeToLinearHeading(new Vector2d(intake1X, intake1Y), Math.toRadians(90));
+                .strafeToLinearHeading(new Vector2d(intake1X, intake1Y), Math.toRadians(90))
+                .waitSeconds(0.3);
 
         TrajectoryActionBuilder score1 = drive.actionBuilder(new Pose2d(intake1X, intake1Y, Math.toRadians(90)))
                 .strafeToLinearHeading(new Vector2d(scoreBucketX, scoreBucketY), Math.toRadians(45));
@@ -85,8 +86,8 @@ public class FourSampleTestAuto extends LinearOpMode{
                 .strafeToLinearHeading(new Vector2d(scoreBucketX, scoreBucketY), Math.toRadians(45));
 
         TrajectoryActionBuilder pass = drive.actionBuilder(new Pose2d(scoreBucketX, scoreBucketY, Math.toRadians(45)))
-                .splineToLinearHeading(new Pose2d(coord1X, coord1Y, Math.toRadians(90)), Math.toRadians(0))
-                .splineToConstantHeading(new Vector2d(coord2X, coord2Y), Math.toRadians(0))
+                .splineTo(new Vector2d(coord1X, coord1Y), Math.toRadians(0))
+                .splineTo(new Vector2d(coord2X, coord2Y), Math.toRadians(0))
                 .afterTime(0, () -> {
                     Actions.runBlocking(
                             new ParallelAction(
@@ -94,7 +95,7 @@ public class FourSampleTestAuto extends LinearOpMode{
                             )
                     );
                 })
-                .splineToConstantHeading(new Vector2d(prepPickupX, prepPickupY), Math.toRadians(0))
+                .strafeToLinearHeading(new Vector2d(prepPickupX, prepPickupY), Math.toRadians(90))
                 .waitSeconds(0.5)
                 .strafeToConstantHeading(new Vector2d(pickupX, pickupY));
 
@@ -292,7 +293,7 @@ public class FourSampleTestAuto extends LinearOpMode{
             scoringArm.initialize(this);
             intakeArm.initialize(this);
 
-            telemetry.addLine("Initialized Test 0+4 Auto");
+            telemetry.addLine("Initialized 2+4 Auto");
             telemetry.update();
             Actions.runBlocking(
                     INITIALIZE
