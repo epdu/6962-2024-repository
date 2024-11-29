@@ -127,4 +127,6 @@ public class Mecanum {
     }
 
     public void resetNavx() {gyroManager.reset();}
+
+    public void reset180() {gyroManager.reset180AfterAuto();}
 }

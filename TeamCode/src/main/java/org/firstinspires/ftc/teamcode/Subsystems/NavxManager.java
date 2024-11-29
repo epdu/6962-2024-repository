@@ -75,6 +75,11 @@ public class NavxManager extends GyroEx
         offset += getHeading();
     }
 
+    public void reset180AfterAuto()
+    {
+        offset += 180;
+    }
+
     @Override
     public void disable()
     {
