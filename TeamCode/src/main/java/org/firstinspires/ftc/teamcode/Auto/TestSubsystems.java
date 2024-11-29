@@ -44,7 +44,7 @@ public class TestSubsystems extends LinearOpMode{
 
         while (!isStarted() && !opModeIsActive()) {
             intakeArm.initialize(this);
-            verticalSlides.initialize(this);
+            verticalSlides.autoInitialize(this);
             scoringArm.initialize(this);
             horizontalSlides.initialize(this);
 

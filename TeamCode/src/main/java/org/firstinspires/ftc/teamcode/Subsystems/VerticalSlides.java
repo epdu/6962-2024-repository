@@ -55,7 +55,24 @@ public class VerticalSlides
 
     public VerticalSlides() {}
 
-    public void initialize(OpMode opmode) {
+    public void teleInitialize(OpMode opmode) {
+        this.opmode = opmode;
+        rHardware.init(opmode.hardwareMap);
+
+        leftSlideMotor = rHardware.vLslideMotor;
+        rightSlideMotor = rHardware.vRslideMotor;
+
+        leftSlideMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+        rightSlideMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+
+//        leftSlideMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        rightSlideMotor.setDirection(DcMotorEx.Direction.REVERSE);
+
+        leftSlideMotor.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
+        rightSlideMotor.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
+    }
+
+    public void autoInitialize(OpMode opmode) {
         // TODO: assign motor names, then reverse the correct motor
         this.opmode = opmode;
         rHardware.init(opmode.hardwareMap);

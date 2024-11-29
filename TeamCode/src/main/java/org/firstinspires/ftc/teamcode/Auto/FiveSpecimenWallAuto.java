@@ -305,7 +305,7 @@ public class FiveSpecimenWallAuto extends LinearOpMode {
                 );
 
         while (!isStarted() && !opModeIsActive()){
-            verticalSlides.initialize(this);
+            verticalSlides.autoInitialize(this);
             horizontalSlides.initialize(this);
             scoringArm.initialize(this);
             intakeArm.initialize(this);

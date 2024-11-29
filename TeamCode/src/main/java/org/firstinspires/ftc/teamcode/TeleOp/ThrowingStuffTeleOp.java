@@ -56,7 +56,7 @@ public class ThrowingStuffTeleOp extends OpMode {
         mecanum.initialize(this);
         horizontalSlides.initialize(this);
         intakeArm.initialize(this);
-        verticalSlides.initialize(this);
+        verticalSlides.teleInitialize(this);
         scoringArm.initialize(this);
 
         allHubs = hardwareMap.getAll(LynxModule.class);

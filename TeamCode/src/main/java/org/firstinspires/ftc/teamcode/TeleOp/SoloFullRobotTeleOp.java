@@ -65,7 +65,7 @@ public class SoloFullRobotTeleOp extends OpMode {
         mecanum.initialize(this);
         horizontalSlides.initialize(this);
         intakeArm.initialize(this);
-        verticalSlides.initialize(this);
+        verticalSlides.teleInitialize(this);
         scoringArm.initialize(this);
         hang.initialize(this);
 //        cPortal.initialize(this);

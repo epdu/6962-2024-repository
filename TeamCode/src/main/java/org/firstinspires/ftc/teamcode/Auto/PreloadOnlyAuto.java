@@ -72,7 +72,7 @@ public class PreloadOnlyAuto extends LinearOpMode{
         while(!isStarted() && !opModeIsActive()) {
             horizontalSlides.initialize(this);
             intakeArm.initialize(this);
-            verticalSlides.initialize(this);
+            verticalSlides.autoInitialize(this);
             scoringArm.initialize(this);
 
             telemetry.addLine("Initialized 1+0 Auto");
