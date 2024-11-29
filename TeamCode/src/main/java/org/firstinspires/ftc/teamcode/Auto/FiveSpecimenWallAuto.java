@@ -103,19 +103,27 @@ public class FiveSpecimenWallAuto extends LinearOpMode {
                 .turnTo(Math.toRadians(-60));
 
         TrajectoryActionBuilder prepPickup1 = drive.actionBuilder(turn3Pose)
-                .strafeToLinearHeading(new Vector2d(prepPickupX, prepPickupY), Math.toRadians(90))
+                .strafeToLinearHeading(new Vector2d(prepPickupX, prepPickupY), Math.toRadians(90));
+
+        TrajectoryActionBuilder pickup1 = drive.actionBuilder(prepPickupPose)
                 .strafeToConstantHeading(new Vector2d(pickupX, pickupY));
 
         TrajectoryActionBuilder prepPickup2 = drive.actionBuilder(score1Pose)
-                .strafeToLinearHeading(new Vector2d(prepPickupX, prepPickupY), Math.toRadians(90))
+                .strafeToLinearHeading(new Vector2d(prepPickupX, prepPickupY), Math.toRadians(90));
+
+        TrajectoryActionBuilder pickup2 = drive.actionBuilder(prepPickupPose)
                 .strafeToConstantHeading(new Vector2d(pickupX, pickupY));
 
         TrajectoryActionBuilder prepPickup3 = drive.actionBuilder(score2Pose)
-                .strafeToLinearHeading(new Vector2d(prepPickupX, prepPickupY), Math.toRadians(90))
+                .strafeToLinearHeading(new Vector2d(prepPickupX, prepPickupY), Math.toRadians(90));
+
+        TrajectoryActionBuilder pickup3 = drive.actionBuilder(prepPickupPose)
                 .strafeToConstantHeading(new Vector2d(pickupX, pickupY));
 
         TrajectoryActionBuilder prepPickup4 = drive.actionBuilder(score3Pose)
-                .strafeToLinearHeading(new Vector2d(prepPickupX, prepPickupY), Math.toRadians(90))
+                .strafeToLinearHeading(new Vector2d(prepPickupX, prepPickupY), Math.toRadians(90));
+
+        TrajectoryActionBuilder pickup4 = drive.actionBuilder(prepPickupPose)
                 .strafeToConstantHeading(new Vector2d(pickupX, pickupY));
 
         TrajectoryActionBuilder score1 = drive.actionBuilder(pickupPose)
@@ -322,6 +330,10 @@ public class FiveSpecimenWallAuto extends LinearOpMode {
         Action DRIVE_PICKUP2 = prepPickup2.build();
         Action DRIVE_PICKUP3 = prepPickup3.build();
         Action DRIVE_PICKUP4 = prepPickup4.build();
+        Action ACTUAL_PICKUP1 = pickup1.build();
+        Action ACTUAL_PICKUP2 = pickup1.build();
+        Action ACTUAL_PICKUP3 = pickup1.build();
+        Action ACTUAL_PICKUP4 = pickup1.build();
         Action DRIVE_SCORE1 = score1.build();
         Action DRIVE_SCORE2 = score2.build();
         Action DRIVE_SCORE3 = score3.build();
@@ -337,7 +349,6 @@ public class FiveSpecimenWallAuto extends LinearOpMode {
                         SCORE_PRELOAD,
                         new ParallelAction(
                                 DRIVE_FIELD1,
-//                                new SleepAction(0.5),
                                 EXTEND_HORIZONTAL1
                         ),
                         DROP_INTAKE1,
@@ -351,38 +362,30 @@ public class FiveSpecimenWallAuto extends LinearOpMode {
                         DROP_INTAKE3,
                         DRIVE_TURN3,
                         RETRACT_INTAKE3,
-                        new ParallelAction(
-                                DRIVE_PICKUP1,
-//                                new SleepAction(1),
-                                PICKUP_CLIP
-                        ),
+                        DRIVE_PICKUP1,
+                        PICKUP_CLIP,
+                        ACTUAL_PICKUP1,
                         PREP_CLIP2,
                         DRIVE_SCORE1,
                         SCORE_CLIP2,
-                        new ParallelAction(
-                                DRIVE_PICKUP2,
-//                                new SleepAction(1),
-                                PICKUP_CLIP2
-                        ),
+                        DRIVE_PICKUP2,
+                        PICKUP_CLIP2,
+                        ACTUAL_PICKUP2,
                         PREP_CLIP3,
                         DRIVE_SCORE2,
                         SCORE_CLIP3,
-                        new ParallelAction(
-                                DRIVE_PICKUP3,
-//                                new SleepAction(1),
-                                PICKUP_CLIP3
-                        ),
+                        DRIVE_PICKUP3,
+                        PICKUP_CLIP3,
+                        ACTUAL_PICKUP3,
                         PREP_CLIP4,
                         DRIVE_SCORE3,
                         SCORE_CLIP4,
-//                        new ParallelAction(
-//                                DRIVE_PICKUP4,
-////                                new SleepAction(1),
-//                                PICKUP_CLIP4
-//                        ),
-//                        PREP_CLIP5,
-//                        DRIVE_SCORE4,
-//                        SCORE_CLIP5,
+                        DRIVE_PICKUP4,
+                        PICKUP_CLIP4,
+                        ACTUAL_PICKUP4,
+                        PREP_CLIP5,
+                        DRIVE_SCORE4,
+                        SCORE_CLIP5,
                         DRIVE_PARK
                 )
         );

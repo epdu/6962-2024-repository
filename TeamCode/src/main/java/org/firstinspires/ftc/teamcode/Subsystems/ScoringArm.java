@@ -330,6 +330,17 @@ public class ScoringArm {
         return new ArmScoreBucket();
     }
 
+    public class ArmPrepScoreBucket implements Action {
+        @Override
+        public boolean run(@NonNull TelemetryPacket packet) {
+            wrist.setWristScoringBucket();
+            return false;
+        }
+    }
+    public Action ArmPrepScoreBucket() {
+        return new ArmPrepScoreBucket();
+    }
+
     public class ArmGrabClip implements Action {
         @Override
         public boolean run(@NonNull TelemetryPacket packet) {

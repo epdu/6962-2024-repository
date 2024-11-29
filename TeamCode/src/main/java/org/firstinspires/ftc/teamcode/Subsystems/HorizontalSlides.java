@@ -258,7 +258,7 @@ public class HorizontalSlides {
                 initialized = true;
             }
 
-            if (Math.abs(error) > 20) {
+            if (Math.abs(error) > 40) {
                 return true;
             } else {
                 slideMotor.setPower(0);

@@ -33,7 +33,7 @@ public class VerticalSlides
     public static int lowerLimit = -2;
     public static int retractedThreshold = 5;
 
-    public static int highBucketPos = 1500;
+    public static int highBucketPos = 1480;
 //    public static int lowBucketPos = 600;
     public static int retractedPos = 0;
     public static int pickupClipPos = 0;
@@ -272,12 +272,12 @@ public class VerticalSlides
             int error = rtpTarget - rightSlideMotor.getCurrentPosition();
             if (!initialized) {
                 int sign = (error >= 0 ? 1 : -1);
-                leftSlideMotor.setPower(sign * 0.9);
-                rightSlideMotor.setPower(sign * 0.9);
+                leftSlideMotor.setPower(sign * 1);
+                rightSlideMotor.setPower(sign * 1);
                 initialized = true;
             }
 
-            if (Math.abs(error) > 40) {
+            if (Math.abs(error) > 50) {
                 return true;
             } else {
                 leftSlideMotor.setPower(0.1);

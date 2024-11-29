@@ -52,12 +52,12 @@ public class FiveSpecimenTestAuto extends LinearOpMode {
     public static double intake2Y = -48;
     Pose2d startPose = new Pose2d(startX, startY, startHeading);
     Pose2d preloadPose = new Pose2d(scorePreloadX, scorePreloadY, Math.toRadians(-90));
-    Pose2d field1Pose = new Pose2d(field1X, field1Y, Math.toRadians(10));
-    Pose2d turn1Pose = new Pose2d(field1X, field1Y, Math.toRadians(-40));
+    Pose2d field1Pose = new Pose2d(field1X, field1Y, Math.toRadians(15));
+    Pose2d turn1Pose = new Pose2d(field1X, field1Y, Math.toRadians(-60));
     Pose2d field2Pose = new Pose2d(field2X, field2Y, Math.toRadians(10));
-    Pose2d turn2Pose = new Pose2d(field2X, field2Y, Math.toRadians(-40));
+    Pose2d turn2Pose = new Pose2d(field2X, field2Y, Math.toRadians(-60));
     Pose2d field3Pose = new Pose2d(field3X, field3Y, Math.toRadians(10));
-    Pose2d turn3Pose = new Pose2d(field3X, field3Y, Math.toRadians(-40));
+    Pose2d turn3Pose = new Pose2d(field3X, field3Y, Math.toRadians(-60));
     Pose2d pickupPose = new Pose2d(pickupX, pickupY, Math.toRadians(-45));
     Pose2d score1Pose = new Pose2d(scoreX, scoreY, Math.toRadians(-90));
     Pose2d score2Pose = new Pose2d(score2X, score2Y, Math.toRadians(-90));
@@ -80,22 +80,22 @@ public class FiveSpecimenTestAuto extends LinearOpMode {
                 .strafeToConstantHeading(new Vector2d(scorePreloadX, scorePreloadY));
 
         TrajectoryActionBuilder field1 = drive.actionBuilder(preloadPose)
-                .splineToLinearHeading(new Pose2d(field1X, field1Y, Math.toRadians(10)), Math.toRadians(0));
+                .splineToLinearHeading(new Pose2d(field1X, field1Y, Math.toRadians(15)), Math.toRadians(0));
 
         TrajectoryActionBuilder turn1 = drive.actionBuilder(field1Pose)
-                .turnTo(Math.toRadians(-40));
+                .turnTo(Math.toRadians(-60));
 
         TrajectoryActionBuilder field2 = drive.actionBuilder(turn1Pose)
                 .strafeToLinearHeading(new Vector2d(field2X, field2Y), Math.toRadians(10));
 
         TrajectoryActionBuilder turn2 = drive.actionBuilder(field2Pose)
-                .turnTo(Math.toRadians(-40));
+                .turnTo(Math.toRadians(-60));
 
         TrajectoryActionBuilder field3 = drive.actionBuilder(turn2Pose)
                 .strafeToLinearHeading(new Vector2d(field3X, field3Y), Math.toRadians(10));
 
         TrajectoryActionBuilder turn3 = drive.actionBuilder(field3Pose)
-                .turnTo(Math.toRadians(-40));
+                .turnTo(Math.toRadians(-60));
 
         TrajectoryActionBuilder pickup1 = drive.actionBuilder(turn3Pose)
                 .strafeToLinearHeading(new Vector2d(pickupX, pickupY), Math.toRadians(-45))
@@ -158,7 +158,7 @@ public class FiveSpecimenTestAuto extends LinearOpMode {
                 new ParallelAction(
                         verticalSlides.Retract(),
                         scoringArm.StowWholeArm(),
-                        horizontalSlides.HorizontalExtend(),
+                        horizontalSlides.HorizontalFullExtend(),
                         intakeArm.IntakeHoverPerpendicular()
                 );
 
@@ -212,7 +212,7 @@ public class FiveSpecimenTestAuto extends LinearOpMode {
                                 intakeArm.IntakeHover()
                         ),
                         intakeArm.IntakePickup(),
-                        new SleepAction(0.5),
+                        new SleepAction(0.15),
                         intakeArm.IntakeClose(),
                         new SleepAction(0.1),
                         new ParallelAction(
@@ -250,7 +250,7 @@ public class FiveSpecimenTestAuto extends LinearOpMode {
         Action PICKUP2 =
                 new SequentialAction(
                         intakeArm.IntakePickup(),
-                        new SleepAction(0.5),
+                        new SleepAction(0.15),
                         intakeArm.IntakeClose(),
                         new SleepAction(0.1),
                         new ParallelAction(
@@ -288,7 +288,7 @@ public class FiveSpecimenTestAuto extends LinearOpMode {
         Action PICKUP3 =
                 new SequentialAction(
                         intakeArm.IntakePickup(),
-                        new SleepAction(0.5),
+                        new SleepAction(0.15),
                         intakeArm.IntakeClose(),
                         new SleepAction(0.1),
                         new ParallelAction(
@@ -326,7 +326,7 @@ public class FiveSpecimenTestAuto extends LinearOpMode {
         Action PICKUP4 =
                 new SequentialAction(
                         intakeArm.IntakePickup(),
-                        new SleepAction(0.5),
+                        new SleepAction(0.15),
                         intakeArm.IntakeClose(),
                         new SleepAction(0.1),
                         new ParallelAction(
@@ -471,7 +471,6 @@ public class FiveSpecimenTestAuto extends LinearOpMode {
                         SCORE_PRELOAD,
                         new ParallelAction(
                                 DRIVE_FIELD1,
-                                new SleepAction(0.5),
                                 EXTEND_HORIZONTAL1
                         ),
                         DROP_INTAKE1,

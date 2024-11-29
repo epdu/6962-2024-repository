@@ -26,7 +26,7 @@ public class MeepMeepFiveTestThree {
                         .waitSeconds(0.8)
                         .strafeToLinearHeading(new Vector2d(36, -53), Math.toRadians(90))
                         .strafeToConstantHeading(new Vector2d(36,-57))
-                        .strafeToLinearHeading(new Vector2d(6, -34), Math.toRadians(-90))
+                        .splineToLinearHeading(new Pose2d(6, -34, Math.toRadians(-90)), Math.toRadians(90))
                         .waitSeconds(0.5)
                         .strafeToLinearHeading(new Vector2d(36, -53), Math.toRadians(90))
                         .strafeToConstantHeading(new Vector2d(36,-57))
