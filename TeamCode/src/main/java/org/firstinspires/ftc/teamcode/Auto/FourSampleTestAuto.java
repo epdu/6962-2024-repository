@@ -28,24 +28,28 @@ public class FourSampleTestAuto extends LinearOpMode{
     public static double startHeading = Math.toRadians(90);
     public static double scorePreloadX = 0;
     public static double scorePreloadY = -41;
-    public static double intake1X = -46.5;
+    public static double intake1X = -45;
     public static double intake1Y = -52;
-    public static double scoreBucketX = -55;
-    public static double scoreBucketY = -57;
-    public static double intake2X = -60;
+    public static double scoreBucketX = -56;
+    public static double scoreBucketY = -58;
+    public static double intake2X = -59;
     public static double intake2Y = -53;
-    public static double intake3X = -58.5;
-    public static double intake3Y = -52;
+    public static double intake3X = -59;
+    public static double intake3Y = -53;
     public static double coord1X = -16;
-    public static double coord1Y = -39;
+    public static double coord1Y = -40;
     public static double coord2X = 12;
-    public static double coord2Y = -39;
+    public static double coord2Y = -44;
+    public static double prepPickupX = 40;
+    public static double prepPickupY = -50;
     public static double pickupX = 40;
     public static double pickupY = -58;
-    public static double scoreClipX = 9;
-    public static double scoreClipY = -34;
-    public static double parkX = 40;
-    public static double parkY = -60;
+    public static double pickup2X = 40;
+    public static double pickup2Y = -63;
+    public static double scoreClipX = 0;
+    public static double scoreClipY = -35;
+    public static double parkX = 35;
+    public static double parkY = -64;
 
     @Override
     public void runOpMode() {
@@ -83,13 +87,37 @@ public class FourSampleTestAuto extends LinearOpMode{
         TrajectoryActionBuilder pass = drive.actionBuilder(new Pose2d(scoreBucketX, scoreBucketY, Math.toRadians(45)))
                 .splineToLinearHeading(new Pose2d(coord1X, coord1Y, Math.toRadians(90)), Math.toRadians(0))
                 .splineToConstantHeading(new Vector2d(coord2X, coord2Y), Math.toRadians(0))
+                .afterTime(0, () -> {
+                    Actions.runBlocking(
+                            new ParallelAction(
+                                    scoringArm.ArmGrabClip()
+                            )
+                    );
+                })
+                .splineToConstantHeading(new Vector2d(prepPickupX, prepPickupY), Math.toRadians(0))
+                .waitSeconds(0.5)
                 .strafeToConstantHeading(new Vector2d(pickupX, pickupY));
+
+        TrajectoryActionBuilder pickup2 = drive.actionBuilder(new Pose2d(scoreClipX, scoreClipY, Math.toRadians(-90)))
+                .strafeToLinearHeading(new Vector2d(prepPickupX, prepPickupY), Math.toRadians(90))
+                .afterTime(0, () -> {
+                    Actions.runBlocking(
+                            new ParallelAction(
+                                    scoringArm.ArmGrabClip()
+                            )
+                    );
+                })
+                .waitSeconds(0.5)
+                .strafeToConstantHeading(new Vector2d(pickup2X, pickup2Y));
 
         TrajectoryActionBuilder scoreClip = drive.actionBuilder(new Pose2d(pickupX, pickupY, Math.toRadians(90)))
                 .strafeToLinearHeading(new Vector2d(scoreClipX, scoreClipY), Math.toRadians(-90));
 
+        TrajectoryActionBuilder scoreClip2 = drive.actionBuilder(new Pose2d(pickupX, pickupY, Math.toRadians(90)))
+                .strafeToLinearHeading(new Vector2d(scoreClipX, scoreClipY), Math.toRadians(-90));
+
         TrajectoryActionBuilder park = drive.actionBuilder(new Pose2d(scoreClipX, scoreClipY, Math.toRadians(-90)))
-                .strafeToLinearHeading(new Vector2d(parkX, parkY), Math.toRadians(90));
+                .strafeToConstantHeading(new Vector2d(parkX, parkY));
 
         Action PICKUP_CLIP =
                 new SequentialAction(
@@ -104,6 +132,26 @@ public class FourSampleTestAuto extends LinearOpMode{
                 );
 
         Action SCORE_CLIP1 =
+                new SequentialAction(
+                        verticalSlides.SlamScoreClip(),
+                        scoringArm.StowWholeArm(),
+                        verticalSlides.Retract(),
+                        horizontalSlides.HorizontalRetract()
+                );
+
+        Action PICKUP_CLIP2 =
+                new SequentialAction(
+                        scoringArm.ArmGrabClip()
+                );
+
+        Action PREP_CLIP2 =
+                new ParallelAction(
+                        scoringArm.ArmScoreClip(),
+                        verticalSlides.LiftUpToClip(),
+                        horizontalSlides.HorizontalRetract()
+                );
+
+        Action SCORE_CLIP2 =
                 new SequentialAction(
                         verticalSlides.SlamScoreClip(),
                         scoringArm.StowWholeArm(),
@@ -128,37 +176,37 @@ public class FourSampleTestAuto extends LinearOpMode{
         Action INTAKE_AND_TRANSFER =
                 new SequentialAction(
                         intakeArm.IntakePickup(),
-                        new SleepAction(0.5),
+                        new SleepAction(0.3),
                         intakeArm.IntakeClose(),
                         new SleepAction(0.2),
                         intakeArm.IntakeTransfer(),
                         new SleepAction(0.2),
                         horizontalSlides.HorizontalRetract(),
-                        new SleepAction(0.5),
+                        new SleepAction(0.3),
                         scoringArm.WholeArmTransfer(),
                         intakeArm.ClawOpen()
                 );
         Action INTAKE_AND_TRANSFER2 = new SequentialAction(
                 intakeArm.IntakePickup(),
-                new SleepAction(0.5),
+                new SleepAction(0.3),
                 intakeArm.IntakeClose(),
                 new SleepAction(0.2),
                 intakeArm.IntakeTransfer(),
                 new SleepAction(0.2),
                 horizontalSlides.HorizontalRetract(),
-                new SleepAction(0.5),
+                new SleepAction(0.3),
                 scoringArm.WholeArmTransfer(),
                 intakeArm.ClawOpen()
         );
         Action INTAKE_AND_TRANSFER3 = new SequentialAction(
                 intakeArm.IntakePickup(),
-                new SleepAction(0.5),
+                new SleepAction(0.3),
                 intakeArm.IntakeClose(),
                 new SleepAction(0.2),
                 intakeArm.IntakeTransfer(),
                 new SleepAction(0.2),
                 horizontalSlides.HorizontalRetract(),
-                new SleepAction(0.5),
+                new SleepAction(0.3),
                 scoringArm.WholeArmTransfer(),
                 intakeArm.ClawOpen()
         );
@@ -265,6 +313,8 @@ public class FourSampleTestAuto extends LinearOpMode{
         Action SCORE3 = score3.build();
         Action PARK = park.build();
         Action CLIP = scoreClip.build();
+        Action PICKUP = pickup2.build();
+        Action CLIP2 = scoreClip2.build();
         Action PASS = pass.build();
 
         Actions.runBlocking(
@@ -308,13 +358,14 @@ public class FourSampleTestAuto extends LinearOpMode{
                         ),
                         new SleepAction(0.2),
                         SCORE_BUCKET4,
-                        new ParallelAction(
                         PASS,
-                                PICKUP_CLIP
-                        ),
                         PREP_CLIP1,
                         CLIP,
                         SCORE_CLIP1,
+                        PICKUP,
+                        PREP_CLIP2,
+                        CLIP2,
+                        SCORE_CLIP2,
                         PARK
                 )
         );
