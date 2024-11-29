@@ -128,7 +128,7 @@ public class SoloFullRobotTeleOp extends OpMode {
         // gyro reset
         if (currentGamepad2.y && !previousGamepad2.y) { mecanum.resetNavx(); }
 
-        //  only PID
+        // only PID
         verticalSlides.operateVincent();
         horizontalSlides.operateVincent();
 
@@ -243,24 +243,17 @@ public class SoloFullRobotTeleOp extends OpMode {
             );
         }
 
-        // slam score clip POSSIBlY DEPRECATED, BUT ONLY DELETE WHEN 100% SURE
-//        if (currentGamepad1.a && !previousGamepad1.a) {
-//            runningActions.add(
-//                    new SequentialAction(
-//                            new InstantAction(() -> verticalSlides.slamToScoreClip()),
-//                            new SleepAction(0.2),
-//                            new InstantAction(() -> scoringArm.claw.openClaw()),
-//                            new InstantAction(() -> verticalSlides.retract()),
-//                            new InstantAction(() -> scoringArm.arm.setArmTransfer()),
-//                            new InstantAction(() -> scoringArm.wrist.setWristTransfer())
-//                    ));
-//        }
-
-        // open claw before backing out from scoring chamber
+        // slam score clip
         if (currentGamepad1.a && !previousGamepad1.a) {
             runningActions.add(
-                new InstantAction(() -> scoringArm.claw.openClaw())
-            );
+                    new SequentialAction(
+                            new InstantAction(() -> verticalSlides.slamToScoreClip()),
+                            new SleepAction(0.2),
+                            new InstantAction(() -> scoringArm.claw.openClaw()),
+                            new InstantAction(() -> verticalSlides.retract()),
+                            new InstantAction(() -> scoringArm.arm.setArmTransfer()),
+                            new InstantAction(() -> scoringArm.wrist.setWristTransfer())
+                    ));
         }
 
         // macro prep high bucket scoring

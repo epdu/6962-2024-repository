@@ -38,8 +38,7 @@ public class VerticalSlides
     public static int retractedPos = 0;
     public static int pickupClipPos = 0;
     public static int prepClipPos = 480;
-//    public static int prepClipPos = 480; OLD POS FOR SLAM SOCRING IN CASE NICK DUMB
-    public static int slamClipPos = 230; // OLD POS FOR SLAM SOCRING IN CASE NICK DUMB
+    public static int slamClipPos = 230;
 
     //declaring variables for later modification
     private volatile double slidePower;
