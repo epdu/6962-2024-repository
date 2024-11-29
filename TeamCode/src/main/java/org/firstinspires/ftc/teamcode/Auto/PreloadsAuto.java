@@ -97,7 +97,7 @@ public class PreloadsAuto extends LinearOpMode{
                 .strafeTo(new Vector2d(parkX, parkY));
 
         while(!isStarted() && !opModeIsActive()) {
-            horizontalSlides.initialize(this);
+            horizontalSlides.autoInitialize(this);
             intakeArm.initialize(this);
             verticalSlides.autoInitialize(this);
             scoringArm.initialize(this);

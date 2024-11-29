@@ -20,7 +20,7 @@ public class NewVerticalSlidesTuning extends OpMode {
 
     @Override
     public void init() {
-        verticalSlides.initialize(this);
+        verticalSlides.autoInitialize(this);
         elapsedtime = new ElapsedTime();
 
     }

@@ -58,12 +58,22 @@ public class HorizontalSlides {
     public HorizontalSlides() {
     }
 
-    public void initialize(OpMode opmode) {
+    public void teleInitialize(OpMode opmode) {
         this.opmode = opmode;
         rHardware.init(opmode.hardwareMap);
 
         slideMotor = rHardware.hSlideMotor;
-//        slideMotor = opmode.hardwareMap.get(DcMotorEx.class, "");
+
+        slideMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+//        slideMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        slideMotor.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
+    }
+
+    public void autoInitialize(OpMode opmode) {
+        this.opmode = opmode;
+        rHardware.init(opmode.hardwareMap);
+
+        slideMotor = rHardware.hSlideMotor;
 
         slideMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
 //        slideMotor.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -80,19 +90,6 @@ public class HorizontalSlides {
         // updates boolean
         slidesRetracted = slideMotor.getCurrentPosition() < retractedThreshold;
         slidesMostlyRetracted = slideMotor.getCurrentPosition() < mostlyRetractedThreshold;
-    }
-
-    public void operateFix() {
-        // manual override control
-        slidePower = -opmode.gamepad2.right_stick_y;
-
-        if (Math.abs(slidePower) > 0.05) {
-            slideMotor.setPower(slidePower);
-        }
-
-        if (opmode.gamepad2.right_stick_button) {
-            slideMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
-        }
     }
 
     public void operateTest() {

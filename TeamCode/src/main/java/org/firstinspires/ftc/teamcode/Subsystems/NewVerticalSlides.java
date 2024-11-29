@@ -47,7 +47,25 @@ public class NewVerticalSlides {
 
     public NewVerticalSlides() {}
 
-    public void initialize(OpMode opmode) {
+    public void teleInitialize(OpMode opmode) {
+        this.opmode = opmode;
+        rHardware.init(opmode.hardwareMap);
+
+        leftSlideMotor = rHardware.vLslideMotor;
+        rightSlideMotor = rHardware.vRslideMotor;
+
+        controller = new PIDController(Kp, Ki, Kd);
+        leftSlideMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+        rightSlideMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+
+//        leftSlideMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        rightSlideMotor.setDirection(DcMotorEx.Direction.REVERSE);
+
+        leftSlideMotor.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
+        rightSlideMotor.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
+    }
+
+    public void autoInitialize(OpMode opmode) {
         this.opmode = opmode;
         rHardware.init(opmode.hardwareMap);
 

@@ -44,7 +44,24 @@ public class NewHorizontalSlides {
 
     public NewHorizontalSlides() {}
 
-    public void initialize(OpMode opmode) {
+    public void teleInitialize(OpMode opmode) {
+        this.opmode = opmode;
+        rHardware.init(opmode.hardwareMap);
+
+        controller = new PIDController(Kp, Ki, Kd);
+
+        slideMotor = rHardware.hSlideMotor;
+
+        slideMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+
+//        slideMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        slideMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+
+        slideMotor.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
+    }
+
+    public void autoInitialize(OpMode opmode) {
         this.opmode = opmode;
         rHardware.init(opmode.hardwareMap);
 

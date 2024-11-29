@@ -218,7 +218,7 @@ public class FourSampleAuto extends LinearOpMode{
             intakeArm.initialize(this);
             verticalSlides.autoInitialize(this);
             scoringArm.initialize(this);
-            horizontalSlides.initialize(this);
+            horizontalSlides.autoInitialize(this);
 
 
             telemetry.addLine("Initialized 0+4 Auto");

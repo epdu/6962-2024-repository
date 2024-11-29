@@ -18,7 +18,7 @@ public class HorizontalSlidesTeleOp extends OpMode {
     @Override
     public void init() {
 
-        horizontalSlides.initialize(this);
+        horizontalSlides.autoInitialize(this);
         telemetry.addLine("Dpad Up and Down - extendo incremental");
     }
 

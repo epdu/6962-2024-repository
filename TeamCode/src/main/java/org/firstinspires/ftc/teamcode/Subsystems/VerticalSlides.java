@@ -110,24 +110,6 @@ public class VerticalSlides
 //        opmode.telemetry.update();
     }
 
-    public void operateFix() {
-
-        // manual control
-        slidePower = -opmode.gamepad2.left_stick_y;
-
-        if (Math.abs(slidePower) > 0.05)
-        {
-            leftSlideMotor.setPower(slidePower * slideScalar);
-            rightSlideMotor.setPower(slidePower * slideScalar);
-        }
-
-        if (opmode.gamepad2.left_stick_button) {
-            leftSlideMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
-            rightSlideMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
-        }
-
-    }
-
     public void operateTest() {
         // PID auto extension
         if (opmode.gamepad1.dpad_up) {

@@ -19,8 +19,8 @@ public class IncrementalTeleOp extends OpMode {
     public void init() {
         scoringArm.initialize(this);
         intakeArm.initialize(this);
-        horizontalSlides.initialize(this);
-        verticalSlides.teleInitialize(this);
+        horizontalSlides.autoInitialize(this);
+        verticalSlides.autoInitialize(this);
 
         telemetry.addLine("Gamepad 1: intake incrementals");
         telemetry.addLine("Left and Right Bumper - claw incremental");

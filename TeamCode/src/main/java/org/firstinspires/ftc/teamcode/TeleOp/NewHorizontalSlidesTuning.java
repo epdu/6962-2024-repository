@@ -16,7 +16,7 @@ public class NewHorizontalSlidesTuning extends OpMode {
 
     @Override
     public void init() {
-        horizontalSlides.initialize(this);
+        horizontalSlides.autoInitialize(this);
     }
 
     @Override

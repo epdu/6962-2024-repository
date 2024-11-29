@@ -15,7 +15,7 @@ public class VerticalSlidesTeleOp extends OpMode {
      */
     @Override
     public void init() {
-        verticalSlides.teleInitialize(this);
+        verticalSlides.autoInitialize(this);
         telemetry.addLine("Left Joystick Y - vertical slide manual control");
     }
 

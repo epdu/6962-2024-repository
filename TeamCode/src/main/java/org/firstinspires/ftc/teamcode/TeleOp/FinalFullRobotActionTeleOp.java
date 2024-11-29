@@ -53,7 +53,7 @@ public class FinalFullRobotActionTeleOp extends OpMode {
     public void init() {
         elapsedtime = new ElapsedTime();
         mecanum.initialize(this);
-        horizontalSlides.initialize(this);
+        horizontalSlides.teleInitialize(this);
         intakeArm.initialize(this);
         verticalSlides.teleInitialize(this);
         scoringArm.initialize(this);
@@ -111,22 +111,9 @@ public class FinalFullRobotActionTeleOp extends OpMode {
             mecanum.resetNavx();
         }
 
-        // manual control in case auto messes up, else only PID
-        if (currentGamepad2.right_trigger > 0.1 && currentGamepad2.left_trigger > 0.1) {
-            verticalSlides.operateFix();
-        }
-        else {
-            verticalSlides.operateVincent();
-        }
-
-        // manual control in case auto messes up, else only PID
-        if (currentGamepad2.right_trigger > 0.1 && currentGamepad2.left_trigger > 0.1) {
-            horizontalSlides.operateFix();
-        }
-        else {
-            horizontalSlides.operateVincent();
-        }
-
+        // only PID
+        verticalSlides.operateVincent();
+        horizontalSlides.operateVincent();
 
         ////////////////////////////////////// GAMEPAD 1 CONTROLS /////////////////////////////////////
 

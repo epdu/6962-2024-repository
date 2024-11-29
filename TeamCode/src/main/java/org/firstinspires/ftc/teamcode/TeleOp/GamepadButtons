@@ -1,10 +1,10 @@
-/* FULL ROBOT TEST TELEOP
+/* SOLO TELEOP
 * ///////////// GAMEPAD 1: ///////////////
 *
 * Left Joystick X and Y - strafe (drive)
 * Right Joystick X - turn (drive)
 *
-* A - toggle slowmode
+* Left trigger - fast mode, default 50% slowmode
 *
 * D-Pad Down - navx reset (drive)
 *

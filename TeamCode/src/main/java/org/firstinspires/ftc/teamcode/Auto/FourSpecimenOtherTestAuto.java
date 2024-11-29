@@ -199,7 +199,7 @@ public class FourSpecimenOtherTestAuto extends LinearOpMode {
 
         while (!isStarted() && !opModeIsActive()){
             verticalSlides.autoInitialize(this);
-            horizontalSlides.initialize(this);
+            horizontalSlides.autoInitialize(this);
             scoringArm.initialize(this);
             intakeArm.initialize(this);
 

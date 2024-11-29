@@ -207,7 +207,7 @@ public class ThreeSampleAuto extends LinearOpMode{
             intakeArm.initialize(this);
             verticalSlides.autoInitialize(this);
             scoringArm.initialize(this);
-            horizontalSlides.initialize(this);
+            horizontalSlides.autoInitialize(this);
 
             telemetry.addLine("Initialized 1+3 Auto");
             telemetry.update();

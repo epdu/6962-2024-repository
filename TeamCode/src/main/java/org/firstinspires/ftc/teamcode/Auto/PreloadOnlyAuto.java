@@ -70,7 +70,7 @@ public class PreloadOnlyAuto extends LinearOpMode{
                 .turnTo(Math.toRadians(90));
 
         while(!isStarted() && !opModeIsActive()) {
-            horizontalSlides.initialize(this);
+            horizontalSlides.autoInitialize(this);
             intakeArm.initialize(this);
             verticalSlides.autoInitialize(this);
             scoringArm.initialize(this);
