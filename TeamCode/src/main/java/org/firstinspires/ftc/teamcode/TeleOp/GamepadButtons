@@ -1,116 +1,33 @@
-/* SOLO TELEOP
-* ///////////// GAMEPAD 1: ///////////////
-*
-* Left Joystick X and Y - strafe (drive)
+* SOLO TELEOP *
+///////////////////// GAMEPAD 1: //////////////////////
+
+* Left Joystick X and Y - strafe (field-centric)
 * Right Joystick X - turn (drive)
-*
-* Left trigger - fast mode, default 50% slowmode
-*
-* D-Pad Down - navx reset (drive)
-*
-*
-* ///////////// GAMEPAD 2: ///////////////
-*
-* Left Joystick Y - vertical slide manual control
-* Right Joystick Y - horizontal slide manual control
-*
-* Left Bumper - claw toggle
-* Right Bumper -
-*
-* Left Trigger -
-* Right Trigger -
-*
-* A - start intake and flip down
-* B - stop intake and flip up
-* X - reverse intake for 2 seconds
-* Y -
-*
-* D-Pad Up - incremental arm up (might be reversed on first try)
-* D-Pad Down - incremental arm down
-* D-Pad Left - incremental wrist left (might be reversed on first attempt)
-* D-Pad Right - incremental wrist right
-*
-*/
 
-/* BEFORE AUTOMATION (MVP)
-* /////////////  GAMEPAD 1: ///////////////
-*
-* Left Joystick X and Y - strafe (drive)
-* Right Joystick X - turn (drive)
-*
-* Left Joystick Button -
-* Right Joystick Button -
-*
-* Left Bumper - stop intake and flip up
-* Right Bumper - start intake and flip down
-*
-* Left Trigger - retract horizontal slide (acts like joystick, not automatically to a set distance)
-* Right Trigger - extend horizontal slides
-*
-* A - toggle extend to high basket and retract (slides)
-* B - toggle claw
-* Y - slow mode (drive)
-* X - toggle arm
-*
-* D-Pad Up - full intake process (start, check for color and/or eject, stop)
-* D-Pad Down - navx reset (drive)
-* D-Pad Left -
-* D-Pad Right -
-*
-*/
+* Left Trigger - 50% slow mode, else defaults to 100%
 
+* Right Trigger - 100% extension intaking
+* Right Bumper - 75% extension intaking
 
-/* VINCENT'S PREFERENCE
-* /////////////  GAMEPAD 1: ///////////////
-*
-* Left Joystick X and Y - strafe (drive)
-* Right Joystick X - turn (drive)
-*
-* Left Joystick Button - slow turn
-* Right Joystick Button - slow strafe
-*
-* Left Bumper - claw toggle
-* Right Bumper - start intake and flip down, otherwise flip up and stop
-*
-* Left Trigger - slowmode (when > 0.5, 30% speed)
-* Right Trigger - extend horizontal slides to mapped distance
-*                 (ex: 1 -> 100%, 0.5 -> 80%, 0.1 -> 60%, 0 -> 0%)
-*
-* A - high basket slide toggle
-* B - toggle arm
-* Y - hang (NOT DONE, WORK ON)
-* X - medium basket slide toggle
-*
-* D-Pad Up - full intake process (start, check for color and/or eject, stop)
-* D-Pad Down - navx reset (drive)
-* D-Pad Left - secondary hang release
-* D-Pad Right -
-*
-* D-Pad Right & Right Bumper - reverse intake/eject
-*
-*/
+* Left Bumper - deposit bucket, and general purpose scoring arm and vert slides reset
 
+* A - slam clip
+* B - high bucket prep
+* X - prep to grab clip off wall
+* Y - grab and prep score clip
 
-/* AFTER AUTOMATION
-* /////////////  GAMEPAD 1: ///////////////
-*
-* Left Joystick X and Y - strafe (drive)
-* Right Joystick X - turn (drive)
-*
-* Left Bumper -
-* Right Bumper -
-*
-* Left trigger -
-* Right trigger -
-*
-* A - auto-extend intake, then retract once picked up piece (scoring)
-* B - vertical slide extend, then deposit, then retract (scoring)
-* Y - slow mode toggle (drive)
-* X - reset gyro (drive)
-*
-* D-Pad Up -
-* D-Pad Down -
-* D-Pad Left -
-* D-Pad Right -
-*
+* D-Pad Right - rotate intake claw right
+* D-Pad Left - rotate intake claw left
+* D-Pad Down - auto intake claw orient (camera)
+
+///////////////////// GAMEPAD 2: //////////////////////
+
+* Left Joystick Y - L2 hang manual control
+
+* Left Bumper - drop sample behind robot and return
+* X - transfer, then prep to drop sample behind robot
+* Y - navx reset
+
+* Left Trigger - rotate intake claw left
+* Right Trigger - rotate intake claw right
 
