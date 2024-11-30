@@ -20,7 +20,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.VerticalSlides;
 //import org.firstinspires.ftc.teamcode.Subsystems.SubsystemCommands;
 
 @Config
-@Autonomous(name = "0+4 Test Auto", group = "1 Autonomous", preselectTeleOp = "A Solo Full Robot TeleOp")
+@Autonomous(name = "2+4 Auto", group = "1 Autonomous", preselectTeleOp = "A Solo Full Robot TeleOp")
 public class QualsAuto extends LinearOpMode{
 
     public static double startX = -39;
@@ -34,10 +34,10 @@ public class QualsAuto extends LinearOpMode{
     public static double scoreBucketY = -58;
     public static double intake2X = -59;
     public static double intake2Y = -53;
-    public static double intake3X = -59;
+    public static double intake3X = -59.5;
     public static double intake3Y = -53;
     public static double coord1X = -16;
-    public static double coord1Y = -40;
+    public static double coord1Y = -44;
     public static double coord2X = 12;
     public static double coord2Y = -44;
     public static double prepPickupX = 40;
@@ -55,7 +55,6 @@ public class QualsAuto extends LinearOpMode{
     public void runOpMode() {
         Pose2d startPose = new Pose2d(startX, startY, startHeading);
         MecanumDrive drive = new MecanumDrive(hardwareMap, startPose);
-//        SubsystemCommands subsystems = new SubsystemCommands();
 
         VerticalSlides verticalSlides = new VerticalSlides();
         HorizontalSlides horizontalSlides = new HorizontalSlides();
