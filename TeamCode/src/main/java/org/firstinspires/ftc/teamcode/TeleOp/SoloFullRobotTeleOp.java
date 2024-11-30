@@ -136,7 +136,6 @@ public class SoloFullRobotTeleOp extends OpMode {
 
         // gives scoring priority over intaking
         if (scoringArm.arm.armPos == ScoringArm.Arm.STATE.TRANSFERRING) {
-
             // horizontal slides extend 100%, intake arm grab, open intake claw
             if (currentGamepad1.right_trigger >= 0.1 && !(previousGamepad1.right_trigger >= 0.1) && !currentGamepad1.right_bumper) {
                 runningActions.add(
@@ -159,46 +158,8 @@ public class SoloFullRobotTeleOp extends OpMode {
                                 new InstantAction(() -> intakeArm.claw.closeClaw()),
                                 new SleepAction(0.1),
                                 new InstantAction(() -> intakeArm.arm.setArmTransfer()),
-//                                new SleepAction(0.05), removing this to test, because it seems unnecessary
                                 new InstantAction(() -> intakeArm.wrist.setWristTransfer()),
-                                new SleepAction(0.2),
-                                new InstantAction(() -> horizontalSlides.retract())
-
-                                // if it turns out the above timings were useless, we will use the following code
-//                                new ParallelAction(
-//                                        new InstantAction(() -> intakeArm.arm.setArmTransfer()),
-//                                        new InstantAction(() -> intakeArm.wrist.setWristTransfer()),
-//                                        new InstantAction(() -> horizontalSlides.retract())
-//                                )
-                        )
-                );
-            }
-
-            // horizontal slides extend 75%, intake arm grab, open intake claw
-            if (currentGamepad1.right_bumper && !previousGamepad1.right_bumper && !(currentGamepad1.right_trigger >= 0.1)) {
-                runningActions.add(
-                        new SequentialAction(
-                                new InstantAction(() -> horizontalSlides.extendHalfway()),
-                                new SleepAction(0.05),
-                                new InstantAction(() -> intakeArm.wrist.setFlipIntake()),
-                                new InstantAction(() -> intakeArm.arm.setArmHover()),
-                                new SleepAction(0.25),
-                                new InstantAction(() -> intakeArm.claw.openClaw())
-                        )
-                );
-            }
-            // grab piece, then retract intake
-            else if (!currentGamepad1.right_bumper && previousGamepad1.right_bumper && !(currentGamepad1.right_trigger >= 0.1)) {
-                runningActions.add(
-                        new SequentialAction(
-                                new InstantAction(() -> intakeArm.arm.setArmGrab()),
-                                new SleepAction(0.15),
-                                new InstantAction(() -> intakeArm.claw.closeClaw()),
                                 new SleepAction(0.1),
-                                new InstantAction(() -> intakeArm.arm.setArmTransfer()),
-                                new SleepAction(0.05), // possibly unnecessary
-                                new InstantAction(() -> intakeArm.wrist.setWristTransfer()),
-                                new SleepAction(0.2),
                                 new InstantAction(() -> horizontalSlides.retract())
                         )
                 );
@@ -257,7 +218,7 @@ public class SoloFullRobotTeleOp extends OpMode {
         }
 
         // macro prep high bucket scoring
-        if (currentGamepad1.b && !previousGamepad1.b) {
+        if ((currentGamepad1.b && !previousGamepad1.b) || (currentGamepad1.right_bumper && !previousGamepad1.right_bumper)) {
             runningActions.add(
                     new SequentialAction(
                         // both arms prep
