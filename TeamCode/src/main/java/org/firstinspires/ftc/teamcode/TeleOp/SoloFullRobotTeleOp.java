@@ -336,6 +336,7 @@ public class SoloFullRobotTeleOp extends OpMode {
 
         // loop time
         dashboardTelemetry.addData("elapsed time (loop time)", elapsedtime.milliseconds());
+        dashboardTelemetry.addData("Camera Color:", cPortal.cameraColor);
         dashboardTelemetry.update();
         elapsedtime.reset();
 
