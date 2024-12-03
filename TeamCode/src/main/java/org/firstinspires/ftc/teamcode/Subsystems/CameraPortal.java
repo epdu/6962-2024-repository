@@ -31,12 +31,17 @@ public class CameraPortal {
     public MultipleTelemetry dashTelemetry;
     public ColorDetect cameraColor = BLUE;
 
+    int cameraMonitorViewID;
+
     public void initialize(OpMode opMode) {
         dashTelemetry = new MultipleTelemetry(opMode.telemetry, FtcDashboard.getInstance().getTelemetry());
 
         rHardware.init(opMode.hardwareMap);
 
         pipeLine.initialize();
+
+        cameraMonitorViewID = rHardware.cameraMonitorViewId;
+        webcam1 = OpenCvCameraFactory.getInstance().createWebcam(rHardware.webcam, cameraMonitorViewID);
 
         webcam1.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
         {
@@ -46,9 +51,9 @@ public class CameraPortal {
                 // Usually this is where you'll want to start streaming from the camera (see section 4)
                 webcam1.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
 //                TODO: Create Pipeline
-                webcam1.setPipeline(pipeLine);
+                webcam1.setPipeline(new CameraCVPipeline());
                 FtcDashboard.getInstance().startCameraStream(
-                        pipeLine,
+                        new CameraCVPipeline(),
                         30.0
                 );
 
@@ -56,7 +61,8 @@ public class CameraPortal {
             @Override
             public void onError(int errorCode) {opMode.telemetry.addLine("womp womp");}
         });
-//        pipeLine.setDetectionType(cameraColor);
+
+        pipeLine.setDetectionType(cameraColor);
         intake.initialize(opMode);
     }
 
@@ -101,7 +107,7 @@ public class CameraPortal {
         opMode.telemetry.addData("Overhead time ms", webcam1.getOverheadTimeMs());
         opMode.telemetry.addData("Theoretical max FPS", webcam1.getCurrentPipelineMaxFps());
         dashTelemetry.update();
-//        opMode.telemetry.update();
+        opMode.telemetry.update();
     }
 
 
