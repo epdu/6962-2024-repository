@@ -54,7 +54,7 @@ public class SoloFullRobotTeleOp extends OpMode {
 
     private MultipleTelemetry dashboardTelemetry = new MultipleTelemetry(telemetry, dash.getTelemetry());
 
-//    private CameraPortal cPortal              = new CameraPortal();
+    private CameraPortal cPortal              = new CameraPortal();
 //    private CameraPortal cameraPortal         = new CameraPortal();
 
     private boolean onRedAlliance = true;
@@ -70,7 +70,7 @@ public class SoloFullRobotTeleOp extends OpMode {
         verticalSlides.teleInitialize(this);
         scoringArm.initialize(this);
         hang.initialize(this);
-//        cPortal.initialize(this);
+        cPortal.initialize(this);
         allHubs = hardwareMap.getAll(LynxModule.class);
         // apparently optimizes reading from hardware (ex: getCurrentPosition) and makes runtime a bit faster
         for (LynxModule hub : allHubs) { hub.setBulkCachingMode(LynxModule.BulkCachingMode.MANUAL); }
@@ -79,7 +79,7 @@ public class SoloFullRobotTeleOp extends OpMode {
     @Override
     public void init_loop() {
         if (currentGamepad1.b) {
-//            cPortal.changeColor();
+            cPortal.changeColor();
         }
     }
 
@@ -137,8 +137,8 @@ public class SoloFullRobotTeleOp extends OpMode {
         else {
             mecanum.operateRoboCentric();
         }
-
-//        cPortal.run(this);
+        
+        cPortal.run(this);
 
         // gyro reset
         if (currentGamepad2.y && !previousGamepad2.y) { mecanum.resetNavx(); }
@@ -277,7 +277,7 @@ public class SoloFullRobotTeleOp extends OpMode {
         // intake wrist rotate
         if      (currentGamepad1.right_trigger >= 0.1 && currentGamepad1.dpad_right)  { intakeArm.wrist.incrementalWristRotateActual(-1); }
         else if (currentGamepad1.right_trigger >= 0.1 && currentGamepad1.dpad_left) { intakeArm.wrist.incrementalWristRotateActual(1); }
-//        else if (currentGamepad1.right_trigger >= 0.1 && currentGamepad1.dpad_down) { cPortal.setWristCamera();}
+        else if (currentGamepad1.right_trigger >= 0.1 && currentGamepad1.dpad_down) { cPortal.setWristCamera();}
 
         //hang activation / reverse --NOT TESTED--
 //        if (currentGamepad1.dpad_up && !previousGamepad1.dpad_up) {
