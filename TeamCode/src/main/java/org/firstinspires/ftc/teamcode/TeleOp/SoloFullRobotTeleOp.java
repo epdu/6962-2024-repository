@@ -59,6 +59,8 @@ public class SoloFullRobotTeleOp extends OpMode {
 
     private boolean onRedAlliance = true;
 
+    private boolean isFieldCentric = true;
+
     @Override
     public void init() {
         elapsedtime = new ElapsedTime();
@@ -120,9 +122,22 @@ public class SoloFullRobotTeleOp extends OpMode {
 
         dash.sendTelemetryPacket(packet);
 
-        // field centric drive
-        // gamepad1: left-trigger > 0.5 - fastmode
-        mecanum.operateFieldCentricVincent();
+        if (currentGamepad2.left_stick_button && !previousGamepad2.left_stick_button) {
+            if (isFieldCentric == true) {
+                isFieldCentric = false;
+            }
+            else {
+                isFieldCentric = true;
+            }
+        }
+
+        if (isFieldCentric == true) {
+            mecanum.operateFieldCentricVincent();
+        }
+        else {
+            mecanum.operateRoboCentric();
+        }
+
 //        cPortal.run(this);
 
         // gyro reset

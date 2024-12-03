@@ -25,6 +25,8 @@ public class Mecanum {
 
     private boolean slowModeBool = false;
 
+    public boolean isFieldCentric = true;
+
     public Mecanum() {}
 
     public void initialize(OpMode opmode)
@@ -78,13 +80,9 @@ public class Mecanum {
     }
 
     public void operateRoboCentric() {
-        // Y button toggles slow mode
-        if (opmode.gamepad1.y) {
-            toggleSlowMode();
-        }
-
-        if (slowModeBool) {
-            drive.driveRobotCentric(opmode.gamepad1.left_stick_x/slowModeFactor, -opmode.gamepad1.left_stick_y/slowModeFactor, (opmode.gamepad1.right_stick_x * 0.75)/slowModeFactor);
+        // gp2 left stick button switches navx mode
+        if (opmode.gamepad1.left_trigger > 0.5) {
+            drive.driveRobotCentric(opmode.gamepad1.left_stick_x * slowModeFactor, -opmode.gamepad1.left_stick_y * slowModeFactor, (opmode.gamepad1.right_stick_x * 0.75) * slowModeFactor);
         }
         else {
             drive.driveRobotCentric(opmode.gamepad1.left_stick_x, -opmode.gamepad1.left_stick_y, opmode.gamepad1.right_stick_x * 0.75);

@@ -117,7 +117,8 @@ public class QualsAuto extends LinearOpMode{
                 .strafeToLinearHeading(new Vector2d(scoreClipX, scoreClipY), Math.toRadians(-90));
 
         TrajectoryActionBuilder park = drive.actionBuilder(new Pose2d(scoreClipX, scoreClipY, Math.toRadians(-90)))
-                .strafeToConstantHeading(new Vector2d(parkX, parkY));
+                .strafeToConstantHeading(new Vector2d(parkX, parkY))
+                .turnTo(Math.toRadians(90));
 
         Action PICKUP_CLIP =
                 new SequentialAction(
