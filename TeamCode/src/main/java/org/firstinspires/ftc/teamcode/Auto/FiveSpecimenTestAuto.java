@@ -44,12 +44,8 @@ public class FiveSpecimenTestAuto extends LinearOpMode {
     public static double score3Y = -34;
     public static double score4X = -10;
     public static double score4Y = -34;
-    public static double intake1X = -47;
-    public static double intake1Y = -48;
-    public static double scoreBucketX = -55;
-    public static double scoreBucketY = -55;
-    public static double intake2X = -58;
-    public static double intake2Y = -48;
+    public static double parkX = 35;
+    public static double parkY = -60;
     Pose2d startPose = new Pose2d(startX, startY, startHeading);
     Pose2d preloadPose = new Pose2d(scorePreloadX, scorePreloadY, Math.toRadians(-90));
     Pose2d field1Pose = new Pose2d(field1X, field1Y, Math.toRadians(15));
@@ -58,14 +54,11 @@ public class FiveSpecimenTestAuto extends LinearOpMode {
     Pose2d turn2Pose = new Pose2d(field2X, field2Y, Math.toRadians(-60));
     Pose2d field3Pose = new Pose2d(field3X, field3Y, Math.toRadians(10));
     Pose2d turn3Pose = new Pose2d(field3X, field3Y, Math.toRadians(-60));
-    Pose2d pickupPose = new Pose2d(pickupX, pickupY, Math.toRadians(-45));
+    Pose2d pickupPose = new Pose2d(pickupX, pickupY, Math.toRadians(-90));
     Pose2d score1Pose = new Pose2d(scoreX, scoreY, Math.toRadians(-90));
     Pose2d score2Pose = new Pose2d(score2X, score2Y, Math.toRadians(-90));
     Pose2d score3Pose = new Pose2d(score3X, score3Y, Math.toRadians(-90));
     Pose2d score4Pose = new Pose2d(score4X, score4Y, Math.toRadians(-90));
-    Pose2d intake1Pose = new Pose2d(intake1X, intake1Y, Math.toRadians(90));
-    Pose2d intake2Pose = new Pose2d(intake2X, intake2Y, Math.toRadians(90));
-    Pose2d bucketPose = new Pose2d(scoreBucketX, scoreBucketY, Math.toRadians(45));
 
     @Override
     public void runOpMode() {
@@ -98,47 +91,31 @@ public class FiveSpecimenTestAuto extends LinearOpMode {
                 .turnTo(Math.toRadians(-60));
 
         TrajectoryActionBuilder pickup1 = drive.actionBuilder(turn3Pose)
-                .strafeToLinearHeading(new Vector2d(pickupX, pickupY), Math.toRadians(-45))
-                .strafeToConstantHeading(new Vector2d(pickupX+2, pickupY-2));
+                .strafeToLinearHeading(new Vector2d(pickupX, pickupY), Math.toRadians(-90));
 
         TrajectoryActionBuilder pickup2 = drive.actionBuilder(score1Pose)
-                .strafeToLinearHeading(new Vector2d(pickupX, pickupY), Math.toRadians(-45))
-                .strafeToConstantHeading(new Vector2d(pickupX+2, pickupY-2));
+                .strafeToConstantHeading(new Vector2d(pickupX, pickupY));
 
         TrajectoryActionBuilder pickup3 = drive.actionBuilder(score2Pose)
-                .strafeToLinearHeading(new Vector2d(pickupX, pickupY), Math.toRadians(-45))
-                .strafeToConstantHeading(new Vector2d(pickupX+2, pickupY-2));
+                .strafeToConstantHeading(new Vector2d(pickupX, pickupY));
 
         TrajectoryActionBuilder pickup4 = drive.actionBuilder(score3Pose)
-                .strafeToLinearHeading(new Vector2d(pickupX, pickupY), Math.toRadians(-45))
-                .strafeToConstantHeading(new Vector2d(pickupX+2, pickupY-2));
+                .strafeToConstantHeading(new Vector2d(pickupX, pickupY));
 
         TrajectoryActionBuilder score1 = drive.actionBuilder(pickupPose)
-                .strafeToLinearHeading(new Vector2d(scoreX, scoreY), Math.toRadians(-90));
+                .strafeToConstantHeading(new Vector2d(scoreX, scoreY));
 
         TrajectoryActionBuilder score2 = drive.actionBuilder(pickupPose)
-                .strafeToLinearHeading(new Vector2d(score2X, score2Y), Math.toRadians(-90));
+                .strafeToConstantHeading(new Vector2d(score2X, score2Y));
 
         TrajectoryActionBuilder score3 = drive.actionBuilder(pickupPose)
-                .strafeToLinearHeading(new Vector2d(score3X, score3Y), Math.toRadians(-90));
+                .strafeToConstantHeading(new Vector2d(score3X, score3Y));
 
         TrajectoryActionBuilder score4 = drive.actionBuilder(pickupPose)
-                .strafeToLinearHeading(new Vector2d(score4X, score4Y), Math.toRadians(-90));
+                .strafeToConstantHeading(new Vector2d(score4X, score4Y));
 
-        TrajectoryActionBuilder intake1 = drive.actionBuilder(score4Pose)
-                .strafeToLinearHeading(new Vector2d(intake1X, intake1Y), Math.toRadians(90.1));
-
-        TrajectoryActionBuilder scoreBucket1 = drive.actionBuilder(intake1Pose)
-                .strafeToLinearHeading(new Vector2d(scoreBucketX, scoreBucketY), Math.toRadians(45));
-
-        TrajectoryActionBuilder intake2 = drive.actionBuilder(bucketPose)
-                .strafeToLinearHeading(new Vector2d(intake2X, intake2Y), Math.toRadians(90));
-
-        TrajectoryActionBuilder scoreBucket2 = drive.actionBuilder(intake2Pose)
-                .strafeToLinearHeading(new Vector2d(scoreBucketX, scoreBucketY), Math.toRadians(45));
-
-        TrajectoryActionBuilder turn = drive.actionBuilder(bucketPose)
-                .turnTo(Math.toRadians(90));
+        TrajectoryActionBuilder park = drive.actionBuilder(score4Pose)
+                .strafeToConstantHeading(new Vector2d(parkX, parkY));
 
         Action PREP_CLIP =
                 new ParallelAction(
@@ -202,27 +179,21 @@ public class FiveSpecimenTestAuto extends LinearOpMode {
                                 intakeArm.IntakeHoverPerpendicular()
                         ),
                 horizontalSlides.HorizontalRetract(),
-                intakeArm.IntakeTransfer()
+                intakeArm.IntakeHover()
                 );
 
         Action PICKUP1 =
                 new SequentialAction(
-                        new ParallelAction(
-                                horizontalSlides.HorizontalExtend(),
-                                intakeArm.IntakeHover()
-                        ),
                         intakeArm.IntakePickup(),
                         new SleepAction(0.15),
                         intakeArm.IntakeClose(),
                         new SleepAction(0.1),
-                        new ParallelAction(
-                                horizontalSlides.HorizontalRetract(),
-                                intakeArm.IntakeTransfer()
-                        )
+                        intakeArm.IntakeTransfer()
                 );
 
         Action TRANSFER_AND_EXTEND1 =
                 new SequentialAction(
+                        scoringArm.StowWholeArm(),
                         scoringArm.WholeArmTransfer(),
                         intakeArm.ClawOpen(),
                         intakeArm.IntakeHover(),
@@ -235,16 +206,9 @@ public class FiveSpecimenTestAuto extends LinearOpMode {
         Action SCORE_CLIP1 =
                 new SequentialAction(
                         verticalSlides.SlamScoreClip(),
-                        scoringArm.StowWholeArm(),
+                        scoringArm.ArmInitPosition(),
                         verticalSlides.Retract(),
                         horizontalSlides.HorizontalRetract()
-                );
-
-        Action EXTEND_INTAKE2 =
-                new ParallelAction(
-                        verticalSlides.Retract(),
-                        scoringArm.StowWholeArm(),
-                        horizontalSlides.HorizontalExtend()
                 );
 
         Action PICKUP2 =
@@ -253,14 +217,12 @@ public class FiveSpecimenTestAuto extends LinearOpMode {
                         new SleepAction(0.15),
                         intakeArm.IntakeClose(),
                         new SleepAction(0.1),
-                        new ParallelAction(
-                                horizontalSlides.HorizontalRetract(),
-                                intakeArm.IntakeTransfer()
-                        )
+                        intakeArm.IntakeTransfer()
                 );
 
         Action TRANSFER_AND_EXTEND2 =
                 new SequentialAction(
+                        scoringArm.StowWholeArm(),
                         scoringArm.WholeArmTransfer(),
                         intakeArm.ClawOpen(),
                         intakeArm.IntakeHover(),
@@ -273,16 +235,9 @@ public class FiveSpecimenTestAuto extends LinearOpMode {
         Action SCORE_CLIP2 =
                 new SequentialAction(
                         verticalSlides.SlamScoreClip(),
-                        scoringArm.StowWholeArm(),
+                        scoringArm.ArmInitPosition(),
                         verticalSlides.Retract(),
                         horizontalSlides.HorizontalRetract()
-                );
-
-        Action EXTEND_INTAKE3 =
-                new ParallelAction(
-                        verticalSlides.Retract(),
-                        scoringArm.StowWholeArm(),
-                        horizontalSlides.HorizontalExtend()
                 );
 
         Action PICKUP3 =
@@ -291,14 +246,12 @@ public class FiveSpecimenTestAuto extends LinearOpMode {
                         new SleepAction(0.15),
                         intakeArm.IntakeClose(),
                         new SleepAction(0.1),
-                        new ParallelAction(
-                                horizontalSlides.HorizontalRetract(),
-                                intakeArm.IntakeTransfer()
-                        )
+                        intakeArm.IntakeTransfer()
                 );
 
         Action TRANSFER_AND_EXTEND3 =
                 new SequentialAction(
+                        scoringArm.StowWholeArm(),
                         scoringArm.WholeArmTransfer(),
                         intakeArm.ClawOpen(),
                         intakeArm.IntakeHover(),
@@ -311,16 +264,9 @@ public class FiveSpecimenTestAuto extends LinearOpMode {
         Action SCORE_CLIP3 =
                 new SequentialAction(
                         verticalSlides.SlamScoreClip(),
-                        scoringArm.StowWholeArm(),
+                        scoringArm.ArmInitPosition(),
                         verticalSlides.Retract(),
                         horizontalSlides.HorizontalRetract()
-                );
-
-        Action EXTEND_INTAKE4 =
-                new ParallelAction(
-                        verticalSlides.Retract(),
-                        scoringArm.StowWholeArm(),
-                        horizontalSlides.HorizontalExtend()
                 );
 
         Action PICKUP4 =
@@ -329,14 +275,12 @@ public class FiveSpecimenTestAuto extends LinearOpMode {
                         new SleepAction(0.15),
                         intakeArm.IntakeClose(),
                         new SleepAction(0.1),
-                        new ParallelAction(
-                                horizontalSlides.HorizontalRetract(),
-                                intakeArm.IntakeTransfer()
-                        )
+                        intakeArm.IntakeTransfer()
                 );
 
         Action TRANSFER_AND_EXTEND4 =
                 new SequentialAction(
+                        scoringArm.StowWholeArm(),
                         scoringArm.WholeArmTransfer(),
                         intakeArm.ClawOpen(),
                         intakeArm.IntakeHover(),
@@ -361,63 +305,6 @@ public class FiveSpecimenTestAuto extends LinearOpMode {
                         scoringArm.StowWholeArm(),
                         horizontalSlides.HorizontalExtend(),
                         intakeArm.IntakeHover()
-                );
-
-        Action INTAKE_SAMPLE1 =
-                new SequentialAction(
-                        intakeArm.IntakePickup(),
-                        new SleepAction(0.5),
-                        intakeArm.IntakeClose(),
-                        new SleepAction(0.1),
-                        intakeArm.IntakeTransfer(),
-//                        new SleepAction(0.2),
-                        horizontalSlides.HorizontalRetract(),
-                        scoringArm.WholeArmTransfer(),
-                        intakeArm.ClawOpen()
-                );
-
-        Action EXTEND_SAMPLE1 =
-                new ParallelAction(
-                        verticalSlides.LiftUpToHighBucket(),
-                        scoringArm.ArmScoreBucket()
-                );
-
-        Action SCORE_BUCKET1 =
-                scoringArm.DropBucket();
-
-        Action RETRACT_SAMPLE1 =
-                new ParallelAction(
-                        verticalSlides.Retract(),
-                        scoringArm.StowWholeArm()
-                );
-
-        Action INTAKE_SAMPLE2 =
-                new SequentialAction(
-                        intakeArm.IntakePickup(),
-                        new SleepAction(0.5),
-                        intakeArm.IntakeClose(),
-                        new SleepAction(0.1),
-                        intakeArm.IntakeTransfer(),
-//                        new SleepAction(0.2),
-                        horizontalSlides.HorizontalRetract(),
-                        scoringArm.WholeArmTransfer(),
-                        intakeArm.ClawOpen()
-                );
-
-        Action EXTEND_SAMPLE2 =
-                new ParallelAction(
-                        verticalSlides.LiftUpToHighBucket(),
-                        scoringArm.ArmScoreBucket()
-                );
-
-        Action SCORE_BUCKET2 =
-                scoringArm.DropBucket();
-
-        Action RETRACT_SAMPLE2 =
-                new ParallelAction(
-                        verticalSlides.Retract(),
-                        scoringArm.StowWholeArm(),
-                        horizontalSlides.HorizontalRetract()
                 );
 
         Action INITIALIZE =
@@ -456,11 +343,7 @@ public class FiveSpecimenTestAuto extends LinearOpMode {
         Action DRIVE_SCORE2 = score2.build();
         Action DRIVE_SCORE3 = score3.build();
         Action DRIVE_SCORE4 = score4.build();
-        Action DRIVE_INTAKE1 = intake1.build();
-        Action DRIVE_SCORE_BUCKET1 = scoreBucket1.build();
-        Action DRIVE_INTAKE2 = intake2.build();
-        Action DRIVE_SCORE_BUCKET2 = scoreBucket2.build();
-        Action DRIVE_PARK = turn.build();
+        Action DRIVE_PARK = park.build();
 
         Actions.runBlocking(
                 new SequentialAction(
@@ -486,70 +369,33 @@ public class FiveSpecimenTestAuto extends LinearOpMode {
                         RETRACT_INTAKE3,
                         DRIVE_PICKUP1,
                         PICKUP1,
-                        new SleepAction(0.5),
                         new ParallelAction(
                                 TRANSFER_AND_EXTEND1,
                                 DRIVE_SCORE1
                         ),
                         SCORE_CLIP1,
-                        new ParallelAction(
-                                DRIVE_PICKUP2,
-                                EXTEND_INTAKE2
-                        ),
+                        DRIVE_PICKUP2,
                         PICKUP2,
-                        new SleepAction(0.5),
                         new ParallelAction(
                                 TRANSFER_AND_EXTEND2,
                                 DRIVE_SCORE2
                         ),
                         SCORE_CLIP2,
-                        new ParallelAction(
-                                DRIVE_PICKUP3,
-                                EXTEND_INTAKE3
-                        ),
+                        DRIVE_PICKUP3,
                         PICKUP3,
-                        new SleepAction(0.5),
                         new ParallelAction(
                                 TRANSFER_AND_EXTEND3,
                                 DRIVE_SCORE3
                         ),
                         SCORE_CLIP3,
-                        new ParallelAction(
-                                DRIVE_PICKUP4,
-                                EXTEND_INTAKE4
-                        ),
+                        DRIVE_PICKUP4,
                         PICKUP4,
-                        new SleepAction(0.5),
                         new ParallelAction(
                                 TRANSFER_AND_EXTEND4,
                                 DRIVE_SCORE4
                         ),
-                        SCORE_CLIP4
-//                        new ParallelAction(
-//                                DRIVE_INTAKE1,
-//                                new SleepAction(0.5),
-//                                EXTEND_INTAKE5
-//                        ),
-//                        INTAKE_SAMPLE1,
-//                        new ParallelAction(
-//                                DRIVE_SCORE_BUCKET1,
-//                                EXTEND_SAMPLE1
-//                        ),
-//                        SCORE_BUCKET1,
-//                        new ParallelAction(
-//                                DRIVE_INTAKE2,
-//                                RETRACT_SAMPLE1
-//                        ),
-//                        INTAKE_SAMPLE2,
-//                        new ParallelAction(
-//                                DRIVE_SCORE_BUCKET2,
-//                                EXTEND_SAMPLE2
-//                        ),
-//                        SCORE_BUCKET2,
-//                        new ParallelAction(
-//                                DRIVE_PARK,
-//                                RETRACT_SAMPLE2
-//                        )
+                        SCORE_CLIP4,
+                        DRIVE_PARK
                 )
         );
     }
