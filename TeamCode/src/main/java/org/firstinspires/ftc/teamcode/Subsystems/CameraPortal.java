@@ -33,6 +33,8 @@ public class CameraPortal {
 
     int cameraMonitorViewID;
 
+    double cameraServoAngle;
+
     public void initialize(OpMode opMode) {
         dashTelemetry = new MultipleTelemetry(opMode.telemetry, FtcDashboard.getInstance().getTelemetry());
 
@@ -98,7 +100,8 @@ public class CameraPortal {
 
 
     public void run(OpMode opMode) {
-        if (opMode.gamepad2.a) {setWristCamera();}
+        cameraServoAngle = getServoRotation();
+        if (opMode.gamepad2.a) {intake.wrist.setWristCameraAngle(cameraServoAngle);}
 
         opMode.telemetry.addData("Frame Count", webcam1.getFrameCount());
         opMode.telemetry.addData("FP=S", String.format("%.2f", webcam1.getFps()));
@@ -106,6 +109,7 @@ public class CameraPortal {
         opMode.telemetry.addData("Pipeline time ms", webcam1.getPipelineTimeMs());
         opMode.telemetry.addData("Overhead time ms", webcam1.getOverheadTimeMs());
         opMode.telemetry.addData("Theoretical max FPS", webcam1.getCurrentPipelineMaxFps());
+        opMode.telemetry.addData("servo angle", getServoRotation());
         dashTelemetry.update();
         opMode.telemetry.update();
     }

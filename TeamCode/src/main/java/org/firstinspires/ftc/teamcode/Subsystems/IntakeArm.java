@@ -251,8 +251,8 @@ public class IntakeArm {
             wristFlip.setPosition(wristFlip.getPosition() + sign * wristTestIncrement);
         }
 
-        public void setWristCameraAngle(double angle) {
-            wristRotate.setPosition(angle);
+        public void setWristCameraAngle(double servoPos) {
+            wristRotate.setPosition(servoPos);
         }
 
     }
