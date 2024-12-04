@@ -9,6 +9,7 @@ import com.acmerobotics.roadrunner.SleepAction;
 import com.arcrobotics.ftclib.hardware.motors.MotorEx;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -18,7 +19,7 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 import org.firstinspires.ftc.teamcode.Util.RobotHardware;
 public class l3Linkage {
     private final RobotHardware rHardware = new RobotHardware();
-    private CRServo l3LinkageServo;
+    private Servo l3LinkageServo;
     private OpMode opmode;
     private DcMotorEx backLeft;
     private DcMotorEx leftSlideMotor, rightSlideMotor;
@@ -33,7 +34,7 @@ public class l3Linkage {
     public void initialize(OpMode opmode) {
         rHardware.init(opmode.hardwareMap);
         this.opmode = opmode;
-        this.l3LinkageServo = rHardware.l3LinkageServo;
+        this.l3LinkageServo = rHardware.ptoActivationServo;
         this.backLeft = rHardware.DcLeftBackMotor;
         this.leftSlideMotor = rHardware.vLslideMotor;
         this.rightSlideMotor = rHardware.vRslideMotor;
@@ -79,9 +80,10 @@ public class l3Linkage {
 
     public Action l3LinkServo() {
         return new SequentialAction(
-                new InstantAction(() -> l3LinkageServo.setPower(ServoPower)),
-                new SleepAction(ServoRuntime),
-                new InstantAction(() -> l3LinkageServo.setPower(0)));
+//                new InstantAction(() -> l3LinkageServo.setPower(ServoPower)),
+//                new SleepAction(ServoRuntime),
+//                new InstantAction(() -> l3LinkageServo.setPower(0))
+        );
     }
     public Action l3LinkVSlides(){
         return new SequentialAction(
