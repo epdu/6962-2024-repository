@@ -14,8 +14,6 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.Subsystems.CameraPortal;
-import org.firstinspires.ftc.teamcode.Subsystems.Hang;
 import org.firstinspires.ftc.teamcode.Subsystems.HorizontalSlides;
 import org.firstinspires.ftc.teamcode.Subsystems.IntakeArm;
 import org.firstinspires.ftc.teamcode.Subsystems.Mecanum;
@@ -106,7 +104,7 @@ public class ThrowingStuffTeleOp extends OpMode {
 
         // field centric drive
         // gamepad1: left-trigger > 0.5 - fastmode
-        mecanum.operateFieldCentricVincent();
+        mecanum.operateTogglable();
 
         // gyro reset
         if (currentGamepad2.y && !previousGamepad2.y) { mecanum.resetNavx(); }

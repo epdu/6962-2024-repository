@@ -7,7 +7,6 @@ import com.qualcomm.hardware.kauailabs.NavxMicroNavigationSensor;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 
-import org.firstinspires.ftc.teamcode.Subsystems.NavxManager;
 import org.firstinspires.ftc.teamcode.Util.RobotHardware;
 
 @Config
@@ -23,9 +22,9 @@ public class Mecanum {
     // constants
     private final double slowModeFactor = 0.35;
 
-    private boolean slowModeBool = false;
 
-    public boolean isFieldCentric = true;
+    private boolean slowModeBool = false;
+    private boolean isFieldCentric = true;
 
     public Mecanum() {}
 
@@ -51,28 +50,19 @@ public class Mecanum {
         this.opmode = opmode;
     }
 
-    public void operateFieldCentricVincent() {
+    public void operateTogglable() {
+        slowModeBool = opmode.gamepad1.left_trigger > 0.5;
 
-        // driving field centric
-        if (opmode.gamepad1.left_trigger > 0.5) {
-            // slow mode when
-            drive.driveFieldCentric(opmode.gamepad1.left_stick_x * slowModeFactor, -opmode.gamepad1.left_stick_y * slowModeFactor, (opmode.gamepad1.right_stick_x * 0.75) * slowModeFactor, gyroManager.getHeading());
+        if (isFieldCentric) {
+            operateFieldCentric();
+        } else {
+            operateRoboCentric();
         }
-        else {
-            drive.driveFieldCentric(opmode.gamepad1.left_stick_x, -opmode.gamepad1.left_stick_y, opmode.gamepad1.right_stick_x * 0.75, gyroManager.getHeading());
-        }
-
-//        opmode.telemetry.addData("Test drive motor accel: ", frontRight.getAcceleration());
     }
 
-    public void operateFieldCentricTest() {
-//        if (opmode.gamepad1.dpad_down) { gyroManager.reset(); }
-
-        slowModeBool = opmode.gamepad1.right_trigger > 0.5;
-
-        // driving field centric
+    public void operateFieldCentric() {
         if (slowModeBool) {
-            drive.driveFieldCentric(opmode.gamepad1.left_stick_x/slowModeFactor, -opmode.gamepad1.left_stick_y/slowModeFactor, (opmode.gamepad1.right_stick_x * 0.75)/slowModeFactor, gyroManager.getHeading());
+            drive.driveFieldCentric(opmode.gamepad1.left_stick_x * slowModeFactor, -opmode.gamepad1.left_stick_y * slowModeFactor, (opmode.gamepad1.right_stick_x * 0.75) * slowModeFactor, gyroManager.getHeading());
         }
         else {
             drive.driveFieldCentric(opmode.gamepad1.left_stick_x, -opmode.gamepad1.left_stick_y, opmode.gamepad1.right_stick_x * 0.75, gyroManager.getHeading());
@@ -80,8 +70,7 @@ public class Mecanum {
     }
 
     public void operateRoboCentric() {
-        // gp2 left stick button switches navx mode
-        if (opmode.gamepad1.left_trigger > 0.5) {
+        if (slowModeBool) {
             drive.driveRobotCentric(opmode.gamepad1.left_stick_x * slowModeFactor, -opmode.gamepad1.left_stick_y * slowModeFactor, (opmode.gamepad1.right_stick_x * 0.75) * slowModeFactor);
         }
         else {
@@ -91,6 +80,10 @@ public class Mecanum {
 
     private void toggleSlowMode() {
         slowModeBool = !slowModeBool;
+    }
+
+    public void toggleCentric() {
+        isFieldCentric = !isFieldCentric;
     }
 
 //    public Command alignToBackdrop()

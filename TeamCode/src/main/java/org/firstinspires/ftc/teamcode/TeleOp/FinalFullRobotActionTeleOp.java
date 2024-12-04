@@ -105,7 +105,7 @@ public class FinalFullRobotActionTeleOp extends OpMode {
         // field centric drive
         // gamepad 1: dpad-down - gyro reset
         // gamepad1: left-trigger > 0.5 - fastmode
-        mecanum.operateFieldCentricVincent();
+        mecanum.operateTogglable();
 
         if (currentGamepad1.left_stick_button && !previousGamepad1.left_stick_button) {
             mecanum.resetNavx();

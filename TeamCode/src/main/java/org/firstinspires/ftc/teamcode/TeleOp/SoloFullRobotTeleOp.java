@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.teamcode.TeleOp;
 
-import android.graphics.Camera;
-
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
@@ -16,7 +14,6 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Subsystems.CameraPortal;
 import org.firstinspires.ftc.teamcode.Subsystems.Hang;
 import org.firstinspires.ftc.teamcode.Subsystems.HorizontalSlides;
@@ -61,8 +58,6 @@ public class SoloFullRobotTeleOp extends OpMode {
 //    private CameraPortal cameraPortal         = new CameraPortal();
 
     private boolean onRedAlliance = true;
-
-    private boolean isFieldCentric = true;
 
     @Override
     public void init() {
@@ -125,24 +120,16 @@ public class SoloFullRobotTeleOp extends OpMode {
 
         dash.sendTelemetryPacket(packet);
 
-        if (currentGamepad2.left_stick_button && !previousGamepad2.left_stick_button) {
-            if (isFieldCentric == true) {
-                isFieldCentric = false;
-            }
-            else {
-                isFieldCentric = true;
-            }
-        }
-
-        if (isFieldCentric == true) {
-            mecanum.operateFieldCentricVincent();
-        }
-        else {
-            mecanum.operateRoboCentric();
-        }
-
-
+        // camera
         cPortal.run(this);
+
+        // toggle between field centric and robot centric
+        if (currentGamepad2.left_stick_button && !previousGamepad2.left_stick_button) {
+            mecanum.toggleCentric();
+        }
+
+        // mecanum drive
+        mecanum.operateTogglable();
 
         // gyro reset
         if (currentGamepad2.y && !previousGamepad2.y) { mecanum.resetNavx(); }
@@ -344,7 +331,6 @@ public class SoloFullRobotTeleOp extends OpMode {
         // loop time
         dashboardTelemetry.addData("elapsed time (loop time)", elapsedtime.milliseconds());
         dashboardTelemetry.addData("Camera Color:", cPortal.cameraColor);
-//        dashboardTelemetry.addData();
         dashboardTelemetry.update();
         elapsedtime.reset();
 

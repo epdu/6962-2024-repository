@@ -96,7 +96,7 @@
 //        // field centric drive
 //        // gamepad 1: dpad-down - gyro reset
 //        // gamepad1: left-trigger > 0.5 - fastmode
-//        mecanum.operateFieldCentricVincent();
+//        mecanum.operateTogglable();
 //
 //        // no manual control, only PID
 //        verticalSlides.operateVincent();
