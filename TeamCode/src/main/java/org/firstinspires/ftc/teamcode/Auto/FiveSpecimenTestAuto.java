@@ -188,7 +188,15 @@ public class FiveSpecimenTestAuto extends LinearOpMode {
                         new SleepAction(0.15),
                         intakeArm.IntakeClose(),
                         new SleepAction(0.1),
-                        intakeArm.IntakeTransfer()
+                        intakeArm.IntakeTransfer(),
+                        scoringArm.StowWholeArm(),
+                        scoringArm.WholeArmTransfer(),
+                        intakeArm.ClawOpen(),
+                        intakeArm.IntakeHover(),
+                        new ParallelAction(
+                                verticalSlides.LiftUpToClip(),
+                                scoringArm.ArmScoreClip()
+                        )
                 );
 
         Action TRANSFER_AND_EXTEND1 =
@@ -217,7 +225,15 @@ public class FiveSpecimenTestAuto extends LinearOpMode {
                         new SleepAction(0.15),
                         intakeArm.IntakeClose(),
                         new SleepAction(0.1),
-                        intakeArm.IntakeTransfer()
+                        intakeArm.IntakeTransfer(),
+                        scoringArm.StowWholeArm(),
+                        scoringArm.WholeArmTransfer(),
+                        intakeArm.ClawOpen(),
+                        intakeArm.IntakeHover(),
+                        new ParallelAction(
+                                verticalSlides.LiftUpToClip(),
+                                scoringArm.ArmScoreClip()
+                        )
                 );
 
         Action TRANSFER_AND_EXTEND2 =
@@ -246,7 +262,15 @@ public class FiveSpecimenTestAuto extends LinearOpMode {
                         new SleepAction(0.15),
                         intakeArm.IntakeClose(),
                         new SleepAction(0.1),
-                        intakeArm.IntakeTransfer()
+                        intakeArm.IntakeTransfer(),
+                        scoringArm.StowWholeArm(),
+                        scoringArm.WholeArmTransfer(),
+                        intakeArm.ClawOpen(),
+                        intakeArm.IntakeHover(),
+                        new ParallelAction(
+                                verticalSlides.LiftUpToClip(),
+                                scoringArm.ArmScoreClip()
+                        )
                 );
 
         Action TRANSFER_AND_EXTEND3 =
@@ -275,7 +299,15 @@ public class FiveSpecimenTestAuto extends LinearOpMode {
                         new SleepAction(0.15),
                         intakeArm.IntakeClose(),
                         new SleepAction(0.1),
-                        intakeArm.IntakeTransfer()
+                        intakeArm.IntakeTransfer(),
+                        scoringArm.StowWholeArm(),
+                        scoringArm.WholeArmTransfer(),
+                        intakeArm.ClawOpen(),
+                        intakeArm.IntakeHover(),
+                        new ParallelAction(
+                                verticalSlides.LiftUpToClip(),
+                                scoringArm.ArmScoreClip()
+                        )
                 );
 
         Action TRANSFER_AND_EXTEND4 =
@@ -369,24 +401,24 @@ public class FiveSpecimenTestAuto extends LinearOpMode {
                         RETRACT_INTAKE3,
                         DRIVE_PICKUP1,
                         PICKUP1,
-                        TRANSFER_AND_EXTEND1,
+//                        TRANSFER_AND_EXTEND1,
                         DRIVE_SCORE1,
                         SCORE_CLIP1,
                         DRIVE_PICKUP2,
                         PICKUP2,
-                        TRANSFER_AND_EXTEND2,
+//                        TRANSFER_AND_EXTEND2,
                         DRIVE_SCORE2,
                         SCORE_CLIP2,
                         DRIVE_PICKUP3,
                         PICKUP3,
-                        TRANSFER_AND_EXTEND3,
+//                        TRANSFER_AND_EXTEND3,
                         DRIVE_SCORE3,
                         SCORE_CLIP3,
-//                        DRIVE_PICKUP4,
-//                        PICKUP4,
+                        DRIVE_PICKUP4,
+                        PICKUP4,
 //                        TRANSFER_AND_EXTEND4,
-//                        DRIVE_SCORE4,
-//                        SCORE_CLIP4,
+                        DRIVE_SCORE4,
+                        SCORE_CLIP4,
                         DRIVE_PARK
                 )
         );

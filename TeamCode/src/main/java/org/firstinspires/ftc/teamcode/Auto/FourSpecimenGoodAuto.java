@@ -54,7 +54,7 @@ public class FourSpecimenGoodAuto extends LinearOpMode {
     Pose2d pushPose = new Pose2d(zone2X, zone2Y, Math.toRadians(-90));
     Pose2d prepPickupPose = new Pose2d(prepPickupX, prepPickupY, Math.toRadians(90));
     Pose2d pickupPose = new Pose2d(pickupX, pickupY, Math.toRadians(90));
-    Pose2d scorePose = new Pose2d(scoreX, scoreY, Math.toRadians(-90));
+    Pose2d scorePose = new Pose2d(scoreX, scoreY+5, Math.toRadians(-90));
 
     @Override
     public void runOpMode() {
@@ -76,7 +76,7 @@ public class FourSpecimenGoodAuto extends LinearOpMode {
                 .strafeToConstantHeading(new Vector2d(zone2X, zone2Y));
 
         TrajectoryActionBuilder prepPickup1 = drive.actionBuilder(pushPose)
-                .afterTime(0.8, () -> {
+                .afterTime(0.5, () -> {
                     Actions.runBlocking(
                             scoringArm.ArmGrabClip()
                     );
@@ -84,7 +84,7 @@ public class FourSpecimenGoodAuto extends LinearOpMode {
                 .strafeToLinearHeading(new Vector2d(prepPickupX, prepPickupY), Math.toRadians(90));
 
         TrajectoryActionBuilder prepPickup2 = drive.actionBuilder(scorePose)
-                .afterTime(0.8, () -> {
+                .afterTime(0.5, () -> {
                     Actions.runBlocking(
                             scoringArm.ArmGrabClip()
                     );
@@ -92,7 +92,7 @@ public class FourSpecimenGoodAuto extends LinearOpMode {
                 .strafeToLinearHeading(new Vector2d(prepPickupX, prepPickupY), Math.toRadians(90));
 
         TrajectoryActionBuilder prepPickup3 = drive.actionBuilder(scorePose)
-                .afterTime(0.8, () -> {
+                .afterTime(0.5, () -> {
                     Actions.runBlocking(
                             scoringArm.ArmGrabClip()
                     );
