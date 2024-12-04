@@ -28,14 +28,14 @@ public class FiveSpecimenTestAuto extends LinearOpMode {
     public static double startHeading = Math.toRadians(-90);
     public static double scorePreloadX = 9;
     public static double scorePreloadY = -34;
-    public static double field1X = 27;
+    public static double field1X = 19;
     public static double field1Y = -36;
-    public static double field2X = 37;
+    public static double field2X = 29;
     public static double field2Y = -36;
-    public static double field3X = 46;
+    public static double field3X = 39;
     public static double field3Y = -36;
-    public static double pickupX = 24;
-    public static double pickupY = -48;
+    public static double pickupX = 35;
+    public static double pickupY = -60;
     public static double scoreX = 1;
     public static double scoreY = -34;
     public static double score2X = -2;
@@ -369,32 +369,24 @@ public class FiveSpecimenTestAuto extends LinearOpMode {
                         RETRACT_INTAKE3,
                         DRIVE_PICKUP1,
                         PICKUP1,
-                        new ParallelAction(
-                                TRANSFER_AND_EXTEND1,
-                                DRIVE_SCORE1
-                        ),
+                        TRANSFER_AND_EXTEND1,
+                        DRIVE_SCORE1,
                         SCORE_CLIP1,
                         DRIVE_PICKUP2,
                         PICKUP2,
-                        new ParallelAction(
-                                TRANSFER_AND_EXTEND2,
-                                DRIVE_SCORE2
-                        ),
+                        TRANSFER_AND_EXTEND2,
+                        DRIVE_SCORE2,
                         SCORE_CLIP2,
                         DRIVE_PICKUP3,
                         PICKUP3,
-                        new ParallelAction(
-                                TRANSFER_AND_EXTEND3,
-                                DRIVE_SCORE3
-                        ),
+                        TRANSFER_AND_EXTEND3,
+                        DRIVE_SCORE3,
                         SCORE_CLIP3,
-                        DRIVE_PICKUP4,
-                        PICKUP4,
-                        new ParallelAction(
-                                TRANSFER_AND_EXTEND4,
-                                DRIVE_SCORE4
-                        ),
-                        SCORE_CLIP4,
+//                        DRIVE_PICKUP4,
+//                        PICKUP4,
+//                        TRANSFER_AND_EXTEND4,
+//                        DRIVE_SCORE4,
+//                        SCORE_CLIP4,
                         DRIVE_PARK
                 )
         );

@@ -30,11 +30,11 @@ public class QualsAuto extends LinearOpMode{
     public static double scorePreloadY = -41;
     public static double intake1X = -46;
     public static double intake1Y = -52;
-    public static double scoreBucketX = -56;
-    public static double scoreBucketY = -58;
-    public static double intake2X = -59;
+    public static double scoreBucketX = -55;
+    public static double scoreBucketY = -59;
+    public static double intake2X = -58;
     public static double intake2Y = -53.5;
-    public static double intake3X = -58;
+    public static double intake3X = -57;
     public static double intake3Y = -53;
     public static double coord1X = -16;
     public static double coord1Y = -50;
@@ -45,10 +45,10 @@ public class QualsAuto extends LinearOpMode{
     public static double pickupX = 40;
     public static double pickupY = -58;
     public static double pickup2X = 40;
-    public static double pickup2Y = -63;
+    public static double pickup2Y = -63.5;
     public static double scoreClipX = 0;
     public static double scoreClipY = -35;
-    public static double parkX = 35;
+    public static double parkX = 38;
     public static double parkY = -64;
 
     @Override
