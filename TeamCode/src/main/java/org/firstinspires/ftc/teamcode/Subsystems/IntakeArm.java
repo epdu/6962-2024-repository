@@ -122,7 +122,7 @@ public class IntakeArm {
     public static class Claw {
         public Servo claw;
         public boolean isClawOpen = true;
-        public static double clawClosedPosition = 0.51;
+        public static double clawClosedPosition = 0.505;
         public static double clawOpenPosition = 0.0339;
         public static double clawIncrement = 0.001;
 
@@ -201,8 +201,8 @@ public class IntakeArm {
     public static class Wrist {
         public Servo wristRotate, wristFlip;
         public boolean isWristTransferring = true;
-        public static double wristRotateTransferPosition = 0.5056;
-        public static double wristFlipTransferPosition = 0.42;
+        public static double wristRotateTransferPosition = 0.5;
+        public static double wristFlipTransferPosition = 0.468;
         public static double wristRotateDefaultIntakePosition = 0.4761;
         public static double wristRotateIntakePerpendicularPosition = 0.163;
         public static double wristRotateIntakeSampleThreePosition = 0.3;

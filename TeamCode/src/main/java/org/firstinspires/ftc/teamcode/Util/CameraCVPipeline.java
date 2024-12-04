@@ -247,11 +247,11 @@ public class CameraCVPipeline extends OpenCvPipeline implements CameraStreamSour
 //        double newServoPosition = current + servoAdjustment;
 
 //         Ensure the servo position stays within valid bounds [0, 1]
-        if (newServoPosition > 1) {
-            newServoPosition = 1.0;
-        } else if (newServoPosition < 0.0) {
-            newServoPosition = 0.0;
-        }
+//        if (newServoPosition > 1) {
+//            newServoPosition = 1.0;
+//        } else if (newServoPosition < 0.0) {
+//            newServoPosition = 0.0;
+//        }
 
         targetWristPosition = newServoPosition;
         return targetWristPosition;

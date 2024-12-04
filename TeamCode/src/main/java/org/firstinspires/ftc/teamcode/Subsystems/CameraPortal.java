@@ -40,8 +40,6 @@ public class CameraPortal {
 
         rHardware.init(opMode.hardwareMap);
 
-        pipeLine.initialize();
-
         cameraMonitorViewID = rHardware.cameraMonitorViewId;
         webcam1 = OpenCvCameraFactory.getInstance().createWebcam(rHardware.webcam, cameraMonitorViewID);
 
@@ -53,9 +51,9 @@ public class CameraPortal {
                 // Usually this is where you'll want to start streaming from the camera (see section 4)
                 webcam1.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
 //                TODO: Create Pipeline
-                webcam1.setPipeline(new CameraCVPipeline());
+                webcam1.setPipeline(pipeLine);
                 FtcDashboard.getInstance().startCameraStream(
-                        new CameraCVPipeline(),
+                        pipeLine,
                         30.0
                 );
 
@@ -63,6 +61,8 @@ public class CameraPortal {
             @Override
             public void onError(int errorCode) {opMode.telemetry.addLine("womp womp");}
         });
+
+        pipeLine.initialize();
 
         pipeLine.setDetectionType(cameraColor);
         intake.initialize(opMode);

@@ -24,6 +24,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.IntakeArm;
 import org.firstinspires.ftc.teamcode.Subsystems.Mecanum;
 import org.firstinspires.ftc.teamcode.Subsystems.ScoringArm;
 import org.firstinspires.ftc.teamcode.Subsystems.VerticalSlides;
+import org.firstinspires.ftc.teamcode.Util.CameraCVPipeline;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,6 +52,8 @@ public class SoloFullRobotTeleOp extends OpMode {
     private IntakeArm intakeArm               = new IntakeArm();
     private ScoringArm scoringArm             = new ScoringArm();
     private Hang hang                         = new Hang();
+    private CameraCVPipeline pipeline          = new CameraCVPipeline();
+
 
     private MultipleTelemetry dashboardTelemetry = new MultipleTelemetry(telemetry, dash.getTelemetry());
 
@@ -137,7 +140,8 @@ public class SoloFullRobotTeleOp extends OpMode {
         else {
             mecanum.operateRoboCentric();
         }
-        
+
+
         cPortal.run(this);
 
         // gyro reset
@@ -175,7 +179,10 @@ public class SoloFullRobotTeleOp extends OpMode {
                                 new InstantAction(() -> intakeArm.arm.setArmTransfer()),
                                 new InstantAction(() -> intakeArm.wrist.setWristTransfer()),
                                 new SleepAction(0.1),
-                                new InstantAction(() -> horizontalSlides.retract())
+                                new InstantAction(() -> horizontalSlides.retract()),
+                                new InstantAction(() -> scoringArm.arm.setArmInitPosition()),
+                                new SleepAction(0.35),
+                                new InstantAction(() -> scoringArm.arm.setArmTransfer())
                         )
                 );
             }
@@ -253,7 +260,7 @@ public class SoloFullRobotTeleOp extends OpMode {
                         // lift up to high bucket
                         new InstantAction(() -> verticalSlides.raiseToHighBucket()),
                         new InstantAction(() -> scoringArm.wrist.setWristScoringBucket()),
-                        new SleepAction(1),
+                        new SleepAction(0.8),
                         new InstantAction(() -> scoringArm.arm.setArmScoreBucket())
                     )
             );
@@ -337,6 +344,7 @@ public class SoloFullRobotTeleOp extends OpMode {
         // loop time
         dashboardTelemetry.addData("elapsed time (loop time)", elapsedtime.milliseconds());
         dashboardTelemetry.addData("Camera Color:", cPortal.cameraColor);
+//        dashboardTelemetry.addData();
         dashboardTelemetry.update();
         elapsedtime.reset();
 

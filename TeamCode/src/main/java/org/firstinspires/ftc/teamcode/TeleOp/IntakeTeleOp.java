@@ -7,12 +7,15 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.Subsystems.CameraPortal;
 import org.firstinspires.ftc.teamcode.Subsystems.CustomTimer;
 import org.firstinspires.ftc.teamcode.Subsystems.IntakeArm;
+import org.firstinspires.ftc.teamcode.Util.CameraCVPipeline;
 
 @TeleOp(name="Only Intake Test", group="Active TeleOps")
 public class IntakeTeleOp extends OpMode {
     // creating subsystems
     private final IntakeArm intake = new IntakeArm();
     private CameraPortal cPortal = new CameraPortal();
+    private CameraCVPipeline pipeline = new CameraCVPipeline();
+
 
     private final boolean onRedAlliance = true;
 
