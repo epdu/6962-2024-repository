@@ -49,6 +49,7 @@ public class RobotHardware {
 
     public GamepadEx gamepad1, gamepad2;
     public CRServo hangServoL = null, hangServoR = null;
+    public Servo ptoActivationServo = null;
     public CRServo l3LinkageServo = null;
 
     public void init(@NonNull HardwareMap hardwareMap) {
@@ -67,7 +68,7 @@ public class RobotHardware {
         cClawServo = hMap.get(Servo.class, "cClawServo"); //CHUB 0
 
 
-        iArmServo = hMap.get(Servo.class, "iArmServo"); //EHUB 1
+        iArmServo = hMap.get(Servo.class, "iArmServo"); //EHUB 5
         iWristServoR = hMap.get(Servo.class, "iWristServoR"); //EHUB 2
         iWristServoF = hMap.get(Servo.class, "iWristServoF"); //EHUB 3
         iClawServo = hMap.get(Servo.class, "iClawServo"); //EHUB 4
@@ -80,6 +81,8 @@ public class RobotHardware {
 
         hangServoL = hMap.get(CRServo.class, "hangServoL"); //EHUB 0
         hangServoR = hMap.get(CRServo.class, "hangServoR"); //CHUB 3
+//        ptoActivationServo = hMap.get(Servo.class, ""); //EHUB 1
+        //micro EHUB 1
 
         webcam = hMap.get(WebcamName.class, "Webcam 1");
         cameraMonitorViewId = hMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hMap.appContext.getPackageName());

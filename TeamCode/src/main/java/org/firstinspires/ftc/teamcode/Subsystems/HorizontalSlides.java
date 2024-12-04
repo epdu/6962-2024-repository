@@ -22,9 +22,6 @@ public class HorizontalSlides {
     private DcMotorEx slideMotor;
 
     // constants
-    /**
-     * all of the constants need to be tuned
-     */
     public static double joystickScalar = 1;
     public static double slideScalar = 1;
     public static double Kp = 0.0065;
