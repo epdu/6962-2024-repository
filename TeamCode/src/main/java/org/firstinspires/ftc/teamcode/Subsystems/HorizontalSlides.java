@@ -31,12 +31,12 @@ public class HorizontalSlides {
     public static double Ki = 0;
     public static double Kd = 0;
     public static double Kg = 0; // gravity constant, tune till the slide holds itself in place
-    public static double upperLimit = 900;
+    public static double upperLimit = 800;
     public static double lowerLimit = -2;
     public static double retractedThreshold = 10;
     public static double mostlyRetractedThreshold = 60;
 
-    public static int extendedPos = 670;
+    public static int extendedPos = 750;
     public static int halfExtendedPos = 500;
     public static int retractedPos = 0;
 
