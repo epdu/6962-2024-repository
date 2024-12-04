@@ -205,7 +205,7 @@ public class IntakeArm {
         public static double wristFlipTransferPosition = 0.42;
         public static double wristRotateDefaultIntakePosition = 0.4761;
         public static double wristRotateIntakePerpendicularPosition = 0.163;
-        public static double wristRotateIntakeSampleThreePosition = 0.3;
+        public static double wristRotateIntakeSampleThreePosition = 0.4;
         public static double wristFlipIntakePosition = 0.96;
         public static double wristTestIncrement = 0.001;
         public static double wristActualIncrement = 0.02;

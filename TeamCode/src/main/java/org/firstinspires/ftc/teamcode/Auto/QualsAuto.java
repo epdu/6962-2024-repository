@@ -28,18 +28,18 @@ public class QualsAuto extends LinearOpMode{
     public static double startHeading = Math.toRadians(90);
     public static double scorePreloadX = 0;
     public static double scorePreloadY = -41;
-    public static double intake1X = -45;
+    public static double intake1X = -46;
     public static double intake1Y = -52;
     public static double scoreBucketX = -56;
     public static double scoreBucketY = -58;
     public static double intake2X = -59;
-    public static double intake2Y = -53;
-    public static double intake3X = -59.5;
+    public static double intake2Y = -53.5;
+    public static double intake3X = -58;
     public static double intake3Y = -53;
     public static double coord1X = -16;
-    public static double coord1Y = -44;
-    public static double coord2X = 12;
-    public static double coord2Y = -44;
+    public static double coord1Y = -50;
+    public static double coord2X = 30;
+    public static double coord2Y = -50;
     public static double prepPickupX = 40;
     public static double prepPickupY = -50;
     public static double pickupX = 40;
@@ -117,8 +117,8 @@ public class QualsAuto extends LinearOpMode{
                 .strafeToLinearHeading(new Vector2d(scoreClipX, scoreClipY), Math.toRadians(-90));
 
         TrajectoryActionBuilder park = drive.actionBuilder(new Pose2d(scoreClipX, scoreClipY, Math.toRadians(-90)))
-                .strafeToConstantHeading(new Vector2d(parkX, parkY))
-                .turnTo(Math.toRadians(90));
+                .strafeToConstantHeading(new Vector2d(parkX, parkY));
+//                .turnTo(Math.toRadians(90));
 
         Action PICKUP_CLIP =
                 new SequentialAction(
@@ -170,7 +170,7 @@ public class QualsAuto extends LinearOpMode{
                 horizontalSlides.HorizontalExtend()
         );
         Action EXTEND_INTAKE3 = new ParallelAction(
-                intakeArm.IntakeHover(),
+                intakeArm.IntakeHoverSampleThree(),
                 horizontalSlides.HorizontalExtend()
         );
 
