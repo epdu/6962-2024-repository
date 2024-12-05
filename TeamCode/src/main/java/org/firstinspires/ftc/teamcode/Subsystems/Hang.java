@@ -69,21 +69,26 @@ public class Hang {
         this.ptoServo = rHardware.ptoActivationServo;
         this.navxManager = new NavxManager(rHardware.navx);
 
+        vRslideMotor.setDirection(DcMotorEx.Direction.REVERSE);
+        vRslideMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+        vLslideMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+        vRslideMotor.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
+        vLslideMotor.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
 
         hangServoR.setDirection(DcMotorSimple.Direction.REVERSE);
     }
 
     public void operateTest() {
         //not sure if this will cause bug
-        servoPos = this.ptoServo.getPosition();
+//        servoPos = this.ptoServo.getPosition();
 
         hangServoL.setPower(-opmode.gamepad2.left_stick_y);
         hangServoR.setPower(-opmode.gamepad2.left_stick_y);
 
         if (opmode.gamepad2.left_bumper) {
-            setPtoServo(servoPos + 0.01);
+            setPtoServo(servoPos - 0.001);
         } else if (opmode.gamepad2.right_bumper) {
-            setPtoServo(servoPos - 0.01);
+            setPtoServo(servoPos + 0.001);
         }
 
         //TODO: test if reversed or not
@@ -91,6 +96,8 @@ public class Hang {
         vRslideMotor.setPower(-opmode.gamepad2.right_stick_y);
 
         dcBackLeftMotor.setPower(-opmode.gamepad2.right_stick_y);
+
+        opmode.telemetry.addData("micro activation servo pos", servoPos);
     }
 
     public Action getHangSequence() {
