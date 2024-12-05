@@ -49,12 +49,12 @@ public class SoloFullRobotTeleOp extends OpMode {
     private IntakeArm intakeArm               = new IntakeArm();
     private ScoringArm scoringArm             = new ScoringArm();
     private Hang hang                         = new Hang();
-    private CameraCVPipeline pipeline          = new CameraCVPipeline();
+//    private CameraCVPipeline pipeline          = new CameraCVPipeline();
 
 
     private MultipleTelemetry dashboardTelemetry = new MultipleTelemetry(telemetry, dash.getTelemetry());
 
-    private CameraPortal cPortal              = new CameraPortal();
+//    private CameraPortal cPortal              = new CameraPortal();
 //    private CameraPortal cameraPortal         = new CameraPortal();
 
     private boolean onRedAlliance = true;
@@ -68,7 +68,7 @@ public class SoloFullRobotTeleOp extends OpMode {
         verticalSlides.teleInitialize(this);
         scoringArm.initialize(this);
         hang.initialize(this);
-        cPortal.initialize(this);
+//        cPortal.initialize(this);
         allHubs = hardwareMap.getAll(LynxModule.class);
         // apparently optimizes reading from hardware (ex: getCurrentPosition) and makes runtime a bit faster
         for (LynxModule hub : allHubs) { hub.setBulkCachingMode(LynxModule.BulkCachingMode.MANUAL); }
@@ -76,9 +76,9 @@ public class SoloFullRobotTeleOp extends OpMode {
 
     @Override
     public void init_loop() {
-        if (currentGamepad1.b) {
-            cPortal.changeColor();
-        }
+//        if (currentGamepad1.b) {
+//            cPortal.changeColor();
+//        }
     }
 
     @Override
@@ -121,7 +121,7 @@ public class SoloFullRobotTeleOp extends OpMode {
         dash.sendTelemetryPacket(packet);
 
         // camera
-        cPortal.run(this);
+//        cPortal.run(this);
 
         // toggle between field centric and robot centric
         if (currentGamepad2.left_stick_button && !previousGamepad2.left_stick_button) {
@@ -271,7 +271,7 @@ public class SoloFullRobotTeleOp extends OpMode {
         // intake wrist rotate
         if      (currentGamepad1.right_trigger >= 0.1 && currentGamepad1.dpad_right)  { intakeArm.wrist.incrementalWristRotateActual(-1); }
         else if (currentGamepad1.right_trigger >= 0.1 && currentGamepad1.dpad_left) { intakeArm.wrist.incrementalWristRotateActual(1); }
-        else if (currentGamepad1.right_trigger >= 0.1 && currentGamepad1.dpad_down) { cPortal.setWristCamera();}
+//        else if (currentGamepad1.right_trigger >= 0.1 && currentGamepad1.dpad_down) { cPortal.setWristCamera();}
 
         //hang activation / reverse --NOT TESTED--
 //        if (currentGamepad1.dpad_up && !previousGamepad1.dpad_up) {
@@ -330,7 +330,7 @@ public class SoloFullRobotTeleOp extends OpMode {
 
         // loop time
         dashboardTelemetry.addData("elapsed time (loop time)", elapsedtime.milliseconds());
-        dashboardTelemetry.addData("Camera Color:", cPortal.cameraColor);
+//        dashboardTelemetry.addData("Camera Color:", cPortal.cameraColor);
         dashboardTelemetry.update();
         elapsedtime.reset();
 

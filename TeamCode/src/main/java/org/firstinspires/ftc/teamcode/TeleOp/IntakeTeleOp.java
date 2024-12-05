@@ -13,8 +13,8 @@ import org.firstinspires.ftc.teamcode.Util.CameraCVPipeline;
 public class IntakeTeleOp extends OpMode {
     // creating subsystems
     private final IntakeArm intake = new IntakeArm();
-    private CameraPortal cPortal = new CameraPortal();
-    private CameraCVPipeline pipeline = new CameraCVPipeline();
+//    private CameraPortal cPortal = new CameraPortal();
+//    private CameraCVPipeline pipeline = new CameraCVPipeline();
 
 
     private final boolean onRedAlliance = true;
@@ -25,7 +25,7 @@ public class IntakeTeleOp extends OpMode {
     @Override
     public void init() {
         intake.initialize(this);
-        cPortal.initialize(this);
+//        cPortal.initialize(this);
     }
 
     /*
@@ -50,10 +50,10 @@ public class IntakeTeleOp extends OpMode {
     public void loop() {
 //        intake.operateTest();
         intake.operateTest(this);
-        cPortal.run(this);
-        if (gamepad1.b) {
-            cPortal.changeColor();
-        }
+//        cPortal.run(this);
+//        if (gamepad1.b) {
+//            cPortal.changeColor();
+//        }
         // Gamepad 2: tuning
         //
 
