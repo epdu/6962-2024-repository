@@ -94,12 +94,11 @@ public class Hang {
     }
 
     public Action getHangSequence() {
-        switchHangState();
         return new SequentialAction(
                 new InstantAction(() -> runServos(CR_SERVO_POWER)),
                 new SleepAction(SERVO_RUN_TIME),
-                new InstantAction(this::stopServos)
-//                new InstantAction(() -> switchHangState())
+                new InstantAction(this::stopServos),
+                new InstantAction(() -> switchHangState())
         );
     }
 
@@ -119,9 +118,7 @@ public class Hang {
 
 
     public Action getHangSequenceTwo() {
-//        this.hangState = STAGETWO;
-
-                // First action: Monitor pitch and stop servos when target pitch is reached
+        // First action: Monitor pitch and stop servos when target pitch is reached
         return new ParallelAction(
                 new InstantAction(() -> runServos(CR_SERVO_REVERSE_POWER)),
                 /* new SleepAction(SERV_REVERSE_TIME), to use if auto doesnt work
@@ -148,11 +145,6 @@ public class Hang {
                     new SleepAction(SLIDE_EXTENSION_TIME)
                 ),
                 new InstantAction(() -> switchHangState())
-
-                // Retract slides not neccesary after pto
-//                new InstantAction(() -> setVerticalSlidePower(SLIDE_RETRACTION_POWER)),
-//                new SleepAction(SLIDE_RETRACTION_TIME),
-//                new InstantAction(() -> setVerticalSlidePower(0))
         );
     }
 
@@ -211,7 +203,7 @@ public class Hang {
         return hangState;
     }
 
-    //lowk useless but might come in handy for future (use in actions instead of setting it manually)
+    //used for switching states in actions
     public void switchHangState() {
         switch (hangState) {
             case GROUND:
