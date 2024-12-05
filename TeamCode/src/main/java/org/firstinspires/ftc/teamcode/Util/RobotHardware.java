@@ -80,7 +80,7 @@ public class RobotHardware {
 
         hangServoL = hMap.get(CRServo.class, "hangServoL"); //EHUB 0
         hangServoR = hMap.get(CRServo.class, "hangServoR"); //CHUB 3
-//        ptoActivationServo = hMap.get(Servo.class, ""); //EHUB 1
+        ptoActivationServo = hMap.get(Servo.class, "ptoServo"); //EHUB 1
         //micro EHUB 1
 
 //        webcam = hMap.get(WebcamName.class, "Webcam 1");

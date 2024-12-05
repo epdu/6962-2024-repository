@@ -1,11 +1,18 @@
 package org.firstinspires.ftc.teamcode.TeleOp;
 
+import static org.firstinspires.ftc.teamcode.Util.HangStates.DEPLOYED;
+import static org.firstinspires.ftc.teamcode.Util.HangStates.EXTEND;
+import static org.firstinspires.ftc.teamcode.Util.HangStates.GROUND;
+import static org.firstinspires.ftc.teamcode.Util.HangStates.PTO;
+import static org.firstinspires.ftc.teamcode.Util.HangStates.STAGETWO;
+
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Action;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.Subsystems.Hang;
+import org.firstinspires.ftc.teamcode.Util.HangStates;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +22,8 @@ public class HangTeleOp extends OpMode {
     private final Hang hang = new Hang();
     private FtcDashboard dash = FtcDashboard.getInstance();
     private List<Action> runningActions = new ArrayList<>();
+
+    private HangStates currentHangState;
 
     @Override
     public void init() {
@@ -27,6 +36,7 @@ public class HangTeleOp extends OpMode {
     public void loop() {
         TelemetryPacket packet = new TelemetryPacket();
         List<Action> newActions = new ArrayList<>();
+        currentHangState = hang.currentHangState();
 
         for (Action action : runningActions) {
             action.preview(packet.fieldOverlay());
@@ -45,14 +55,22 @@ public class HangTeleOp extends OpMode {
             hang.stopServos(); // stop servos when joystick is unmoved
         }
 
+//        MANUAL TUNING for everything
+//        hang.operateTest();
+
         // Automated sequences
-        if (gamepad1.y && !hang.isDeployed()) { // Trigger sequence if gamepad1 Y is pressed and hang is not deployed
+        if (gamepad1.y && currentHangState == GROUND) { // Trigger sequence if gamepad1 Y is pressed and hang is not deployed
             runningActions.add(hang.getHangSequence());
+        } else if (gamepad1.dpad_left && currentHangState == DEPLOYED) {
+            runningActions.add(hang.getHangSequenceTwo());
+        } else if (gamepad1.dpad_up && currentHangState == STAGETWO) {
+            runningActions.add(hang.getHangExtend());
+        } else if (gamepad1.dpad_right && currentHangState == EXTEND) {
+            runningActions.add(hang.setPTO());
+        } else if (gamepad1.dpad_down && currentHangState == PTO) {
+            runningActions.add(hang.getHangRetract());
         }
 
-        if (gamepad1.dpad_left && hang.isDeployed() && !hang.isStageTwoActivated()) {
-            runningActions.add(hang.getHangSequenceTwo());
-        }
     }
     @Override
     public void stop() {
