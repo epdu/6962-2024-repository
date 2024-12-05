@@ -35,7 +35,7 @@ public class FiveSpecimenTestAuto extends LinearOpMode {
     public static double field3X = 39;
     public static double field3Y = -36;
     public static double pickupX = 35;
-    public static double pickupY = -60;
+    public static double pickupY = -54;
     public static double scoreX = 1;
     public static double scoreY = -34;
     public static double score2X = -2;
@@ -185,9 +185,9 @@ public class FiveSpecimenTestAuto extends LinearOpMode {
         Action PICKUP1 =
                 new SequentialAction(
                         intakeArm.IntakePickup(),
-                        new SleepAction(0.15),
+                        new SleepAction(0.2),
                         intakeArm.IntakeClose(),
-                        new SleepAction(0.1),
+                        new SleepAction(0.2),
                         intakeArm.IntakeTransfer(),
                         scoringArm.StowWholeArm(),
                         scoringArm.WholeArmTransfer(),
@@ -222,9 +222,9 @@ public class FiveSpecimenTestAuto extends LinearOpMode {
         Action PICKUP2 =
                 new SequentialAction(
                         intakeArm.IntakePickup(),
-                        new SleepAction(0.15),
+                        new SleepAction(0.2),
                         intakeArm.IntakeClose(),
-                        new SleepAction(0.1),
+                        new SleepAction(0.2),
                         intakeArm.IntakeTransfer(),
                         scoringArm.StowWholeArm(),
                         scoringArm.WholeArmTransfer(),
@@ -259,9 +259,9 @@ public class FiveSpecimenTestAuto extends LinearOpMode {
         Action PICKUP3 =
                 new SequentialAction(
                         intakeArm.IntakePickup(),
-                        new SleepAction(0.15),
+                        new SleepAction(0.2),
                         intakeArm.IntakeClose(),
-                        new SleepAction(0.1),
+                        new SleepAction(0.2),
                         intakeArm.IntakeTransfer(),
                         scoringArm.StowWholeArm(),
                         scoringArm.WholeArmTransfer(),
@@ -296,9 +296,9 @@ public class FiveSpecimenTestAuto extends LinearOpMode {
         Action PICKUP4 =
                 new SequentialAction(
                         intakeArm.IntakePickup(),
-                        new SleepAction(0.15),
+                        new SleepAction(0.2),
                         intakeArm.IntakeClose(),
-                        new SleepAction(0.1),
+                        new SleepAction(0.2),
                         intakeArm.IntakeTransfer(),
                         scoringArm.StowWholeArm(),
                         scoringArm.WholeArmTransfer(),
@@ -401,21 +401,25 @@ public class FiveSpecimenTestAuto extends LinearOpMode {
                         RETRACT_INTAKE3,
                         DRIVE_PICKUP1,
                         PICKUP1,
+                        new SleepAction(1),
 //                        TRANSFER_AND_EXTEND1,
                         DRIVE_SCORE1,
                         SCORE_CLIP1,
                         DRIVE_PICKUP2,
                         PICKUP2,
+                        new SleepAction(1),
 //                        TRANSFER_AND_EXTEND2,
                         DRIVE_SCORE2,
                         SCORE_CLIP2,
                         DRIVE_PICKUP3,
                         PICKUP3,
+                        new SleepAction(1),
 //                        TRANSFER_AND_EXTEND3,
                         DRIVE_SCORE3,
                         SCORE_CLIP3,
                         DRIVE_PICKUP4,
                         PICKUP4,
+                        new SleepAction(1),
 //                        TRANSFER_AND_EXTEND4,
                         DRIVE_SCORE4,
                         SCORE_CLIP4,
