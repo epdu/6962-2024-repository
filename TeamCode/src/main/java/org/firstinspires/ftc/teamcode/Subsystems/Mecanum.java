@@ -51,7 +51,6 @@ public class Mecanum {
     }
 
     public void operateTogglable() {
-        isFieldCentric = opmode.gamepad1.left_trigger > 0.2;
         slowModeBool = opmode.gamepad1.right_trigger > 0.1;
 
         if (isFieldCentric) {

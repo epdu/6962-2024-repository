@@ -47,15 +47,15 @@ public class Hang {
     private static final double SLIDE_RETRACTION_TIME = 1.5; // adjust as necessary TODO: TUNE
     private static final double TARGET_PITCH = 30.0; // Desired pitch angle (adjust as necessary) TODO: TUNE
 
-    private static final double RELEASE_POSITION = 0.8; //TODO: TUNE
-    private static final double SET_PTO_POS = 0; //TODO: TUNE
+    private static final double RELEASE_POSITION = 0.2606;
+    private static final double SET_PTO_POS = 0;
 
     public double servoPos;
 
     private boolean deployed = false; // this is for starting the hang (stage 1 hang)
     private boolean stageTwoActivated = false; // this is for the stage 2 part of the hang
 
-    public HangStates hangState = GROUND;
+    public static HangStates hangState;
 
     public Hang() {}
     public void initialize(OpMode opmode) {
@@ -68,6 +68,7 @@ public class Hang {
         this.dcBackLeftMotor = rHardware.DcLeftBackMotor;
         this.ptoServo = rHardware.ptoActivationServo;
         this.navxManager = new NavxManager(rHardware.navx);
+        this.hangState = GROUND;
 
         vRslideMotor.setDirection(DcMotorEx.Direction.REVERSE);
         vRslideMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
@@ -79,11 +80,10 @@ public class Hang {
     }
 
     public void operateTest() {
-        //not sure if this will cause bug
-//        servoPos = this.ptoServo.getPosition();
+        servoPos = this.ptoServo.getPosition();
 
         hangServoL.setPower(-opmode.gamepad2.left_stick_y);
-        hangServoR.setPower(-opmode.gamepad2.left_stick_y);
+        hangServoR.setPower(opmode.gamepad2.left_stick_y);
 
         if (opmode.gamepad2.left_bumper) {
             setPtoServo(servoPos - 0.001);
@@ -104,18 +104,17 @@ public class Hang {
         return new SequentialAction(
                 new InstantAction(() -> runServos(CR_SERVO_POWER)),
                 new SleepAction(SERVO_RUN_TIME),
-                new InstantAction(this::stopServos),
-                new InstantAction(() -> switchHangState())
+                new InstantAction(this::stopServos)
+//                new InstantAction(() -> switchHangState(hangState))
         );
     }
 
-    //i actually dont know if you can put ocnditionals in an action, will switch if no work
     public Action setPTO() {
         if (hangState == GROUND) {
             return new InstantAction(() -> setPtoServo(SET_PTO_POS));
-        } else if (hangState == PTO) {
+        } else if (hangState == EXTEND) {
             return new ParallelAction(
-                new InstantAction(() -> switchHangState()),
+//                new InstantAction(() -> switchHangState(hangState)),
                 new InstantAction(() -> setPtoServo(RELEASE_POSITION))
             );
         }
@@ -136,7 +135,7 @@ public class Hang {
                     public boolean run(TelemetryPacket packet) {
                         if (navxManager.getPitch() <= TARGET_PITCH) {
                             stopServos(); // Stop servos when the target pitch is achieved
-                            switchHangState();
+//                            switchHangState(hangState);
                             return true; // Action complete
                         }
                         return false; // Continue running
@@ -150,8 +149,8 @@ public class Hang {
                 new ParallelAction(
                     new InstantAction(() -> setVerticalSlidePower(SLIDE_POWER)),
                     new SleepAction(SLIDE_EXTENSION_TIME)
-                ),
-                new InstantAction(() -> switchHangState())
+                )
+//                new InstantAction(() -> switchHangState(hangState))
         );
     }
 
@@ -164,11 +163,12 @@ public class Hang {
             //engage vert
             new InstantAction(() -> setVerticalSlidePower(SLIDE_RETRACTION_POWER)),
             new SleepAction(SLIDE_RETRACTION_TIME)
+//            new InstantAction(() -> switchHangState(hangState))
         );
     }
 
     public Action reverseHangSequence() {
-        this.hangState = GROUND;
+//        this.hangState = GROUND;
         return new SequentialAction(
                 new InstantAction(() -> reverseServos(CR_SERVO_POWER)),
                 new SleepAction(SERVO_RUN_TIME),
@@ -206,12 +206,8 @@ public class Hang {
         dcBackLeftMotor.setPower(power);
     }
 
-    public HangStates currentHangState() {
-        return hangState;
-    }
-
     //used for switching states in actions
-    public void switchHangState() {
+    public void switchHangState(HangStates hangState) {
         switch (hangState) {
             case GROUND:
                 this.hangState = DEPLOYED;
@@ -225,9 +221,9 @@ public class Hang {
             case EXTEND:
                 this.hangState = PTO;
                 break;
-            case PTO:
-                this.hangState = RETRACT;
-                break;
+//            case PTO:
+//                this.hangState = RETRACT;
+//                break;
             default:
                 this.hangState = GROUND;
         }

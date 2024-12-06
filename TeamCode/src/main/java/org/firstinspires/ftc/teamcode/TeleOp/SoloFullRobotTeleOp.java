@@ -124,7 +124,8 @@ public class SoloFullRobotTeleOp extends OpMode {
 //        cPortal.run(this);
 
         // toggle between field centric and robot centric
-        if (currentGamepad2.left_stick_button && !previousGamepad2.left_stick_button) {
+        if (currentGamepad1.left_stick_button && currentGamepad1.right_stick_button) {
+            mecanum.resetNavx();
             mecanum.toggleCentric();
         }
 
