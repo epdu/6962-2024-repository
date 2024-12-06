@@ -92,6 +92,8 @@ public class SoloFullRobotTeleOp extends OpMode {
         intakeArm.arm.setArmTransfer();
         intakeArm.wrist.setWristTransfer();
         intakeArm.claw.closeClaw();
+
+        hang.ptoServoSustain();
     }
 
     @Override

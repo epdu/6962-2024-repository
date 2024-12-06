@@ -45,17 +45,17 @@ public class Hang {
 
     private static final double MOTOR_RUN_TIME = 1.5; // TODO: TUNE
     private static final double SLIDE_RETRACTION_TIME = 1.5; // adjust as necessary TODO: TUNE
-    private static final double TARGET_PITCH = 30.0; // Desired pitch angle (adjust as necessary) TODO: TUNE
+    private static final double TARGET_PITCH = -10.0; // Desired pitch angle (adjust as necessary) TODO: TUNE
 
-    private static final double RELEASE_POSITION = 0.2606;
-    private static final double SET_PTO_POS = 0;
+    private static final double RELEASE_POSITION = 0.4;
+    private static final double SET_PTO_POS = 0.0061;
 
     public double servoPos;
 
     private boolean deployed = false; // this is for starting the hang (stage 1 hang)
     private boolean stageTwoActivated = false; // this is for the stage 2 part of the hang
 
-    public static HangStates hangState;
+    public HangStates hangState;
 
     public Hang() {}
     public void initialize(OpMode opmode) {
@@ -75,15 +75,15 @@ public class Hang {
         vLslideMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         vRslideMotor.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
         vLslideMotor.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
-
-        hangServoR.setDirection(DcMotorSimple.Direction.REVERSE);
+        hangServoL.setDirection(DcMotorSimple.Direction.REVERSE);
+//        setPtoServo(SET_PTO_POS);
     }
 
     public void operateTest() {
-        servoPos = this.ptoServo.getPosition();
+        servoPos = ptoServo.getPosition();
 
         hangServoL.setPower(-opmode.gamepad2.left_stick_y);
-        hangServoR.setPower(opmode.gamepad2.left_stick_y);
+        hangServoR.setPower(-opmode.gamepad2.left_stick_y);
 
         if (opmode.gamepad2.left_bumper) {
             setPtoServo(servoPos - 0.001);
@@ -98,6 +98,7 @@ public class Hang {
         dcBackLeftMotor.setPower(-opmode.gamepad2.right_stick_y);
 
         opmode.telemetry.addData("micro activation servo pos", servoPos);
+        opmode.telemetry.addData("navx pitch", navxManager.getPitch());
     }
 
     public Action getHangSequence() {
@@ -109,7 +110,7 @@ public class Hang {
         );
     }
 
-    public Action setPTO() {
+    public Action engagePTO() {
         if (hangState == GROUND) {
             return new InstantAction(() -> setPtoServo(SET_PTO_POS));
         } else if (hangState == EXTEND) {
@@ -125,22 +126,22 @@ public class Hang {
 
     public Action getHangSequenceTwo() {
         // First action: Monitor pitch and stop servos when target pitch is reached
-        return new ParallelAction(
+        return new SequentialAction(
                 new InstantAction(() -> runServos(CR_SERVO_REVERSE_POWER)),
-                /* new SleepAction(SERV_REVERSE_TIME), to use if auto doesnt work
-                new InstantAction(this::stopServos), */
-                //need to test whether this chunk works or not
-                new Action() {
-                    @Override
-                    public boolean run(TelemetryPacket packet) {
-                        if (navxManager.getPitch() <= TARGET_PITCH) {
-                            stopServos(); // Stop servos when the target pitch is achieved
-//                            switchHangState(hangState);
-                            return true; // Action complete
-                        }
-                        return false; // Continue running
-                    }
-                }
+                new SleepAction(2),
+                new InstantAction(() -> stopServos())
+//                new Action() {
+//                    @Override
+//                    public boolean run(TelemetryPacket packet) {
+//                        if (navxManager.getPitch() <= TARGET_PITCH) {
+//                            stopServos(); // Stop servos when the target pitch is achieved
+////                            switchHangState(hangState);
+//                            return false; // Action complete
+//                        } else {
+//                            return true; // Continue running
+//                        }
+//                    }
+//                }
                 // Second action: Extend and retract slides (seperated into diff action)
         );
     }
@@ -148,7 +149,8 @@ public class Hang {
         return new SequentialAction(
                 new ParallelAction(
                     new InstantAction(() -> setVerticalSlidePower(SLIDE_POWER)),
-                    new SleepAction(SLIDE_EXTENSION_TIME)
+                    new SleepAction(SLIDE_EXTENSION_TIME),
+                    new InstantAction(() -> setVerticalSlidePower(0))
                 )
 //                new InstantAction(() -> switchHangState(hangState))
         );
@@ -202,28 +204,31 @@ public class Hang {
         ptoServo.setPosition(position);
     }
 
+    public void ptoServoSustain() {setPtoServo(SET_PTO_POS);}
+    public void ptoServoRelease() {setPtoServo(RELEASE_POSITION);}
+
     private void runBackLeftMotor(double power) {
         dcBackLeftMotor.setPower(power);
     }
 
     //used for switching states in actions
-    public void switchHangState(HangStates hangState) {
+    public void switchHangState() {
         switch (hangState) {
             case GROUND:
-                this.hangState = DEPLOYED;
+                hangState = DEPLOYED;
                 break;
             case DEPLOYED:
-                this.hangState = STAGETWO;
+                hangState = STAGETWO;
                 break;
             case STAGETWO:
-                this.hangState = EXTEND;
+                hangState = EXTEND;
                 break;
             case EXTEND:
-                this.hangState = PTO;
+                hangState = PTO;
                 break;
-//            case PTO:
-//                this.hangState = RETRACT;
-//                break;
+            case PTO:
+                hangState = RETRACT;
+                break;
             default:
                 this.hangState = GROUND;
         }
