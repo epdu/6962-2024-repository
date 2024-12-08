@@ -36,26 +36,26 @@ public class JaydenTestingPlayground extends LinearOpMode{
         NewVerticalSlides newVertSlides = new NewVerticalSlides();
 
         TrajectoryActionBuilder move1 = drive.actionBuilder(startPose)
-                .strafeToConstantHeading(new Vector2d(12, 0));
-//                .afterTime(0, () -> {
-//                    Actions.runBlocking(
-//                            new SequentialAction(
-//                                    // Jayden testing new slides stuff for autonomous
-//                                    vertSlides.Extend(),
-//                                    new SleepAction(3),
-//                                    vertSlides.Retract()
-//
-//                            )
-//                    );
-//                })
+                .strafeToConstantHeading(new Vector2d(12, 0))
+                .afterTime(0, () -> {
+                    Actions.runBlocking(
+                            new SequentialAction(
+                                    // Jayden testing new slides stuff for autonomous
+                                    vertSlides.Extend(),
+                                    new SleepAction(1),
+                                    vertSlides.Retract()
+
+                            )
+                    );
+                });
         TrajectoryActionBuilder move2 = drive.actionBuilder(startPose)
                 .strafeToConstantHeading(new Vector2d(0, 0));
 
         Action EXTEND_AND_RETRACT =
                 new SequentialAction(
-                        new InstantAction(() -> vertSlides.target = 500),
-                        new SleepAction(3),
-                        new InstantAction(() -> vertSlides.target = 0)
+                        new InstantAction(() -> vertSlides.Extend()),
+                        new SleepAction(2),
+                        new InstantAction(() -> vertSlides.Retract())
                 );
 
         while (!isStarted() && !opModeIsActive()) {
@@ -73,7 +73,8 @@ public class JaydenTestingPlayground extends LinearOpMode{
                 new ParallelAction(
                         new SequentialAction(
                                 Traj1,
-                                EXTEND_AND_RETRACT,
+                                new SleepAction(2),
+//                                EXTEND_AND_RETRACT,
                                 Traj2
                         ),
                         vertSlides.Loop()

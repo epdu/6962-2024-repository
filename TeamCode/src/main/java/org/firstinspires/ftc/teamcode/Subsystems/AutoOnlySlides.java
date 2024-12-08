@@ -78,11 +78,15 @@ public class AutoOnlySlides {
         // THIS LOOP WILL NEVER END, lets see what happens
         @Override
         public boolean run(@NonNull TelemetryPacket packet) {
-            controller.setPID(Kp, Ki, Kd);
+            PIDTarget = target;
             int currentPos = rightSlideMotor.getCurrentPosition();
             output = controller.calculate(currentPos, PIDTarget) + Kg;
             packet.put("output", output);
-            packet.put("target", PIDTarget);
+            packet.put("global target var", target);
+            packet.put("PIDtarget", PIDTarget);
+            opmode.telemetry.addData("global target var", target);
+            opmode.telemetry.addData("PIDtarget", PIDTarget);
+            opmode.telemetry.addData("output", output);
 
             leftSlideMotor.setPower(output);
             rightSlideMotor.setPower(output);
