@@ -20,6 +20,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 import org.firstinspires.ftc.teamcode.Util.HangStates;
 import org.firstinspires.ftc.teamcode.Util.RobotHardware;
 
@@ -28,7 +29,7 @@ public class Hang {
     private CRServo hangServoL, hangServoR;
 
     private Servo ptoServo;
-    private DcMotorEx vRslideMotor, vLslideMotor, dcBackLeftMotor;
+    private DcMotorEx vRslideMotor, vLslideMotor, dcBackLeftMotor, dcFrontLeftMotor;
     private OpMode opmode;
     private NavxManager navxManager;
 
@@ -66,11 +67,14 @@ public class Hang {
         this.vRslideMotor = rHardware.vRslideMotor;
         this.vLslideMotor = rHardware.vLslideMotor;
         this.dcBackLeftMotor = rHardware.DcLeftBackMotor;
+        this.dcFrontLeftMotor = rHardware.DcLeftBackMotor;
         this.ptoServo = rHardware.ptoActivationServo;
         this.navxManager = new NavxManager(rHardware.navx);
         this.hangState = GROUND;
 
         vRslideMotor.setDirection(DcMotorEx.Direction.REVERSE);
+        dcBackLeftMotor.setDirection(DcMotorEx.Direction.REVERSE);
+        dcFrontLeftMotor.setDirection(DcMotorEx.Direction.REVERSE);
         vRslideMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         vLslideMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         vRslideMotor.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
@@ -96,8 +100,13 @@ public class Hang {
         vRslideMotor.setPower(-opmode.gamepad2.right_stick_y);
 
         dcBackLeftMotor.setPower(-opmode.gamepad2.right_stick_y);
+        dcFrontLeftMotor.setPower(-opmode.gamepad2.right_stick_y);
 
-        opmode.telemetry.addData("micro activation servo pos", servoPos);
+        opmode.telemetry.addData("activation micro servo pos", servoPos);
+        opmode.telemetry.addData("front left current draw", dcFrontLeftMotor.getCurrent(CurrentUnit.AMPS));
+        opmode.telemetry.addData("back left current draw", dcBackLeftMotor.getCurrent(CurrentUnit.AMPS));
+        opmode.telemetry.addData("left slide current draw", vLslideMotor.getCurrent(CurrentUnit.AMPS));
+        opmode.telemetry.addData("right slide current draw", vRslideMotor.getCurrent(CurrentUnit.AMPS));
         opmode.telemetry.addData("navx pitch", navxManager.getPitch());
     }
 
