@@ -145,7 +145,7 @@ public class SoloFullRobotTeleOp extends OpMode {
         // gives scoring priority over intaking
         if (scoringArm.arm.armPos == ScoringArm.Arm.STATE.TRANSFERRING) {
             // horizontal slides extend 100%, intake arm grab, open intake claw
-            if (currentGamepad1.right_trigger >= 0.1 && !(previousGamepad1.right_trigger >= 0.1) && !currentGamepad1.right_bumper) {
+            if (currentGamepad1.right_trigger >= 0.1 && !(previousGamepad1.right_trigger >= 0.1)) {
                 runningActions.add(
                         new SequentialAction(
                                 new InstantAction(() -> horizontalSlides.extend()),
@@ -158,7 +158,7 @@ public class SoloFullRobotTeleOp extends OpMode {
                 );
             }
             // grab piece, then retract intake
-            else if (currentGamepad1.right_trigger < 0.1 && !(previousGamepad1.right_trigger < 0.1) && !currentGamepad1.right_bumper) {
+            else if (currentGamepad1.right_trigger < 0.1 && !(previousGamepad1.right_trigger < 0.1)) {
                 runningActions.add(
                         new SequentialAction(
                                 new InstantAction(() -> intakeArm.arm.setArmGrab()),
@@ -188,8 +188,48 @@ public class SoloFullRobotTeleOp extends OpMode {
             );
         }
 
+//        // macro prep grab clip
+//        if (currentGamepad1.x && !previousGamepad1.x) {
+//            runningActions.add(
+//                    new ParallelAction(
+//                            new InstantAction(() -> verticalSlides.retract()),
+//                            new InstantAction(() -> scoringArm.claw.openClaw()),
+//                            new InstantAction(() -> scoringArm.wrist.setWristGrabClip()),
+//                            new InstantAction(() -> scoringArm.arm.setArmGrabClip())
+//                    )
+//            );
+//        }
+//
+//        // macro grab clip and prep score clip
+//        if (currentGamepad1.y && !previousGamepad1.y) {
+//            runningActions.add(
+//                    new SequentialAction(
+//                        new InstantAction(() -> scoringArm.claw.closeClaw()),
+//                        new SleepAction(0.25),
+//                        new ParallelAction(
+//                            new InstantAction(() -> verticalSlides.raiseToPrepClip()),
+//                            new InstantAction(() -> scoringArm.wrist.setWristScoringClip()),
+//                            new InstantAction(() -> scoringArm.arm.setArmScoreClip())
+//                        )
+//                    )
+//            );
+//        }
+//
+//        // slam score clip
+//        if (currentGamepad1.a && !previousGamepad1.a) {
+//            runningActions.add(
+//                    new SequentialAction(
+//                            new InstantAction(() -> verticalSlides.slamToScoreClip()),
+//                            new SleepAction(0.2),
+//                            new InstantAction(() -> scoringArm.claw.openClaw()),
+//                            new InstantAction(() -> verticalSlides.retract()),
+//                            new InstantAction(() -> scoringArm.arm.setArmTransfer()),
+//                            new InstantAction(() -> scoringArm.wrist.setWristTransfer())
+//                    ));
+//        }
+
         // macro prep grab clip
-        if (currentGamepad1.x && !previousGamepad1.x) {
+        if (currentGamepad1.left_trigger >= 0.1  && !(previousGamepad1.left_trigger >= 0.1)) {
             runningActions.add(
                     new ParallelAction(
                             new InstantAction(() -> verticalSlides.retract()),
@@ -199,81 +239,80 @@ public class SoloFullRobotTeleOp extends OpMode {
                     )
             );
         }
-
         // macro grab clip and prep score clip
-        if (currentGamepad1.y && !previousGamepad1.y) {
+        else if (currentGamepad1.left_trigger < 0.1  && !(previousGamepad1.left_trigger < 0.1)) {
             runningActions.add(
                     new SequentialAction(
-                        new InstantAction(() -> scoringArm.claw.closeClaw()),
-                        new SleepAction(0.25),
-                        new ParallelAction(
-                            new InstantAction(() -> verticalSlides.raiseToPrepClip()),
-                            new InstantAction(() -> scoringArm.wrist.setWristScoringClip()),
-                            new InstantAction(() -> scoringArm.arm.setArmScoreClip())
-                        )
-                    )
-            );
-        }
-
-        // slam score clip
-        if (currentGamepad1.a && !previousGamepad1.a) {
-            runningActions.add(
-                    new SequentialAction(
-                            new InstantAction(() -> verticalSlides.slamToScoreClip()),
+                            new InstantAction(() -> scoringArm.claw.closeClaw()),
                             new SleepAction(0.2),
-                            new InstantAction(() -> scoringArm.claw.openClaw()),
-                            new InstantAction(() -> verticalSlides.retract()),
-                            new InstantAction(() -> scoringArm.arm.setArmTransfer()),
-                            new InstantAction(() -> scoringArm.wrist.setWristTransfer())
-                    ));
-        }
-
-        // macro prep high bucket scoring
-        if ((currentGamepad1.b && !previousGamepad1.b) || (currentGamepad1.right_bumper && !previousGamepad1.right_bumper)) {
-            runningActions.add(
-                    new SequentialAction(
-                        // both arms prep
-                        new ParallelAction(
-                            new InstantAction(() -> scoringArm.wrist.setWristTransfer()),
-                            new InstantAction(() -> scoringArm.arm.setArmTransfer()),
-                            new InstantAction(() -> intakeArm.wrist.setWristTransfer()),
-                            new InstantAction(() -> intakeArm.arm.setArmTransfer()),
-                            new InstantAction(() -> scoringArm.claw.openClaw())
-                        ),
-
-                        // actually transfer
-                        new InstantAction(() -> scoringArm.claw.closeClaw()),
-                        new SleepAction(0.08),
-                        new InstantAction(() -> intakeArm.claw.openClaw()),
-
-                        // lift up to high bucket
-                        new InstantAction(() -> verticalSlides.raiseToHighBucket()),
-                        new InstantAction(() -> scoringArm.wrist.setWristScoringBucket()),
-                        new SleepAction(0.8),
-                        new InstantAction(() -> scoringArm.arm.setArmScoreBucket())
+                            new ParallelAction(
+                                    new InstantAction(() -> verticalSlides.raiseToPrepClip()),
+                                    new InstantAction(() -> scoringArm.wrist.setWristScoringClip()),
+                                    new InstantAction(() -> scoringArm.arm.setArmScoreClip())
+                            )
                     )
             );
         }
 
-        // open claw, and stow all scoring (vertical slides, scoring arm)
-        if (currentGamepad1.left_bumper && !previousGamepad1.left_bumper) {
-            runningActions.add(
-                new SequentialAction(
-                    new InstantAction(() -> scoringArm.claw.openClaw()),
-                    new SleepAction(0.3),
-                    new ParallelAction(
-                            new InstantAction(() -> scoringArm.wrist.setWristTransfer()),
-                            new InstantAction(() -> scoringArm.arm.setArmTransfer())
-                    ),
-                    new InstantAction(() -> verticalSlides.retract())
-                )
-            );
+        // when not intaking, bumpers do scoring stuff
+        if (intakeArm.arm.isArmTransferring) {
+            // macro prep high bucket scoring
+            if ((currentGamepad1.right_bumper && !previousGamepad1.right_bumper) || (currentGamepad1.b && !previousGamepad1.b)) {
+                runningActions.add(
+                        new SequentialAction(
+                                // transfer
+                                new InstantAction(() -> scoringArm.claw.closeClaw()),
+                                new SleepAction(0.08),
+                                new InstantAction(() -> intakeArm.claw.openClaw()),
+
+                                // lift up to high bucket
+                                new InstantAction(() -> verticalSlides.raiseToHighBucket()),
+                                new InstantAction(() -> scoringArm.wrist.setWristScoringBucket()),
+                                new SleepAction(0.8),
+                                new InstantAction(() -> scoringArm.arm.setArmScoreBucket())
+                        )
+                );
+            }
+
+            // open claw, and stow all scoring (vertical slides, scoring arm)
+            if (currentGamepad1.left_bumper && !previousGamepad1.left_bumper && scoringArm.arm.armPos != ScoringArm.Arm.STATE.SCORING_CLIP) {
+                runningActions.add(
+                        new SequentialAction(
+                                new InstantAction(() -> scoringArm.claw.openClaw()),
+                                new SleepAction(0.3),
+                                new ParallelAction(
+                                        new InstantAction(() -> scoringArm.wrist.setWristTransfer()),
+                                        new InstantAction(() -> scoringArm.arm.setArmTransfer())
+                                ),
+                                new InstantAction(() -> verticalSlides.retract())
+                        )
+                );
+            }
+            // slam score clip
+            else if ((currentGamepad1.left_bumper && !previousGamepad1.left_bumper) || (currentGamepad1.a && !previousGamepad1.a)) {
+                runningActions.add(
+                        new SequentialAction(
+                                new InstantAction(() -> verticalSlides.slamToScoreClip()),
+                                new SleepAction(0.2),
+                                new InstantAction(() -> scoringArm.claw.openClaw()),
+                                new InstantAction(() -> verticalSlides.retract()),
+                                new InstantAction(() -> scoringArm.arm.setArmTransfer()),
+                                new InstantAction(() -> scoringArm.wrist.setWristTransfer())
+                        ));
+            }
+        }
+        // when intaking, bumpers rotate intake claw
+        else {
+            if      (currentGamepad1.dpad_right || currentGamepad1.right_bumper)  { intakeArm.wrist.incrementalWristRotateActual(-1); }
+            else if (currentGamepad1.dpad_left || currentGamepad1.left_bumper) { intakeArm.wrist.incrementalWristRotateActual(1); }
         }
 
         // intake wrist rotate
-        if      (currentGamepad1.right_trigger >= 0.1 && currentGamepad1.dpad_right)  { intakeArm.wrist.incrementalWristRotateActual(-1); }
-        else if (currentGamepad1.right_trigger >= 0.1 && currentGamepad1.dpad_left) { intakeArm.wrist.incrementalWristRotateActual(1); }
-//        else if (currentGamepad1.right_trigger >= 0.1 && currentGamepad1.dpad_down) { cPortal.setWristCamera();}
+//        if      (currentGamepad1.right_trigger >= 0.1 && currentGamepad1.dpad_right)  { intakeArm.wrist.incrementalWristRotateActual(-1); }
+//        else if (currentGamepad1.right_trigger >= 0.1 && currentGamepad1.dpad_left) { intakeArm.wrist.incrementalWristRotateActual(1); }
+
+        // camera auto rotate
+//        if (currentGamepad1.right_trigger >= 0.1 && currentGamepad1.dpad_down) { cPortal.setWristCamera();}
 
         //hang activation / reverse --NOT TESTED--
 //        if (currentGamepad1.dpad_up && !previousGamepad1.dpad_up) {

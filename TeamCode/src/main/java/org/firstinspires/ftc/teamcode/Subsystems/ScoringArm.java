@@ -152,7 +152,8 @@ public class ScoringArm {
         public Servo arm;
         public enum STATE {
             TRANSFERRING,
-            SCORING,
+            SCORING_BUCKET,
+            SCORING_CLIP,
             GRABBING_CLIP
         }
         public Arm.STATE armPos = STATE.TRANSFERRING;
@@ -182,12 +183,12 @@ public class ScoringArm {
 
         public void setArmScoreBucket() {
             setArmPosition(armScoringPosition);
-            armPos = STATE.SCORING;
+            armPos = STATE.SCORING_BUCKET;
         }
 
         public void setArmScoreClip() {
             setArmPosition(armScoringClipPosition);
-            armPos = STATE.SCORING;
+            armPos = STATE.SCORING_CLIP;
         }
 
         public void setArmGrabClip() {

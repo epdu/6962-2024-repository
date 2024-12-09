@@ -24,7 +24,7 @@ public class Mecanum {
 
 
     private boolean slowModeBool = false;
-    private boolean isFieldCentric = true;
+    private boolean isFieldCentric = false;
 
     public Mecanum() {}
 
@@ -78,7 +78,7 @@ public class Mecanum {
         }
     }
 
-    private void toggleSlowMode() {
+    public void toggleSlowMode() {
         slowModeBool = !slowModeBool;
     }
 
