@@ -58,6 +58,7 @@ public class SoloFullRobotTeleOp extends OpMode {
 //    private CameraPortal cameraPortal         = new CameraPortal();
 
     private boolean onRedAlliance = true;
+    private boolean hangToggleBool = false;
 
     @Override
     public void init() {
@@ -137,11 +138,11 @@ public class SoloFullRobotTeleOp extends OpMode {
         if (currentGamepad2.y && !previousGamepad2.y) { mecanum.resetNavx(); }
 
         // only PID
-        if (Math.abs(gamepad2.right_stick_y) < 0.05 && Math.abs(gamepad2.left_stick_y) < 0.05) {
-            verticalSlides.operateVincent();
+        if (hangToggleBool) {
+            hang.operateVincent();
         }
         else {
-            hang.operateVincent();
+            verticalSlides.operateVincent();
         }
         horizontalSlides.operateVincent();
 
@@ -334,8 +335,15 @@ public class SoloFullRobotTeleOp extends OpMode {
 
         ////////////////////////////////////// GAMEPAD 2 CONTROLS /////////////////////////////////////
 
-        // hang manual control
-        // above in line _____
+        // toggle vertical slides to manual control for L3
+        if (currentGamepad2.dpad_up && !previousGamepad2.dpad_up) {
+            hangToggleBool = !hangToggleBool;
+        }
+
+        // PTO release
+        if (currentGamepad2.dpad_down && !previousGamepad2.dpad_down && currentGamepad2.a) {
+            hang.ptoServoRelease();
+        }
 
         // transfer, then prep to drop spec behind robot
         if (currentGamepad2.x && !previousGamepad2.x) {
@@ -370,6 +378,7 @@ public class SoloFullRobotTeleOp extends OpMode {
         if      (currentGamepad2.right_trigger >= 0.1)  { intakeArm.wrist.incrementalWristRotateActual(-1); }
         else if (currentGamepad2.left_trigger >= 0.1) { intakeArm.wrist.incrementalWristRotateActual(1); }
 
+        dashboardTelemetry.addData("hang takeover vertical slides bool: ", hangToggleBool);
         // loop time
         dashboardTelemetry.addData("elapsed time (loop time)", elapsedtime.milliseconds());
 //        dashboardTelemetry.addData("Camera Color:", cPortal.cameraColor);

@@ -87,13 +87,8 @@ public class Hang {
         hangServoL.setPower(-opmode.gamepad2.left_stick_y);
         hangServoR.setPower(-opmode.gamepad2.left_stick_y);
 
-        if (opmode.gamepad2.a) {
-            setPtoServo(RELEASE_POSITION);
-        }
-
         vLslideMotor.setPower(-opmode.gamepad2.right_stick_y);
         vRslideMotor.setPower(-opmode.gamepad2.right_stick_y);
-
         dcBackLeftMotor.setPower(-opmode.gamepad2.right_stick_y);
         dcFrontLeftMotor.setPower(-opmode.gamepad2.right_stick_y);
     }
