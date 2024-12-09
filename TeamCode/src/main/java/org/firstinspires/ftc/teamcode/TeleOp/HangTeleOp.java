@@ -12,6 +12,7 @@ import com.acmerobotics.roadrunner.Action;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.Subsystems.Hang;
+import org.firstinspires.ftc.teamcode.Subsystems.HorizontalSlides;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,12 +20,14 @@ import java.util.List;
 @TeleOp(name="Only Hang Test", group="Active TeleOps")
 public class HangTeleOp extends OpMode {
     private final Hang hang = new Hang();
+    private HorizontalSlides hslides = new HorizontalSlides();
     private FtcDashboard dash = FtcDashboard.getInstance();
     private List<Action> runningActions = new ArrayList<>();
 
     @Override
     public void init() {
         hang.initialize(this);
+        hslides.autoInitialize(this);
         telemetry.addLine("Use Gamepad 2 Left Joystick for manual control.");
         telemetry.update();
     }
@@ -50,6 +53,8 @@ public class HangTeleOp extends OpMode {
 //        } else {
 //            hang.stopServos(); // stop servos when joystick is unmoved
 //        }
+
+        hslides.operateVincent();
 
 //        MANUAL TUNING for everything
         hang.operateTest();

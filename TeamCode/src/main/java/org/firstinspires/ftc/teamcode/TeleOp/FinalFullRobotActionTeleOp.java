@@ -262,7 +262,7 @@ public class FinalFullRobotActionTeleOp extends OpMode {
         }
 
         // auto retract slides and stow arm whenever claw opens
-        if (scoringArm.claw.isClawOpen && scoringArm.arm.armPos == ScoringArm.Arm.STATE.SCORING) {
+        if (scoringArm.claw.isClawOpen && scoringArm.arm.armPos == ScoringArm.Arm.STATE.SCORING_BUCKET) {
             runningActions.add(new SequentialAction(
                 new SleepAction(0.5),
                 new ParallelAction(

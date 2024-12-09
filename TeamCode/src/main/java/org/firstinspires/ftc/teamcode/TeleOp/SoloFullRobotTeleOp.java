@@ -137,7 +137,12 @@ public class SoloFullRobotTeleOp extends OpMode {
         if (currentGamepad2.y && !previousGamepad2.y) { mecanum.resetNavx(); }
 
         // only PID
-        verticalSlides.operateVincent();
+        if (Math.abs(gamepad2.right_stick_y) < 0.05 && Math.abs(gamepad2.left_stick_y) < 0.05) {
+            verticalSlides.operateVincent();
+        }
+        else {
+            hang.operateVincent();
+        }
         horizontalSlides.operateVincent();
 
         ////////////////////////////////////// GAMEPAD 1 CONTROLS /////////////////////////////////////
@@ -330,11 +335,7 @@ public class SoloFullRobotTeleOp extends OpMode {
         ////////////////////////////////////// GAMEPAD 2 CONTROLS /////////////////////////////////////
 
         // hang manual control
-        if (gamepad2.left_stick_y > 0.1 || gamepad2.left_stick_y < -0.1) {
-            hang.runServos(gamepad2.left_stick_y);
-        } else {
-            hang.stopServos();
-        }
+        // above in line _____
 
         // transfer, then prep to drop spec behind robot
         if (currentGamepad2.x && !previousGamepad2.x) {
