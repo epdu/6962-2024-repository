@@ -1,13 +1,5 @@
 package org.firstinspires.ftc.teamcode.Subsystems;
 
-
-import static org.firstinspires.ftc.teamcode.Util.HangStates.DEPLOYED;
-import static org.firstinspires.ftc.teamcode.Util.HangStates.EXTEND;
-import static org.firstinspires.ftc.teamcode.Util.HangStates.GROUND;
-import static org.firstinspires.ftc.teamcode.Util.HangStates.PTO;
-import static org.firstinspires.ftc.teamcode.Util.HangStates.RETRACT;
-import static org.firstinspires.ftc.teamcode.Util.HangStates.STAGETWO;
-
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.InstantAction;
@@ -21,7 +13,6 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
-import org.firstinspires.ftc.teamcode.Util.HangStates;
 import org.firstinspires.ftc.teamcode.Util.RobotHardware;
 
 public class Hang {
@@ -53,8 +44,15 @@ public class Hang {
 
     public double servoPos;
 
-    private boolean deployed = false; // this is for starting the hang (stage 1 hang)
-    private boolean stageTwoActivated = false; // this is for the stage 2 part of the hang
+    public enum HangStates {
+        GROUND,
+        DEPLOYED,
+        STAGETWO,
+
+        EXTEND,
+        PTO,
+        RETRACT
+    }
 
     public HangStates hangState;
 
@@ -70,7 +68,7 @@ public class Hang {
         this.dcFrontLeftMotor = rHardware.DcLeftBackMotor;
         this.ptoServo = rHardware.ptoActivationServo;
         this.navxManager = new NavxManager(rHardware.navx);
-        this.hangState = GROUND;
+        this.hangState = HangStates.GROUND;
 
         vRslideMotor.setDirection(DcMotorEx.Direction.REVERSE);
         dcBackLeftMotor.setDirection(DcMotorEx.Direction.REVERSE);
@@ -135,9 +133,9 @@ public class Hang {
     }
 
     public Action engagePTO() {
-        if (hangState == GROUND) {
+        if (hangState == HangStates.GROUND) {
             return new InstantAction(() -> setPtoServo(SET_PTO_POS));
-        } else if (hangState == EXTEND) {
+        } else if (hangState == HangStates.EXTEND) {
             return new ParallelAction(
 //                new InstantAction(() -> switchHangState(hangState)),
                 new InstantAction(() -> setPtoServo(RELEASE_POSITION))
@@ -239,22 +237,22 @@ public class Hang {
     public void switchHangState() {
         switch (hangState) {
             case GROUND:
-                hangState = DEPLOYED;
+                hangState = HangStates.DEPLOYED;
                 break;
             case DEPLOYED:
-                hangState = STAGETWO;
+                hangState = HangStates.STAGETWO;
                 break;
             case STAGETWO:
-                hangState = EXTEND;
+                hangState = HangStates.EXTEND;
                 break;
             case EXTEND:
-                hangState = PTO;
+                hangState = HangStates.PTO;
                 break;
             case PTO:
-                hangState = RETRACT;
+                hangState = HangStates.RETRACT;
                 break;
             default:
-                this.hangState = GROUND;
+                this.hangState = HangStates.GROUND;
         }
     }
 }

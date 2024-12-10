@@ -1,11 +1,5 @@
 package org.firstinspires.ftc.teamcode.TeleOp;
 
-import static org.firstinspires.ftc.teamcode.Util.HangStates.DEPLOYED;
-import static org.firstinspires.ftc.teamcode.Util.HangStates.EXTEND;
-import static org.firstinspires.ftc.teamcode.Util.HangStates.GROUND;
-import static org.firstinspires.ftc.teamcode.Util.HangStates.PTO;
-import static org.firstinspires.ftc.teamcode.Util.HangStates.STAGETWO;
-
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Action;
@@ -58,27 +52,27 @@ public class HangTeleOp extends OpMode {
 
 //        MANUAL TUNING for everything
         hang.operateTest();
-        if (gamepad1.x) {
-            hang.hangState = STAGETWO;
-            runningActions.add(hang.getHangSequenceTwo());
-        }
-        // Automated sequences
-        if (gamepad1.y && hang.hangState == GROUND) { // Trigger sequence if gamepad1 Y is pressed and hang is not deployed
-            runningActions.add(hang.getHangSequence());
-            hang.switchHangState();
-        } else if (gamepad1.dpad_left && hang.hangState == DEPLOYED) {
-            runningActions.add(hang.getHangSequenceTwo());
-            hang.switchHangState();
-        } else if (gamepad1.dpad_up && hang.hangState == STAGETWO) {
-            runningActions.add(hang.getHangExtend());
-            hang.switchHangState();
-        } else if (gamepad1.dpad_right && hang.hangState == EXTEND) {
-            runningActions.add(hang.engagePTO());
-            hang.switchHangState();
-        } else if (gamepad1.dpad_down && hang.hangState == PTO) {
-            runningActions.add(hang.getHangRetract());
-            hang.switchHangState();
-        }
+//        if (gamepad1.x) {
+//            hang.hangState = STAGETWO;
+//            runningActions.add(hang.getHangSequenceTwo());
+//        }
+//        // Automated sequences
+//        if (gamepad1.y && hang.hangState == GROUND) { // Trigger sequence if gamepad1 Y is pressed and hang is not deployed
+//            runningActions.add(hang.getHangSequence());
+//            hang.switchHangState();
+//        } else if (gamepad1.dpad_left && hang.hangState == DEPLOYED) {
+//            runningActions.add(hang.getHangSequenceTwo());
+//            hang.switchHangState();
+//        } else if (gamepad1.dpad_up && hang.hangState == STAGETWO) {
+//            runningActions.add(hang.getHangExtend());
+//            hang.switchHangState();
+//        } else if (gamepad1.dpad_right && hang.hangState == EXTEND) {
+//            runningActions.add(hang.engagePTO());
+//            hang.switchHangState();
+//        } else if (gamepad1.dpad_down && hang.hangState == PTO) {
+//            runningActions.add(hang.getHangRetract());
+//            hang.switchHangState();
+//        }
         telemetry.addData("Current State:", hang.hangState);
     }
     @Override
