@@ -93,6 +93,11 @@ public class Hang {
         dcFrontLeftMotor.setPower(-opmode.gamepad2.right_stick_y);
     }
 
+    public void operateL2() {
+        hangServoL.setPower(-opmode.gamepad2.left_stick_y);
+        hangServoR.setPower(-opmode.gamepad2.left_stick_y);
+    }
+
     public void operateTest() {
         servoPos = ptoServo.getPosition();
 

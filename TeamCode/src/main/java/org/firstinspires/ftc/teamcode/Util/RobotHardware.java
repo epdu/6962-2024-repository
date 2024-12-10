@@ -64,7 +64,7 @@ public class RobotHardware {
         DcLeftBackMotor = hMap.get(DcMotorEx.class, "Bl/Le");
         DcLeftFrontMotor = hMap.get(DcMotorEx.class, "Fl/Re");
 
-        cArmServo = hMap.get(Servo.class, "cArmServo"); //CHUB 1
+        cArmServo = hMap.get(Servo.class, "cArmServo"); //CHUB 4
         cWristServo = hMap.get(Servo.class, "cWristServo"); //CHUB 2
         cClawServo = hMap.get(Servo.class, "cClawServo"); //CHUB 0
 
@@ -85,8 +85,8 @@ public class RobotHardware {
         ptoActivationServo = hMap.get(Servo.class, "ptoServo"); //EHUB 1
         //micro EHUB 1
 
-//        webcam = hMap.get(WebcamName.class, "Webcam 1");
-//        cameraMonitorViewId = hMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hMap.appContext.getPackageName());
+        webcam = hMap.get(WebcamName.class, "Webcam 1");
+        cameraMonitorViewId = hMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hMap.appContext.getPackageName());
 
     }
 }

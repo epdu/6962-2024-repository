@@ -49,13 +49,13 @@ public class SoloFullRobotTeleOp extends OpMode {
     private IntakeArm intakeArm               = new IntakeArm();
     private ScoringArm scoringArm             = new ScoringArm();
     private Hang hang                         = new Hang();
-//    private CameraCVPipeline pipeline          = new CameraCVPipeline();
+    private CameraCVPipeline pipeline          = new CameraCVPipeline();
 
 
     private MultipleTelemetry dashboardTelemetry = new MultipleTelemetry(telemetry, dash.getTelemetry());
 
 //    private CameraPortal cPortal              = new CameraPortal();
-//    private CameraPortal cameraPortal         = new CameraPortal();
+    private CameraPortal cameraPortal         = new CameraPortal();
 
     private boolean onRedAlliance = true;
     private boolean hangToggleBool = false;
@@ -77,9 +77,9 @@ public class SoloFullRobotTeleOp extends OpMode {
 
     @Override
     public void init_loop() {
-//        if (currentGamepad1.b) {
-//            cPortal.changeColor();
-//        }
+        if (currentGamepad1.b) {
+            cameraPortal.changeColor();
+        }
     }
 
     @Override
@@ -122,7 +122,7 @@ public class SoloFullRobotTeleOp extends OpMode {
         runningActions = newActions;
 
         dash.sendTelemetryPacket(packet);
-
+//        horizontalSlides.operateVincent();
         // camera
 //        cPortal.run(this);
 
@@ -143,6 +143,7 @@ public class SoloFullRobotTeleOp extends OpMode {
         }
         else {
             verticalSlides.operateVincent();
+            hang.operateL2();
         }
         horizontalSlides.operateVincent();
 

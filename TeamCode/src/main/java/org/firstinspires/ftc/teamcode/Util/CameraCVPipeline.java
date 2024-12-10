@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.Util;
 
 import static org.firstinspires.ftc.teamcode.Util.ColorDetect.BLUE;
+import static org.firstinspires.ftc.teamcode.Util.ColorDetect.YELLOW;
 
 import android.graphics.Bitmap;
 
@@ -56,7 +57,7 @@ public class CameraCVPipeline extends OpenCvPipeline implements CameraStreamSour
     static final double focalLength = 728;
     private final AtomicReference<Bitmap> lastFrame = new AtomicReference<>(Bitmap.createBitmap(1, 1, Bitmap.Config.RGB_565));
 
-    private ColorDetect detectionType = BLUE;
+    public ColorDetect detectionType = BLUE;
     private Supplier<Double> currentWristPosition = () -> 0.0;
     private double previousRotationAngle = 0.0;
 
@@ -78,6 +79,8 @@ public class CameraCVPipeline extends OpenCvPipeline implements CameraStreamSour
     public void setDetectionType(ColorDetect sampleType) {
         this.detectionType = sampleType;
     }
+
+    public ColorDetect getDetectionType() {return detectionType;}
 
     public void initialize() {
         lastFrame.set(Bitmap.createBitmap(680, 480, Bitmap.Config.RGB_565));
@@ -116,7 +119,7 @@ public class CameraCVPipeline extends OpenCvPipeline implements CameraStreamSour
     @Override
     public Mat processFrame(Mat input) {
         // Preprocess the frame to detect yellow regions
-        Mat colourMask = preprocessFrame(input);
+        Mat colourMask = preprocessFrame(input, getDetectionType());
 
         // Find contours of the detected yellow regions
         List<MatOfPoint> contours = new ArrayList<>();
@@ -173,23 +176,42 @@ public class CameraCVPipeline extends OpenCvPipeline implements CameraStreamSour
         return input;
     }
 
-    private Mat preprocessFrame(Mat frame) {
+    private Mat preprocessFrame(Mat frame, ColorDetect detectionType) {
         Mat hsvFrame = new Mat();
         Imgproc.cvtColor(frame, hsvFrame, Imgproc.COLOR_RGB2HSV);
 
-        Mat colorMask = new Mat();
+        Mat colorMaskRB = new Mat();
+        Mat colorMaskY = new Mat();
 
         Core.inRange(
                 hsvFrame,
                 detectionType.getColorRangeMinimum(),
                 detectionType.getColorRangeMaximum(),
-                colorMask
+                colorMaskRB
         );
-        return colorMask;
+        Core.inRange(
+                hsvFrame,
+                YELLOW.getColorRangeMinimum(),
+                YELLOW.getColorRangeMaximum(),
+                colorMaskY
+        );
+
+        Mat combinedMask = new Mat();
+
+        Core.bitwise_or(colorMaskRB, colorMaskY, combinedMask);
+        //binary closing stuff
+        Mat closedCombinedMask = new Mat();
+        Mat kernel = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(3,3));
+
+        //implements binary closing idk if work prob not
+        Imgproc.morphologyEx(combinedMask, closedCombinedMask, Imgproc.MORPH_CLOSE, kernel);
+        //should return combined closed mask idk if work
+        return closedCombinedMask;
     }
 
     private MatOfPoint findLargestContour(List<MatOfPoint> contours) {
-        double maxArea = 0;
+        //tune this value for limit
+        double maxArea = 5.25;
         MatOfPoint largestContour = null;
         for (MatOfPoint contour : contours) {
             double area = Imgproc.contourArea(contour);
@@ -198,6 +220,8 @@ public class CameraCVPipeline extends OpenCvPipeline implements CameraStreamSour
                 largestContour = contour;
             }
         }
+
+
 
         return largestContour;
     }
@@ -259,7 +283,7 @@ public class CameraCVPipeline extends OpenCvPipeline implements CameraStreamSour
     }
 
 //}
-//    private static double getAngleTarget(double objMidpoint){
+//    private static double getAngleTarget(double objMidpoint) {
 //        double midpoint = -((objMidpoint - (CAMERA_WIDTH/2))*FOV)/CAMERA_WIDTH;
 //        return midpoint;
 //    }

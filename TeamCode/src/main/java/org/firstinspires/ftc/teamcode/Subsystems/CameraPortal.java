@@ -29,13 +29,14 @@ public class CameraPortal {
     private OpenCvCamera webcam1;
 
     public MultipleTelemetry dashTelemetry;
-    public ColorDetect cameraColor = BLUE;
+    public ColorDetect cameraColor;
 
     int cameraMonitorViewID;
 
     double cameraServoAngle;
 
     public void initialize(OpMode opMode) {
+        cameraColor = BLUE;
         dashTelemetry = new MultipleTelemetry(opMode.telemetry, FtcDashboard.getInstance().getTelemetry());
 
         rHardware.init(opMode.hardwareMap);
@@ -64,7 +65,8 @@ public class CameraPortal {
 
         pipeLine.initialize();
 
-        pipeLine.setDetectionType(cameraColor);
+        //uncomment if breaks
+//        pipeLine.setDetectionType(pipeLine.detectionType);
         intake.initialize(opMode);
     }
 
@@ -75,12 +77,8 @@ public class CameraPortal {
                 pipeLine.setDetectionType(BLUE);
                 cameraColor = BLUE;
                 break;
-            case BLUE:
-                pipeLine.setDetectionType(YELLOW);
-                cameraColor = YELLOW;
-                break;
             default:
-                pipeLine.setDetectionType(RED);
+                pipeLine.setDetectionType(BLUE);
                 cameraColor = RED;
         }
     }
