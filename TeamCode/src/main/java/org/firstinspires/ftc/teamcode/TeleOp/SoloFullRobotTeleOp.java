@@ -263,6 +263,10 @@ public class SoloFullRobotTeleOp extends OpMode {
 
         // when not intaking, bumpers do scoring stuff
         if (intakeArm.arm.isArmTransferring) {
+            // if horizontal slides not all the way retracted, press to scooch
+            if (currentGamepad1.x && !previousGamepad1.x) {
+                scoringArm.arm.scoochForward();
+            }
             // macro prep high bucket scoring
             if ((currentGamepad1.right_bumper && !previousGamepad1.right_bumper) || (currentGamepad1.b && !previousGamepad1.b)) {
                 runningActions.add(

@@ -211,6 +211,10 @@ public class ScoringArm {
 
         public void setArmDropClipFloor() {setArmPosition(armDropClipFloorPosition);}
 
+        public void scoochForward() {
+            setArmPosition(arm.getPosition() + 0.01);
+        }
+
         public double telemetryArmPos() {
             return arm.getPosition();
         }
