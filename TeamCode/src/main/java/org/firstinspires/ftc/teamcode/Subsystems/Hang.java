@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.Subsystems;
 
+import androidx.annotation.NonNull;
+
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.InstantAction;
@@ -255,4 +257,12 @@ public class Hang {
                 this.hangState = HangStates.GROUND;
         }
     }
+    public class PTOClass implements Action {
+        @Override
+        public boolean run(@NonNull TelemetryPacket packet) {
+            setPtoServo(SET_PTO_POS);
+            return false;
+        }
+    }
+    public Action PTO() {return new PTOClass();}
 }

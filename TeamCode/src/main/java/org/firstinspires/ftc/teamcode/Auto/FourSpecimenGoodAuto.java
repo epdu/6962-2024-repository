@@ -17,44 +17,55 @@ import org.firstinspires.ftc.teamcode.Subsystems.HorizontalSlides;
 import org.firstinspires.ftc.teamcode.Subsystems.IntakeArm;
 import org.firstinspires.ftc.teamcode.Subsystems.ScoringArm;
 import org.firstinspires.ftc.teamcode.Subsystems.VerticalSlides;
+import org.firstinspires.ftc.teamcode.Subsystems.Hang;
+
+import java.util.zip.Inflater;
 
 @Config
 @Autonomous(name = "4+0 Auto", group = "1 Autonomous", preselectTeleOp = "A Solo Full Robot TeleOp")
 public class FourSpecimenGoodAuto extends LinearOpMode {
 
     public static double startX = 8;
-    public static double startY = -62.5;
+    public static double startY = -63.5;
     public static double startHeading = Math.toRadians(-90);
     public static double scorePreloadX = -3;
-    public static double scorePreloadY = -35;
+    public static double scorePreloadY = -33.5;
     public static double coord1X = 28;
-    public static double coord1Y = -35;
-    public static double push1X = 47;
+    public static double coord1Y = -36;
+    public static double push1X = 43;
     public static double push1Y = -15;
-    public static double zone1X = 47;
-    public static double zone1Y = -52;
-    public static double push2X = 58;
+    public static double zone1X = 45;
+    public static double zone1Y = -48;
+    public static double push2X = 64;
     public static double push2Y = -15;
     public static double zone2X = 57;
-    public static double zone2Y = -52;
+    public static double zone2Y = -48;
     public static double prepPickupX = 40;
-    public static double prepPickupY = -49;
+    public static double prepPickupY = -54;
     public static double pickupX = 40;
     public static double pickupY = -60;
+    public static double pickup2X = 40;
+    public static double pickup2Y = -63;
+    public static double pickup3X = 40;
+    public static double pickup3Y = -66;
     public static double scoreX = 0;
     public static double scoreY = -36;
     public static double score2X = 0;
-    public static double score2Y = -36;
+    public static double score2Y = -40;
     public static double score3X = 0;
-    public static double score3Y = -36;
-    public static double parkX = 45;
-    public static double parkY = -60;
+    public static double score3Y = -44;
+    public static double parkX = 43;
+    public static double parkY = -64;
     Pose2d startPose = new Pose2d(startX, startY, startHeading);
     Pose2d preloadPose = new Pose2d(scorePreloadX, scorePreloadY, Math.toRadians(-90));
     Pose2d pushPose = new Pose2d(zone2X, zone2Y, Math.toRadians(-90));
     Pose2d prepPickupPose = new Pose2d(prepPickupX, prepPickupY, Math.toRadians(90));
     Pose2d pickupPose = new Pose2d(pickupX, pickupY, Math.toRadians(90));
-    Pose2d scorePose = new Pose2d(scoreX, scoreY+5, Math.toRadians(-90));
+    Pose2d pickup2Pose = new Pose2d(pickup2X, pickup2Y, Math.toRadians(90));
+    Pose2d pickup3Pose = new Pose2d(pickup3X, pickup3Y, Math.toRadians(90));
+    Pose2d scorePose = new Pose2d(scoreX, scoreY, Math.toRadians(-90));
+    Pose2d score2Pose = new Pose2d(score2X, score2Y, Math.toRadians(-90));
+    Pose2d score3Pose = new Pose2d(score3X, score3Y, Math.toRadians(-90));
 
     @Override
     public void runOpMode() {
@@ -64,6 +75,7 @@ public class FourSpecimenGoodAuto extends LinearOpMode {
         ScoringArm scoringArm = new ScoringArm();
         IntakeArm intakeArm = new IntakeArm();
         HorizontalSlides horizontalSlides = new HorizontalSlides();
+        Hang hang = new Hang();
 
         TrajectoryActionBuilder scorePreload = drive.actionBuilder(startPose)
                 .strafeToConstantHeading(new Vector2d(scorePreloadX, scorePreloadY));
@@ -84,6 +96,7 @@ public class FourSpecimenGoodAuto extends LinearOpMode {
                 .strafeToLinearHeading(new Vector2d(prepPickupX, prepPickupY), Math.toRadians(90));
 
         TrajectoryActionBuilder prepPickup2 = drive.actionBuilder(scorePose)
+                .strafeToConstantHeading(new Vector2d(scoreX, scoreY-10))
                 .afterTime(0.5, () -> {
                     Actions.runBlocking(
                             scoringArm.ArmGrabClip()
@@ -91,7 +104,8 @@ public class FourSpecimenGoodAuto extends LinearOpMode {
                 })
                 .strafeToLinearHeading(new Vector2d(prepPickupX, prepPickupY), Math.toRadians(90));
 
-        TrajectoryActionBuilder prepPickup3 = drive.actionBuilder(scorePose)
+        TrajectoryActionBuilder prepPickup3 = drive.actionBuilder(score2Pose)
+                .strafeToConstantHeading(new Vector2d(score2X, score2Y-10))
                 .afterTime(0.5, () -> {
                     Actions.runBlocking(
                             scoringArm.ArmGrabClip()
@@ -103,21 +117,22 @@ public class FourSpecimenGoodAuto extends LinearOpMode {
                 .strafeToConstantHeading(new Vector2d(pickupX, pickupY));
 
         TrajectoryActionBuilder actualPickup2 = drive.actionBuilder(prepPickupPose)
-                .strafeToConstantHeading(new Vector2d(pickupX, pickupY));
+                .strafeToConstantHeading(new Vector2d(pickup2X, pickup2Y));
 
         TrajectoryActionBuilder actualPickup3 = drive.actionBuilder(prepPickupPose)
-                .strafeToConstantHeading(new Vector2d(pickupX, pickupY));
+                .strafeToConstantHeading(new Vector2d(pickup3X, pickup3Y));
 
         TrajectoryActionBuilder score1 = drive.actionBuilder(pickupPose)
                 .strafeToLinearHeading(new Vector2d(scoreX, scoreY), Math.toRadians(-90));
 
-        TrajectoryActionBuilder score2 = drive.actionBuilder(pickupPose)
+        TrajectoryActionBuilder score2 = drive.actionBuilder(pickup2Pose)
                 .strafeToLinearHeading(new Vector2d(score2X, score2Y), Math.toRadians(-90));
 
-        TrajectoryActionBuilder score3 = drive.actionBuilder(pickupPose)
+        TrajectoryActionBuilder score3 = drive.actionBuilder(pickup3Pose)
                 .strafeToLinearHeading(new Vector2d(score3X, score3Y), Math.toRadians(-90));
 
-        TrajectoryActionBuilder park = drive.actionBuilder(scorePose)
+        TrajectoryActionBuilder park = drive.actionBuilder(score3Pose)
+                .strafeToConstantHeading(new Vector2d(score3X, score3Y-10))
                 .strafeToConstantHeading(new Vector2d(parkX, parkY));
 
         Action PREP_CLIP =
@@ -179,7 +194,8 @@ public class FourSpecimenGoodAuto extends LinearOpMode {
         Action INITIALIZE =
                 new ParallelAction(
                         intakeArm.IntakeTransfer(),
-                        scoringArm.ArmInitPosition()
+                        scoringArm.ArmInitPosition(),
+                        hang.PTO()
                 );
 
         Action RETRACT_ALL =
@@ -195,6 +211,8 @@ public class FourSpecimenGoodAuto extends LinearOpMode {
             horizontalSlides.autoInitialize(this);
             scoringArm.initialize(this);
             intakeArm.initialize(this);
+            hang.initialize(this);
+
 
 //            subsystems.initialize(this);
 

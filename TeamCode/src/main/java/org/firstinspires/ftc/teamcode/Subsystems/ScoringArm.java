@@ -158,7 +158,7 @@ public class ScoringArm {
         }
         public Arm.STATE armPos = STATE.TRANSFERRING;
         public static double armScoringPosition = 0.25;
-        public static double armScoringClipPosition = 0.3411;
+        public static double armScoringClipPosition = 0.3;
         public static double armTransferPosition = 0.4417;
         public static double armGrabClipWallPosition = 0;
         public static double armDropClipFloorPosition = 0;

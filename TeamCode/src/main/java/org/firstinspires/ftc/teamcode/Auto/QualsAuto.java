@@ -13,6 +13,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.Roadrunner.MecanumDrive;
+import org.firstinspires.ftc.teamcode.Subsystems.Hang;
 import org.firstinspires.ftc.teamcode.Subsystems.HorizontalSlides;
 import org.firstinspires.ftc.teamcode.Subsystems.IntakeArm;
 import org.firstinspires.ftc.teamcode.Subsystems.ScoringArm;
@@ -32,10 +33,10 @@ public class QualsAuto extends LinearOpMode{
     public static double intake1Y = -52;
     public static double scoreBucketX = -55;
     public static double scoreBucketY = -59;
-    public static double intake2X = -58;
-    public static double intake2Y = -53.5;
+    public static double intake2X = -58.5;
+    public static double intake2Y = -54;
     public static double intake3X = -57;
-    public static double intake3Y = -53;
+    public static double intake3Y = -53.5;
     public static double coord1X = -16;
     public static double coord1Y = -50;
     public static double coord2X = 30;
@@ -60,6 +61,7 @@ public class QualsAuto extends LinearOpMode{
         HorizontalSlides horizontalSlides = new HorizontalSlides();
         ScoringArm scoringArm = new ScoringArm();
         IntakeArm intakeArm = new IntakeArm();
+        Hang hang = new Hang();
 
         //defining movement trajectories
         TrajectoryActionBuilder scorePreload = drive.actionBuilder(startPose)
@@ -67,19 +69,21 @@ public class QualsAuto extends LinearOpMode{
 
         TrajectoryActionBuilder intake1 = drive.actionBuilder(new Pose2d(scoreBucketX, scoreBucketY, Math.toRadians(45)))
                 .strafeToLinearHeading(new Vector2d(intake1X, intake1Y), Math.toRadians(90))
-                .waitSeconds(0.3);
+                .waitSeconds(0.5);
 
         TrajectoryActionBuilder score1 = drive.actionBuilder(new Pose2d(intake1X, intake1Y, Math.toRadians(90)))
                 .strafeToLinearHeading(new Vector2d(scoreBucketX, scoreBucketY), Math.toRadians(45));
 
         TrajectoryActionBuilder intake2 = drive.actionBuilder(new Pose2d(scoreBucketX, scoreBucketY, Math.toRadians(45)))
-                .strafeToLinearHeading(new Vector2d(intake2X, intake2Y), Math.toRadians(90));
+                .strafeToLinearHeading(new Vector2d(intake2X, intake2Y), Math.toRadians(90))
+                .waitSeconds(0.3);
 
         TrajectoryActionBuilder score2 = drive.actionBuilder(new Pose2d(intake2X, intake2Y, Math.toRadians(90)))
                 .strafeToLinearHeading(new Vector2d(scoreBucketX, scoreBucketY), Math.toRadians(45));
 
         TrajectoryActionBuilder intake3 = drive.actionBuilder(new Pose2d(scoreBucketX, scoreBucketY, Math.toRadians(45)))
-                .strafeToLinearHeading(new Vector2d(intake3X, intake3Y), Math.toRadians(115));
+                .strafeToLinearHeading(new Vector2d(intake3X, intake3Y), Math.toRadians(115))
+                .waitSeconds(0.3);
 
         TrajectoryActionBuilder score3 = drive.actionBuilder(new Pose2d(intake3X, intake3Y, Math.toRadians(115)))
                 .strafeToLinearHeading(new Vector2d(scoreBucketX, scoreBucketY), Math.toRadians(45));
@@ -112,7 +116,7 @@ public class QualsAuto extends LinearOpMode{
 
         TrajectoryActionBuilder scoreClip = drive.actionBuilder(new Pose2d(pickupX, pickupY, Math.toRadians(90)))
                 .strafeToLinearHeading(new Vector2d(scoreClipX, scoreClipY), Math.toRadians(-90))
-                .waitSeconds(1);
+                .waitSeconds(0.5);
 
         TrajectoryActionBuilder scoreClip2 = drive.actionBuilder(new Pose2d(pickupX, pickupY, Math.toRadians(90)))
                 .strafeToLinearHeading(new Vector2d(scoreClipX, scoreClipY), Math.toRadians(-90));
@@ -284,7 +288,8 @@ public class QualsAuto extends LinearOpMode{
         Action INITIALIZE =
                 new ParallelAction(
                         intakeArm.IntakeTransfer(),
-                        scoringArm.ArmInitPosition()
+                        scoringArm.ArmInitPosition(),
+                        hang.PTO()
                 );
 
 
@@ -293,6 +298,7 @@ public class QualsAuto extends LinearOpMode{
             horizontalSlides.autoInitialize(this);
             scoringArm.initialize(this);
             intakeArm.initialize(this);
+            hang.initialize(this);
 
             telemetry.addLine("Initialized 2+4 Auto");
             telemetry.update();
