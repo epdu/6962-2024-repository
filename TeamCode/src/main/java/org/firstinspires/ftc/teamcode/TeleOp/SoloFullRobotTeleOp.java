@@ -54,11 +54,9 @@ public class SoloFullRobotTeleOp extends OpMode {
 
     private MultipleTelemetry dashboardTelemetry = new MultipleTelemetry(telemetry, dash.getTelemetry());
 
-//    private CameraPortal cPortal              = new CameraPortal();
     private CameraPortal cameraPortal         = new CameraPortal();
 
     private boolean onRedAlliance = true;
-    private boolean hangToggleBool = false;
 
     @Override
     public void init() {
@@ -73,13 +71,18 @@ public class SoloFullRobotTeleOp extends OpMode {
         allHubs = hardwareMap.getAll(LynxModule.class);
         // apparently optimizes reading from hardware (ex: getCurrentPosition) and makes runtime a bit faster
         for (LynxModule hub : allHubs) { hub.setBulkCachingMode(LynxModule.BulkCachingMode.MANUAL); }
+        mecanum.navxReset180();
     }
 
     @Override
     public void init_loop() {
-        if (currentGamepad1.b) {
-            cameraPortal.changeColor();
+        if (gamepad1.b) {
+            cameraPortal.setRed();
         }
+        else if (gamepad1.x) {
+            cameraPortal.setBlue();
+        }
+        telemetry.addData("camera alliance color: ", cameraPortal.cameraColor);
     }
 
     @Override
@@ -138,21 +141,16 @@ public class SoloFullRobotTeleOp extends OpMode {
         if (currentGamepad2.y && !previousGamepad2.y) { mecanum.resetNavx(); }
 
         // only PID
-        if (hangToggleBool) {
-            hang.operateVincent();
-        }
-        else {
-            verticalSlides.operateVincent();
-            hang.operateL2();
-        }
         horizontalSlides.operateVincent();
+        verticalSlides.operateVincent();
+        hang.operateL2();
 
         ////////////////////////////////////// GAMEPAD 1 CONTROLS /////////////////////////////////////
 
         // gives scoring priority over intaking
         if (scoringArm.arm.armPos == ScoringArm.Arm.STATE.TRANSFERRING) {
             // horizontal slides extend 100%, intake arm grab, open intake claw
-            if (currentGamepad1.right_trigger >= 0.1 && !(previousGamepad1.right_trigger >= 0.1)) {
+            if (currentGamepad1.right_trigger >= 0.3 && !(previousGamepad1.right_trigger >= 0.3)) {
                 runningActions.add(
                         new SequentialAction(
                                 new InstantAction(() -> horizontalSlides.extend()),
@@ -165,7 +163,7 @@ public class SoloFullRobotTeleOp extends OpMode {
                 );
             }
             // grab piece, then retract intake
-            else if (currentGamepad1.right_trigger < 0.1 && !(previousGamepad1.right_trigger < 0.1)) {
+            else if (currentGamepad1.right_trigger < 0.3 && !(previousGamepad1.right_trigger < 0.3)) {
                 runningActions.add(
                         new SequentialAction(
                                 new InstantAction(() -> intakeArm.arm.setArmGrab()),
@@ -195,48 +193,8 @@ public class SoloFullRobotTeleOp extends OpMode {
             );
         }
 
-//        // macro prep grab clip
-//        if (currentGamepad1.x && !previousGamepad1.x) {
-//            runningActions.add(
-//                    new ParallelAction(
-//                            new InstantAction(() -> verticalSlides.retract()),
-//                            new InstantAction(() -> scoringArm.claw.openClaw()),
-//                            new InstantAction(() -> scoringArm.wrist.setWristGrabClip()),
-//                            new InstantAction(() -> scoringArm.arm.setArmGrabClip())
-//                    )
-//            );
-//        }
-//
-//        // macro grab clip and prep score clip
-//        if (currentGamepad1.y && !previousGamepad1.y) {
-//            runningActions.add(
-//                    new SequentialAction(
-//                        new InstantAction(() -> scoringArm.claw.closeClaw()),
-//                        new SleepAction(0.25),
-//                        new ParallelAction(
-//                            new InstantAction(() -> verticalSlides.raiseToPrepClip()),
-//                            new InstantAction(() -> scoringArm.wrist.setWristScoringClip()),
-//                            new InstantAction(() -> scoringArm.arm.setArmScoreClip())
-//                        )
-//                    )
-//            );
-//        }
-//
-//        // slam score clip
-//        if (currentGamepad1.a && !previousGamepad1.a) {
-//            runningActions.add(
-//                    new SequentialAction(
-//                            new InstantAction(() -> verticalSlides.slamToScoreClip()),
-//                            new SleepAction(0.2),
-//                            new InstantAction(() -> scoringArm.claw.openClaw()),
-//                            new InstantAction(() -> verticalSlides.retract()),
-//                            new InstantAction(() -> scoringArm.arm.setArmTransfer()),
-//                            new InstantAction(() -> scoringArm.wrist.setWristTransfer())
-//                    ));
-//        }
-
         // macro prep grab clip
-        if (currentGamepad1.left_trigger >= 0.1  && !(previousGamepad1.left_trigger >= 0.1)) {
+        if (currentGamepad1.left_trigger >= 0.5  && !(previousGamepad1.left_trigger >= 0.5)) {
             runningActions.add(
                     new ParallelAction(
                             new InstantAction(() -> verticalSlides.retract()),
@@ -247,7 +205,7 @@ public class SoloFullRobotTeleOp extends OpMode {
             );
         }
         // macro grab clip and prep score clip
-        else if (currentGamepad1.left_trigger < 0.1  && !(previousGamepad1.left_trigger < 0.1)) {
+        else if (currentGamepad1.left_trigger < 0.5  && !(previousGamepad1.left_trigger < 0.5)) {
             runningActions.add(
                     new SequentialAction(
                             new InstantAction(() -> scoringArm.claw.closeClaw()),
@@ -318,37 +276,16 @@ public class SoloFullRobotTeleOp extends OpMode {
             else if (currentGamepad1.dpad_left || currentGamepad1.left_bumper) { intakeArm.wrist.incrementalWristRotateActual(1); }
         }
 
-        // intake wrist rotate
-//        if      (currentGamepad1.right_trigger >= 0.1 && currentGamepad1.dpad_right)  { intakeArm.wrist.incrementalWristRotateActual(-1); }
-//        else if (currentGamepad1.right_trigger >= 0.1 && currentGamepad1.dpad_left) { intakeArm.wrist.incrementalWristRotateActual(1); }
 
         // camera auto rotate
-//        if (currentGamepad1.right_trigger >= 0.1 && currentGamepad1.dpad_down) { cPortal.setWristCamera();}
-
-        //hang activation / reverse --NOT TESTED--
-//        if (currentGamepad1.dpad_up && !previousGamepad1.dpad_up) {
-//            runningActions.add(
-//                    new InstantAction(() -> hang.getHangSequence())
-//            );
-//        }
-//
-//        if (currentGamepad1.dpad_down && !previousGamepad1.dpad_down) {
-//            runningActions.add(
-//                    new InstantAction(() -> hang.reverseHangSequence())
-//            );
-//        }
+        if (currentGamepad1.right_trigger >= 0.1 && currentGamepad1.dpad_down && !previousGamepad1.dpad_down) { cameraPortal.setWristCamera();}
 
         ////////////////////////////////////// GAMEPAD 2 CONTROLS /////////////////////////////////////
 
-        // toggle vertical slides to manual control for L3
-        if (currentGamepad2.dpad_up && !previousGamepad2.dpad_up) {
-            hangToggleBool = !hangToggleBool;
-        }
-
         // PTO release
-        if (currentGamepad2.dpad_down && !previousGamepad2.dpad_down && currentGamepad2.a) {
-            hang.ptoServoRelease();
-        }
+//        if (currentGamepad2.dpad_down && !previousGamepad2.dpad_down && currentGamepad2.a) {
+//            hang.ptoServoRelease();
+//        }
 
         // transfer, then prep to drop spec behind robot
         if (currentGamepad2.x && !previousGamepad2.x) {
@@ -382,12 +319,12 @@ public class SoloFullRobotTeleOp extends OpMode {
         // intake wrist rotate
         if      (currentGamepad2.right_trigger >= 0.1)  { intakeArm.wrist.incrementalWristRotateActual(-1); }
         else if (currentGamepad2.left_trigger >= 0.1) { intakeArm.wrist.incrementalWristRotateActual(1); }
-        if (currentGamepad1.right_trigger >= 0.1 && currentGamepad1.dpad_down) { cameraPortal.setWristCamera();}
 
-        dashboardTelemetry.addData("hang takeover vertical slides bool: ", hangToggleBool);
+//        dashboardTelemetry.addData("hang takeover vertical slides bool: ", hangToggleBool);
         // loop time
         dashboardTelemetry.addData("elapsed time (loop time)", elapsedtime.milliseconds());
         telemetry.addData("Color Detection: ", cameraPortal.cameraColor);
+        telemetry.addData("is field centric? ", mecanum.isFieldCentric);
 //        dashboardTelemetry.addData("Camera Color:", cPortal.cameraColor);
         dashboardTelemetry.update();
         elapsedtime.reset();

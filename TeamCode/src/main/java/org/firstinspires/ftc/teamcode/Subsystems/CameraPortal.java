@@ -84,6 +84,14 @@ public class CameraPortal {
         }
     }
 
+    public void setRed() {
+        cameraColor = RED;
+    }
+
+    public void setBlue() {
+        cameraColor = BLUE;
+    }
+
     // return servo position vs angle
     public double getServoRotation() {
         return pipeLine.getTargetWristPosition();
@@ -100,18 +108,18 @@ public class CameraPortal {
 
     public void run(OpMode opMode) {
         cameraServoAngle = getServoRotation();
-        driveAngle = pipeLine.getMotorPower();
-        if (opMode.gamepad2.a) {intake.wrist.setWristCameraAngle(cameraServoAngle);}
+//        driveAngle = pipeLine.getMotorPower();
+//        if (opMode.gamepad2.a) {intake.wrist.setWristCameraAngle(cameraServoAngle);}
 
-        opMode.telemetry.addData("Frame Count", webcam1.getFrameCount());
-        opMode.telemetry.addData("FP=S", String.format("%.2f", webcam1.getFps()));
-        opMode.telemetry.addData("Total frame time ms", webcam1.getTotalFrameTimeMs());
-        opMode.telemetry.addData("Pipeline time ms", webcam1.getPipelineTimeMs());
-        opMode.telemetry.addData("Overhead time ms", webcam1.getOverheadTimeMs());
-        opMode.telemetry.addData("Theoretical max FPS", webcam1.getCurrentPipelineMaxFps());
-        opMode.telemetry.addData("servo angle", getServoRotation());
-        dashTelemetry.update();
-        opMode.telemetry.update();
+//        opMode.telemetry.addData("Frame Count", webcam1.getFrameCount());
+//        opMode.telemetry.addData("FP=S", String.format("%.2f", webcam1.getFps()));
+//        opMode.telemetry.addData("Total frame time ms", webcam1.getTotalFrameTimeMs());
+//        opMode.telemetry.addData("Pipeline time ms", webcam1.getPipelineTimeMs());
+//        opMode.telemetry.addData("Overhead time ms", webcam1.getOverheadTimeMs());
+//        opMode.telemetry.addData("Theoretical max FPS", webcam1.getCurrentPipelineMaxFps());
+//        opMode.telemetry.addData("servo angle", getServoRotation());
+//        dashTelemetry.update();
+//        opMode.telemetry.update();
     }
 
 

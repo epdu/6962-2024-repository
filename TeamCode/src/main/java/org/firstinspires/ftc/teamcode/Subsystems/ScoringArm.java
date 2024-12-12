@@ -226,7 +226,7 @@ public class ScoringArm {
         public boolean isWristTransferring = true;
         public static double wristTransferPosition = 0.0339;
         public static double wristScoreBucketPosition = 0.9328;
-        public static double wristScoreClipPosition = 0.8872;
+        public static double wristScoreClipPosition = 0.8572;
         public static double wristGrabClipWallPosition = 0.8;
         public static double wristDropClipFloorPosition = 1;
         public static double wristGrabClipFloorHoverPosition = 0;

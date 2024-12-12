@@ -24,7 +24,7 @@ public class Mecanum {
 
 
     private boolean slowModeBool = false;
-    private boolean isFieldCentric = false;
+    public boolean isFieldCentric = false;
 
     public Mecanum() {}
 
@@ -126,5 +126,5 @@ public class Mecanum {
 
     public void resetNavx() {gyroManager.reset();}
 
-    public void reset180() {gyroManager.reset180AfterAuto();}
+    public void navxReset180() {gyroManager.reset180AfterAuto();}
 }
