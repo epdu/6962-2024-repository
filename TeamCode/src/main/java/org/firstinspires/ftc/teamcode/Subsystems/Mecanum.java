@@ -117,6 +117,13 @@ public class Mecanum {
         return gyroManager.getHeading();
     }
 
+    public void driveCamera(double output) {
+        frontRight.set(output);
+        frontLeft.set(-output);
+        backRight.set(output);
+        backLeft.set(-output);
+    }
+
     public void resetNavx() {gyroManager.reset();}
 
     public void reset180() {gyroManager.reset180AfterAuto();}

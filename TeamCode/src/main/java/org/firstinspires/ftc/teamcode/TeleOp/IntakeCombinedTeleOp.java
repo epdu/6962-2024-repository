@@ -152,6 +152,6 @@ public class IntakeCombinedTeleOp extends OpMode {
         if (currentGamepad1.right_trigger >= 0.1 && currentGamepad1.dpad_down) { cameraPortal.setWristCamera();}
 
 
-
+        telemetry.addData("Detected Color:", cameraPortal.cameraColor);
     }
 }

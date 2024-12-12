@@ -7,6 +7,7 @@ import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.hardware.GyroEx;
 import com.arcrobotics.ftclib.hardware.motors.MotorEx;
 import com.arcrobotics.ftclib.hardware.motors.MotorGroup;
+import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.kauailabs.NavxMicroNavigationSensor;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -44,6 +45,7 @@ public class RobotHardware {
     public Servo cWristServo = null, cArmServo = null, cClawServo = null;
 
     public NavxMicroNavigationSensor navx;
+    public BNO055IMU imu;
 
     public WebcamName webcam = null;
     public int cameraMonitorViewId;
@@ -56,6 +58,7 @@ public class RobotHardware {
         this.hMap = hardwareMap;
 
         navx = hMap.get(NavxMicroNavigationSensor.class, "navx"); //CHUB Bus 2
+//        imu = hMap.get(BNO055IMU.class, "imu");
         leftFrontMotor = new MotorEx(hMap, "Fl/Re"); //CHUB 1
         rightFrontMotor = new MotorEx(hMap, "Fr"); //CHUB 2
         leftBackMotor = new MotorEx(hMap, "Bl/Le"); //CHUB 0

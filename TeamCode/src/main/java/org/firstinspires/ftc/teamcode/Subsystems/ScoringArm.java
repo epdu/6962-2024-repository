@@ -160,7 +160,7 @@ public class ScoringArm {
         public static double armScoringPosition = 0.25;
         public static double armScoringClipPosition = 0.3;
         public static double armTransferPosition = 0.4417;
-        public static double armGrabClipWallPosition = 0;
+        public static double armGrabClipWallPosition = 0.035;
         public static double armDropClipFloorPosition = 0;
         public static double armInitPosition = 0.3994;
         public static double armStowPosition = 0.6183;

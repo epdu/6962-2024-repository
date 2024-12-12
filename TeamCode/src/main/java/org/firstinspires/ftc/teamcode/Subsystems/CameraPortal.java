@@ -34,6 +34,7 @@ public class CameraPortal {
     int cameraMonitorViewID;
 
     double cameraServoAngle;
+    public double driveAngle;
 
     public void initialize(OpMode opMode) {
         cameraColor = BLUE;
@@ -99,6 +100,7 @@ public class CameraPortal {
 
     public void run(OpMode opMode) {
         cameraServoAngle = getServoRotation();
+        driveAngle = pipeLine.getMotorPower();
         if (opMode.gamepad2.a) {intake.wrist.setWristCameraAngle(cameraServoAngle);}
 
         opMode.telemetry.addData("Frame Count", webcam1.getFrameCount());

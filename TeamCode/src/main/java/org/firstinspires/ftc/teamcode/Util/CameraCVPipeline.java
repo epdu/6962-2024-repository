@@ -9,10 +9,15 @@ import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.function.Consumer;
 import org.firstinspires.ftc.robotcore.external.function.Continuation;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.stream.CameraStreamSource;
+import org.firstinspires.ftc.teamcode.Subsystems.Mecanum;
 import org.opencv.android.Utils;
 import org.opencv.core.*;
 import org.opencv.imgproc.Imgproc;
@@ -31,10 +36,18 @@ import java.util.List;
 import java.util.function.Supplier;
 
 public class CameraCVPipeline extends OpenCvPipeline implements CameraStreamSource {
+    double integralSum = 0;
+    double Kp = 2;
+    double Ki = 0;
+    double Kd = 0;
 
-    BNO055IMU imu;
-    double cX = 0;
-    double cY = 0;
+    ElapsedTime timer = new ElapsedTime();
+    private double lastError = 0;
+
+//    public BNO055IMU imu;
+//    public BNO055IMU.Parameters parameters;
+    public double cX = 0;
+    public double cY = 0;
     double width = 0;
 
     public CameraCVPipeline() {}
@@ -66,6 +79,8 @@ public class CameraCVPipeline extends OpenCvPipeline implements CameraStreamSour
 
     private int  cameraMonitorViewID;
     private OpenCvCamera webcam1;
+
+    public double centerOffset;
 
 
     public double getTargetWristPosition() {
@@ -118,6 +133,9 @@ public class CameraCVPipeline extends OpenCvPipeline implements CameraStreamSour
     }
     @Override
     public Mat processFrame(Mat input) {
+        
+//        motorPower = PIDControl(Math.toRadians(0 + getAngleTarget(cX)), imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS).firstAngle);
+        centerOffset = Math.toRadians(0 + getAngleTarget(cX));
         // Preprocess the frame to detect yellow regions
         Mat colourMask = preprocessFrame(input, getDetectionType());
 
@@ -169,7 +187,7 @@ public class CameraCVPipeline extends OpenCvPipeline implements CameraStreamSour
         }
         Bitmap bitmap = Bitmap.createBitmap(input.width(), input.height(), Bitmap.Config.RGB_565);
         Utils.matToBitmap(COLOR_AUTOTUNE_MODE == 1 ? input : colourMask, bitmap);
-
+        //update motorPower
         // Update the last frame
         lastFrame.set(bitmap);
 
@@ -200,13 +218,13 @@ public class CameraCVPipeline extends OpenCvPipeline implements CameraStreamSour
 
         Core.bitwise_or(colorMaskRB, colorMaskY, combinedMask);
         //binary closing stuff
-        Mat closedCombinedMask = new Mat();
-        Mat kernel = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(3,3));
-
-        //implements binary closing idk if work prob not
-        Imgproc.morphologyEx(combinedMask, closedCombinedMask, Imgproc.MORPH_CLOSE, kernel);
+//        Mat closedCombinedMask = new Mat();
+//        Mat kernel = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(3,3));
+//
+//        //implements binary closing idk if work prob not
+//        Imgproc.morphologyEx(combinedMask, closedCombinedMask, Imgproc.MORPH_CLOSE, kernel);
         //should return combined closed mask idk if work
-        return closedCombinedMask;
+        return combinedMask;
     }
 
     private MatOfPoint findLargestContour(List<MatOfPoint> contours) {
@@ -220,9 +238,6 @@ public class CameraCVPipeline extends OpenCvPipeline implements CameraStreamSour
                 largestContour = contour;
             }
         }
-
-
-
         return largestContour;
     }
     private double calculateWidth(MatOfPoint contour) {
@@ -283,17 +298,17 @@ public class CameraCVPipeline extends OpenCvPipeline implements CameraStreamSour
     }
 
 //}
-//    private static double getAngleTarget(double objMidpoint) {
-//        double midpoint = -((objMidpoint - (CAMERA_WIDTH/2))*FOV)/CAMERA_WIDTH;
-//        return midpoint;
-//    }
+    public static double getAngleTarget(double objMidpoint) {
+        double theta = -((objMidpoint - (CAMERA_WIDTH/2))*FOV)/CAMERA_WIDTH;
+        return theta;
+    }
     private static double getDistance(double width){
         double distance = (objectWidthInRealWorldUnits * focalLength) / width;
         return distance;
     }
 //    public double PIDControl(double refrence, double state) {
 //        double error = angleWrap(refrence - state);
-//        telemetry.addData("Error: ", error);
+////        telemetry.addData("Error: ", error);
 //        integralSum += error * timer.seconds();
 //        double derivative = (error - lastError) / (timer.seconds());
 //        lastError = error;
@@ -311,7 +326,9 @@ public class CameraCVPipeline extends OpenCvPipeline implements CameraStreamSour
         return radians;
     }
 
-
+    public double getCenterOffset() {
+        return centerOffset;
+    }
     @Override
     public void getFrameBitmap(Continuation<? extends Consumer<Bitmap>> continuation) {
         continuation.dispatch(bitmapConsumer -> {

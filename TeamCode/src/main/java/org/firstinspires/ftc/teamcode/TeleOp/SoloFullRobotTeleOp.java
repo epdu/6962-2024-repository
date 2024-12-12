@@ -69,7 +69,7 @@ public class SoloFullRobotTeleOp extends OpMode {
         verticalSlides.teleInitialize(this);
         scoringArm.initialize(this);
         hang.initialize(this);
-//        cPortal.initialize(this);
+        cameraPortal.initialize(this);
         allHubs = hardwareMap.getAll(LynxModule.class);
         // apparently optimizes reading from hardware (ex: getCurrentPosition) and makes runtime a bit faster
         for (LynxModule hub : allHubs) { hub.setBulkCachingMode(LynxModule.BulkCachingMode.MANUAL); }
@@ -124,7 +124,7 @@ public class SoloFullRobotTeleOp extends OpMode {
         dash.sendTelemetryPacket(packet);
 //        horizontalSlides.operateVincent();
         // camera
-//        cPortal.run(this);
+        cameraPortal.run(this);
 
         // toggle between field centric and robot centric
         if (currentGamepad1.left_stick_button && !previousGamepad1.left_stick_button && currentGamepad1.right_stick_button) {
@@ -382,10 +382,12 @@ public class SoloFullRobotTeleOp extends OpMode {
         // intake wrist rotate
         if      (currentGamepad2.right_trigger >= 0.1)  { intakeArm.wrist.incrementalWristRotateActual(-1); }
         else if (currentGamepad2.left_trigger >= 0.1) { intakeArm.wrist.incrementalWristRotateActual(1); }
+        if (currentGamepad1.right_trigger >= 0.1 && currentGamepad1.dpad_down) { cameraPortal.setWristCamera();}
 
         dashboardTelemetry.addData("hang takeover vertical slides bool: ", hangToggleBool);
         // loop time
         dashboardTelemetry.addData("elapsed time (loop time)", elapsedtime.milliseconds());
+        telemetry.addData("Color Detection: ", cameraPortal.cameraColor);
 //        dashboardTelemetry.addData("Camera Color:", cPortal.cameraColor);
         dashboardTelemetry.update();
         elapsedtime.reset();

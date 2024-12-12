@@ -8,8 +8,8 @@ public enum ColorDetect {
             new Scalar(130.0, 255.0, 255.0)
     ),
     YELLOW(
-            new Scalar(20.0, 100.0, 100.0),
-            new Scalar(30.0, 255.0, 255.0)
+            new Scalar(176, 130, 4),
+            new Scalar(255,255,0)
     ),
     RED(
             new Scalar(0.0, 100.0, 100.0),
