@@ -36,14 +36,14 @@ public class FourSpecimenGoodAuto extends LinearOpMode {
     public static double push1Y = -15;
     public static double zone1X = 45;
     public static double zone1Y = -48;
-    public static double push2X = 64;
+    public static double push2X = 58;
     public static double push2Y = -15;
-    public static double zone2X = 57;
+    public static double zone2X = 61;
     public static double zone2Y = -48;
     public static double prepPickupX = 40;
     public static double prepPickupY = -54;
     public static double pickupX = 40;
-    public static double pickupY = -60;
+    public static double pickupY = -59;
     public static double pickup2X = 40;
     public static double pickup2Y = -63;
     public static double pickup3X = 40;
@@ -55,7 +55,7 @@ public class FourSpecimenGoodAuto extends LinearOpMode {
     public static double score3X = 0;
     public static double score3Y = -44;
     public static double parkX = 43;
-    public static double parkY = -64;
+    public static double parkY = -67;
     Pose2d startPose = new Pose2d(startX, startY, startHeading);
     Pose2d preloadPose = new Pose2d(scorePreloadX, scorePreloadY, Math.toRadians(-90));
     Pose2d pushPose = new Pose2d(zone2X, zone2Y, Math.toRadians(-90));
