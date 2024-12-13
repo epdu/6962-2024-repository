@@ -37,7 +37,7 @@ public class CameraPortal {
     public double driveAngle;
 
     public void initialize(OpMode opMode) {
-        cameraColor = BLUE;
+//        cameraColor = BLUE;
         dashTelemetry = new MultipleTelemetry(opMode.telemetry, FtcDashboard.getInstance().getTelemetry());
 
         rHardware.init(opMode.hardwareMap);
@@ -105,6 +105,7 @@ public class CameraPortal {
         intake.wrist.setWristCameraAngle(getServoRotation());
     }
 
+    public void closeCamera() {}
 
     public void run(OpMode opMode) {
         cameraServoAngle = getServoRotation();

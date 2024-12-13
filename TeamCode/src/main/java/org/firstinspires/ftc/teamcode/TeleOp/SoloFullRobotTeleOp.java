@@ -67,7 +67,7 @@ public class SoloFullRobotTeleOp extends OpMode {
         verticalSlides.teleInitialize(this);
         scoringArm.initialize(this);
         hang.initialize(this);
-        cameraPortal.initialize(this);
+//        cameraPortal.initialize(this);
         allHubs = hardwareMap.getAll(LynxModule.class);
         // apparently optimizes reading from hardware (ex: getCurrentPosition) and makes runtime a bit faster
         for (LynxModule hub : allHubs) { hub.setBulkCachingMode(LynxModule.BulkCachingMode.MANUAL); }
@@ -78,9 +78,13 @@ public class SoloFullRobotTeleOp extends OpMode {
     public void init_loop() {
         if (gamepad1.b) {
             cameraPortal.setRed();
+//            cameraPortal.closeCamera();
+//            cameraPortal.initialize(this);
         }
         else if (gamepad1.x) {
             cameraPortal.setBlue();
+//            cameraPortal.closeCamera();
+//            cameraPortal.initialize(this);
         }
         telemetry.addData("camera alliance color: ", cameraPortal.cameraColor);
     }
@@ -88,6 +92,7 @@ public class SoloFullRobotTeleOp extends OpMode {
     @Override
     public void start() {
         elapsedtime.reset();
+        cameraPortal.initialize(this);
         // to make sure arms don't spasm when out of pos
         scoringArm.arm.setArmTransfer();
         scoringArm.wrist.setWristTransfer();

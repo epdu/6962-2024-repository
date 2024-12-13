@@ -46,6 +46,7 @@ public class CameraTeleOp extends OpMode {
     public void init_loop() {
         if (gamepad1.b) {
             cPortal.changeColor();
+
         }
     }
 

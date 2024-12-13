@@ -4,16 +4,16 @@ import org.opencv.core.Scalar;
 
 public enum ColorDetect {
     BLUE(
-            new Scalar(90.0, 100.0, 100.0),
-            new Scalar(130.0, 255.0, 255.0)
+            new Scalar(2,146,148),
+            new Scalar(141,191,225)
     ),
     YELLOW(
-            new Scalar(176, 130, 4),
-            new Scalar(255,255,0)
+            new Scalar(224, 153, 0),
+            new Scalar(250,183,0)
     ),
     RED(
-            new Scalar(0.0, 100.0, 100.0),
-            new Scalar(10.0, 255.0, 255.0)
+            new Scalar(64,1,1),
+            new Scalar(247,156,156)
     );
     private final Scalar colorRangeMinimum;
     private final Scalar colorRangeMaximum;

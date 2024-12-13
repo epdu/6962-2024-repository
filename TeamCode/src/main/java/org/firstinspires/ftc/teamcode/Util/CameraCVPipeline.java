@@ -218,13 +218,13 @@ public class CameraCVPipeline extends OpenCvPipeline implements CameraStreamSour
 
         Core.bitwise_or(colorMaskRB, colorMaskY, combinedMask);
         //binary closing stuff
-//        Mat closedCombinedMask = new Mat();
-//        Mat kernel = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(3,3));
-//
-//        //implements binary closing idk if work prob not
-//        Imgproc.morphologyEx(combinedMask, closedCombinedMask, Imgproc.MORPH_CLOSE, kernel);
+        Mat closedCombinedMask = new Mat();
+        Mat kernel = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(3,3));
+
+        //implements binary closing idk if work prob not
+        Imgproc.morphologyEx(combinedMask, closedCombinedMask, Imgproc.MORPH_CLOSE, kernel);
         //should return combined closed mask idk if work
-        return combinedMask;
+        return closedCombinedMask;
     }
 
     private MatOfPoint findLargestContour(List<MatOfPoint> contours) {
