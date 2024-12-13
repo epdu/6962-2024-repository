@@ -85,8 +85,12 @@ public class SoloFullRobotTeleOp extends OpMode {
             cameraPortal.setBlue();
 //            cameraPortal.closeCamera();
 //            cameraPortal.initialize(this);
+        } else if (gamepad1.y) {
+            cameraPortal.toggleYellow();
         }
         telemetry.addData("camera alliance color: ", cameraPortal.cameraColor);
+        telemetry.addData("is Yellow included: ", cameraPortal.isYellowIncluded);
+
     }
 
     @Override
@@ -242,7 +246,7 @@ public class SoloFullRobotTeleOp extends OpMode {
                                 // lift up to high bucket
                                 new InstantAction(() -> verticalSlides.raiseToHighBucket()),
                                 new InstantAction(() -> scoringArm.wrist.setWristScoringBucket()),
-                                new SleepAction(0.8),
+                                new SleepAction(0.9),
                                 new InstantAction(() -> scoringArm.arm.setArmScoreBucket())
                         )
                 );

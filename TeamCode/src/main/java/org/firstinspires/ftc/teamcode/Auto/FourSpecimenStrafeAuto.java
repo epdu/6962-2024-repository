@@ -13,17 +13,15 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.Roadrunner.MecanumDrive;
+import org.firstinspires.ftc.teamcode.Subsystems.Hang;
 import org.firstinspires.ftc.teamcode.Subsystems.HorizontalSlides;
 import org.firstinspires.ftc.teamcode.Subsystems.IntakeArm;
 import org.firstinspires.ftc.teamcode.Subsystems.ScoringArm;
 import org.firstinspires.ftc.teamcode.Subsystems.VerticalSlides;
-import org.firstinspires.ftc.teamcode.Subsystems.Hang;
-
-import java.util.zip.Inflater;
 
 @Config
-@Autonomous(name = "4+0 Auto", group = "1 Autonomous", preselectTeleOp = "A Solo Full Robot TeleOp")
-public class FourSpecimenGoodAuto extends LinearOpMode {
+@Autonomous(name = "4+0 Strafe Auto", group = "1 Autonomous", preselectTeleOp = "A Solo Full Robot TeleOp")
+public class FourSpecimenStrafeAuto extends LinearOpMode {
 
     public static double startX = 8;
     public static double startY = -63.5;
@@ -41,9 +39,9 @@ public class FourSpecimenGoodAuto extends LinearOpMode {
     public static double zone2X = 61;
     public static double zone2Y = -48;
     public static double prepPickupX = 40;
-    public static double prepPickupY = -50;
+    public static double prepPickupY = -54;
     public static double prepPickup1X = 40;
-    public static double prepPickup1Y = -46;
+    public static double prepPickup1Y = -48;
     public static double pickupX = 40;
     public static double pickupY = -55;
     public static double pickup2X = 40;
@@ -87,7 +85,8 @@ public class FourSpecimenGoodAuto extends LinearOpMode {
                 .strafeToConstantHeading(new Vector2d(coord1X, coord1Y))
                 .splineToConstantHeading(new Vector2d(push1X, push1Y), Math.toRadians(0))
                 .strafeToConstantHeading(new Vector2d(zone1X, zone1Y))
-                .splineToConstantHeading(new Vector2d(push2X, push2Y), Math.toRadians(0))
+                .strafeToConstantHeading(new Vector2d(push2X, push2Y))
+                .strafeToConstantHeading(new Vector2d(push2X+7, push2Y))
                 .strafeToConstantHeading(new Vector2d(zone2X, zone2Y));
 
         TrajectoryActionBuilder prepPickup1 = drive.actionBuilder(pushPose)

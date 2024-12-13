@@ -33,7 +33,7 @@ public class VerticalSlides
     public static int lowerLimit = -2;
     public static int retractedThreshold = 5;
 
-    public static int highBucketPos = 1400;
+    public static int highBucketPos = 1450;
 //    public static int lowBucketPos = 600;
     public static int retractedPos = 0;
     public static int pickupClipPos = 0;

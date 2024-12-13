@@ -82,6 +82,8 @@ public class CameraCVPipeline extends OpenCvPipeline implements CameraStreamSour
 
     public double centerOffset;
 
+    public boolean includeYellow = true;
+
 
     public double getTargetWristPosition() {
         return targetWristPosition;
@@ -137,7 +139,7 @@ public class CameraCVPipeline extends OpenCvPipeline implements CameraStreamSour
 //        motorPower = PIDControl(Math.toRadians(0 + getAngleTarget(cX)), imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS).firstAngle);
         centerOffset = Math.toRadians(0 + getAngleTarget(cX));
         // Preprocess the frame to detect yellow regions
-        Mat colourMask = preprocessFrame(input, getDetectionType());
+        Mat colourMask = preprocessFrame(input, getDetectionType(), includeYellow);
 
         // Find contours of the detected yellow regions
         List<MatOfPoint> contours = new ArrayList<>();
@@ -194,37 +196,50 @@ public class CameraCVPipeline extends OpenCvPipeline implements CameraStreamSour
         return input;
     }
 
-    private Mat preprocessFrame(Mat frame, ColorDetect detectionType) {
+    private Mat preprocessFrame(Mat frame, ColorDetect detectionType, boolean includeYellow) {
         Mat hsvFrame = new Mat();
         Imgproc.cvtColor(frame, hsvFrame, Imgproc.COLOR_RGB2HSV);
 
         Mat colorMaskRB = new Mat();
         Mat colorMaskY = new Mat();
 
-        Core.inRange(
-                hsvFrame,
-                detectionType.getColorRangeMinimum(),
-                detectionType.getColorRangeMaximum(),
-                colorMaskRB
-        );
-        Core.inRange(
-                hsvFrame,
-                YELLOW.getColorRangeMinimum(),
-                YELLOW.getColorRangeMaximum(),
-                colorMaskY
-        );
+        if (includeYellow) {
+            Core.inRange(
+                    hsvFrame,
+                    detectionType.getColorRangeMinimum(),
+                    detectionType.getColorRangeMaximum(),
+                    colorMaskRB
+            );
+            Core.inRange(
+                    hsvFrame,
+                    YELLOW.getColorRangeMinimum(),
+                    YELLOW.getColorRangeMaximum(),
+                    colorMaskY
+            );
 
-        Mat combinedMask = new Mat();
+            Mat combinedMask = new Mat();
 
-        Core.bitwise_or(colorMaskRB, colorMaskY, combinedMask);
-        //binary closing stuff
-        Mat closedCombinedMask = new Mat();
-        Mat kernel = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(3,3));
+            Core.bitwise_or(colorMaskRB, colorMaskY, combinedMask);
+            //binary closing stuff
+            Mat closedCombinedMask = new Mat();
+            Mat kernel = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(3,3));
 
-        //implements binary closing idk if work prob not
-        Imgproc.morphologyEx(combinedMask, closedCombinedMask, Imgproc.MORPH_CLOSE, kernel);
-        //should return combined closed mask idk if work
-        return closedCombinedMask;
+            //implements binary closing idk if work prob not
+            Imgproc.morphologyEx(combinedMask, closedCombinedMask, Imgproc.MORPH_CLOSE, kernel);
+            return closedCombinedMask;
+        } else {
+            Core.inRange(
+                    hsvFrame,
+                    detectionType.getColorRangeMinimum(),
+                    detectionType.getColorRangeMaximum(),
+                    colorMaskRB
+            );
+            Mat closedMask = new Mat();
+            Mat kernel = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(3,3));
+
+            Imgproc.morphologyEx(colorMaskRB, closedMask, Imgproc.MORPH_CLOSE, kernel);
+            return closedMask;
+        }
     }
 
     private MatOfPoint findLargestContour(List<MatOfPoint> contours) {

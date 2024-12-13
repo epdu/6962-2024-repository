@@ -34,6 +34,8 @@ public class CameraPortal {
     int cameraMonitorViewID;
 
     double cameraServoAngle;
+
+    public boolean isYellowIncluded = true;
     public double driveAngle;
 
     public void initialize(OpMode opMode) {
@@ -90,6 +92,14 @@ public class CameraPortal {
 
     public void setBlue() {
         cameraColor = BLUE;
+    }
+
+    public void toggleYellow () {
+        if (isYellowIncluded) {
+            pipeLine.includeYellow = false;
+        } else {
+            pipeLine.includeYellow = true;
+        }
     }
 
     // return servo position vs angle
