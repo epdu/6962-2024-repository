@@ -4,6 +4,7 @@ import static org.firstinspires.ftc.teamcode.Util.ColorDetect.BLUE;
 import static org.firstinspires.ftc.teamcode.Util.ColorDetect.YELLOW;
 
 import android.graphics.Bitmap;
+import android.provider.ContactsContract;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
@@ -198,7 +199,7 @@ public class CameraCVPipeline extends OpenCvPipeline implements CameraStreamSour
 
     private Mat preprocessFrame(Mat frame, ColorDetect detectionType, boolean includeYellow) {
         Mat hsvFrame = new Mat();
-        Imgproc.cvtColor(frame, hsvFrame, Imgproc.COLOR_RGB2HSV);
+        Imgproc.cvtColor(frame, hsvFrame, Imgproc.COLOR_BGR2HSV);
 
         Mat colorMaskRB = new Mat();
         Mat colorMaskY = new Mat();
