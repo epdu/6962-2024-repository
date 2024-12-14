@@ -293,8 +293,15 @@ public class CameraCVPipeline extends OpenCvPipeline implements CameraStreamSour
 //        previousRotationAngle = rotationAngle;
         double servoRotationAngle = rotationAngle < 0.0 ? rotationAngle + 90.0 : rotationAngle - 90.0;
 
+        //handle edge cases
+        if (servoRotationAngle == -90 || servoRotationAngle == 90) {
+            return 0.45;
+        } else if (servoRotationAngle == 0) {
+            return 0.16;
+        }
+
         // Calculate the servo adjustment based on the P and D terms
-        double newServoPosition = servoRotationAngle < 0.0 ? -(servoRotationAngle / 180.0) : 0.87 - (servoRotationAngle / 180.0);
+        double newServoPosition = servoRotationAngle < 0.0 ?  0.15 - (servoRotationAngle / 150) : 0.8 - (servoRotationAngle / 150.0);
 //        double servoAdjustment = (rotationAngle * TURN_FACTOR) + (derivative * TURN_FACTOR_D_GAIN);
 //
 //        // Apply the adjustment to the current servo position
