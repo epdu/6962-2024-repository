@@ -61,7 +61,7 @@ public class CameraCVPipeline extends OpenCvPipeline implements CameraStreamSour
      */
     public static double TURN_FACTOR = 0.01;
     public static double TURN_FACTOR_D_GAIN = -0.01;
-    public static int COLOR_AUTOTUNE_MODE = 0;
+    public static int COLOR_AUTOTUNE_MODE = 1;
     static final int CAMERA_WIDTH = 640; // width  of wanted camera resolution
     final int CAMERA_HEIGHT = 360; // height of wanted camera resolution
     static final double FOV = 40;
