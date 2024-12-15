@@ -53,12 +53,12 @@ public class CameraPortal {
             public void onOpened()
             {
                 // Usually this is where you'll want to start streaming from the camera (see section 4)
-                webcam1.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
+                webcam1.startStreaming(120, 160, OpenCvCameraRotation.UPRIGHT);
 //                TODO: Create Pipeline
                 webcam1.setPipeline(pipeLine);
                 FtcDashboard.getInstance().startCameraStream(
                         pipeLine,
-                        30.0
+                        10
                 );
 
             }

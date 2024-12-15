@@ -159,7 +159,7 @@ public class ScoringArm {
         public Arm.STATE armPos = STATE.TRANSFERRING;
         public static double armScoringPosition = 0.27;
         public static double armScoringClipPosition = 0.3;
-        public static double armTransferPosition = 0.44;
+        public static double armTransferPosition = 0.49;
         public static double armGrabClipWallPosition = 0.06;
         public static double armDropClipFloorPosition = 0;
         public static double armInitPosition = 0.3994;
@@ -224,7 +224,7 @@ public class ScoringArm {
     public static class Wrist {
         public Servo wrist;
         public boolean isWristTransferring = true;
-        public static double wristTransferPosition = 0;
+        public static double wristTransferPosition = 0.05;
         public static double wristScoreBucketPosition = 0.9328;
         public static double wristScoreClipPosition = 0.8572;
         public static double wristGrabClipWallPosition = 0.8;

@@ -88,8 +88,8 @@ public class RobotHardware {
         ptoActivationServo = hMap.get(Servo.class, "ptoServo"); //EHUB 1
         //micro EHUB 1
 
-        webcam = hMap.get(WebcamName.class, "Webcam 1");
-        cameraMonitorViewId = hMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hMap.appContext.getPackageName());
+//        webcam = hMap.get(WebcamName.class, "Webcam 1");
+//        cameraMonitorViewId = hMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hMap.appContext.getPackageName());
 
     }
 }

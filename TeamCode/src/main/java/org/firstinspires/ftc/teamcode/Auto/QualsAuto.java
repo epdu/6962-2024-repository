@@ -29,14 +29,14 @@ public class QualsAuto extends LinearOpMode{
     public static double startHeading = Math.toRadians(90);
     public static double scorePreloadX = 0;
     public static double scorePreloadY = -41;
-    public static double intake1X = -44;
-    public static double intake1Y = -53;
-    public static double scoreBucketX = -54;
+    public static double intake1X = -44.5;
+    public static double intake1Y = -53.5;
+    public static double scoreBucketX = -53;
     public static double scoreBucketY = -60;
     public static double intake2X = -58.5;
-    public static double intake2Y = -55;
+    public static double intake2Y = -54.5;
     public static double intake3X = -57;
-    public static double intake3Y = -54.5;
+    public static double intake3Y = -54;
     public static double coord1X = -16;
     public static double coord1Y = -50;
     public static double coord2X = 30;
@@ -244,24 +244,28 @@ public class QualsAuto extends LinearOpMode{
 
         Action SCORE_BUCKET =
                 new SequentialAction(
+                        new SleepAction(0.1),
                         scoringArm.DropBucket(),
                         new SleepAction(0.2),
                         scoringArm.StowWholeArm(),
                         verticalSlides.Retract()
                 );
         Action SCORE_BUCKET2 = new SequentialAction(
+                new SleepAction(0.1),
                 scoringArm.DropBucket(),
                 new SleepAction(0.2),
                 scoringArm.StowWholeArm(),
                 verticalSlides.Retract()
         );
         Action SCORE_BUCKET3 = new SequentialAction(
+                new SleepAction(0.1),
                 scoringArm.DropBucket(),
                 new SleepAction(0.2),
                 scoringArm.StowWholeArm(),
                 verticalSlides.Retract()
         );
         Action SCORE_BUCKET4 = new SequentialAction(
+                new SleepAction(0.1),
                 scoringArm.DropBucket(),
                 new SleepAction(0.2),
                 scoringArm.StowWholeArm(),

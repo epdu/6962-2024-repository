@@ -49,12 +49,12 @@ public class SoloFullRobotTeleOp extends OpMode {
     private IntakeArm intakeArm               = new IntakeArm();
     private ScoringArm scoringArm             = new ScoringArm();
     private Hang hang                         = new Hang();
-    private CameraCVPipeline pipeline          = new CameraCVPipeline();
+//    private CameraCVPipeline pipeline          = new CameraCVPipeline();
 
 
     private MultipleTelemetry dashboardTelemetry = new MultipleTelemetry(telemetry, dash.getTelemetry());
 
-    private CameraPortal cameraPortal         = new CameraPortal();
+//    private CameraPortal cameraPortal         = new CameraPortal();
 
     private boolean onRedAlliance = true;
 
@@ -76,27 +76,27 @@ public class SoloFullRobotTeleOp extends OpMode {
 
     @Override
     public void init_loop() {
-        if (gamepad1.b) {
-            cameraPortal.setRed();
-//            cameraPortal.closeCamera();
-//            cameraPortal.initialize(this);
-        }
-        else if (gamepad1.x) {
-            cameraPortal.setBlue();
-//            cameraPortal.closeCamera();
-//            cameraPortal.initialize(this);
-        } else if (gamepad1.y) {
-            cameraPortal.toggleYellow();
-        }
-        telemetry.addData("camera alliance color: ", cameraPortal.cameraColor);
-        telemetry.addData("is Yellow included: ", cameraPortal.isYellowIncluded);
+//        if (gamepad1.b) {
+//            cameraPortal.setRed();
+////            cameraPortal.closeCamera();
+////            cameraPortal.initialize(this);
+//        }
+//        else if (gamepad1.x) {
+//            cameraPortal.setBlue();
+////            cameraPortal.closeCamera();
+////            cameraPortal.initialize(this);
+//        } else if (gamepad1.y) {
+//            cameraPortal.toggleYellow();
+//        }
+//        telemetry.addData("camera alliance color: ", cameraPortal.cameraColor);
+//        telemetry.addData("is Yellow included: ", cameraPortal.isYellowIncluded);
 
     }
 
     @Override
     public void start() {
         elapsedtime.reset();
-        cameraPortal.initialize(this);
+//        cameraPortal.initialize(this);
         // to make sure arms don't spasm when out of pos
         scoringArm.arm.setArmTransfer();
         scoringArm.wrist.setWristTransfer();
@@ -136,7 +136,7 @@ public class SoloFullRobotTeleOp extends OpMode {
         dash.sendTelemetryPacket(packet);
 //        horizontalSlides.operateVincent();
         // camera
-        cameraPortal.run(this);
+//        cameraPortal.run(this);
 
         // toggle between field centric and robot centric
         if (currentGamepad1.left_stick_button && !previousGamepad1.left_stick_button && currentGamepad1.right_stick_button) {
@@ -287,7 +287,7 @@ public class SoloFullRobotTeleOp extends OpMode {
 
 
         // camera auto rotate
-        if (currentGamepad1.right_trigger >= 0.1 && currentGamepad1.dpad_down && !previousGamepad1.dpad_down) { cameraPortal.setWristCamera();}
+//        if (currentGamepad1.right_trigger >= 0.1 && currentGamepad1.dpad_down && !previousGamepad1.dpad_down) { cameraPortal.setWristCamera();}
 
         ////////////////////////////////////// GAMEPAD 2 CONTROLS /////////////////////////////////////
 
@@ -332,7 +332,7 @@ public class SoloFullRobotTeleOp extends OpMode {
 //        dashboardTelemetry.addData("hang takeover vertical slides bool: ", hangToggleBool);
         // loop time
         dashboardTelemetry.addData("elapsed time (loop time)", elapsedtime.milliseconds());
-        telemetry.addData("Color Detection: ", cameraPortal.cameraColor);
+//        telemetry.addData("Color Detection: ", cameraPortal.cameraColor);
         telemetry.addData("is field centric? ", mecanum.isFieldCentric);
 //        dashboardTelemetry.addData("Camera Color:", cPortal.cameraColor);
         dashboardTelemetry.update();
