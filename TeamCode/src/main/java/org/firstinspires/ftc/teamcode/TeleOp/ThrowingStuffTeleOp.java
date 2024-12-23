@@ -77,7 +77,6 @@ public class ThrowingStuffTeleOp extends OpMode {
 
     @Override
     public void loop() {
-        //vincent doing nothing
         for (LynxModule hub : allHubs) {
             hub.clearBulkCache();
         }
