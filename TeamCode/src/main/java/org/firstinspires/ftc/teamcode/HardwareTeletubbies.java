@@ -206,7 +206,8 @@ public class HardwareTeletubbies
 
 ////End Definition and Initialization of outtake ArmL and ArmR Servos
 
-        odo = hwMap.get(GoBildaPinpointDriver.class,"odo");
+///////////////////////////////////////GoBildaPinpointDriver//////////////////////////////
+        odo = hwMap.get(GoBildaPinpointDriver.class,"odo"); //expansion hub i2c port 1
 
          /*
         Set the odometry pod positions relative to the point that the odometry computer tracks around.
@@ -248,6 +249,8 @@ public class HardwareTeletubbies
          */
         //odo.recalibrateIMU();
         odo.resetPosAndIMU();
+///////////////////////////////////////GoBildaPinpointDriver//////////////////////////////
+
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
