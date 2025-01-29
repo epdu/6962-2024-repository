@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.Util;
 
 import androidx.annotation.NonNull;
-
 import com.acmerobotics.dashboard.config.Config;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.hardware.GyroEx;
@@ -11,13 +10,24 @@ import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.kauailabs.NavxMicroNavigationSensor;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.Servo;
-
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.internal.camera.names.WebcamNameImpl;
+import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.IMU;
+import com.qualcomm.robotcore.hardware.PwmControl;
+import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.ServoImplEx;
+import com.qualcomm.robotcore.util.ElapsedTime;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.teamcode.GoBildaPinpointDriver;
+
+import static org.firstinspires.ftc.teamcode.Constants_CS.*;
 
 @Config
 public class RobotHardware {
@@ -56,8 +66,10 @@ public class RobotHardware {
 
     public void init(@NonNull HardwareMap hardwareMap) {
         this.hMap = hardwareMap;
+        GoBildaPinpointDriver odo;
+        odo = hardwareMap.get(GoBildaPinpointDriver.class,"odo");
 
-        navx = hMap.get(NavxMicroNavigationSensor.class, "navx"); //CHUB Bus 2
+//        navx = hMap.get(NavxMicroNavigationSensor.class, "navx"); //CHUB Bus 2
 //        imu = hMap.get(BNO055IMU.class, "imu");
         leftFrontMotor = new MotorEx(hMap, "Fl/Re"); //CHUB 1
         rightFrontMotor = new MotorEx(hMap, "Fr"); //CHUB 2
