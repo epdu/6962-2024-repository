@@ -65,7 +65,7 @@ For support, contact tech@gobilda.com
 -Ethan Doak
  */
 
-@Autonomous(name="LQ_Left", group="Linear OpMode")
+@Autonomous(name="BlueLeft", group="Linear OpMode")
 //@Disabled
 
 public class LQ_Left extends LinearOpMode {
@@ -125,71 +125,78 @@ public class LQ_Left extends LinearOpMode {
         // Wait for the game to start (driver presses START)
         waitForStart();
 
+        goToPos(16, 0, Math.toRadians(0), 0.7, 1, 1, Math.toRadians(1), 2);
+        goToPos(0, 16, Math.toRadians(0), 0.7, 1, 1, Math.toRadians(1), 2);
+        goToPos(16, 16, Math.toRadians(90), 0.7, 1, 1, Math.toRadians(1), 2);
+        goToPos(16, 16, Math.toRadians(-90), 0.7, 1, 1, Math.toRadians(1), 2);
+
+        goToPosStop();
+        sleep(1500);
         //Basket #1 (Preload)
-        makeDroppieWork(-2850);
-        makeFlipityWork(0.45);
-        makeFlopityWork(0.6);
-        goToPos(400, 400, Math.toRadians(-45), 0.7, 20, 20, Math.toRadians(20), 2);
-        goToPos(200, 600, Math.toRadians(-45), 0.7, 20, 20, Math.toRadians(20), 1);
-        goToPosStop();
-        makeFlopityWork(0.1);
-        sleep(1500);
-        makeFlopityWork(0.6);
-
-        //Pickup Sample #2
-        goToPos(300, -100, Math.toRadians(60), 0.7, 40, 40, Math.toRadians(20), 3);
-        goToPos(900, -100, Math.toRadians(105), 0.7, 40, 40, Math.toRadians(20), 3);
-        goToPosStop();
-        makeDroppieWork(0);
-        makeIntakieWork(-900);
-        sleep(1000);
-        makeFlipityWork(0.95);
-        makeIndulgeyWork(1);
-        sleep(1500);
-        makeIntakieWork(-1800);
-        sleep(1000);
-        makeFlipityWork(0.1);
-        makeIntakieWork(0);
-        makeIndulgeyWork(0);
-        sleep(1000);
-        makeIndulgeyWork(-0.4);
-        sleep(1000);
-        makeFlipityWork(0.45);
-        makeIndulgeyWork(0);
-        sleep(500);
-
-        //Basket #2
-        makeIntakieWork(-700);
-        sleep(1000);
-        makeDroppieWork(-2850);
-        goToPos(500, 300, Math.toRadians(-30), 0.7, 20, 20, Math.toRadians(20), 3);
-        goToPos(100, 300, Math.toRadians(-45), 0.7, 20, 20, Math.toRadians(15), 3);
-        goToPosStop();
-        makeFlopityWork(0.1);
-        sleep(1000);
-
-
-        //Push Sample Into Net Zone
-        goToPos(300, -150, Math.toRadians(0), 0.7, 40, 40, Math.toRadians(20), 3);
-        goToPos(800, -150, Math.toRadians(0), 0.7, 40, 40, Math.toRadians(20), 3);
-        goToPos(1200, -150, Math.toRadians(0), 0.7, 40, 40, Math.toRadians(20), 3);
-        goToPos(1300, -150, Math.toRadians(0), 0.7, 40, 40, Math.toRadians(20), 3);
-        goToPos(900, -150, Math.toRadians(0), 0.7, 40, 40, Math.toRadians(20), 3);
-        goToPos(50, -150, Math.toRadians(-60), 0.7, 40, 40, Math.toRadians(20), 3);
-        goToPosStop();
-//        goToPos(300, 200, Math.toRadians(0), 0.7, 30, 30, Math.toRadians(20), 3);
-//        goToPos(800, 250, Math.toRadians(0), 0.7, 30, 30, Math.toRadians(20), 3);
-//        goToPos(1200, 300, Math.toRadians(0), 0.7, 30, 30, Math.toRadians(20), 3);
-//        goToPos(1400, 400, Math.toRadians(0), 0.7, 30, 30, Math.toRadians(20), 3);
-//        goToPos(50, 450, Math.toRadians(0), 0.7, 30, 30, Math.toRadians(20), 3);
+//        makeDroppieWork(-2850);
+//        makeFlipityWork(0.45);
+//        makeFlopityWork(0.6);
+//        goToPos(400, 400, Math.toRadians(-45), 0.7, 20, 20, Math.toRadians(20), 2);
+//        goToPos(200, 600, Math.toRadians(-45), 0.7, 20, 20, Math.toRadians(20), 1);
 //        goToPosStop();
-        goToPos(1000, 0, Math.toRadians(60), 0.7, 30, 30, Math.toRadians(20), 3);
-        goToPos(1200, -200, Math.toRadians(90), 0.7, 30, 30, Math.toRadians(20), 3);
-        goToPos(1500, -500, Math.toRadians(90), 0.7, 30, 100, Math.toRadians(20), 2);
-        makeDroppieWork(-700);
-        goToPos(1500, -800, Math.toRadians(90), 0.5, 30, 250, Math.toRadians(20), 1);
-        makeFlopityWork(0.1);
-        sleep(2000);
+//        makeFlopityWork(0.1);
+//        sleep(1500);
+//        makeFlopityWork(0.6);
+//
+//        //Pickup Sample #2
+//        goToPos(300, -100, Math.toRadians(60), 0.7, 40, 40, Math.toRadians(20), 3);
+//        goToPos(900, -100, Math.toRadians(105), 0.7, 40, 40, Math.toRadians(20), 3);
+//        goToPosStop();
+//        makeDroppieWork(0);
+//        makeIntakieWork(-900);
+//        sleep(1000);
+//        makeFlipityWork(0.95);
+//        makeIndulgeyWork(1);
+//        sleep(1500);
+//        makeIntakieWork(-1800);
+//        sleep(1000);
+//        makeFlipityWork(0.1);
+//        makeIntakieWork(0);
+//        makeIndulgeyWork(0);
+//        sleep(1000);
+//        makeIndulgeyWork(-0.4);
+//        sleep(1000);
+//        makeFlipityWork(0.45);
+//        makeIndulgeyWork(0);
+//        sleep(500);
+//
+//        //Basket #2
+//        makeIntakieWork(-700);
+//        sleep(1000);
+//        makeDroppieWork(-2850);
+//        goToPos(500, 300, Math.toRadians(-30), 0.7, 20, 20, Math.toRadians(20), 3);
+//        goToPos(100, 300, Math.toRadians(-45), 0.7, 20, 20, Math.toRadians(15), 3);
+//        goToPosStop();
+//        makeFlopityWork(0.1);
+//        sleep(1000);
+//
+//
+//        //Push Sample Into Net Zone
+//        goToPos(300, -150, Math.toRadians(0), 0.7, 40, 40, Math.toRadians(20), 3);
+//        goToPos(800, -150, Math.toRadians(0), 0.7, 40, 40, Math.toRadians(20), 3);
+//        goToPos(1200, -150, Math.toRadians(0), 0.7, 40, 40, Math.toRadians(20), 3);
+//        goToPos(1300, -150, Math.toRadians(0), 0.7, 40, 40, Math.toRadians(20), 3);
+//        goToPos(900, -150, Math.toRadians(0), 0.7, 40, 40, Math.toRadians(20), 3);
+//        goToPos(50, -150, Math.toRadians(-60), 0.7, 40, 40, Math.toRadians(20), 3);
+//        goToPosStop();
+////        goToPos(300, 200, Math.toRadians(0), 0.7, 30, 30, Math.toRadians(20), 3);
+////        goToPos(800, 250, Math.toRadians(0), 0.7, 30, 30, Math.toRadians(20), 3);
+////        goToPos(1200, 300, Math.toRadians(0), 0.7, 30, 30, Math.toRadians(20), 3);
+////        goToPos(1400, 400, Math.toRadians(0), 0.7, 30, 30, Math.toRadians(20), 3);
+////        goToPos(50, 450, Math.toRadians(0), 0.7, 30, 30, Math.toRadians(20), 3);
+////        goToPosStop();
+//        goToPos(1000, 0, Math.toRadians(60), 0.7, 30, 30, Math.toRadians(20), 3);
+//        goToPos(1200, -200, Math.toRadians(90), 0.7, 30, 30, Math.toRadians(20), 3);
+//        goToPos(1500, -500, Math.toRadians(90), 0.7, 30, 100, Math.toRadians(20), 2);
+//        makeDroppieWork(-700);
+//        goToPos(1500, -800, Math.toRadians(90), 0.5, 30, 250, Math.toRadians(20), 1);
+//        makeFlopityWork(0.1);
+//        sleep(2000);
     }
 
     public void moveForward(double x, double speed) {

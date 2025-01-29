@@ -194,7 +194,7 @@ public class HardwareTeletubbies
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////GoBildaPinpointDriver//////////////////////////////
-        odo = hwMap.get(GoBildaPinpointDriver.class,"odo"); //expansion hub i2c port 1
+        odo = hwMap.get(GoBildaPinpointDriver.class,"odo" ); //expansion hub i2c port 1
          /*
         Set the odometry pod positions relative to the point that the odometry computer tracks around.
         The X pod offset refers to how far sideways from the tracking point the
@@ -204,7 +204,8 @@ public class HardwareTeletubbies
         backwards is a negative number.
          */
         //  odo.setOffsets(-84.0, -224.0); //these are tuned for 3110-0002-0001 Product Insight #1
-        odo.setOffsets(-210, -150);
+        odo.setOffsets(28.575, 158.75);
+        //        odo.setOffsets(-210, -150);
         /*
         Set the kind of pods used by your robot. If you're using goBILDA odometry pods, select either
         the goBILDA_SWINGARM_POD, or the goBILDA_4_BAR_POD.
@@ -227,7 +228,7 @@ public class HardwareTeletubbies
         This is recommended before you run your autonomous, as a bad initial calibration can cause
         an incorrect starting value for x, y, and heading.
          */
-        //odo.recalibrateIMU();
+        odo.recalibrateIMU();
         odo.resetPosAndIMU();
 ///////////////////////////////////////GoBildaPinpointDriver/////////////////////////////
 
