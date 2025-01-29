@@ -70,18 +70,6 @@ For support, contact tech@gobilda.com
 //face to the bar right space for 4 of them only
 public class SpecimanBlueRight extends LinearOpMode {
 
-    private DcMotor FRMotor = null;
-    private DcMotor FLMotor = null;
-    private DcMotor BRMotor = null;
-    private DcMotor BLMotor = null;
-
-    private DcMotor droppie = null;
-    private DcMotor intakie = null;
-
-    private Servo flipity = null;
-    private Servo flopity = null;
-    private CRServo indulgey = null;
-    private CRServo bobby = null;
 
     public float DriveTrains_ReducePOWER=0.75f;
     //   DriveTrains_ReducePOWER = 0.75f;
@@ -201,10 +189,10 @@ public class SpecimanBlueRight extends LinearOpMode {
 
     public void moveForward(double x, double speed) {
         while((x - GlobalH) > Math.toRadians(5)) {
-            FLMotor.setPower(-speed);
-            BLMotor.setPower(-speed);
-            FRMotor.setPower(speed);
-            BRMotor.setPower(speed);
+            robot.LFMotor.setPower(-speed);
+            robot.LBMotor.setPower(-speed);
+            robot.RFMotor.setPower(speed);
+            robot.RBMotor.setPower(speed);
             refresh();
             Pose2D pos = odo.getPosition();
             String data = String.format(Locale.US, "{X: %.3f, Y: %.3f, H: %.3f}", pos.getX(DistanceUnit.MM), pos.getY(DistanceUnit.MM), pos.getHeading(AngleUnit.DEGREES));
@@ -212,10 +200,10 @@ public class SpecimanBlueRight extends LinearOpMode {
             telemetry.addData("GlobalH", GlobalH);
             telemetry.update();
         }
-        FLMotor.setPower(0);
-        BLMotor.setPower(0);
-        FRMotor.setPower(0);
-        BRMotor.setPower(0);
+        robot.LFMotor.setPower(0);
+        robot.LBMotor.setPower(0);
+        robot.RFMotor.setPower(0);
+        robot.RBMotor.setPower(0);
     }
 
     // used to mantain angle values between Pi and -Pi
@@ -339,10 +327,10 @@ public class SpecimanBlueRight extends LinearOpMode {
         telemetry.addData("GlobalH", Math.toDegrees(GlobalH));
         telemetry.update();
 
-        FLMotor.setPower(Range.clip(movementXpower - movementYpower - movementTurnPower, -speed, speed));
-        FRMotor.setPower(Range.clip(movementXpower + movementYpower + movementTurnPower, -speed, speed));
-        BLMotor.setPower(Range.clip(movementXpower + movementYpower - movementTurnPower, -speed, speed));
-        BRMotor.setPower(Range.clip(movementXpower - movementYpower + movementTurnPower, -speed, speed));
+        robot.LFMotor.setPower(Range.clip(movementXpower - movementYpower - movementTurnPower, -speed, speed));
+        robot.LBMotor.setPower(Range.clip(movementXpower + movementYpower + movementTurnPower, -speed, speed));
+        robot.RFMotor.setPower(Range.clip(movementXpower + movementYpower - movementTurnPower, -speed, speed));
+        robot.RBMotor.setPower(Range.clip(movementXpower - movementYpower + movementTurnPower, -speed, speed));
 
     }
 
@@ -370,10 +358,10 @@ public class SpecimanBlueRight extends LinearOpMode {
         double movementTurnPower = initialSpeed * correctFactor * relativeTurnAngle / maxPower;
 
         runtime.reset();
-        FLMotor.setPower(Range.clip(movementXpower - movementYpower - movementTurnPower, -initialSpeed, initialSpeed));
-        FRMotor.setPower(Range.clip(movementXpower + movementYpower + movementTurnPower, -initialSpeed, initialSpeed));
-        BLMotor.setPower(Range.clip(movementXpower + movementYpower - movementTurnPower, -initialSpeed, initialSpeed));
-        BRMotor.setPower(Range.clip(movementXpower - movementYpower + movementTurnPower, -initialSpeed, initialSpeed));
+        robot.LFMotor.setPower(Range.clip(movementXpower - movementYpower - movementTurnPower, -initialSpeed, initialSpeed));
+        robot.LBMotor.setPower(Range.clip(movementXpower + movementYpower + movementTurnPower, -initialSpeed, initialSpeed));
+        robot.RFMotor.setPower(Range.clip(movementXpower + movementYpower - movementTurnPower, -initialSpeed, initialSpeed));
+        robot.RBMotor.setPower(Range.clip(movementXpower - movementYpower + movementTurnPower, -initialSpeed, initialSpeed));
 //        sleep(5);
         initialDistanceToTarget = distanceToTarget;
         while (((Math.abs(x - GlobalX) > moveAccuracyX || Math.abs(y - GlobalY) > moveAccuracyY || Math.abs(angleWrapRad(h - GlobalH)) > angleAccuracy)) && opModeIsActive() && (runtime.seconds() < timeoutS)) {
@@ -414,10 +402,10 @@ public class SpecimanBlueRight extends LinearOpMode {
         double movementTurnPower = correctFactor * relativeTurnAngle / maxPower;
 
         runtime.reset();
-        FLMotor.setPower(movementXpower - movementYpower - movementTurnPower);
-        FRMotor.setPower(movementXpower + movementYpower + movementTurnPower);
-        BLMotor.setPower(movementXpower + movementYpower - movementTurnPower);
-        BRMotor.setPower(movementXpower - movementYpower + movementTurnPower);
+        robot.LFMotor.setPower(movementXpower - movementYpower - movementTurnPower);
+        robot.LBMotor.setPower(movementXpower + movementYpower + movementTurnPower);
+        robot.RFMotor.setPower(movementXpower + movementYpower - movementTurnPower);
+        robot.RBMotor.setPower(movementXpower - movementYpower + movementTurnPower);
 //        sleep(5);
         initialDistanceToTarget = distanceToTarget;
         while (((Math.abs(x - GlobalX) > moveAccuracyX || Math.abs(y - GlobalY) > moveAccuracyY || Math.abs(angleWrapRad(h - GlobalH)) > angleAccuracy)) && opModeIsActive() && (runtime.seconds() < timeoutS)){
@@ -456,10 +444,10 @@ public class SpecimanBlueRight extends LinearOpMode {
         while (Math.abs(x - GlobalX) > moveAccuracyX || Math.abs(y - GlobalY) > moveAccuracyY || Math.abs(angleWrapRad(h - GlobalH)) > angleAccuracy) {
             // while(true){
 
-            FLMotor.setPower(Range.clip(movementXpower - movementYpower - movementTurnPower, -speed, speed));
-            FRMotor.setPower(Range.clip(movementXpower + movementYpower + movementTurnPower, -speed, speed));
-            BLMotor.setPower(Range.clip(movementXpower + movementYpower - movementTurnPower, -speed, speed));
-            BRMotor.setPower(Range.clip(movementXpower - movementYpower + movementTurnPower, -speed, speed));
+            robot.LFMotor.setPower(Range.clip(movementXpower - movementYpower - movementTurnPower, -speed, speed));
+            robot.LBMotor.setPower(Range.clip(movementXpower + movementYpower + movementTurnPower, -speed, speed));
+            robot.RFMotor.setPower(Range.clip(movementXpower + movementYpower - movementTurnPower, -speed, speed));
+            robot.RBMotor.setPower(Range.clip(movementXpower - movementYpower + movementTurnPower, -speed, speed));
 
             telemetry.addData("movementXpower", movementXpower);
             telemetry.addData("movementYpower", movementYpower);
@@ -476,10 +464,10 @@ public class SpecimanBlueRight extends LinearOpMode {
     }
 
     public void goToPosStop (){
-        FLMotor.setPower(0);
-        BLMotor.setPower(0);
-        FRMotor.setPower(0);
-        BRMotor.setPower(0);
+        robot.LFMotor.setPower(0);
+        robot.LBMotor.setPower(0);
+        robot.RFMotor.setPower(0);
+        robot.RBMotor.setPower(0);
     }
     /*
     public void goToStart(double x, double y, double h, double speed, int sleep_time){
@@ -505,33 +493,33 @@ public class SpecimanBlueRight extends LinearOpMode {
         sleep(sleep_time);
     }
 */
-    public void makeDroppieWork(int position){
-        droppie.setTargetPosition(position); //-1400
-        droppie.setPower(-0.9);
-        droppie.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-    }
+//    public void makeDroppieWork(int position){
+//        droppie.setTargetPosition(position); //-1400
+//        droppie.setPower(-0.9);
+//        droppie.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//    }
 
-    public void makeIntakieWork(int pos){
-        intakie.setTargetPosition(pos);//800
-        intakie.setPower(1);//0.8);
-        intakie.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-    }
+//    public void makeIntakieWork(int pos){
+//        intakie.setTargetPosition(pos);//800
+//        intakie.setPower(1);//0.8);
+//        intakie.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//    }
 
-    public void makeBobbyWork(double power){
-        bobby.setPower(power);//-0.6
-    }
-
-    public void makeFlipityWork(double pos){
-        flipity.setPosition(pos);//0.8387);
-    }
-
-    public void makeFlopityWork(double pos){
-        flopity.setPosition(pos);//0.8387);
-    }
-
-    public void makeIndulgeyWork(double power){
-        indulgey.setPower(power);
-    }
+//    public void makeBobbyWork(double power){
+//        bobby.setPower(power);//-0.6
+//    }
+//
+//    public void makeFlipityWork(double pos){
+//        flipity.setPosition(pos);//0.8387);
+//    }
+//
+//    public void makeFlopityWork(double pos){
+//        flopity.setPosition(pos);//0.8387);
+//    }
+//
+//    public void makeIndulgeyWork(double power){
+//        indulgey.setPower(power);
+//    }
 }
 
 
