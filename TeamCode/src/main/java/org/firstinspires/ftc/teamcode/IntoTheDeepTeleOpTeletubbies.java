@@ -55,8 +55,8 @@ import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.gam
 import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
 import static org.firstinspires.ftc.teamcode.FieldCentricMecanumTeleOpTeletubbies.DriveTrains_ReducePOWER;
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
-@TeleOp(name = "AAAAA TeleOp 01282025 V1")
-//V1 with pid but not  odo
+@TeleOp(name = "AAAAA TeleOp 01292025 V1")
+//V1 with pid for both slides but not odo
 public class IntoTheDeepTeleOpTeletubbies extends LinearOpMode {
     public float DriveTrains_ReducePOWER=0.75f;
     //   DriveTrains_ReducePOWER = 0.75f;
@@ -66,14 +66,20 @@ public class IntoTheDeepTeleOpTeletubbies extends LinearOpMode {
     boolean move = false;
     // 在类顶部声明PID控制器
     // 状态变量
-    private boolean pidActive = false; // PID 控制是否激活
-    private int pidTargetPosition = 0; // PID 控制目标位置
-    private PIDController pidController = new PIDController(0.005, 0.0000005, 0.0002);// (0.005, 0.0000005, 0.0002) good for target 300 (1.9, 0.014, 4.9)
+    // pid for VSlides
+    private boolean pidActiveVS = false; // PID 控制是否激活
+    private int pidTargetPositionVS = 0; // PID 控制目标位置
+    private PIDController pidControllerVS = new PIDController(0.005, 0.0000005, 0.0002);// (0.005, 0.0000005, 0.0002) good for target 300 (1.9, 0.014, 4.9)
     // Tune these values  POSITION_B_EXTRUDETransfer = 600;//horizontal slides  out //600 is too much
 
-    //    private PIDController pidControllerR = new PIDController(1.9, 0.014, 4.9); // Tune these values
-//private PIDController pidControllerL = new PIDController(1.9, 0.014, 4.9); // Tune these values  POSITION_B_EXTRUDETransfer = 600;//horizontal slides  out //600 is too much
+    // pid for HSlides
     int controlMode = 1;
+    private boolean pidActiveHS = false; // PID 控制是否激活
+    private int pidTargetPositionHS = 0; // PID 控制目标位置
+    private PIDController pidControllerHS = new PIDController(0.005, 0.0000005, 0.0002);// (0.005, 0.0000005, 0.0002) good for target 300 (1.9, 0.014, 4.9)
+    // Tune these values  POSITION_B_EXTRUDETransfer = 600;//horizontal slides  out //600 is too much
+
+
     ButtonHandler dpadDownHandler = new ButtonHandler();
     ButtonHandler dpadUpHandler = new ButtonHandler();
     ButtonHandler dpadLeftHandler = new ButtonHandler();
@@ -129,7 +135,7 @@ public class IntoTheDeepTeleOpTeletubbies extends LinearOpMode {
                 } // 防止快速连击导致模式快速切换
             }
             if (gamepad1.left_stick_button) { //fix it later;
-                DriveTrains_ReducePOWER = 0.80f;
+                DriveTrains_ReducePOWER = 0.75f;
                 telemetry.addData("DriveTrains_ReducePOWER", DriveTrains_ReducePOWER);
                 telemetry.update();
                 // Non-blocking delay to prevent rapid mode switching
@@ -241,7 +247,7 @@ public class IntoTheDeepTeleOpTeletubbies extends LinearOpMode {
 // 根据不同模式定义按键功能
         switch (controlMode) {
             case 0:
-                // intake
+
                 dpadDownHandler.update(gamepad1.dpad_down);
                 dpadUpHandler.update(gamepad1.dpad_up);
                 dpadLeftHandler.update(gamepad1.dpad_left);
@@ -252,39 +258,26 @@ public class IntoTheDeepTeleOpTeletubbies extends LinearOpMode {
                 gamepad1BHandler.update(gamepad1.b);
                 gamepad1YHandler.update(gamepad1.y);
                 gamepad1AHandler.update(gamepad1.a);
-
                 gamepad1BackHandler.update(gamepad1.back);
-                //Begin  moveHSlideToPosition
 
+//Begin  Extrude H slide
                 if (gamepad1.dpad_left) { //IN
                     startHSlidePIDControl(POSITION_X_IN);
-//                    moveHSlideToPosition(POSITION_X_IN);
-//                    robot.Wristxpitch.setPosition(WristxpitchUp);
-//                     startVSlidePIDControl(POSITION_Y_HIGHHH);// very high//specimen high for testing 01152025
                     gamepad1BHandler.reset();
                 }
                 if (gamepad1.dpad_down) { //EXTRUDE
-
                     startHSlidePIDControl(POSITION_B_EXTRUDE);
-//                moveHSlideToPosition(POSITION_B_EXTRUDE);
-//                    robot.Wristxpitch.setPosition(WristxpitchIntermedia4PositionAdjust);
-//                    robot.Wristxpitch.setPosition(WristxpitchDown);
-//                   startVSlidePIDControl(POSITION_A_BOTTOM);// very high//specimen high for testing 01152025
                     gamepad1XHandler.reset();
                 }
                 if (gamepad1.dpad_up) { //EXTRUDE_MORE
                     startHSlidePIDControl(POSITION_B_EXTRUDETransferC);
-//                  moveHSlideToPosition(POSITION_B_EXTRUDETransferC);
                     gamepad1XHandler.reset();
                 }
                 if (gamepad1.dpad_right) { //EXTRUDE_MORE
                     startHSlidePIDControl(POSITION_B_EXTRUDE_MORE);
-//                    moveHSlideToPosition(POSITION_B_EXTRUDE_MORE);
                     gamepad1XHandler.reset();
                 }
-
-
-                //End  moveHSlideToPosition
+//End Extrude H slide
 
 //Begin  open and close of intakeclaw 12122024 finetuned
 
@@ -300,6 +293,7 @@ public class IntoTheDeepTeleOpTeletubbies extends LinearOpMode {
 
 //End open and close of intakeclaw
 
+
 //Begin  Wristzyaw
                 if (gamepad1.b) { //right
                     robot.Wristzyaw.setPosition(WristzyawRight); //Wristzyaw right 45 degree 12122024
@@ -310,8 +304,6 @@ public class IntoTheDeepTeleOpTeletubbies extends LinearOpMode {
 
 //one key ready for pick
                 if (gamepad1.left_bumper) { //up if arm is Horizontal, the the wrist is vertical up and down
-//                    robot.OArmL.setPosition(OArmRearSpecimenPick);
-//                    robot.OArmR.setPosition(OArmRearSpecimenPick);
                     robot.OClaw.setPosition(OClawOpen); //
                     delayTimer.reset();
                     while (delayTimer.milliseconds() < 200 && opModeIsActive()) {
@@ -321,13 +313,7 @@ public class IntoTheDeepTeleOpTeletubbies extends LinearOpMode {
                     robot.IClaw.setPosition(IClawOpen);
                     robot.IArmL.setPosition(IArmLDown);
                     robot.IArmR.setPosition(IArmRDown);
-                    //                    moveHSlideToPosition(POSITION_B_EXTRUDETransferC);
-//                    sleep(500);
-                    //                    robot.OClaw.setPosition(OClawOpen); //open
                 }
-
-
-
 
 //one key ready for transfer
                 if (gamepad1.right_bumper) { //
@@ -352,16 +338,14 @@ public class IntoTheDeepTeleOpTeletubbies extends LinearOpMode {
                     sleep(500);
                     robot.IClaw.setPosition(IClawOpen); //open
                     sleep(300);
-//                    moveHSlideToPosition(POSITION_B_EXTRUDETransferC);
-//                    sleep(300);
                     robot.OArmL.setPosition(OArmRearSpecimenPick);
                     robot.OArmR.setPosition(OArmRearSpecimenPick);
-//                    moveVSlideToPosition(-POSITION_Y_HIGH);// high
 //                      startVSlidePIDControl(POSITION_Y_HIGHH);
 
-                }
 
+                }
 //one key ready for transfer
+
 
 //******************Begin  IArm L and R****************
 
@@ -376,8 +360,9 @@ public class IntoTheDeepTeleOpTeletubbies extends LinearOpMode {
 
 //******************end  IArm L and R*****************
 
-
                 break;
+
+
 
             case 1:
                 // out take
@@ -391,7 +376,8 @@ public class IntoTheDeepTeleOpTeletubbies extends LinearOpMode {
                 gamepad1BHandler.update(gamepad1.b);
                 gamepad1YHandler.update(gamepad1.y);
                 gamepad1AHandler.update(gamepad1.a);
-                //Begin  moveVSlideToPosition
+
+//Begin  moveVSlideToPosition
                 // 左触发器双功能：轻按和深按
                 if (gamepad1.dpad_left) { //IN
                     startVSlidePIDControl(POSITION_A_BOTTOM);
@@ -431,7 +417,8 @@ public class IntoTheDeepTeleOpTeletubbies extends LinearOpMode {
                 }
 
 
-                //************End  moveVSlideToPosition***************
+//************End  moveVSlideToPosition***************
+
 
 //one key ready for pick
                 if (gamepad1.left_bumper) { //up if arm is Horizontal, the the wrist is vertical up and down
@@ -533,9 +520,8 @@ public class IntoTheDeepTeleOpTeletubbies extends LinearOpMode {
     }
 //End Definition and Initialization of outtake()
 
-    //Begin Definition and Initialization of steptestservo()
+    //Begin Definition and Initialization of steptestservo()    //Begin debugging with a step increment of 0.05  SGC - servoGamepadControl
     public void servoGamepadControl() {
-        //Begin debugging with a step increment of 0.05  SGC - servoGamepadControl
 
 /**
  * This code snippet controls the position of a servo motor using the gamepad triggers.
@@ -583,21 +569,7 @@ public class IntoTheDeepTeleOpTeletubbies extends LinearOpMode {
 //End debugging with a step increment of 0.05
 
     }
-//End Definition and Initialization of steptestservo()
-
-//Temp ******************************
-//**************************
-
-////Begin  open and close of outtakeclaw 12122024 finetuned
-//
-//                    if (gamepad2.left_trigger > 0.3) { //open
-//                        robot.OClaw.setPosition(0.32); //12122024
-//                    }
-//                    if (gamepad2.right_trigger > 0.3) { //close
-//                        robot.OClaw.setPosition(0.548); // 0.543 hold
-//                    }
-//
-////End open and close of outtakeclaw
+///////////////////End Definition and Initialization of steptestservo()
 
 //End Definition and Initialization of gamepad
 
@@ -608,7 +580,158 @@ public class IntoTheDeepTeleOpTeletubbies extends LinearOpMode {
 
 ///////////////////////////////////////
 
-    //Temp *************************
+
+    ///////////startVSlidePIDControl///////////////
+
+    /// 初始化 PID 控制器
+    private void startVSlidePIDControl(int targetPosition) {
+        robot.VSMotorL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.VSMotorR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        pidControllerVS.reset();
+        pidControllerVS.enable();
+        pidControllerVS.setSetpoint(targetPosition);
+        pidControllerVS.setTolerance(10); // 允许误差范围
+        pidTargetPositionVS = targetPosition;
+        pidActiveVS = true; // 激活 PID 控制
+    }
+    // 在主循环中调用的非阻塞 PID 控制逻辑
+    private void updateVSlidePIDControl() {
+        if (!pidActiveVS) return; // 如果 PID 未激活，直接返回
+
+        int currentPositionL = robot.VSMotorL.getCurrentPosition();
+
+        // 计算 PID 输出
+        double powerL = pidControllerVS.performPID(currentPositionL);
+        robot.VSMotorL.setPower(powerL*0.8); // change it to make it move faster both at the same time
+        robot.VSMotorR.setPower(powerL*0.8); // change it to make it move faster
+
+        // 输出 Telemetry 信息
+        telemetry.addData("PID Target", pidTargetPositionVS);
+        telemetry.addData("Current Position L", currentPositionL);
+        telemetry.addData("Power L", powerL);
+        telemetry.update();
+
+//        // 如果达到目标位置，停止滑轨运动，但保持抗重力功率
+//        if (pidControllerVS.onTarget()) {
+//            robot.VSMotorL.setPower(0.1); // 保持位置的最小功率
+//            robot.VSMotorR.setPower(0.1);
+//            pidActiveVS = false; // 停止 PID 控制
+//        }
+        // 在 updateVSlidePIDControl 中加入抗重力逻辑
+        if (!pidActiveVS && Math.abs(robot.VSMotorL.getCurrentPosition() - pidTargetPositionVS) > 10) {
+            double holdPowerVS = pidControllerVS.performPID(robot.VSMotorL.getCurrentPosition());
+            robot.VSMotorL.setPower(holdPowerVS);
+            robot.VSMotorR.setPower(holdPowerVS);
+            pidActiveVS = false; // 停止 PID 控制
+        }
+
+    }
+
+//////////////startVSlidePIDControl/////////////
+
+
+///////////startHSlidePIDControl///////////////
+
+    /// 初始化 PID 控制器
+    private void startHSlidePIDControl(int targetPosition) {
+        robot.HSMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        pidControllerHS.reset();
+        pidControllerHS.enable();
+        pidControllerHS.setSetpoint(targetPosition);
+        pidControllerHS.setTolerance(10); // 允许误差范围
+        pidTargetPositionHS = targetPosition;
+        pidActiveHS = true; // 激活 PID 控制
+    }
+    // 在主循环中调用的非阻塞 PID 控制逻辑
+    private void updateHSlidePIDControl() {
+        if (!pidActiveHS) return; // 如果 PID 未激活，直接返回
+
+        int currentPositionH = robot.HSMotor.getCurrentPosition();
+
+        // 计算 PID 输出
+        double powerH = pidControllerHS.performPID(currentPositionH);
+        robot.HSMotor.setPower(powerH*0.6);
+
+
+        // 输出 Telemetry 信息
+        telemetry.addData("PID Target", pidTargetPositionHS);
+        telemetry.addData("Current Position H", currentPositionH);
+        telemetry.addData("Power H", powerH);
+        telemetry.update();
+
+//        // 如果达到目标位置，停止滑轨运动，但保持抗重力功率
+//        if (pidControllerHS.onTarget()) {
+//            robot.VSMotorL.setPower(0.1); // 保持位置的最小功率
+//            robot.VSMotorR.setPower(0.1);
+//            pidActiveHS = false; // 停止 PID 控制
+//        }
+        // 在 updateVSlidePIDControl 中加入抗重力逻辑
+        if (!pidActiveHS && Math.abs(robot.HSMotor.getCurrentPosition() - pidTargetPositionHS) > 10) {
+            double holdPowerHS = pidControllerHS.performPID(robot.HSMotor.getCurrentPosition());
+            robot.HSMotor.setPower(holdPowerHS);
+            pidActiveHS = false; // 停止 PID 控制
+        }
+
+    }
+//////////////startHSlidePIDControl/////////////
+
+
+
+    public void moveDriveTrain_FieldCentric() {
+        double y = gamepad1.left_stick_y * (1); // Remember, Y stick value is reversed
+        double x = -gamepad1.left_stick_x * (1);
+        double rx = -gamepad1.right_stick_x * (1); //*(0.5) is fine
+
+        // This button choice was made so that it is hard to hit on accident,
+        // it can be freely changed based on preference.
+        // The equivalent button is start on Xbox-style controllers.
+        //******************************************temp
+//        if (gamepad1.back) {
+//            robot.imu.resetYaw();
+//        }
+//******************************************temp
+
+        double botHeading = robot.imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
+
+        // Rotate the movement direction counter to the bot's rotation
+        double rotX = x * Math.cos(-botHeading) - y * Math.sin(-botHeading);
+        double rotY = x * Math.sin(-botHeading) + y * Math.cos(-botHeading);
+
+        rotX = rotX * 1.1;  // Counteract imperfect strafing
+
+        // Denominator is the largest motor power (absolute value) or 1
+        // This ensures all the powers maintain the same ratio,
+        // but only if at least one is out of the range [-1, 1]
+        double denominator = Math.max(Math.abs(rotY) + Math.abs(rotX) + Math.abs(rx), 1);
+        double frontLeftPower = (rotY + rotX + rx) / denominator;
+        double backLeftPower = (rotY - rotX + rx) / denominator;
+        double frontRightPower = (rotY - rotX - rx) / denominator;
+        double backRightPower = (rotY + rotX - rx) / denominator;
+
+        robot.LFMotor.setPower(frontLeftPower * DriveTrains_ReducePOWER);
+        robot.LBMotor.setPower(backLeftPower * DriveTrains_ReducePOWER);
+        robot.RFMotor.setPower(frontRightPower * DriveTrains_ReducePOWER);
+        robot.RBMotor.setPower(backRightPower * DriveTrains_ReducePOWER);
+    }
+
+    public void moveDriveTrain_RobotCentric() {
+        double robot_y = gamepad1.left_stick_y; // Remember, Y stick value is reversed
+        double robot_x = gamepad1.left_stick_x;
+        double robot_rx = gamepad1.right_stick_x*0.5; // If a smooth turn is required 0.5
+
+        double fl = robot_y - robot_x - robot_rx;
+        double bl = robot_y + robot_x - robot_rx;
+        double fr = robot_y + robot_x + robot_rx;
+        double br = robot_y - robot_x + robot_rx;
+
+        robot.LFMotor.setPower(fl * speedMultiplier);
+        robot.LBMotor.setPower(bl * speedMultiplier);
+        robot.RFMotor.setPower(fr * speedMultiplier);
+        robot.RBMotor.setPower(br * speedMultiplier);
+
+    }
+
+
     public void moveDriveTrain() {
         double y = gamepad1.left_stick_y;
         double x = gamepad1.left_stick_x;
@@ -624,103 +747,23 @@ public class IntoTheDeepTeleOpTeletubbies extends LinearOpMode {
     }
 
 
-    ///////////startVSlidePIDControl///////////////
 
-    /// 初始化 PID 控制器
-    private void startVSlidePIDControl(int targetPosition) {
-        robot.VSMotorL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        robot.VSMotorR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        pidController.reset();
-        pidController.enable();
-        pidController.setSetpoint(targetPosition);
-        pidController.setTolerance(10); // 允许误差范围
-        pidTargetPosition = targetPosition;
-        pidActive = true; // 激活 PID 控制
-    }
-    // 在主循环中调用的非阻塞 PID 控制逻辑
-    private void updateVSlidePIDControl() {
-        if (!pidActive) return; // 如果 PID 未激活，直接返回
+    public void RobotCentricDriveTrain () {
+        double robot_y = gamepad1.left_stick_y; // Remember, Y stick value is reversed
+        double robot_x = gamepad1.left_stick_x;
+        double robot_rx = gamepad1.right_stick_x*0.5; // If a smooth turn is required 0.5
 
-        int currentPositionL = robot.VSMotorL.getCurrentPosition();
+        double fl = robot_y - robot_x - robot_rx;
+        double bl = robot_y + robot_x - robot_rx;
+        double fr = robot_y + robot_x + robot_rx;
+        double br = robot_y - robot_x + robot_rx;
 
-        // 计算 PID 输出
-        double powerL = pidController.performPID(currentPositionL);
-        robot.VSMotorL.setPower(powerL*0.4); // change it to make it move faster both at the same time
-        robot.VSMotorR.setPower(powerL*0.4); // change it to make it move faster
-
-        // 输出 Telemetry 信息
-        telemetry.addData("PID Target", pidTargetPosition);
-        telemetry.addData("Current Position L", currentPositionL);
-        telemetry.addData("Power L", powerL);
-        telemetry.update();
-
-//        // 如果达到目标位置，停止滑轨运动，但保持抗重力功率
-//        if (pidController.onTarget()) {
-//            robot.VSMotorL.setPower(0.1); // 保持位置的最小功率
-//            robot.VSMotorR.setPower(0.1);
-//            pidActive = false; // 停止 PID 控制
-//        }
-        // 在 updateVSlidePIDControl 中加入抗重力逻辑
-        if (!pidActive && Math.abs(robot.VSMotorL.getCurrentPosition() - pidTargetPosition) > 10) {
-            double holdPower = pidController.performPID(robot.VSMotorL.getCurrentPosition());
-            robot.VSMotorL.setPower(holdPower);
-            robot.VSMotorR.setPower(holdPower);
-            pidActive = false; // 停止 PID 控制
-        }
+        robot.LFMotor.setPower(fl * speedMultiplier);
+        robot.LBMotor.setPower(bl * speedMultiplier);
+        robot.RFMotor.setPower(fr * speedMultiplier);
+        robot.RBMotor.setPower(br * speedMultiplier);
 
     }
-
-
-//////////////startVSlidePIDControl/////////////
-
-
-
-///////////startHSlidePIDControl///////////////
-
-    /// 初始化 PID 控制器
-    private void startHSlidePIDControl(int targetPosition) {
-        robot.HSMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        pidController.reset();
-        pidController.enable();
-        pidController.setSetpoint(targetPosition);
-        pidController.setTolerance(10); // 允许误差范围
-        pidTargetPosition = targetPosition;
-        pidActive = true; // 激活 PID 控制
-    }
-    // 在主循环中调用的非阻塞 PID 控制逻辑
-    private void updateHSlidePIDControl() {
-        if (!pidActive) return; // 如果 PID 未激活，直接返回
-
-        int currentPositionH = robot.HSMotor.getCurrentPosition();
-
-        // 计算 PID 输出
-        double powerH = pidController.performPID(currentPositionH);
-        robot.HSMotor.setPower(powerH*0.4);
-
-
-        // 输出 Telemetry 信息
-        telemetry.addData("PID Target", pidTargetPosition);
-        telemetry.addData("Current Position H", currentPositionH);
-        telemetry.addData("Power H", powerH);
-        telemetry.update();
-
-//        // 如果达到目标位置，停止滑轨运动，但保持抗重力功率
-//        if (pidController.onTarget()) {
-//            robot.VSMotorL.setPower(0.1); // 保持位置的最小功率
-//            robot.VSMotorR.setPower(0.1);
-//            pidActive = false; // 停止 PID 控制
-//        }
-        // 在 updateVSlidePIDControl 中加入抗重力逻辑
-        if (!pidActive && Math.abs(robot.HSMotor.getCurrentPosition() - pidTargetPosition) > 10) {
-            double holdPower = pidController.performPID(robot.HSMotor.getCurrentPosition());
-            robot.HSMotor.setPower(holdPower);
-            pidActive = false; // 停止 PID 控制
-        }
-
-    }
-
-
-//////////////startHSlidePIDControl/////////////
 
     //Begin Definition and Initialization of Horizontal Slides
     private void moveHSlideToPosition ( int targetPosition){
@@ -854,82 +897,9 @@ public class IntoTheDeepTeleOpTeletubbies extends LinearOpMode {
             telemetry.update();
         }
     }
+
+
 //End Definition and Initialization of Vertical Slides
-
-
 //End Definition and Initialization of Horizontal Slides
-
-
-
-    public void moveDriveTrain_FieldCentric() {
-        double y = gamepad1.left_stick_y * (1); // Remember, Y stick value is reversed
-        double x = -gamepad1.left_stick_x * (1);
-        double rx = -gamepad1.right_stick_x * (1); //*(0.5) is fine
-
-        // This button choice was made so that it is hard to hit on accident,
-        // it can be freely changed based on preference.
-        // The equivalent button is start on Xbox-style controllers.
-        //******************************************temp
-//        if (gamepad1.back) {
-//            robot.imu.resetYaw();
-//        }
-//******************************************temp
-
-        double botHeading = robot.imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
-
-        // Rotate the movement direction counter to the bot's rotation
-        double rotX = x * Math.cos(-botHeading) - y * Math.sin(-botHeading);
-        double rotY = x * Math.sin(-botHeading) + y * Math.cos(-botHeading);
-
-        rotX = rotX * 1.1;  // Counteract imperfect strafing
-
-        // Denominator is the largest motor power (absolute value) or 1
-        // This ensures all the powers maintain the same ratio,
-        // but only if at least one is out of the range [-1, 1]
-        double denominator = Math.max(Math.abs(rotY) + Math.abs(rotX) + Math.abs(rx), 1);
-        double frontLeftPower = (rotY + rotX + rx) / denominator;
-        double backLeftPower = (rotY - rotX + rx) / denominator;
-        double frontRightPower = (rotY - rotX - rx) / denominator;
-        double backRightPower = (rotY + rotX - rx) / denominator;
-
-        robot.LFMotor.setPower(frontLeftPower * DriveTrains_ReducePOWER);
-        robot.LBMotor.setPower(backLeftPower * DriveTrains_ReducePOWER);
-        robot.RFMotor.setPower(frontRightPower * DriveTrains_ReducePOWER);
-        robot.RBMotor.setPower(backRightPower * DriveTrains_ReducePOWER);
-    }
-
-    public void moveDriveTrain_RobotCentric() {
-        double robot_y = gamepad1.left_stick_y; // Remember, Y stick value is reversed
-        double robot_x = gamepad1.left_stick_x;
-        double robot_rx = gamepad1.right_stick_x*0.5; // If a smooth turn is required 0.5
-
-        double fl = robot_y - robot_x - robot_rx;
-        double bl = robot_y + robot_x - robot_rx;
-        double fr = robot_y + robot_x + robot_rx;
-        double br = robot_y - robot_x + robot_rx;
-
-        robot.LFMotor.setPower(fl * speedMultiplier);
-        robot.LBMotor.setPower(bl * speedMultiplier);
-        robot.RFMotor.setPower(fr * speedMultiplier);
-        robot.RBMotor.setPower(br * speedMultiplier);
-
-    }
-    public void RobotCentricDriveTrain () {
-        double robot_y = gamepad1.left_stick_y; // Remember, Y stick value is reversed
-        double robot_x = gamepad1.left_stick_x;
-        double robot_rx = gamepad1.right_stick_x*0.5; // If a smooth turn is required 0.5
-
-        double fl = robot_y - robot_x - robot_rx;
-        double bl = robot_y + robot_x - robot_rx;
-        double fr = robot_y + robot_x + robot_rx;
-        double br = robot_y - robot_x + robot_rx;
-
-        robot.LFMotor.setPower(fl * speedMultiplier);
-        robot.LBMotor.setPower(bl * speedMultiplier);
-        robot.RFMotor.setPower(fr * speedMultiplier);
-        robot.RBMotor.setPower(br * speedMultiplier);
-
-    }
-
 
 }
