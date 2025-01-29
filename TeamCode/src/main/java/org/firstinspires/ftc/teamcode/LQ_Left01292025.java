@@ -22,12 +22,10 @@
 package org.firstinspires.ftc.teamcode;
 //package org.firstinspires.ftc.teamcode.autos;
 
-import com.acmerobotics.dashboard.FtcDashboard;
-import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
@@ -68,7 +66,7 @@ For support, contact tech@gobilda.com
 @Autonomous(name="LQ_Left", group="Linear OpMode")
 //@Disabled
 
-public class LQ_Left extends LinearOpMode {
+public class LQ_Left01292025 extends LinearOpMode {
 
     private DcMotor FRMotor = null;
     private DcMotor FLMotor = null;
@@ -83,33 +81,104 @@ public class LQ_Left extends LinearOpMode {
     private CRServo indulgey = null;
     private CRServo bobby = null;
 
-    public float DriveTrains_ReducePOWER=0.75f;
-    //   DriveTrains_ReducePOWER = 0.75f;
-//    DriveTrains_ReducePOWER = speedLimiterSlower;//************************
-    HardwareTeletubbies robot = new HardwareTeletubbies();
-    public String fieldOrRobotCentric = "robot";
-    boolean move = false;
-    // 在类顶部声明PID控制器
-    // 状态变量
-    private boolean pidActive = false; // PID 控制是否激活
-    private int pidTargetPosition = 0; // PID 控制目标位置
-    private PIDController pidController = new PIDController(0.005, 0.0000005, 0.0002);// (0.005, 0.0000005, 0.0002) good for target 300 (1.9, 0.014, 4.9)
-    // Tune these values  POSITION_B_EXTRUDETransfer = 600;//horizontal slides  out //600 is too much
     GoBildaPinpointDriver odo; // Declare OpMode member for the Odometry Computer
 
     //Starting location
     public double GlobalX = 0;
     public double GlobalY = 0;
     public double GlobalH = 0;
-    Gyro gyro = new Gyro(); // 创建 Gyro 类的对象
+
     private ElapsedTime runtime = new ElapsedTime();
 
     @Override
     public void runOpMode() {
 
-        telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
-        robot.init(hardwareMap);
-        gyro.robot.init(hardwareMap);
+        // Initialize the hardware variables. Note that the strings used here must correspond
+        // to the names assigned during the robot configuration step on the DS or RC devices.
+
+        FRMotor  = hardwareMap.get(DcMotor.class, "FR");
+        FLMotor = hardwareMap.get(DcMotor.class, "FL");
+        BRMotor = hardwareMap.get(DcMotor.class, "BR");
+        BLMotor = hardwareMap.get(DcMotor.class, "BL");
+
+        droppie = hardwareMap.get(DcMotor.class, "droppie");
+        intakie = hardwareMap.get(DcMotor.class, "intakie");
+
+        flipity = hardwareMap.get(Servo.class, "flipity");
+        flopity = hardwareMap.get(Servo.class, "flopity");
+        indulgey = hardwareMap.get(CRServo.class, "indulgey");
+        bobby = hardwareMap.get(CRServo.class, "bobby");
+
+        odo = hardwareMap.get(GoBildaPinpointDriver.class,"odo");
+
+        FLMotor.setDirection(DcMotor.Direction.REVERSE);
+        FRMotor.setDirection(DcMotor.Direction.FORWARD);
+        BLMotor.setDirection(DcMotor.Direction.REVERSE);
+        BRMotor.setDirection(DcMotor.Direction.FORWARD);
+
+        //intakie.setDirection(DcMotor.Direction.FORWARD);
+
+
+        FLMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        BLMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        FRMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        BRMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        droppie.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        FLMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        FRMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        BRMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        BLMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        droppie.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        FLMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        FRMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        BRMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        BLMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        droppie.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+
+        //intakie.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        /*
+        Set the odometry pod positions relative to the point that the odometry computer tracks around.
+        The X pod offset refers to how far sideways from the tracking point the
+        X (forward) odometry pod is. Left of the center is a positive number,
+        right of center is a negative number. the Y pod offset refers to how far forwards from
+        the tracking point the Y (strafe) odometry pod is. forward of center is a positive number,
+        backwards is a negative number.
+         */
+        //  odo.setOffsets(-84.0, -224.0); //these are tuned for 3110-0002-0001 Product Insight #1
+        //odo.setOffsets(-153.71, -215.019);
+        odo.setOffsets(-210, -150);
+        //New Offsets (x-201.61, y-173.04)
+        /*
+        Set the kind of pods used by your robot. If you're using goBILDA odometry pods, select either
+        the goBILDA_SWINGARM_POD, or the goBILDA_4_BAR_POD.
+        If you're using another kind of odometry pod, uncomment setEncoderResolution and input the
+        number of ticks per mm of your odometry pod.
+         */
+        odo.setEncoderResolution(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD);
+        //odo.setEncoderResolution(13.26291192);
+
+
+        /*
+        Set the direction that each of the two odometry pods count. The X (forward) pod should
+        increase when you move the robot forward. And the Y (strafe) pod should increase when
+        you move the robot to the left.
+         */
+        odo.setEncoderDirections(GoBildaPinpointDriver.EncoderDirection.REVERSED, GoBildaPinpointDriver.EncoderDirection.FORWARD);
+
+
+        /*
+        Before running the robot, recalibrate the IMU. This needs to happen when the robot is stationary
+        The IMU will automatically calibrate when first powered on, but recalibrating before running
+        the robot is a good idea to ensure that the calibration is "good".
+        resetPosAndIMU will reset the position to 0,0,0 and also recalibrate the IMU.
+        This is recommended before you run your autonomous, as a bad initial calibration can cause
+        an incorrect starting value for x, y, and heading.
+         */
+        //odo.recalibrateIMU();
         odo.resetPosAndIMU();
         Pose2D pos = odo.getPosition();
 

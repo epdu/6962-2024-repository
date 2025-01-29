@@ -11,6 +11,8 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.ServoImplEx;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.teamcode.notUsing.GoBildaPinpointDriver;
+
 import static org.firstinspires.ftc.teamcode.Constants_CS.*;
 /**
  * This is NOT an opmode.
@@ -67,6 +69,11 @@ public class HardwareTeletubbies
     public DcMotor HSMotor; //horizontal Slides motor  extruder
     public DcMotor VSMotorL; //vertical Slides motor left
     public DcMotor VSMotorR; //vertical Slides motor right
+
+    GoBildaPinpointDriver odo; // Declare OpMode member for the Odometry Computer
+    public double GlobalX = 0;
+    public double GlobalY = 0;
+    public double GlobalH = 0;
     public Servo TServo; // For testing
     //   public ServoImplEx myServo;
     public ServoImplEx myServo;
@@ -198,6 +205,50 @@ public class HardwareTeletubbies
         OArmR.setPosition(0.97);//
 
 ////End Definition and Initialization of outtake ArmL and ArmR Servos
+
+        odo = hwMap.get(GoBildaPinpointDriver.class,"odo");
+
+         /*
+        Set the odometry pod positions relative to the point that the odometry computer tracks around.
+        The X pod offset refers to how far sideways from the tracking point the
+        X (forward) odometry pod is. Left of the center is a positive number,
+        right of center is a negative number. the Y pod offset refers to how far forwards from
+        the tracking point the Y (strafe) odometry pod is. forward of center is a positive number,
+        backwards is a negative number.
+         */
+        //  odo.setOffsets(-84.0, -224.0); //these are tuned for 3110-0002-0001 Product Insight #1
+        //odo.setOffsets(-153.71, -215.019);
+        odo.setOffsets(-210, -150);
+        //New Offsets (x-201.61, y-173.04)
+        /*
+        Set the kind of pods used by your robot. If you're using goBILDA odometry pods, select either
+        the goBILDA_SWINGARM_POD, or the goBILDA_4_BAR_POD.
+        If you're using another kind of odometry pod, uncomment setEncoderResolution and input the
+        number of ticks per mm of your odometry pod.
+         */
+        odo.setEncoderResolution(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD);
+        //odo.setEncoderResolution(13.26291192);
+
+
+        /*
+        Set the direction that each of the two odometry pods count. The X (forward) pod should
+        increase when you move the robot forward. And the Y (strafe) pod should increase when
+        you move the robot to the left.
+         */
+        odo.setEncoderDirections(GoBildaPinpointDriver.EncoderDirection.REVERSED, GoBildaPinpointDriver.EncoderDirection.FORWARD);
+
+
+        /*
+        Before running the robot, recalibrate the IMU. This needs to happen when the robot is stationary
+        The IMU will automatically calibrate when first powered on, but recalibrating before running
+        the robot is a good idea to ensure that the calibration is "good".
+        resetPosAndIMU will reset the position to 0,0,0 and also recalibrate the IMU.
+        This is recommended before you run your autonomous, as a bad initial calibration can cause
+        an incorrect starting value for x, y, and heading.
+         */
+        //odo.recalibrateIMU();
+        odo.resetPosAndIMU();
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
