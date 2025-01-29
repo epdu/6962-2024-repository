@@ -84,7 +84,6 @@ public class SpecimanBlueRight extends LinearOpMode {
     private PIDController pidController = new PIDController(0.005, 0.0000005, 0.0002);// (0.005, 0.0000005, 0.0002) good for target 300 (1.9, 0.014, 4.9)
     // Tune these values  POSITION_B_EXTRUDETransfer = 600;//horizontal slides  out //600 is too much
     GoBildaPinpointDriver odo; // Declare OpMode member for the Odometry Computer
-
     //Starting location
     public double GlobalX = 0;
     public double GlobalY = 0;
