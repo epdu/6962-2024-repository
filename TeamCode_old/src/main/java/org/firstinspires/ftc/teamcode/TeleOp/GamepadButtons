@@ -1,0 +1,33 @@
+* SOLO TELEOP *
+///////////////////// GAMEPAD 1: //////////////////////
+
+* Left Joystick X and Y - strafe (field-centric)
+* Right Joystick X - turn (drive)
+
+* Left Trigger - prep to grab clip off wall, then grab and prep score clip on release
+
+* Right Trigger - 100% extension intaking
+* Right Bumper - high bucket prep
+
+* Left Bumper - deposit bucket or clip, and general purpose scoring arm and vert slides reset
+
+* //A - slam clip moved
+* B - also high bucket prep
+* //X - prep to grab clip off wall
+* //Y - grab and prep score clip
+
+* D-Pad Right - rotate intake claw right
+* D-Pad Left - rotate intake claw left
+* D-Pad Down - auto intake claw orient (camera)
+
+///////////////////// GAMEPAD 2: //////////////////////
+
+* Left Joystick Y - L2 hang manual control
+
+* Left Bumper - drop sample behind robot and return
+* X - transfer, then prep to drop sample behind robot
+* Y - navx reset
+
+* Left Trigger - rotate intake claw left
+* Right Trigger - rotate intake claw right
+
